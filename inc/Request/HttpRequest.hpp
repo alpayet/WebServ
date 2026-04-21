@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 20:44:59 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:53:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/21 21:22:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "IRequest.hpp"
 # include "HttpMessage.hpp"
+# include <vector>
 
 class HttpRequest : public IRequest, public HttpMessage
 {
@@ -33,12 +34,14 @@ class HttpRequest : public IRequest, public HttpMessage
 
 		HttpRequest	&operator=(HttpRequest const &rhs);
 
-		virtual ParseState	parse() {}
+		virtual ParseState	parse(std::vector<char> const &readBuf);
 
 	private:
 		MethodType	_method;
 		std::string	_target;
 		std::string	_protocol;
+		std::size_t	_pos;
+		ParseState	_state;
 };
 
 #endif

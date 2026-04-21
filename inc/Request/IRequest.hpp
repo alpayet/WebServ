@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 20:09:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:52:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/21 20:17:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class IRequest
 	public:
 		virtual ~IRequest(void) {}
 
-		virtual ParseState	parse() = 0;
+		virtual ParseState	parse(std::vector<char> const &readBuf) = 0;
 
 };
 

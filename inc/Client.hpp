@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 20:35:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/21 20:56:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ class Client
 		IRequest			*_request;
 		int					_socketFd;
 };
+
 
 #endif
