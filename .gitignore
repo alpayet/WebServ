@@ -1,0 +1,10 @@
+.build/
+*.out
+*.log
+test*
+main.c
+subject.md
+
+*.html
+*.puml
+*.conf

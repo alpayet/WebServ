@@ -1,0 +1,36 @@
+* This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis *
+
+# Description
+The goal is to make an HTTP server.
+
+
+# Instructions
+To launch the program, use the command line
+`./webserv [configuration file]`
+Configuration file should be configure like the server block of the nginx file:
+```
+server {
+	listen 80;
+	location / {
+		root "lalala";
+	}
+}
+```
+
+server :
+location :
+listen :
+server_name :
+root :
+index :
+proxy_pass :
+error_page :
+
+
+
+# Resourses
+[Mozilla developer doc on HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)
+
+[RFC on HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
+
+[Code(quoi); article on network programmation](https://www.codequoi.com/programmation-reseau-via-socket-en-c/)
