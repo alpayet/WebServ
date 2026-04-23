@@ -101,12 +101,17 @@ bool	Parser::parseLocation(Server& serv)
 	*m_it++;
 	if (!expect('{'))
 	{
-		if (expect(';'))
-		{
-			*m_it++;
-			// TODO: same as the while
-			return true;
-		}
+		// // TODO: same as the while
+		// *m_it++;
+		// if (!parseDirective(loc))
+		// {
+		// 	return false;
+		// }
+		// if (expect(';')) // for single-line version of location
+		// {
+		// 	*m_it++;
+		// 	return true;
+		// }
 		return false;
 	}	
 	*m_it++;

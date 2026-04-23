@@ -4,6 +4,9 @@
 test*
 main.c
 subject.md
+webserv
+obj/
+.obj/
 
 *.html
 *.puml
