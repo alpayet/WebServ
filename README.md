@@ -3,6 +3,10 @@
 # Description
 The goal is to make an HTTP server.
 
+![Class diagram of the parsing](diagrams/parsing.svg)
+
+
+![Class diagram of the server](diagrams/server.svg)
 
 # Instructions
 To launch the program, use the command line

@@ -1,0 +1,56 @@
+@startuml parsingDiag
+enum e_token_type
+{
+	char_lbracket,
+	char_rbracket,
+	char_end,
+	res_word,
+	string_type,
+	int_type
+}
+
+annotation Reserved
+{
+	..list res_word..
+	server
+	location
+	listen
+	server_name
+	root
+	index
+	proxy_pass
+	error_page
+}
+
++class Parser
+{
+	- tokens : list<Token>
+	+ bool checkFile(file : string)
+}
+
++class Tokenizer
+{
+	- file : string
+	- curr_str : string
+	- curr_pos : int
+	- {static} res_word : list<string>
+	- tokens : list<Token>
+	+ Token tokenize(str : string)
+	+ void	addToken(token : Token)
+	- void	tokenizeChar(token : Token, c : char)
+	- void	tokenizeStr(token : Token, str : string)
+	- void	tokenizeInt(token : Token, nb : int)
+}
+
+-struct Token
+{
+	- type : e_token_type
+	- data : string
+}
+
++class Error
+{
+	- {static} errors : map<int, string>
+	+ void print(errNb : int)
+}
+@enduml

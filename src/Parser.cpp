@@ -32,9 +32,16 @@ bool	Parser::expect(char c)
 }
 
 /** FUNCTIONS */
-// TODO: check dir for root
-// TODO: check file for index
+
+// TODO: check if enough instructions in file
+// bool	Parser::checkNecessary()
+// {
+
+// 	return true;
+// }
+
 // TODO: check if those who need number are indeed numbers
+// TODO: check duplicates
 bool	Parser::parseDirective(Server& serv)
 {
 	Directive direc;
@@ -60,9 +67,8 @@ bool	Parser::parseDirective(Server& serv)
 
 }
 
-// TODO: check dir for root
-// TODO: check file for index
 // TODO: check if those who need number are indeed numbers
+// TODO: check duplicates
 bool	Parser::parseDirective(Location& location)
 {
 	Directive direc;
@@ -95,23 +101,12 @@ bool	Parser::parseLocation(Server& serv)
 		std::cerr << "Error\nWrongly formatted file, expected a directory for the location block" << std::endl;
 		return false;
 	}
-	// TODO: check if dir exist and is accessible
+
 	Location loc;
 	loc.path = m_it->data;
 	*m_it++;
 	if (!expect('{'))
 	{
-		// // TODO: same as the while
-		// *m_it++;
-		// if (!parseDirective(loc))
-		// {
-		// 	return false;
-		// }
-		// if (expect(';')) // for single-line version of location
-		// {
-		// 	*m_it++;
-		// 	return true;
-		// }
 		return false;
 	}	
 	*m_it++;
@@ -119,7 +114,6 @@ bool	Parser::parseLocation(Server& serv)
 	{
 		if (m_it->type == res_word && m_it->data == "location")
 		{
-			// TODO: check that's the case
 			std::cerr << "Error\nLocation block can't contain another location block" << std::endl;
 			return false;
 		}
