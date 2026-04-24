@@ -23,9 +23,8 @@ jobs:
 
       - name: Render diagrams
         run: |
-          mkdir -p diagrams
-          for file in diagrams/*.puml; do
-            java -jar plantuml.jar -tsvg "$file"
+          find diagrams -name "*.puml" | while read file; do
+            java -jar plantuml.jar -tsvg -o "$(dirname "$file")" "$file"
           done
 
       - name: Commit generated SVG

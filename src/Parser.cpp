@@ -42,6 +42,7 @@ bool	Parser::expect(char c)
 
 // TODO: check if those who need number are indeed numbers
 // TODO: check duplicates
+// TODO: check if keyword already exist and append
 bool	Parser::parseDirective(Server& serv)
 {
 	Directive direc;

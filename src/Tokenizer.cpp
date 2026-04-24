@@ -87,20 +87,19 @@ void	Tokenizer::tokenizeChar(Token& t, std::string str)
 		return ;
 	}
 
-	char c = str[0];
-	switch (c)
+	switch (str[0])
 	{
 		case '{':
 			t.type = char_lbracket;
-			t.data = c;
+			t.data = str;
 			break ;
 		case '}':
 			t.type = char_rbracket;
-			t.data = c;
+			t.data = str;
 			break ;
 		case ';':
 			t.type = char_end;
-			t.data = c;
+			t.data = str;
 			break ;
 		default:
 			tokenizeStr(t, str);
