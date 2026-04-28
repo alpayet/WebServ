@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 20:09:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/21 20:17:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/28 19:00:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ class IRequest
 	public:
 		enum ParseState
 		{
+			ParseState_StartLine,
 			ParseState_Header,
 			ParseState_Body,
 			ParseState_Complete
