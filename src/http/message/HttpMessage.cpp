@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestFactory.cpp                                 :+:      :+:    :+:   */
+/*   HttpMessage.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 21:20:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:55:42 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/19 22:57:54 by alpayet           #+#    #+#             */
+/*   Updated: 2026/04/29 23:07:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RequestFactory.hpp"
-#include "HttpRequest.hpp"
-#include <cstddef>
+#include "HttpMessage.hpp"
 
-IRequest	*RequestFactory::createRequest(RequestType type)
+HttpMessage::HttpMessage(void)
+{}
+
+HttpMessage::HttpMessage(std::map<std::string, std::string> const &headers) :
+	_headers(headers)
 {
-	switch (type)
+
+}
+
+HttpMessage::HttpMessage(const HttpMessage &src)
+{
+	*this = src;
+}
+
+HttpMessage::~HttpMessage(void)
+{}
+
+HttpMessage	&HttpMessage::operator=(HttpMessage const &rhs)
+{
+	if (this != &rhs)
 	{
-		case RequestType_Http:
-			return (new HttpRequest());
-		default:
-			return (NULL);
+		//
 	}
+	return (*this);
 }

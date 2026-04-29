@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpMessage.hpp                                    :+:      :+:    :+:   */
+/*   IRequest.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 22:31:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:57:24 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/19 20:09:15 by alpayet           #+#    #+#             */
+/*   Updated: 2026/04/29 19:41:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPMESSAGE_HPP
-# define HTTPMESSAGE_HPP
+#ifndef IREQUEST_HPP
+# define IREQUEST_HPP
 
-# include <map>
-# include <string>
+#include <string>
 
-class HttpMessage
+class IRequest
 {
 	public:
-		HttpMessage(void);
-		HttpMessage(HttpMessage const &src);
-		virtual ~HttpMessage(void);
+		enum MethodType
+		{
+			MethodType_Get,
+			MethodType_Post,
+			MethodType_Delete
+		};
 
-		HttpMessage	&operator=(HttpMessage const &rhs);
+	public:
+		virtual ~IRequest(void) {}
 
-	protected:
-		std::map<std::string, std::string> _headers;
-		//body
+		virtual MethodType	getMethod(void) const = 0;
+		virtual std::string	getTarget(void) const = 0;
+		virtual std::string	getProtocol(void) const = 0;
 };
 
 #endif

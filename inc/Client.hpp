@@ -6,17 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/21 20:56:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/29 19:20:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include "IRequest.hpp"
 # include <vector>
 
-class IRequest;
+class HttpTransaction;
 
 class Client
 {
@@ -29,7 +28,7 @@ class Client
 
 	private:
 		std::vector<char>	_readBuf;
-		IRequest			*_request;
+		HttpTransaction		*_currentTransaction;
 		int					_socketFd;
 };
 

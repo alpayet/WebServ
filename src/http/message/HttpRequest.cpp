@@ -1,29 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpMessage.cpp                                    :+:      :+:    :+:   */
+/*   HttpRequest.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 22:57:54 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:58:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/19 21:20:24 by alpayet           #+#    #+#             */
+/*   Updated: 2026/04/29 23:09:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HttpMessage.hpp"
+#include "HttpRequest.hpp"
+#include <algorithm>
 
-HttpMessage::HttpMessage(void)
+HttpRequest::HttpRequest(void)
 {}
 
-HttpMessage::HttpMessage(const HttpMessage &src)
+HttpRequest::HttpRequest(MethodType const method, std::string const &target,
+	std::string const &protocol, std::map<std::string, std::string> const &headers) :
+	IRequest(),
+	HttpMessage(headers),
+	_method(method),
+	_target(target),
+	_protocol(protocol)
+{
+
+}
+
+HttpRequest::HttpRequest(const HttpRequest &src)
 {
 	*this = src;
 }
 
-HttpMessage::~HttpMessage(void)
+HttpRequest::~HttpRequest(void)
 {}
 
-HttpMessage	&HttpMessage::operator=(HttpMessage const &rhs)
+HttpRequest	&HttpRequest::operator=(HttpRequest const &rhs)
 {
 	if (this != &rhs)
 	{
@@ -31,3 +43,4 @@ HttpMessage	&HttpMessage::operator=(HttpMessage const &rhs)
 	}
 	return (*this);
 }
+

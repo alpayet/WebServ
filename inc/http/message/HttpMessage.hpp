@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRequest.hpp                                       :+:      :+:    :+:   */
+/*   HttpMessage.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 20:09:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/28 19:00:04 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/19 22:31:07 by alpayet           #+#    #+#             */
+/*   Updated: 2026/04/29 23:06:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IREQUEST_HPP
-# define IREQUEST_HPP
+#ifndef HTTPMESSAGE_HPP
+# define HTTPMESSAGE_HPP
 
-class IRequest
+# include <map>
+# include <string>
+
+class HttpMessage
 {
 	public:
-		enum ParseState
-		{
-			ParseState_StartLine,
-			ParseState_Header,
-			ParseState_Body,
-			ParseState_Complete
-		};
+		HttpMessage(void);
+		HttpMessage(std::map<std::string, std::string> const &_headers);
+		HttpMessage(HttpMessage const &src);
+		virtual ~HttpMessage(void);
 
-	public:
-		virtual ~IRequest(void) {}
+		HttpMessage	&operator=(HttpMessage const &rhs);
 
-		virtual ParseState	parse(std::vector<char> const &readBuf) = 0;
-
+	protected:
+		std::map<std::string, std::string> _headers;
+		//body
 };
 
 #endif

@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestFactory.hpp                                 :+:      :+:    :+:   */
+/*   HttpTransaction.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 20:25:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/19 22:52:43 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/29 15:14:48 by alpayet           #+#    #+#             */
+/*   Updated: 2026/04/29 22:13:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUESTFACTORY_HPP
-# define REQUESTFACTORY_HPP
+#ifndef HTTPTRANSACTION_HPP
+# define HTTPTRANSACTION_HPP
+
+# include "HttpRequestParser.hpp"
 
 class IRequest;
 
-class RequestFactory
+class HttpTransaction
 {
 	public:
-		enum RequestType
-		{
-			RequestType_Http,
-			RequestType_Unknown
-		};
+		HttpTransaction(void);
+		HttpTransaction(HttpTransaction const &src);
+		~HttpTransaction(void);
 
-	public:
-		static IRequest *createRequest(RequestType type);
+		HttpTransaction	&operator=(HttpTransaction const &rhs);
+
+		void	onDataReceived(std::vector<char> const &readBuf);
+		void	requestBuilder(void);
 
 	private:
-		RequestFactory(void) {}
+		IRequest			*_request;
+		HttpRequestParser	_requestParser;
 };
 
 #endif
