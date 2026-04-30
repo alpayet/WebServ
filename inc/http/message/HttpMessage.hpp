@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 22:31:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/29 23:06:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/04/30 19:58:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class HttpMessage
 		HttpMessage(void);
 		HttpMessage(std::map<std::string, std::string> const &_headers);
 		HttpMessage(HttpMessage const &src);
-		virtual ~HttpMessage(void);
+		virtual ~HttpMessage(void) {}
 
 		HttpMessage	&operator=(HttpMessage const &rhs);
 
