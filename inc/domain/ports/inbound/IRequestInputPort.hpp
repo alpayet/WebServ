@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestEntity.hpp                                  :+:      :+:    :+:   */
+/*   IRequestInputPort.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 20:17:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 00:31:49 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/03 17:05:33 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 00:34:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUESTENTITY_HPP
-# define REQUESTENTITY_HPP
+#ifndef IREQUESTINPUTPORT_HPP
+# define IREQUESTINPUTPORT_HPP
 
-# include <string>
-# include <map>
+# include "entities/RequestEntity.hpp"
 
-class RequestEntity
+class IRequestInputPort
 {
 	public:
-		RequestEntity(void);
+		virtual ~IRequestInputPort(void) {}
 
-	private:
-		std::string							_target;
-		std::string							_protocol;
-		std::map<std::string, std::string>	_headers;
+		virtual void	handle(RequestEntity const &requestEntity) = 0;
 };
 
 #endif

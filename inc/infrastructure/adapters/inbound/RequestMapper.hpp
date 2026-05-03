@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TransactionService.hpp                             :+:      :+:    :+:   */
+/*   RequestMapper.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/29 15:14:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 00:36:55 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 01:17:00 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 01:26:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TRANSACTIONSERVICE_HPP
-# define TRANSACTIONSERVICE_HPP
+#ifndef REQUESTMAPPER_HPP
+# define REQUESTMAPPER_HPP
 
-# include "domain/ports/IRequestInputPort.hpp"
+# include "RequestDto.hpp"
 # include "domain/entities/RequestEntity.hpp"
 
-class IResponseOutputPort;
-
-class TransactionService : public IRequestInputPort
+class RequestMapper
 {
 	public:
-		TransactionService(IResponseOutputPort *responseOutputPort);
-
-		virtual void	handle(RequestEntity const &requestEntity);
-
-		void	requestBuilder(void);
+		static RequestEntity toDomain(RequestDto const &dto);
 
 	private:
-		IResponseOutputPort	*_responseOutputPort;
-		ResponseDto			_responseDto;
+		RequestMapper(void) {}
 };
 
 #endif

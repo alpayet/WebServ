@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRequestInputPort.hpp                              :+:      :+:    :+:   */
+/*   RequestMapper.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 17:05:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/03 21:32:55 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 01:33:19 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 01:41:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IREQUESTINPUTPORT_HPP
-# define IREQUESTINPUTPORT_HPP
+#include "RequestMapper.hpp"
 
-# include "shared/RequestDto.hpp"
-
-class IRequestInputPort
+RequestEntity RequestMapper::toDomain(RequestDto const &dto)
 {
-	public:
-		virtual ~IRequestInputPort(void) {}
 
-		virtual void	handle(RequestEntity const &requestDto) = 0;
-};
-
-#endif
+}
