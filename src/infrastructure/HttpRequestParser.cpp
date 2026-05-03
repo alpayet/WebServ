@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/30 21:29:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/03 19:16:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "http/parser/HttpRequestParser.hpp"
 #include "http/message/IRequest.hpp"
+#include "domain/ports/IRequestInputPort.hpp"
+#include "infrastructure/HttpRequestParser.hpp"
 #include <algorithm>
 
 namespace
@@ -28,62 +29,36 @@ namespace
 	}
 }
 
-HttpRequestParser::HttpRequestParser(void) :
+HttpRequestParser::HttpRequestParser(IRequestInputPort *RequestInputPort) :
+	_requestInputPort(RequestInputPort),
 	_pos(0),
-	_state(StartLine),
-	_method(),
-	_target(),
-	_protocol(),
-	_headers()
+	_state(StartLine)
 {}
-
-HttpRequestParser::HttpRequestParser(const HttpRequestParser &src) :
-	_pos(src._pos),
-	_state(src._state),
-	_method(src._method),
-	_target(src._target),
-	_protocol(src._protocol),
-	_headers(src._headers)
-{}
-
-HttpRequestParser	&HttpRequestParser::operator=(HttpRequestParser const &rhs)
-{
-	if (this != &rhs)
-	{
-		this->_pos = rhs._pos;
-		this->_state = rhs._state;
-		this->_method = rhs._method;
-		this->_target = rhs._target;
-		this->_protocol = rhs._protocol;
-		this->_headers = rhs._headers;
-	}
-	return (*this);
-}
 
 HttpRequestParser::ParseState	HttpRequestParser::getState(void) const
 {
 	return (this->_state);
 }
 
-IRequest::MethodType	HttpRequestParser::getMethod(void) const
-{
-	return (this->_method);
-}
+// IRequest::MethodType	HttpRequestParser::getMethod(void) const
+// {
+// 	return (this->_method);
+// }
 
-std::string const	&HttpRequestParser::getTarget(void) const
-{
-	return (this->_target);
-}
+// std::string const	&HttpRequestParser::getTarget(void) const
+// {
+// 	return (this->_target);
+// }
 
-std::string const	&HttpRequestParser::getProtocol(void) const
-{
-	return (this->_protocol);
-}
+// std::string const	&HttpRequestParser::getProtocol(void) const
+// {
+// 	return (this->_protocol);
+// }
 
-std::map<std::string, std::string> const	&HttpRequestParser::getHeaders(void) const
-{
-	return (this->_headers);
-}
+// std::map<std::string, std::string> const	&HttpRequestParser::getHeaders(void) const
+// {
+// 	return (this->_headers);
+// }
 
 HttpRequestParser::ParseState	HttpRequestParser::parse(std::vector<char> const &readBuf)
 {
@@ -105,7 +80,10 @@ HttpRequestParser::ParseState	HttpRequestParser::parse(std::vector<char> const &
 			default:
 				break;
 		}
-		this->_pos += std::distance(it_start, it_line_end) + 2;
+		if (this->_state == Complete)
+			this->_requestInputPort->handle(this->_requestDto);
+		else
+			this->_pos += std::distance(it_start, it_line_end) + 2;
 	}
 	return (this->_state);
 }
@@ -119,14 +97,14 @@ void	HttpRequestParser::parseStartLine(std::vector<char>::const_iterator it_star
 	it_first_space = std::find(it_start, it_line_end, ' ');
 	it_second_space = std::find(it_first_space + 1, it_line_end, ' ');
 
-	std::string	method(it_start, it_first_space);
-	this->_method = string_to_method(method);
+	// std::string	method(it_start, it_first_space);
+	// this->_requestDto. = string_to_method(method);
 
 	std::string	target(it_first_space + 1, it_second_space);
-	this->_target = target;
+	this->_requestDto._target = target;
 
 	std::string	protocol(it_second_space + 1, it_line_end);
-	this->_protocol = protocol;
+	this->_requestDto._protocol = protocol;
 
 	this->_state = Header;
 }
@@ -146,5 +124,5 @@ void	HttpRequestParser::parseHeaderLine(std::vector<char>::const_iterator it_sta
 	std::string	key(it_start, it_colon);
 	std::string	value(it_colon + 1, it_line_end);
 
-	this->_headers[key] = value;
+	this->_requestDto._headers[key] = value;
 }

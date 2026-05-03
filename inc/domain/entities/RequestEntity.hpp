@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpTransaction.hpp                                :+:      :+:    :+:   */
+/*   RequestEntity.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/29 15:14:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/29 22:13:17 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/03 20:17:39 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/03 21:32:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPTRANSACTION_HPP
-# define HTTPTRANSACTION_HPP
+#ifndef REQUEST_HPP
+# define REQUEST_HPP
 
-# include "HttpRequestParser.hpp"
+# include <string>
+# include <map>
 
-class IRequest;
-
-class HttpTransaction
+class RequestEntity
 {
 	public:
-		HttpTransaction(void);
-		HttpTransaction(HttpTransaction const &src);
-		~HttpTransaction(void);
-
-		HttpTransaction	&operator=(HttpTransaction const &rhs);
-
-		void	onDataReceived(std::vector<char> const &readBuf);
-		void	requestBuilder(void);
+		RequestEntity(std::string const &target,
+			std::string const &protocol, std::map<std::string, std::string> const &headers);
 
 	private:
-		IRequest			*_request;
-		HttpRequestParser	_requestParser;
+		std::string							_target;
+		std::string							_protocol;
+		std::map<std::string, std::string>	_headers;
 };
 
 #endif
