@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   HttpException.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 23:45:22 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 22:27:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-# define CLIENT_HPP
+#ifndef HTTPEXCEPTION_HPP
+# define HTTPEXCEPTION_HPP
 
-# include "infrastructure/parsers/ParsingContext.hpp"
-# include <vector>
-
-class Client
+class HttpException
 {
 	public:
-		Client(void);
-		Client(Client const &src);
-		~Client(void);
+		HttpException(void);
+		HttpException(HttpException const &src);
+		~HttpException(void);
 
-		Client	&operator=(Client const &rhs);
+		HttpException	&operator=(HttpException const &rhs);
 
 	private:
-		std::vector<char>	_readBuf;
-		ParsingContext		_parsingContext;
-		int					_socketFd;
-};
 
+};
 
 #endif

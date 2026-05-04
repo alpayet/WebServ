@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestMapper.cpp                                  :+:      :+:    :+:   */
+/*   ParsingContext.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 01:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 17:12:31 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 23:52:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/adapters/inbound/RequestMapper.hpp"
-#include "domain/services/RequestBuilder.hpp"
+#ifndef PARSINGCONTEXT_HPP
+# define PARSINGCONTEXT_HPP
 
-RequestEntity	RequestMapper::toDomain(RequestDto const &dto)
+# include "infrastructure/dtos/RequestDto.hpp"
+
+struct ParsingContext
 {
-	return (RequestBuilder().withTarget(dto.target)
-							.withProtocol(dto.protocol)
-							.withHeaders(dto.headers)
-							.build());
-}
+	enum ParseState
+	{
+		StartLine,
+		Header,
+		Body,
+		Complete
+	};
+
+	std::size_t	pos;
+	ParseState	state;
+	RequestDto	requestDto;
+};
+
+#endif

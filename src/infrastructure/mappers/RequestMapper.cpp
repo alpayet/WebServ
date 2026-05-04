@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   RequestMapper.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 23:45:22 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 01:33:19 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/05 00:14:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-# define CLIENT_HPP
+#include "infrastructure/mappers/RequestMapper.hpp"
+#include "domain/builders/RequestBuilder.hpp"
 
-# include "infrastructure/parsers/ParsingContext.hpp"
-# include <vector>
-
-class Client
+RequestEntity	RequestMapper::toDomain(RequestDto const &dto)
 {
-	public:
-		Client(void);
-		Client(Client const &src);
-		~Client(void);
-
-		Client	&operator=(Client const &rhs);
-
-	private:
-		std::vector<char>	_readBuf;
-		ParsingContext		_parsingContext;
-		int					_socketFd;
-};
-
-
-#endif
+	return (RequestBuilder().withTarget(dto.target)
+							.withProtocol(dto.protocol)
+							.withHeaders(dto.headers)
+							.build());
+}
