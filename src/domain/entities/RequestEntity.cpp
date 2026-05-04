@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestEntity.hpp                                  :+:      :+:    :+:   */
+/*   RequestEntity.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 20:17:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 16:00:42 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 15:58:22 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 16:00:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUESTENTITY_HPP
-# define REQUESTENTITY_HPP
+#include "domain/entities/RequestEntity.hpp"
 
-# include <string>
-# include <map>
-
-class RequestEntity
-{
-	public:
-		RequestEntity(std::string const &target, std::string const &protocol,
-			std::map<std::string, std::string> const &headers);
-
-	private:
-		std::string							_target;
-		std::string							_protocol;
-		std::map<std::string, std::string>	_headers;
-};
-
-#endif
+RequestEntity::RequestEntity(std::string const &target, std::string const &protocol,
+	std::map<std::string, std::string> const &headers) :
+	_target(target),
+	_protocol(protocol),
+	_headers(headers)
+{}

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:14:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 00:36:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/04 18:03:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TRANSACTIONSERVICE_HPP
 # define TRANSACTIONSERVICE_HPP
 
-# include "domain/ports/IRequestInputPort.hpp"
+# include "domain/ports/inbound/IRequestInputPort.hpp"
 # include "domain/entities/RequestEntity.hpp"
 
 class IResponseOutputPort;
@@ -25,11 +25,8 @@ class TransactionService : public IRequestInputPort
 
 		virtual void	handle(RequestEntity const &requestEntity);
 
-		void	requestBuilder(void);
-
 	private:
 		IResponseOutputPort	*_responseOutputPort;
-		ResponseDto			_responseDto;
 };
 
 #endif

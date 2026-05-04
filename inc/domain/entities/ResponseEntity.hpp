@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestEntity.hpp                                  :+:      :+:    :+:   */
+/*   ResponseEntity.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 20:17:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 16:00:42 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/04 18:04:39 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/04 18:05:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUESTENTITY_HPP
-# define REQUESTENTITY_HPP
+#ifndef RESPONSEENTITY_HPP
+# define RESPONSEENTITY_HPP
 
-# include <string>
-# include <map>
-
-class RequestEntity
-{
-	public:
-		RequestEntity(std::string const &target, std::string const &protocol,
-			std::map<std::string, std::string> const &headers);
-
-	private:
-		std::string							_target;
-		std::string							_protocol;
-		std::map<std::string, std::string>	_headers;
-};
+class ResponseEntity
+{};
 
 #endif

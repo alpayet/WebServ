@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/03 19:16:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/04 18:14:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "http/message/IRequest.hpp"
-#include "domain/ports/IRequestInputPort.hpp"
-#include "infrastructure/HttpRequestParser.hpp"
+#include "infrastructure/adapters/inbound/HttpRequestParser.hpp"
+#include "infrastructure/adapters/inbound/RequestMapper.hpp"
+#include "domain/ports/inbound/IRequestInputPort.hpp"
 #include <algorithm>
 
 namespace
@@ -40,26 +41,6 @@ HttpRequestParser::ParseState	HttpRequestParser::getState(void) const
 	return (this->_state);
 }
 
-// IRequest::MethodType	HttpRequestParser::getMethod(void) const
-// {
-// 	return (this->_method);
-// }
-
-// std::string const	&HttpRequestParser::getTarget(void) const
-// {
-// 	return (this->_target);
-// }
-
-// std::string const	&HttpRequestParser::getProtocol(void) const
-// {
-// 	return (this->_protocol);
-// }
-
-// std::map<std::string, std::string> const	&HttpRequestParser::getHeaders(void) const
-// {
-// 	return (this->_headers);
-// }
-
 HttpRequestParser::ParseState	HttpRequestParser::parse(std::vector<char> const &readBuf)
 {
 	std::vector<char>::const_iterator	it_start = readBuf.begin() + this->_pos;
@@ -81,7 +62,10 @@ HttpRequestParser::ParseState	HttpRequestParser::parse(std::vector<char> const &
 				break;
 		}
 		if (this->_state == Complete)
-			this->_requestInputPort->handle(this->_requestDto);
+		{
+			RequestEntity	request_entity = RequestMapper::toDomain(this->_requestDto);
+			this->_requestInputPort->handle(request_entity);
+		}
 		else
 			this->_pos += std::distance(it_start, it_line_end) + 2;
 	}
@@ -101,10 +85,10 @@ void	HttpRequestParser::parseStartLine(std::vector<char>::const_iterator it_star
 	// this->_requestDto. = string_to_method(method);
 
 	std::string	target(it_first_space + 1, it_second_space);
-	this->_requestDto._target = target;
+	this->_requestDto.target = target;
 
 	std::string	protocol(it_second_space + 1, it_line_end);
-	this->_requestDto._protocol = protocol;
+	this->_requestDto.protocol = protocol;
 
 	this->_state = Header;
 }
@@ -124,5 +108,5 @@ void	HttpRequestParser::parseHeaderLine(std::vector<char>::const_iterator it_sta
 	std::string	key(it_start, it_colon);
 	std::string	value(it_colon + 1, it_line_end);
 
-	this->_requestDto._headers[key] = value;
+	this->_requestDto.headers[key] = value;
 }

@@ -6,21 +6,21 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 19:12:46 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/03 19:26:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/04 18:07:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRESPONSEOUTPUTPORT_HPP
 # define IRESPONSEOUTPUTPORT_HPP
 
-# include "shared/ResponseDto.hpp"
+# include "entities/ResponseEntity.hpp"
 
 class IResponseOutputPort
 {
 	public:
 		virtual ~IResponseOutputPort(void) {}
 
-		virtual void	present(ResponseDto const &responseDto) = 0;
+		virtual void	present(ResponseEntity const &responseEntity) = 0;
 };
 
 #endif

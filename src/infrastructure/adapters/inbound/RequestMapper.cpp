@@ -6,13 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 01:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 01:41:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/04 17:12:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RequestMapper.hpp"
+#include "infrastructure/adapters/inbound/RequestMapper.hpp"
+#include "domain/services/RequestBuilder.hpp"
 
-RequestEntity RequestMapper::toDomain(RequestDto const &dto)
+RequestEntity	RequestMapper::toDomain(RequestDto const &dto)
 {
-
+	return (RequestBuilder().withTarget(dto.target)
+							.withProtocol(dto.protocol)
+							.withHeaders(dto.headers)
+							.build());
 }
