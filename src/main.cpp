@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-#include "Tokenizer.hpp"
-#include "Parser.hpp"
+#include "Config/Tokenizer.hpp"
+#include "Config/Parser.hpp"
 
 bool	basicCheck(int argc, char* argv)
 {

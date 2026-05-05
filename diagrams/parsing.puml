@@ -9,7 +9,7 @@ enum e_token_type
 	int_type
 }
 
-annotation Reserved
+annotation Keywords
 {
 	..list res_word..
 	server

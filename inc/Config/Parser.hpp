@@ -3,32 +3,34 @@
 
 # include <vector>
 # include "Tokenizer.hpp"
-#include <string>
-#include <map>
-#include <iterator>
+# include <string>
+# include <map>
+# include <iterator>
 
-typedef struct s_directive
-{
-	std::string					name;
-	std::vector<std::string>	values;
-}	Directive;
+# include "Server.hpp"
 
-typedef struct s_location
-{
-	std::string				path;
-	std::vector<Directive>	directives;
-}	Location;
+// struct Directive
+// {
+// 	std::string					name;
+// 	std::vector<std::string>	values;
+// };
 
-typedef struct s_server
-{
-	std::vector<Directive>	directives;
-	std::vector<Location>	locations;
-}	Server;
+// struct Location
+// {
+// 	std::string				path;
+// 	std::vector<Directive>	directives;
+// };
 
-typedef	struct s_config
+// struct Server
+// {
+// 	std::vector<Directive>	directives;
+// 	std::vector<Location>	locations;
+// };
+
+struct Config
 {
 	std::vector<Server> servers;
-}	Config;
+};
 
 class Parser
 {

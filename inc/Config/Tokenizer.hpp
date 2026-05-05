@@ -23,9 +23,9 @@ typedef struct s_token
 
 enum e_block
 {
-	whateva,
-	must_be_alone,
-	must_be_in_loc
+	multi,
+	uniq,
+	inloc
 };
 
 struct Keyword
@@ -37,25 +37,24 @@ struct Keyword
 };
 
 static const Keyword keywords[] = {
-	{"server", str_type, 0, whateva},
-	{"location", str_type, 1, must_be_alone},
-	{"listen", int_type, 1, must_be_alone},
-	{"server_name", str_type, 1, must_be_alone},
-	{"root", str_type, 1, whateva},
-	{"index", str_type, 200000000, whateva},
-	// {"proxy_pass", str_type, 1},
-	{"error_page", str_type, 2, must_be_alone},
-	{"cgi", str_type, 1, must_be_in_loc},
-	{"allow_methods", str_type, 3, must_be_in_loc},
-	{"client_max_body_size", int_type, 1, must_be_alone},
-	{"autoindex", str_type, 1, must_be_in_loc},
-	{"return", int_type, 1, must_be_in_loc}
+	{"server",				 str_type, 0, multi},
+	{"root",				 str_type, 1, inloc}, // maybe multi
+	{"index",				 str_type, 9, inloc}, // maybe multi
+	{"error_page",			 str_type, 2, multi},
+	{"location",			 str_type, 1, uniq},
+	{"listen",				 int_type, 1, uniq},
+	{"server_name",			 str_type, 1, uniq},
+	{"client_max_body_size", int_type, 1, uniq},
+	{"cgi",					 str_type, 1, inloc},
+	{"allow_methods",		 str_type, 3, inloc},
+	{"autoindex",			 str_type, 1, inloc},
+	{"return",				 int_type, 1, inloc}
 };
 
-static const std::string reserved[] = { "server", "location", "listen", "server_name",
-										"root", "index", "error_page",
-										"cgi", "methods", "client_max_body_size",
-										"autoindex", "return" };
+// static const std::string reserved[] = { "server", "location", "listen", "server_name",
+// 										"root", "index", "error_page",
+// 										"cgi", "methods", "client_max_body_size",
+// 										"autoindex", "return" };
 
 static const std::string stops[] = { " ", "\t", "\n", "\v",
 										"\f", "\r" };

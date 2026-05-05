@@ -1,4 +1,4 @@
-#include "Parser.hpp"
+#include "Config/Parser.hpp"
 #include <iostream>
 
 /** CONSTRUCTORS */
@@ -45,6 +45,7 @@ bool	Parser::expect(char c)
 // TODO: check if keyword already exist and append
 bool	Parser::parseDirective(Server& serv)
 {
+	// TODO: switch case for serv instruction
 	Directive direc;
 
 	if (m_it->type != res_word)
@@ -72,6 +73,7 @@ bool	Parser::parseDirective(Server& serv)
 // TODO: check duplicates
 bool	Parser::parseDirective(Location& location)
 {
+	// TODO: switch case for loc instruction
 	Directive direc;
 
 	if (m_it->type != res_word)

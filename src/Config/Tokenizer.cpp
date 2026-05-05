@@ -1,4 +1,4 @@
-#include "Tokenizer.hpp"
+#include "Config/Tokenizer.hpp"
 #include <algorithm>
 
 Tokenizer::Tokenizer()
@@ -111,8 +111,17 @@ void	Tokenizer::tokenizeStr(Token& t, std::string str)
 {
 	char *ptr;
 
-	size_t res_size = sizeof(reserved) / sizeof(reserved[0]);
-	if (std::find(reserved, reserved + res_size, str) != reserved + res_size)
+	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
+	bool	isRes = false;
+	for (size_t i = 0 ; i < kw_size ; ++i)
+	{
+		if (keywords[i].name == str)
+		{
+			isRes = true;
+			break ;
+		}
+	}
+	if (isRes)
 	{
 		t.type = res_word;
 		t.data = str;
