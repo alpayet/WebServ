@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:23:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/30 21:28:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/05 20:06:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ HttpTransaction	&HttpTransaction::operator=(HttpTransaction const &rhs)
 
 void	HttpTransaction::onDataReceived(std::vector<char> const &readBuf)
 {
-	if (this->_requestParser.getState() == HttpRequestParser::Complete)
+	if (this->_requestParser.getState() == HttpRequestParser::complete)
 		requestBuilder();
 }
 

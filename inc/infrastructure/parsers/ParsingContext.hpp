@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 23:52:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/05 20:06:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ struct ParsingContext
 {
 	enum ParseState
 	{
-		StartLine,
-		Header,
-		Body,
-		Complete
+		startLine,
+		header,
+		body,
+		complete
 	};
 
 	std::size_t	pos;
