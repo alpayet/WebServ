@@ -7,29 +7,29 @@
 # include <map>
 # include <iterator>
 
-# include "Server.hpp"
+// # include "Server.hpp"
 
-// struct Directive
-// {
-// 	std::string					name;
-// 	std::vector<std::string>	values;
-// };
-
-// struct Location
-// {
-// 	std::string				path;
-// 	std::vector<Directive>	directives;
-// };
-
-// struct Server
-// {
-// 	std::vector<Directive>	directives;
-// 	std::vector<Location>	locations;
-// };
-
-struct Config
+struct p_Directive
 {
-	std::vector<Server> servers;
+	std::string					name;
+	std::vector<std::string>	values;
+};
+
+struct p_Location
+{
+	std::string				path;
+	std::vector<p_Directive>	directives;
+};
+
+struct p_Server
+{
+	std::vector<p_Directive>	directives;
+	std::vector<p_Location>	locations;
+};
+
+struct p_Config
+{
+	std::vector<p_Server> servers;
 };
 
 class Parser
@@ -40,8 +40,8 @@ class Parser
 		Parser(Parser& other);
 		~Parser();
 
-		Config	getConfig() const;
-		bool	parse(Config& config);
+		p_Config	getConfig() const;
+		bool	parse(p_Config& config);
 
 	private:
 		const std::vector<Token>			m_tokens;
@@ -49,15 +49,15 @@ class Parser
 		std::vector<Token>::const_iterator	m_ite;
 
 		Parser	operator=(Parser& other);
-		Config	m_config;
-		bool	parseDirective(Server& serv);
-		bool	parseDirective(Location& location);
-		bool	parseLocation(Server& serv);
+		p_Config	m_config;
+		bool	parseDirective(p_Server& serv);
+		bool	parseDirective(p_Location& location);
+		bool	parseLocation(p_Server& serv);
 		bool	parseServer();
 		bool	parseConfig();
 		bool	expect(char c);
 };
 
-std::ostream& operator<<(std::ostream& os, const Config& c);
+std::ostream& operator<<(std::ostream& os, const p_Config& c);
 
 #endif

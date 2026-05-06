@@ -5,18 +5,18 @@
 # include <vector>
 # include <map>
 
-# include "Parser.hpp"
+# include "../Config/Parser.hpp"
 
 
 struct Location
 {
-	std::string	path;
-	std::string	root;
-	std::string	index;
-	std::string	cgi; // maybe vector
-	std::string	methods;
-	std::string	autoindex;
-	int			ret;
+	std::string					path;
+	std::string					root;
+	std::vector<std::string>	index;
+	std::string					cgi; // maybe vector
+	std::string					methods;
+	bool						autoindex;
+	int							ret;
 };
 
 class Server
@@ -46,5 +46,8 @@ class Server
 		std::vector<Location>		m_locations;
 		int							m_max_body;
 };
+
+std::ostream& operator<<(std::ostream& os, const Location& l);
+std::ostream& operator<<(std::ostream& os, const Server& s);
 
 #endif

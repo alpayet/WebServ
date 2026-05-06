@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 	// std::cout << tok << std::endl;
 
 	Parser prs(tok.getTokens());
-	Config conf;
+	p_Config conf;
 	if (!prs.parse(conf))
 	{
 		return 1;

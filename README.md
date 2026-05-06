@@ -27,7 +27,7 @@ listen :
 server_name :
 root :
 index :
-proxy_pass :
+cgi :
 error_page :
 
 
@@ -38,3 +38,5 @@ error_page :
 [RFC on HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
 
 [Code(quoi); article on network programmation](https://www.codequoi.com/programmation-reseau-via-socket-en-c/)
+
+[Nginx server block](https://docs.nginx.com/nginx/admin-guide/web-server/web-server/)

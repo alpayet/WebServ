@@ -4,11 +4,13 @@ NAME := webserv
 
 SRCS_DIR := src/
 CONF_DIR := src/Config/
+SERV_DIR := src/Server/
 INCS_DIR := inc/
 OBJS_DIR := .build/
 
 SRCS := $(addprefix $(SRCS_DIR),main.cpp)
 SRCS += $(addprefix $(CONF_DIR), Parser.cpp Tokenizer.cpp) 
+SRCS += $(addprefix $(SERV_DIR), Server.cpp) 
 INCS := $(INCS_DIR)
 OBJS := $(addprefix $(OBJS_DIR), $(SRCS:%.cpp=%.o))
 DEPS := $(OBJS:.o=.d)

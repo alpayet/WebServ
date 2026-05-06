@@ -1,6 +1,8 @@
 #include "Config/Parser.hpp"
 #include <iostream>
 
+#include "Config/keywords.h"
+
 /** CONSTRUCTORS */
 Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 {
@@ -43,16 +45,46 @@ bool	Parser::expect(char c)
 // TODO: check if those who need number are indeed numbers
 // TODO: check duplicates
 // TODO: check if keyword already exist and append
-bool	Parser::parseDirective(Server& serv)
+bool	Parser::parseDirective(p_Server& serv)
 {
 	// TODO: switch case for serv instruction
-	Directive direc;
+	p_Directive direc;
 
 	if (m_it->type != res_word)
 	{
 		std::cerr << "Error\nWrongly formatted file, expected a directive name" << m_it->data << std::endl;
 		return false;
 	}
+
+	/** START NEW CHECKS */
+
+	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
+	for (size_t i = 0 ; i < kw_size ; ++i)
+	{
+		if (m_it->data == keywords[i].name)
+		{
+			if (keywords[i].e_block == inloc)
+			{
+				std::cerr << "Error\n'" << m_it->data << "' can't be outside a location block" << std::endl;
+				return false;
+			}
+			if (keywords[i].e_uniqness == uniq)
+			{
+				std::vector<p_Directive>::const_iterator d_ite = serv.directives.end();
+				for (std::vector<p_Directive>::const_iterator d_it = serv.directives.begin() ; d_it != d_ite ; *d_it++)
+				{
+					if (d_it->name == m_it->data)
+					{
+						std::cerr << "Error\nLocation can't have multiple '" << m_it->data << "'" << std::endl;
+						return false;
+					}
+				}
+			}
+		}
+	}
+
+	/** STOP NEW CHECKS */
+
 	direc.name = m_it->data;
 	*m_it++;
 	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++)
@@ -71,16 +103,46 @@ bool	Parser::parseDirective(Server& serv)
 
 // TODO: check if those who need number are indeed numbers
 // TODO: check duplicates
-bool	Parser::parseDirective(Location& location)
+bool	Parser::parseDirective(p_Location& location)
 {
 	// TODO: switch case for loc instruction
-	Directive direc;
+	p_Directive direc;
 
 	if (m_it->type != res_word)
 	{
 		std::cerr << "Error\nWrongly formatted file, expected a directive name " << m_it->data << std::endl;
 		return false;
 	}
+
+	/** START NEW CHECKS */
+
+	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
+	for (size_t i = 0 ; i < kw_size ; ++i)
+	{
+		if (m_it->data == keywords[i].name)
+		{
+			if (keywords[i].e_block == inserv)
+			{
+				std::cerr << "Error\n'" << m_it->data << "' not supposed to be in location block" << std::endl;
+				return false;
+			}
+			if (keywords[i].e_uniqness == uniq)
+			{
+				std::vector<p_Directive>::const_iterator d_ite = location.directives.end();
+				for (std::vector<p_Directive>::const_iterator d_it = location.directives.begin() ; d_it != d_ite ; *d_it++)
+				{
+					if (d_it->name == m_it->data)
+					{
+						std::cerr << "Error\nLocation can't have multiple '" << m_it->data << "'" << std::endl;
+						return false;
+					}
+				}
+			}
+		}
+	}
+	
+	/** STOP NEW CHECKS */
+
 	direc.name = m_it->data;
 	*m_it++;
 	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++)
@@ -96,7 +158,7 @@ bool	Parser::parseDirective(Location& location)
 	return true;
 }
 
-bool	Parser::parseLocation(Server& serv)
+bool	Parser::parseLocation(p_Server& serv)
 {
 	*m_it++;
 	if (m_it->type != str_type)
@@ -105,7 +167,7 @@ bool	Parser::parseLocation(Server& serv)
 		return false;
 	}
 
-	Location loc;
+	p_Location loc;
 	loc.path = m_it->data;
 	*m_it++;
 	if (!expect('{'))
@@ -141,7 +203,7 @@ bool	Parser::parseServer()
 	
 	*m_it++;
 
-	Server serv;
+	p_Server serv;
 
 	while (m_it != m_ite && m_it->type != char_rbracket)
 	{
@@ -187,7 +249,7 @@ bool	Parser::parseConfig()
 	return true;
 }
 
-bool	Parser::parse(Config& config)
+bool	Parser::parse(p_Config& config)
 {
 	if (!parseConfig())
 	{
@@ -198,19 +260,19 @@ bool	Parser::parse(Config& config)
 	return true;
 }
 
-std::ostream& operator<<(std::ostream& os, const Config& c)
+std::ostream& operator<<(std::ostream& os, const p_Config& c)
 {
-	std::vector<Server>::const_iterator s_ite = c.servers.end();
-	for (std::vector<Server>::const_iterator s_it = c.servers.begin() ; s_it != s_ite ; *s_it++)
+	std::vector<p_Server>::const_iterator s_ite = c.servers.end();
+	for (std::vector<p_Server>::const_iterator s_it = c.servers.begin() ; s_it != s_ite ; *s_it++)
 	{
 		os << "***SERVER***" << std::endl;
-		std::vector<Location>::const_iterator l_ite = s_it->locations.end();
-		for (std::vector<Location>::const_iterator l_it = s_it->locations.begin() ; l_it != l_ite ; *l_it++)
+		std::vector<p_Location>::const_iterator l_ite = s_it->locations.end();
+		for (std::vector<p_Location>::const_iterator l_it = s_it->locations.begin() ; l_it != l_ite ; *l_it++)
 		{
 			os << "\t***LOCATION***" << std::endl;
 			os << "\tPath: " << l_it->path << std::endl;
-			std::vector<Directive>::const_iterator d_ite = l_it->directives.end();
-			for (std::vector<Directive>::const_iterator d_it = l_it->directives.begin() ; d_it != d_ite ; *d_it++)
+			std::vector<p_Directive>::const_iterator d_ite = l_it->directives.end();
+			for (std::vector<p_Directive>::const_iterator d_it = l_it->directives.begin() ; d_it != d_ite ; *d_it++)
 			{
 				os << "\t\t***DIRECTIVE***" << std::endl;
 				os << "\t\tName: " << d_it->name << std::endl;
@@ -224,8 +286,8 @@ std::ostream& operator<<(std::ostream& os, const Config& c)
 			}
 			os << "\t**ENDLOCATION**" << std::endl;
 		}
-		std::vector<Directive>::const_iterator d_ite = s_it->directives.end();
-		for (std::vector<Directive>::const_iterator d_it = s_it->directives.begin() ; d_it != d_ite ; *d_it++)
+		std::vector<p_Directive>::const_iterator d_ite = s_it->directives.end();
+		for (std::vector<p_Directive>::const_iterator d_it = s_it->directives.begin() ; d_it != d_ite ; *d_it++)
 		{
 			os << "\t***DIRECTIVE***" << std::endl;
 			os << "\tName: " << d_it->name << std::endl;
