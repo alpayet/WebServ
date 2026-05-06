@@ -3,6 +3,8 @@
 
 #include "Config/keywords.h"
 
+// static const Keyword keywords;
+
 /** CONSTRUCTORS */
 Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 {
@@ -59,7 +61,8 @@ bool	Parser::parseDirective(p_Server& serv)
 	/** START NEW CHECKS */
 
 	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
-	for (size_t i = 0 ; i < kw_size ; ++i)
+	size_t i = 0;
+	for ( ; i < kw_size ; ++i)
 	{
 		if (m_it->data == keywords[i].name)
 		{
@@ -80,6 +83,7 @@ bool	Parser::parseDirective(p_Server& serv)
 					}
 				}
 			}
+			break ;
 		}
 	}
 
@@ -87,10 +91,25 @@ bool	Parser::parseDirective(p_Server& serv)
 
 	direc.name = m_it->data;
 	*m_it++;
-	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++)
+
+	/** NB ARGS CHECKS */
+	int nb_val = 1;
+	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++, ++nb_val)
 	{
+		if (keywords[i].max_args < nb_val)
+		{
+			std::cerr << "Error\n'" << direc.name << "' can have more than " << keywords[i].max_args << " values" << std::endl;
+			return false;
+		}
 		direc.values.push_back(m_it->data);
 	}
+	if (keywords[i].min_args > nb_val)
+	{
+		std::cerr << "Error\n'" << direc.name << "' needs at least " << keywords[i].min_args << " values" << std::endl;
+		return false;
+	}
+	/** STOP CHECKS */
+
 	if (!expect(';'))
 	{
 		return false;
@@ -117,7 +136,8 @@ bool	Parser::parseDirective(p_Location& location)
 	/** START NEW CHECKS */
 
 	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
-	for (size_t i = 0 ; i < kw_size ; ++i)
+	size_t i = 0;
+	for ( ; i < kw_size ; ++i)
 	{
 		if (m_it->data == keywords[i].name)
 		{
@@ -138,6 +158,7 @@ bool	Parser::parseDirective(p_Location& location)
 					}
 				}
 			}
+			break ;
 		}
 	}
 	
@@ -145,10 +166,27 @@ bool	Parser::parseDirective(p_Location& location)
 
 	direc.name = m_it->data;
 	*m_it++;
-	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++)
+
+	/** NB ARGS CHECKS */
+	int nb_val = 1;
+	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++, ++nb_val)
 	{
+		if (keywords[i].max_args < nb_val)
+		{
+			std::cerr << "Error\n'" << direc.name << "' can have more than " << keywords[i].max_args << " values" << std::endl;
+			return false;
+		}
+		std::cout << "val= '" << m_it->data << "'" << std::endl;
 		direc.values.push_back(m_it->data);
 	}
+	if (keywords[i].min_args > nb_val)
+	{
+		std::cerr << "Error\n'" << direc.name << "' needs at least " << keywords[i].min_args << " values" << std::endl;
+		return false;
+	}
+	std::cout << "id: " << direc.name << " ; nb = " << nb_val << std::endl;
+	/** STOP CHECKS */
+
 	if (!expect(';'))
 	{
 		return false;
