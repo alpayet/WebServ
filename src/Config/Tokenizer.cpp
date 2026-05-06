@@ -52,10 +52,10 @@ Token	Tokenizer::tokenize(std::string str)
 				++i;
 				continue ;
 			}
-			std::string sub = str.substr(i, j - i);
+			std::string sub = str.substr(i, j - i); // TODO: check erase function for string
 			if (sub[sub.size() - 1] == ';')
 			{
-				std::string sub2 = sub.substr(0, sub.size() - 1);
+				std::string sub2 = sub.substr(0, sub.size() - 1); // TODO: check erase function for string
 				tokenizeChar(t, sub2);
 				tokenizeChar(t, ";");
 				++j;

@@ -11,7 +11,7 @@ The goal is to make an HTTP server.
 # Instructions
 To launch the program, use the command line
 `./webserv [configuration file]`
-Configuration file should be configure like the server block of the nginx file:
+Configuration file ressemble the server block of the nginx file:
 ```
 server {
 	listen 80;
@@ -20,15 +20,17 @@ server {
 	}
 }
 ```
+Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
 
-server :
-location :
-listen :
-server_name :
-root :
-index :
-cgi :
-error_page :
+
+server:
+location:
+listen:
+server_name:
+root:
+index:
+cgi:
+error_page:
 
 
 

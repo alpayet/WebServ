@@ -1,27 +1,12 @@
 #include "Config/Parser.hpp"
+#include "Config/keywords.h"
 #include <iostream>
 
-#include "Config/keywords.h"
-
-// static const Keyword keywords;
-
-/** CONSTRUCTORS */
 Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 {
 	// TODO: deep copy
 	m_it = m_tokens.begin();
 	m_ite = m_tokens.end();
-}
-
-Parser::Parser(Parser& other) : m_tokens(other.m_tokens)
-{
-	m_it = m_tokens.begin();
-	m_ite	= m_tokens.end();
-}
-
-Parser::~Parser()
-{
-
 }
 
 bool	Parser::expect(char c)
@@ -35,21 +20,9 @@ bool	Parser::expect(char c)
 	return false;
 }
 
-/** FUNCTIONS */
-
-// TODO: check if enough instructions in file
-// bool	Parser::checkNecessary()
-// {
-
-// 	return true;
-// }
-
-// TODO: check if those who need number are indeed numbers
-// TODO: check duplicates
-// TODO: check if keyword already exist and append
-bool	Parser::parseDirective(p_Server& serv)
+template<typename T>
+bool	Parser::parseDirective(T& t, e_block comp)
 {
-	// TODO: switch case for serv instruction
 	p_Directive direc;
 
 	if (m_it->type != res_word)
@@ -58,23 +31,21 @@ bool	Parser::parseDirective(p_Server& serv)
 		return false;
 	}
 
-	/** START NEW CHECKS */
-
 	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
 	size_t i = 0;
 	for ( ; i < kw_size ; ++i)
 	{
 		if (m_it->data == keywords[i].name)
 		{
-			if (keywords[i].e_block == inloc)
+			if (keywords[i].e_block == comp)
 			{
 				std::cerr << "Error\n'" << m_it->data << "' can't be outside a location block" << std::endl;
 				return false;
 			}
 			if (keywords[i].e_uniqness == uniq)
 			{
-				std::vector<p_Directive>::const_iterator d_ite = serv.directives.end();
-				for (std::vector<p_Directive>::const_iterator d_it = serv.directives.begin() ; d_it != d_ite ; *d_it++)
+				std::vector<p_Directive>::const_iterator d_ite = t.directives.end();
+				for (std::vector<p_Directive>::const_iterator d_it = t.directives.begin() ; d_it != d_ite ; *d_it++)
 				{
 					if (d_it->name == m_it->data)
 					{
@@ -87,12 +58,9 @@ bool	Parser::parseDirective(p_Server& serv)
 		}
 	}
 
-	/** STOP NEW CHECKS */
-
 	direc.name = m_it->data;
 	*m_it++;
 
-	/** NB ARGS CHECKS */
 	int nb_val = 1;
 	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++, ++nb_val)
 	{
@@ -108,92 +76,15 @@ bool	Parser::parseDirective(p_Server& serv)
 		std::cerr << "Error\n'" << direc.name << "' needs at least " << keywords[i].min_args << " values" << std::endl;
 		return false;
 	}
-	/** STOP CHECKS */
 
 	if (!expect(';'))
 	{
 		return false;
 	}
 	*m_it++;
-	serv.directives.push_back(direc);
+	t.directives.push_back(direc);
 	return true;
 
-}
-
-// TODO: check if those who need number are indeed numbers
-// TODO: check duplicates
-bool	Parser::parseDirective(p_Location& location)
-{
-	// TODO: switch case for loc instruction
-	p_Directive direc;
-
-	if (m_it->type != res_word)
-	{
-		std::cerr << "Error\nWrongly formatted file, expected a directive name " << m_it->data << std::endl;
-		return false;
-	}
-
-	/** START NEW CHECKS */
-
-	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
-	size_t i = 0;
-	for ( ; i < kw_size ; ++i)
-	{
-		if (m_it->data == keywords[i].name)
-		{
-			if (keywords[i].e_block == inserv)
-			{
-				std::cerr << "Error\n'" << m_it->data << "' not supposed to be in location block" << std::endl;
-				return false;
-			}
-			if (keywords[i].e_uniqness == uniq)
-			{
-				std::vector<p_Directive>::const_iterator d_ite = location.directives.end();
-				for (std::vector<p_Directive>::const_iterator d_it = location.directives.begin() ; d_it != d_ite ; *d_it++)
-				{
-					if (d_it->name == m_it->data)
-					{
-						std::cerr << "Error\nLocation can't have multiple '" << m_it->data << "'" << std::endl;
-						return false;
-					}
-				}
-			}
-			break ;
-		}
-	}
-	
-	/** STOP NEW CHECKS */
-
-	direc.name = m_it->data;
-	*m_it++;
-
-	/** NB ARGS CHECKS */
-	int nb_val = 1;
-	for ( ; m_it->type == str_type || m_it->type == int_type ; *m_it++, ++nb_val)
-	{
-		if (keywords[i].max_args < nb_val)
-		{
-			std::cerr << "Error\n'" << direc.name << "' can have more than " << keywords[i].max_args << " values" << std::endl;
-			return false;
-		}
-		std::cout << "val= '" << m_it->data << "'" << std::endl;
-		direc.values.push_back(m_it->data);
-	}
-	if (keywords[i].min_args > nb_val)
-	{
-		std::cerr << "Error\n'" << direc.name << "' needs at least " << keywords[i].min_args << " values" << std::endl;
-		return false;
-	}
-	std::cout << "id: " << direc.name << " ; nb = " << nb_val << std::endl;
-	/** STOP CHECKS */
-
-	if (!expect(';'))
-	{
-		return false;
-	}
-	*m_it++;
-	location.directives.push_back(direc);
-	return true;
 }
 
 bool	Parser::parseLocation(p_Server& serv)
@@ -221,7 +112,7 @@ bool	Parser::parseLocation(p_Server& serv)
 			return false;
 		}
 
-		if (!parseDirective(loc))
+		if (!parseDirective(loc, inserv))
 		{
 			return false;
 		}
@@ -259,7 +150,7 @@ bool	Parser::parseServer()
 		}
 		else
 		{
-			if (!parseDirective(serv))
+			if (!parseDirective(serv, inloc))
 			{
 				return false;
 			}

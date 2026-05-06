@@ -7,8 +7,6 @@
 # include <map>
 # include <iterator>
 
-// # include "Server.hpp"
-
 struct p_Directive
 {
 	std::string					name;
@@ -17,14 +15,14 @@ struct p_Directive
 
 struct p_Location
 {
-	std::string				path;
+	std::string					path;
 	std::vector<p_Directive>	directives;
 };
 
 struct p_Server
 {
 	std::vector<p_Directive>	directives;
-	std::vector<p_Location>	locations;
+	std::vector<p_Location>		locations;
 };
 
 struct p_Config
@@ -35,23 +33,23 @@ struct p_Config
 class Parser
 {
 	public:
-		/** CONSTRUCTORS */
 		Parser(const std::vector<Token>& tokens);
-		Parser(Parser& other);
-		~Parser();
+		~Parser() {};
 
 		p_Config	getConfig() const;
-		bool	parse(p_Config& config);
+		bool		parse(p_Config& config);
 
 	private:
+		Parser(Parser& other);
+		Parser& operator=(Parser& other);
+
 		const std::vector<Token>			m_tokens;
 		std::vector<Token>::const_iterator	m_it;
 		std::vector<Token>::const_iterator	m_ite;
 
-		Parser	operator=(Parser& other);
 		p_Config	m_config;
-		bool	parseDirective(p_Server& serv);
-		bool	parseDirective(p_Location& location);
+		template<typename T>
+		bool	parseDirective(T& t, e_block comp);
 		bool	parseLocation(p_Server& serv);
 		bool	parseServer();
 		bool	parseConfig();
