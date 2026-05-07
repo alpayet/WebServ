@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/05 23:14:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/07 19:38:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ class HttpException : public std::exception
 	public:
 		enum ErrorCode
 		{
-			malformedLineBreak,
+			invalidLineBreak,
 			malformedStartLine,
 			invalidMethod,
 			invalidTarget,
 			invalidVersion,
-			invalidHeader,
+			invalidHeaderKey,
+			invalidHeaderValue,
 			payloadTooLarge
 		};
 
@@ -42,7 +43,6 @@ class HttpException : public std::exception
 	private:
 		std::string	_message;
 		ErrorCode	_internalCode;
-
 };
 
 #endif

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/05 20:06:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/07 19:48:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSINGCONTEXT_HPP
 # define PARSINGCONTEXT_HPP
 
-# include "infrastructure/dtos/RequestDto.hpp"
+# include "infrastructure/dtos/HttpRequestDto.hpp"
 
 struct ParsingContext
 {
@@ -27,7 +27,7 @@ struct ParsingContext
 
 	std::size_t	pos;
 	ParseState	state;
-	RequestDto	requestDto;
+	HttpRequestDto	requestDto;
 };
 
 #endif

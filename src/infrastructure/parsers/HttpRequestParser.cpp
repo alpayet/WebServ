@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/05 23:34:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/07 20:03:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 
 namespace
 {
-	IRequest::MethodType	string_to_method(std::string const &method_str)
+	HttpRequestDto::MethodType	string_to_method(std::string const &method_str)
 	{
 		if (method_str == "GET")
-			return (IRequest::Get);
+			return (HttpRequestDto::httpGet);
 		if (method_str == "POST")
-			return (IRequest::Post);
+			return (HttpRequestDto::httpPost);
 		if (method_str == "DELETE")
-			return (IRequest::Delete);
-		return (IRequest::Unknown);
+			return (HttpRequestDto::httpDelete);
+		return (HttpRequestDto::unknown);
 	}
 
 	void	parse_start_line(std::vector<char>::const_iterator it_start,
-		std::vector<char>::const_iterator &it_line_end, ParsingContext context)
+		std::vector<char>::const_iterator it_line_end, ParsingContext &context)
 	{
 		std::vector<char>::const_iterator	it_first_space;
 		std::vector<char>::const_iterator	it_second_space;
@@ -37,7 +37,7 @@ namespace
 		while (it_start[0] == '\r' && it_start[1] == '\n')
 			it_start += 2;
 
-		ensure_no_line_break(it_start, it_line_end - 1);
+		ensure_no_line_break(it_start, it_line_end);
 
 		it_first_space = std::find(it_start, it_line_end, ' ');
 		if (it_first_space == it_line_end)
@@ -46,9 +46,14 @@ namespace
 		if (it_second_space == it_line_end)
 			throw HttpException(HttpException::malformedStartLine);
 
-		// std::string	method(it_start, it_first_space);
-		// this->_requestDto. = string_to_method(method);
+		std::string	method_str(it_start, it_first_space);
+		HttpRequestDto::MethodType method = string_to_method(method_str);
+		if (!is_valid_method_syntax(method))
+			throw HttpException(HttpException::invalidMethod);
+		context.requestDto.method = method;
 
+		if (!is_valid_target_syntax(it_first_space + 1, it_second_space))
+			throw HttpException(HttpException::invalidTarget);
 		std::string	target(it_first_space + 1, it_second_space);
 		context.requestDto.target = target;
 
@@ -72,15 +77,16 @@ namespace
 		std::vector<char>::const_iterator	it_colon;
 		it_colon = std::find(it_start, it_line_end, ':');
 
+		if (!is_valid_key_syntax(it_start, it_colon))
+			throw HttpException(HttpException::invalidHeaderKey);
 		std::string	key(it_start, it_colon);
-		if (key.find_first_of(" \t") != std::string::npos)
-			throw HttpException(HttpException::invalidHeader);
 		std::transform(key.begin(), key.end(), key.begin(), to_lower_safe);
 
+		if (!is_valid_value_syntax(it_colon + 1, it_line_end))
+			throw HttpException(HttpException::invalidHeaderValue);
 		std::string	value(it_colon + 1, it_line_end);
 		trim(value, " \t");
-		if (key.find_first_of() != std::string::npos)
-			throw HttpException(HttpException::invalidHeader);
+
 		context.requestDto.headers[key] = value;
 	}
 
@@ -105,18 +111,80 @@ namespace
 			str.erase(0, start);
 	}
 
-	void ensure_no_line_break(std::vector<char>::const_iterator&it_start,
+	void ensure_no_line_break(std::vector<char>::const_iterator it_start,
 		std::vector<char>::const_iterator it_end)
 	{
 		static char const line_breakers[] = {'\r', '\n'};
 		if (std::find_first_of(it_start, it_end,
 			line_breakers, line_breakers + 2) != it_end)
-			throw HttpException(HttpException::malformedLineBreak);
+			throw HttpException(HttpException::invalidLineBreak);
 	}
 
-	bool	is_valid_header_key_char()
+	bool	is_valid_method_syntax(HttpRequestDto::MethodType const method)
 	{
+		if (method == HttpRequestDto::unknown)
+			return (false);
+	}
 
+	bool	is_valid_target_syntax(
+		std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end)
+	{
+		if (it_start == it_end)
+			return (false);
+		if (*it_start != '\\')
+			return (false);
+		if (std::find(it_start, it_end, is_invalid_target_char) != it_end)
+			return (false);
+	}
+
+	bool	is_valid_target_syntax(
+		std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end)
+	{
+		if (it_start == it_end)
+			return (false);
+		if (*it_start != '\\')
+			return (false);
+		if (std::find(it_start, it_end, is_invalid_target_char) != it_end)
+			return (false);
+	}
+
+	bool	is_invalid_target_char(unsigned char c)
+	{
+		static const std::string	specials_authorized = "/-._~?&=+:$&+,";
+
+		return (!(std::isalnum(c) ||
+			specials_authorized.find(c) != std::string::npos));
+	}
+
+	bool	is_valid_key_syntax(
+		std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end)
+	{
+		if (it_start == it_end)
+			return (false);
+		if (std::find(it_start, it_end, is_invalid_key_char) != it_end)
+			return (false);
+	}
+
+	bool	is_invalid_key_char(unsigned char c)
+	{
+		static const std::string	specials_authorized = "!#$%&'*+-.^_`|~";
+
+		return (!(std::isalnum(c) ||
+			specials_authorized.find(c) != std::string::npos));
+	}
+
+	bool	is_valid_value_syntax(
+		std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end)
+	{
+		if (it_start == it_end)
+			return (false);
+		if (std::find(it_start, it_end, is_invalid_value_char) != it_end)
+			return (false);
+	}
+
+	bool is_invalid_value_char(unsigned char c)
+	{
+		return (!(c >= 32 && c <= 126) || c == '\t' || c >= 128);
 	}
 }
 
@@ -124,7 +192,7 @@ ParsingContext::ParseState HttpRequestParser::parse(
 	std::vector<char> const &readBuf, ParsingContext &context)
 {
 	std::vector<char>::const_iterator	it_start = readBuf.begin() + context.pos;
-	static char const							needle[] = {'\r', '\n'};
+	static char const					needle[] = {'\r', '\n'};
 	std::vector<char>::const_iterator	it_line_end = std::search(it_start,
 		readBuf.end(), needle, needle + 2);
 
