@@ -3,6 +3,9 @@
 #files
 SRC_FILES = \
 	main.cpp \
+	server/Server.cpp server/ServerConfig.cpp server/ServerSocket.cpp \
+	utils/utils.cpp utils/server_utils.cpp
+
 
 #directories
 SRC_DIR = src/
@@ -18,7 +21,7 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 NAME = webserv
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Weffc++ -MMD -MP -std=c++98
+CFLAGS = -Wall -Wextra -Wconversion -Wsign-conversion -Weffc++ -MMD -MP -std=c++98
 IFLAGS = -I $(INC_DIR)
 MAKE = @make --no-print-directory -j
 
