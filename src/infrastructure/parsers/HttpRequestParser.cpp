@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/07 20:03:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/09 00:18:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,10 @@ namespace
 
 		ensure_no_line_break(it_start, it_line_end);
 
+		if (std::count(it_start, it_line_end, ' ') != 2)
+			throw HttpException(HttpException::malformedStartLine);
 		it_first_space = std::find(it_start, it_line_end, ' ');
-		if (it_first_space == it_line_end)
-			throw HttpException(HttpException::malformedStartLine);
 		it_second_space = std::find(it_first_space + 1, it_line_end, ' ');
-		if (it_second_space == it_line_end)
-			throw HttpException(HttpException::malformedStartLine);
 
 		std::string	method_str(it_start, it_first_space);
 		HttpRequestDto::MethodType method = string_to_method(method_str);
@@ -131,18 +129,7 @@ namespace
 	{
 		if (it_start == it_end)
 			return (false);
-		if (*it_start != '\\')
-			return (false);
-		if (std::find(it_start, it_end, is_invalid_target_char) != it_end)
-			return (false);
-	}
-
-	bool	is_valid_target_syntax(
-		std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end)
-	{
-		if (it_start == it_end)
-			return (false);
-		if (*it_start != '\\')
+		if (*it_start != '/')
 			return (false);
 		if (std::find(it_start, it_end, is_invalid_target_char) != it_end)
 			return (false);
@@ -150,10 +137,7 @@ namespace
 
 	bool	is_invalid_target_char(unsigned char c)
 	{
-		static const std::string	specials_authorized = "/-._~?&=+:$&+,";
-
-		return (!(std::isalnum(c) ||
-			specials_authorized.find(c) != std::string::npos));
+		return (!(std::isprint(c) || c >= 128));
 	}
 
 	bool	is_valid_key_syntax(
@@ -184,7 +168,7 @@ namespace
 
 	bool is_invalid_value_char(unsigned char c)
 	{
-		return (!(c >= 32 && c <= 126) || c == '\t' || c >= 128);
+		return (!(std::isprint(c) || c == '\t' || c >= 128));
 	}
 }
 
