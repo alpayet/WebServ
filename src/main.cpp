@@ -4,6 +4,7 @@
 
 #include "Config/Tokenizer.hpp"
 #include "Config/Parser.hpp"
+#include "Config/Semantic.hpp"
 
 bool	basicCheck(int argc, char* argv)
 {
@@ -60,6 +61,12 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	std::cout << conf << std::endl;
+
+	if (!checkOverlap(conf))
+	{
+		return 1;
+	}
+	std::cout << "No trouble" << std::endl;
 
 	return 0;
 }

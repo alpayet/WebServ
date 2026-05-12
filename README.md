@@ -23,14 +23,14 @@ server {
 Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
 
 
-server:
-location:
-listen:
-server_name:
-root:
-index:
-cgi:
-error_page:
+`server`: defines the start of a server setup
+`location`: starts of the location block for a specific path
+`listen`: defines the port used
+`interface`: hostname (either url or ip address)
+`root`:  
+`index`:
+`cgi`:
+`error_page`:
 
 
 

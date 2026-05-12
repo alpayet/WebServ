@@ -41,8 +41,8 @@ const std::string	etokenToStr(e_token t)
 Token	Tokenizer::tokenize(std::string str)
 {
 	Token t;
-
-	for (size_t i = 0 ; i < str.size() ; )
+size_t i = 0;
+	for ( ; i < str.size() ; )
 	{
 		size_t j = str.find_first_of(" \t\n\v\f\r", i);
 		if (j != std::string::npos)
@@ -50,6 +50,7 @@ Token	Tokenizer::tokenize(std::string str)
 			if (i == j)
 			{
 				++i;
+
 				continue ;
 			}
 			std::string sub = str.substr(i, j - i); // TODO: check erase function for string
@@ -58,10 +59,12 @@ Token	Tokenizer::tokenize(std::string str)
 				std::string sub2 = sub.substr(0, sub.size() - 1); // TODO: check erase function for string
 				tokenizeChar(t, sub2);
 				tokenizeChar(t, ";");
-				++j;
+				// ++j; //? probably gonna haunt me
 			}
 			else
+			{
 				tokenizeChar(t, sub);
+			}
 		}
 		else
 		{
@@ -69,7 +72,7 @@ Token	Tokenizer::tokenize(std::string str)
 			break ;
 		}
 		i = j + 1;
-	} 
+	}
 	return t;
 }
 

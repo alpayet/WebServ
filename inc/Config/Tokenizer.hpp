@@ -45,7 +45,7 @@
 // 	{"error_page",			 str_type, 2, multi},
 // 	{"location",			 str_type, 1, uniq},
 // 	{"listen",				 int_type, 1, uniq},
-// 	{"server_name",			 str_type, 1, uniq},
+// 	{"interface",			 str_type, 1, uniq},
 // 	{"client_max_body_size", int_type, 1, uniq},
 // 	{"cgi",					 str_type, 1, inloc},
 // 	{"allow_methods",		 str_type, 3, inloc},
