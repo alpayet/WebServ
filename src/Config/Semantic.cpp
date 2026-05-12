@@ -1,30 +1,58 @@
 #include "Config/Semantic.hpp"
-
-// TODO: check if enough instructions in file
-/**
- * server -> need at least 1
- * listen -> might default to 80
- * 
- */
-
-// TODO: check if keyword already exist and append
-
-// TODO: check duplicates
-
-// TODO: check if those who need number are indeed numbers
-
-// TODO: check overlap (same port, differents ips, no 0.0.0.0)
 // #include "Server/Server.hpp"
 #include "Config/Parser.hpp"
 #include <vector>
 #include <iterator>
 #include <string>
 #include <iostream>
-bool checkOverlap(p_Config c)
+
+#include "Config/keywords.h"
+#include "Server/Server.hpp"
+
+
+// TODO: check if enough instructions in file
+/**
+ * server -> need at least 1
+ * listen -> might default to 80
+ * location -> path always start with '/'
+ * root -> maybe force no end '/'
+ * interface -> maybe be multi instead of uniq
+ * 
+ */
+
+// TODO: check if keyword already exist and append
+
+
+// TODO: check if those who need number are indeed numbers
+
+
+bool	checkDupLoc(p_Server s)
+{
+	size_t	nb_locs = s.locations.size();
+	std::string	path1, path2;
+
+	for (size_t i = 0 ; i < nb_locs - 1 ; ++i)
+	{
+		path1 = s.locations[i].path;
+		for (size_t j = i + 1 ; j < nb_locs ; ++j)
+		{
+			path2 = s.locations[j].path;
+			if (path1 == path2)
+			{
+				std::cerr << "Error\nMultiple location blocks with the same path" << std::endl;
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool	checkOverlap(p_Config c)
 {
 	size_t	nb_servers = c.servers.size();
 	std::string	port1, port2;
 	std::string	ip1, ip2;
+
 	for (size_t i = 0 ; i < nb_servers - 1 ; ++i)
 	{
 		std::vector<p_Directive>::const_iterator d_ite = c.servers[i].directives.end();

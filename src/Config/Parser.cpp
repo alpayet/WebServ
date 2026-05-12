@@ -224,7 +224,6 @@ std::ostream& operator<<(std::ostream& os, const p_Config& c)
 			}
 			os << std::endl;
 		}
-		os << "\n**ENDSERVER**" << std::endl;
 	}
 	return os;
 }

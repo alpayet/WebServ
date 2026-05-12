@@ -39,6 +39,8 @@ class Server
 		void	addLocations(Location location) { m_locations.push_back(location); };
 		void	setClientMaxBody(int max_body) { m_max_body = max_body; };
 
+		void	setup();
+
 	private:
 		int							m_port;
 		std::string					m_name;

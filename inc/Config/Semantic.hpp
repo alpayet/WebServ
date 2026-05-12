@@ -7,6 +7,7 @@
 // };
 
 #include "Config/Parser.hpp"
-bool checkOverlap(p_Config c);
+bool	checkOverlap(p_Config c);
+bool	checkDupLoc(p_Server s);
 
 #endif

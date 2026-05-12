@@ -66,6 +66,14 @@ int main(int argc, char** argv)
 	{
 		return 1;
 	}
+
+	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
+	{
+		if (!checkDupLoc(conf.servers[i]))
+		{
+			return 1;
+		}
+	}
 	std::cout << "No trouble" << std::endl;
 
 	return 0;

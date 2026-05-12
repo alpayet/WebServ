@@ -41,8 +41,8 @@ const std::string	etokenToStr(e_token t)
 Token	Tokenizer::tokenize(std::string str)
 {
 	Token t;
-size_t i = 0;
-	for ( ; i < str.size() ; )
+	
+	for (size_t i = 0 ; i < str.size() ; )
 	{
 		size_t j = str.find_first_of(" \t\n\v\f\r", i);
 		if (j != std::string::npos)
