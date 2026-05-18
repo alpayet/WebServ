@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResponseOutputPort.hpp                            :+:      :+:    :+:   */
+/*   RequestParser.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 19:12:46 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 18:07:47 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/18 19:52:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESPONSEOUTPUTPORT_HPP
-# define IRESPONSEOUTPUTPORT_HPP
+#ifndef HTTPREQUESTPARSER_HPP
+# define HTTPREQUESTPARSER_HPP
 
-# include "entities/ResponseEntity.hpp"
+# include "ParsingState.hpp"
+# include <string>
+# include <vector>
+# include <map>
 
-class IResponseOutputPort
+namespace Http
 {
-	public:
-		virtual ~IResponseOutputPort(void) {}
+	class RequestParser
+	{
+		public:
+			static Http::ParsingState::Step parse(
+				std::vector<char> const &readBuf, Http::ParsingState &context);
 
-		virtual void	present(ResponseEntity const &responseEntity) = 0;
-};
+		private:
+			RequestParser(void) {}
+	};
+}
 
 #endif

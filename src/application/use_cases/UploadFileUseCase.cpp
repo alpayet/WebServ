@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RequestEntity.hpp                                  :+:      :+:    :+:   */
+/*   UploadFileUseCase.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 20:17:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 16:00:42 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/18 16:05:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUESTENTITY_HPP
-# define REQUESTENTITY_HPP
+#include "UploadFileUseCase.hpp"
 
-# include <string>
-# include <map>
+UploadFileUseCase::UploadFileUseCase(void)
+{}
 
-class RequestEntity
+UploadFileUseCase::UploadFileUseCase(const UploadFileUseCase &src)
 {
-	public:
-		RequestEntity(std::string const &target, std::string const &protocol,
-			std::map<std::string, std::string> const &headers);
+	*this = src;
+}
 
-	private:
-		std::string							_target;
-		std::string							_protocol;
-		std::map<std::string, std::string>	_headers;
-};
+UploadFileUseCase::~UploadFileUseCase(void)
+{}
 
-#endif
+UploadFileUseCase	&UploadFileUseCase::operator=(UploadFileUseCase const &rhs)
+{
+	if (this != &rhs)
+	{
+		//
+	}
+	return (*this);
+}

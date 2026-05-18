@@ -6,30 +6,20 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/09 00:18:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:29:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "http/message/IRequest.hpp"
-#include "infrastructure/parsers/HttpRequestParser.hpp"
-#include "infrastructure/exceptions/HttpException.hpp"
+#include "infrastructure/http/parsers/RequestParser.hpp"
+#include "infrastructure/http/Methods.hpp"
+#include "infrastructure/http/exceptions/Exception.hpp"
 #include <algorithm>
 
 namespace
 {
-	HttpRequestDto::MethodType	string_to_method(std::string const &method_str)
-	{
-		if (method_str == "GET")
-			return (HttpRequestDto::httpGet);
-		if (method_str == "POST")
-			return (HttpRequestDto::httpPost);
-		if (method_str == "DELETE")
-			return (HttpRequestDto::httpDelete);
-		return (HttpRequestDto::unknown);
-	}
-
 	void	parse_start_line(std::vector<char>::const_iterator it_start,
-		std::vector<char>::const_iterator it_line_end, ParsingContext &context)
+		std::vector<char>::const_iterator it_line_end, Http::ParsingState &state)
 	{
 		std::vector<char>::const_iterator	it_first_space;
 		std::vector<char>::const_iterator	it_second_space;
@@ -40,33 +30,32 @@ namespace
 		ensure_no_line_break(it_start, it_line_end);
 
 		if (std::count(it_start, it_line_end, ' ') != 2)
-			throw HttpException(HttpException::malformedStartLine);
+			throw Http::Exception(Http::Exception::malformedStartLine);
 		it_first_space = std::find(it_start, it_line_end, ' ');
 		it_second_space = std::find(it_first_space + 1, it_line_end, ' ');
 
-		std::string	method_str(it_start, it_first_space);
-		HttpRequestDto::MethodType method = string_to_method(method_str);
-		if (!is_valid_method_syntax(method))
-			throw HttpException(HttpException::invalidMethod);
-		context.requestDto.method = method;
+		std::string	method(it_start, it_first_space);
+		if (!Http::isMethodSupported(method))
+			throw Http::Exception(Http::Exception::invalidMethod);
+		state.request.method = method;
 
 		if (!is_valid_target_syntax(it_first_space + 1, it_second_space))
-			throw HttpException(HttpException::invalidTarget);
+			throw Http::Exception(Http::Exception::invalidTarget);
 		std::string	target(it_first_space + 1, it_second_space);
-		context.requestDto.target = target;
+		state.request.target = target;
 
 		std::string	protocol(it_second_space + 1, it_line_end);
-		context.requestDto.protocol = protocol;
+		state.request.protocol = protocol;
 
-		context.state = ParsingContext::header;
+		state.step = Http::ParsingState::header;
 	}
 
 	void	parse_header_line(std::vector<char>::const_iterator it_start,
-		std::vector<char>::const_iterator it_line_end, ParsingContext &context)
+		std::vector<char>::const_iterator it_line_end, Http::ParsingState &state)
 	{
 		if (it_start == it_line_end)
 		{
-			context.state = ParsingContext::body;
+			state.step = Http::ParsingState::body;
 			return ;
 		}
 
@@ -76,16 +65,16 @@ namespace
 		it_colon = std::find(it_start, it_line_end, ':');
 
 		if (!is_valid_key_syntax(it_start, it_colon))
-			throw HttpException(HttpException::invalidHeaderKey);
+			throw Http::Exception(Http::Exception::invalidHeaderKey);
 		std::string	key(it_start, it_colon);
 		std::transform(key.begin(), key.end(), key.begin(), to_lower_safe);
 
 		if (!is_valid_value_syntax(it_colon + 1, it_line_end))
-			throw HttpException(HttpException::invalidHeaderValue);
+			throw Http::Exception(Http::Exception::invalidHeaderValue);
 		std::string	value(it_colon + 1, it_line_end);
 		trim(value, " \t");
 
-		context.requestDto.headers[key] = value;
+		state.request.headers[key] = value;
 	}
 
 	char	to_lower_safe(unsigned char c)
@@ -115,13 +104,7 @@ namespace
 		static char const line_breakers[] = {'\r', '\n'};
 		if (std::find_first_of(it_start, it_end,
 			line_breakers, line_breakers + 2) != it_end)
-			throw HttpException(HttpException::invalidLineBreak);
-	}
-
-	bool	is_valid_method_syntax(HttpRequestDto::MethodType const method)
-	{
-		if (method == HttpRequestDto::unknown)
-			return (false);
+			throw Http::Exception(Http::Exception::invalidLineBreak);
 	}
 
 	bool	is_valid_target_syntax(
@@ -172,8 +155,8 @@ namespace
 	}
 }
 
-ParsingContext::ParseState HttpRequestParser::parse(
-	std::vector<char> const &readBuf, ParsingContext &context)
+Http::ParsingState::Step Http::RequestParser::parse(
+	std::vector<char> const &readBuf, Http::ParsingState &context)
 {
 	std::vector<char>::const_iterator	it_start = readBuf.begin() + context.pos;
 	static char const					needle[] = {'\r', '\n'};
@@ -182,23 +165,23 @@ ParsingContext::ParseState HttpRequestParser::parse(
 
 	if (it_line_end != readBuf.end())
 	{
-		switch (context.state)
+		switch (context.step)
 		{
-			case ParsingContext::startLine:
+			case Http::ParsingState::startLine:
 				parse_start_line(it_start, it_line_end, context);
 				break;
-			case ParsingContext::header:
+			case Http::ParsingState::header:
 				parse_header_line(it_start, it_line_end, context);
 				break;
 			default:
 				break;
 		}
-		// if (context.state == ParsingContext::Complete)
+		// if (context.step == ParsingContext::Complete)
 		// {
 		// 	RequestEntity	request_entity = RequestMapper::toDomain(this->_requestDto);
 		// 	this->_requestInputPort->handle(request_entity);
 		// }
 		context.pos += std::distance(it_start, it_line_end) + 2;
 	}
-	return (context.state);
+	return (context.step);
 }

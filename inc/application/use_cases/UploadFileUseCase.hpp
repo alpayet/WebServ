@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   UploadFileUseCase.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 17:11:06 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/18 15:25:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-# define CLIENT_HPP
+#ifndef UPLOADFILEUSECASE_HPP
+# define UPLOADFILEUSECASE_HPP
 
-# include "infrastructure/parsers/ParsingContext.hpp"
-# include <vector>
-
-class Client
+class UploadFileUseCase
 {
 	public:
-		Client(void);
-		Client(Client const &src);
-		~Client(void);
+		UploadFileUseCase(void);
+		UploadFileUseCase(UploadFileUseCase const &src);
+		~UploadFileUseCase(void);
 
-		Client	&operator=(Client const &rhs);
+		UploadFileUseCase	&operator=(UploadFileUseCase const &rhs);
 
 	private:
-		std::vector<char>	_readBuf;
-		HttpParsingState		_parsingContext;
-		int					_socketFd;
-};
 
+};
 
 #endif

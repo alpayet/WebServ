@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ResponseEntity.hpp                                 :+:      :+:    :+:   */
+/*   Methods.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 18:04:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 18:05:00 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/18 19:46:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONSEENTITY_HPP
-# define RESPONSEENTITY_HPP
+#ifndef HTTPMETHODS_HPP
+# define HTTPMETHODS_HPP
 
-class ResponseEntity
-{};
+#include <string>
+
+namespace Http
+{
+	bool	isMethodSupported(std::string const	&method);
+}
 
 #endif

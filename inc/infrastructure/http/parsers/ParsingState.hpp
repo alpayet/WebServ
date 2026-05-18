@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ParsingContext.hpp                                 :+:      :+:    :+:   */
+/*   ParsingState.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/07 19:48:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/18 19:49:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSINGCONTEXT_HPP
-# define PARSINGCONTEXT_HPP
+#ifndef HTTPPARSINGSTATE_HPP
+# define HTTPPARSINGSTATE_HPP
 
-# include "infrastructure/dtos/HttpRequestDto.hpp"
+# include "infrastructure/http/Request.hpp"
 
-struct ParsingContext
+namespace Http
 {
-	enum ParseState
+	struct ParsingState
 	{
-		startLine,
-		header,
-		body,
-		complete
-	};
+		enum Step
+		{
+			startLine,
+			header,
+			body,
+			complete
+		};
 
-	std::size_t	pos;
-	ParseState	state;
-	HttpRequestDto	requestDto;
-};
+		std::size_t		pos;
+		Step			step;
+		Http::Request	request;
+	};
+}
 
 #endif

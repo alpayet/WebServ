@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRequestInputPort.hpp                              :+:      :+:    :+:   */
+/*   HttpRequestDto.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 17:05:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/04 00:34:04 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/03 15:02:28 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/07 19:52:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IREQUESTINPUTPORT_HPP
-# define IREQUESTINPUTPORT_HPP
+#ifndef HTTPREQUESTDTO_HPP
+# define HTTPREQUESTDTO_HPP
 
-# include "entities/RequestEntity.hpp"
+# include <string>
+# include <map>
 
-class IRequestInputPort
+struct HttpRequestDto
 {
-	public:
-		virtual ~IRequestInputPort(void) {}
+	enum MethodType
+	{
+		httpGet,
+		httpPost,
+		httpDelete,
+		unknown
+	};
 
-		virtual void	handle(RequestEntity const &requestEntity) = 0;
+	MethodType							method;
+	std::string							target;
+	std::string							protocol;
+	std::map<std::string, std::string>	headers;
 };
 
 #endif
