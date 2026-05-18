@@ -16,13 +16,17 @@ struct Location {
 
 class ServerConfig {
  public:
-  ServerConfig();
+  explicit ServerConfig(const std::string&, int);
   ~ServerConfig();
 
   std::string getHost() const;
   int getPort() const;
 
  private:
+  ServerConfig();
+
+  static const std::string DEFAULT_HOST;
+
   std::string m_host;
   int m_port;
   std::vector<std::string> m_server_names;
