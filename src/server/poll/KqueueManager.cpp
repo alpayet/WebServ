@@ -6,8 +6,7 @@
 
 #include <iostream>
 
-KqueueManager::KqueueManager()
-    : m_kqueue_fd(-1), m_events_list(), m_nb_events(0) {
+KqueueManager::KqueueManager() : m_kqueue_fd(-1), m_events_list() {
   std::cout << "Mac OS KqueueManager active\n";
 
   m_kqueue_fd = kqueue();
@@ -16,7 +15,7 @@ KqueueManager::KqueueManager()
 }
 
 KqueueManager::KqueueManager(const KqueueManager& kqm)
-    : m_kqueue_fd(-1), m_events_list(), m_nb_events(0) {
+    : m_kqueue_fd(-1), m_events_list() {
   (void)kqm;
 }
 
@@ -30,35 +29,48 @@ KqueueManager::~KqueueManager() {
 }
 
 bool KqueueManager::addSocket(const int fd, const int filter, void* udata) {
-  struct kevent sev;
-  int k_filter = filter == TYPE_READ ? EVFILT_READ : EVFILT_WRITE;
+  struct kevent ev;
+  const int kq_filter = filter == TYPE_READ ? EVFILT_READ : EVFILT_WRITE;
 
-  EV_SET(&sev, fd, k_filter, EV_ADD | EV_ENABLE, 0, 0, udata);
+  EV_SET(&ev, fd, kq_filter, EV_ADD | EV_ENABLE, 0, 0, udata);
 
-  if (kevent(m_kqueue_fd, &sev, 1, NULL, 0, NULL) == -1) return false;
+  if (kevent(m_kqueue_fd, &ev, 1, NULL, 0, 0) == -1) return false;
+
+  std::cout << "kqueue socket add fd: " << fd << "\n";
 
   return true;
 }
 
-bool KqueueManager::removeSocket(const int fd) {}
+bool KqueueManager::removeSocket(const int fd) {
+  struct kevent ev;
+
+  EV_SET(&ev, fd, 0, EV_DELETE, 0, 0, 0);
+
+  if (kevent(m_kqueue_fd, &ev, 1, NULL, 0, 0) == -1) return false;
+
+  std::cout << "kqueue socket remove fd: " << fd << "\n";
+
+  return true;
+}
 
 int KqueueManager::waitForEvents(const int timeout_ms) {
   timespec timeout = {};
+  (void)timeout_ms;
 
-  m_nb_events = kevent(m_kqueue_fd, NULL, 0, m_events_list, N_EVENTS_BUF, NULL);
-
-  // attention ca retourne -1 gerer l'erreur ici?
-  return m_nb_events;
+  // attention ca retourne -1
+  return kevent(m_kqueue_fd, NULL, 0, m_events_list, N_KQ_EVENTS_BUF, 0);
 }
 
 void* KqueueManager::getUserData(const int idx) {
   return m_events_list[idx].udata;
 }
 
-uintptr_t KqueueManager::getEventFd(int idx) {
-  return m_events_list[idx].ident;
+int KqueueManager::getEventFd(int idx) {
+  return static_cast<int>(m_events_list[idx].ident);
 }
 
-bool KqueueManager::isReadEvent(int idx) {}
+bool KqueueManager::isReadEvent(int idx) {
+  return m_events_list[idx].filter == EVFILT_READ;
+}
 
 #endif

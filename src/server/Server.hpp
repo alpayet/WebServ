@@ -7,6 +7,7 @@
 
 #include "poll/OsSelector.hpp"
 
+class ClientSocket;
 class ServerConfig;
 class ServerSocket;
 
@@ -16,17 +17,21 @@ extern volatile sig_atomic_t running;
 
 class Server {
  public:
-  explicit Server(const std::vector<ServerConfig>&);
+  explicit Server(const std::vector<ServerConfig>& config);
   void run();
   ~Server();
 
  private:
   Server();
-  Server(const Server&);
-  Server& operator=(const Server&);
+  Server(const Server& server);
+  Server& operator=(const Server& server);
 
-  std::map<int, ServerSocket*> m_sockets;
+  void handleNewClient(int fd);
+  void handleRequest(const ClientSocket* client);
+
   EventManager m_event_manager;
+  std::map<int, ServerSocket*> m_server_sockets;
+  std::map<int, ClientSocket*> m_client_sockets;
 
   // To see with Marylene
   // Virtual hosting?

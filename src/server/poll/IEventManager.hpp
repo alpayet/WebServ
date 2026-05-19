@@ -13,7 +13,7 @@ class IEventManager {
   virtual int waitForEvents(int timeout_ms) = 0;
 
   virtual void* getUserData(int index) = 0;
-  virtual uintptr_t getEventFd(int index) = 0;
+  virtual int getEventFd(int index) = 0;
   virtual bool isReadEvent(int index) = 0;
 };
 

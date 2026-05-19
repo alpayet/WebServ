@@ -31,7 +31,6 @@ class ServerSocket {
   int m_socket_fd;
   std::vector<ServerConfig> m_configs;
 
-  void init();
   void bindServerSocket(addrinfo*);
 };
 

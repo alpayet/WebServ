@@ -20,7 +20,19 @@ ServerSocket::ServerSocket()
 
 ServerSocket::ServerSocket(const std::string& host, const int port)
     : m_host(host), m_port(port), m_socket_fd(-1), m_configs() {
-  init();
+  addrinfo hints = {};
+  addrinfo* serv_info;
+
+  hints.ai_flags = AI_PASSIVE;
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;
+
+  const int status = getaddrinfo(
+      m_host.c_str(), ft::intToString(m_port).c_str(), &hints, &serv_info);
+
+  if (status != 0) throw std::runtime_error(gai_strerror(status));
+
+  bindServerSocket(serv_info);
 }
 
 ServerSocket::~ServerSocket() {
@@ -72,20 +84,4 @@ void ServerSocket::bindServerSocket(addrinfo* serv_info) {
 
   freeaddrinfo(serv_info);
   throw std::runtime_error("ServerSocket: bind/listen failed");
-}
-
-void ServerSocket::init() {
-  addrinfo hints = {};
-  addrinfo* serv_info;
-
-  hints.ai_flags = AI_PASSIVE;
-  hints.ai_family = AF_UNSPEC;
-  hints.ai_socktype = SOCK_STREAM;
-
-  const int status = getaddrinfo(
-      m_host.c_str(), ft::intToString(m_port).c_str(), &hints, &serv_info);
-
-  if (status != 0) throw std::runtime_error(gai_strerror(status));
-
-  bindServerSocket(serv_info);
 }

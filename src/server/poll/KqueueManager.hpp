@@ -8,7 +8,7 @@
 
 #include "IEventManager.hpp"
 
-#define N_EVENTS_BUF 64
+#define N_KQ_EVENTS_BUF 64
 
 struct kevent;
 
@@ -23,16 +23,15 @@ class KqueueManager : public IEventManager {
   int waitForEvents(int timeout_ms);
 
   void* getUserData(int index);
-  uintptr_t getEventFd(int index);
+  int getEventFd(int index);
   bool isReadEvent(int index);
 
  private:
-  KqueueManager(const KqueueManager&);
-  KqueueManager& operator=(const KqueueManager&);
+  KqueueManager(const KqueueManager& kqm);
+  KqueueManager& operator=(const KqueueManager& kqm);
 
   int m_kqueue_fd;
-  struct kevent m_events_list[N_EVENTS_BUF];
-  int m_nb_events;
+  struct kevent m_events_list[N_KQ_EVENTS_BUF];
 };
 
 #endif

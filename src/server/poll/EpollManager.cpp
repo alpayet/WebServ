@@ -1,14 +1,16 @@
 #include "EpollManager.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 #ifdef __linux__
 
 #include <unistd.h>
 
+#include <cstring>
 #include <iostream>
 
-EpollManager::EpollManager() : m_epoll_fd(-1), m_epevents() {
+EpollManager::EpollManager() : m_epoll_fd(-1), m_events_list() {
   std::cout << "Linus OS EpollManager active\n";
   m_epoll_fd = epoll_create(1);
   if (m_epoll_fd == -1) throw std::runtime_error("epoll_create failed");
@@ -28,15 +30,43 @@ EpollManager::~EpollManager() {
 }
 
 bool EpollManager::addSocket(const int fd, const int filter, void* udata) {
+  (void)filter;
+  struct epoll_event ev = {};
+  std::memset(&ev, 0, sizeof(ev));
+
+  const int ep_filter = filter == TYPE_READ ? EPOLLIN : EPOLLOUT;
+  ev.events = ep_filter;
+  ev.data.ptr = udata;
+
+  if (epoll_ctl(m_epoll_fd, EPOLL_CTL_ADD, fd, &ev) == -1) return false;
+
+  std::cout << "epoll ctl add, socket add fd: " << fd << "\n";
+  return true;
 }
 
-bool EpollManager::removeSocket(const int fd) {}
+bool EpollManager::removeSocket(const int fd) {
+  struct epoll_event ev = {};
+  std::memset(&ev, 0, sizeof(ev));
 
-int EpollManager::waitForEvents(const int timeout_ms) {}
+  if (epoll_ctl(m_epoll_fd, EPOLL_CTL_DEL, fd, &ev)) return false;
 
-void* EpollManager::getUserData(const int idx) {}
+  std::cout << "epoll ctl del, socket removed fd: " << fd << "\n";
+  return true;
+}
 
-uintptr_t EpollManager::getEventFd(const int idx) {}
+int EpollManager::waitForEvents(const int timeout_ms) {
+  std::cout << "waitForEvents timeout_ms: " << timeout_ms << "\n";
+  int n_ev = epoll_wait(m_epoll_fd, m_events_list, N_EP_EVENTS_BUF, timeout_ms);
+  std::cout << "waitForEvents 2 timeout_ms: " << timeout_ms << "\n";
+
+  return n_ev;
+}
+
+void* EpollManager::getUserData(const int idx) {
+  return m_events_list[idx].data.ptr;
+}
+
+int EpollManager::getEventFd(const int idx) {}
 
 bool EpollManager::isReadEvent(const int idx) {}
 

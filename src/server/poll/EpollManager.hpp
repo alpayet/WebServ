@@ -8,6 +8,8 @@
 
 #include "IEventManager.hpp"
 
+#define N_EP_EVENTS_BUF 64
+
 class EpollManager : public IEventManager {
  public:
   EpollManager();
@@ -19,15 +21,15 @@ class EpollManager : public IEventManager {
   int waitForEvents(int timeout_ms);
 
   void* getUserData(int index);
-  uintptr_t getEventFd(int index);
+  int getEventFd(int index);
   bool isReadEvent(int index);
 
  private:
-  EpollManager(const EpollManager&);
-  EpollManager& operator=(const EpollManager&);
+  EpollManager(const EpollManager& epm);
+  EpollManager& operator=(const EpollManager& epm);
 
   int m_epoll_fd;
-  std::vector<struct epoll_event> m_epevents;
+  struct epoll_event m_events_list[N_EP_EVENTS_BUF];
 };
 #endif
 
