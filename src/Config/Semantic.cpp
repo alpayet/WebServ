@@ -8,7 +8,7 @@
 
 #include "Config/keywords.h"
 #include "Server/Server.hpp"
-
+#include <sstream>
 
 // TODO: check if enough instructions in file
 /**
@@ -20,11 +20,168 @@
  * 
  */
 
-// TODO: check if keyword already exist and append
+bool	initServer(Server s, p_Server ps)
+{
+	std::vector<p_Location>::const_iterator l_ite = ps.locations.end();
+	for (std::vector<p_Location>::const_iterator l_it = ps.locations.begin() ; l_it != l_ite ; *l_it++)
+	{
+		Location loc;
 
+		loc.path = l_it->path;
+
+		loc.met_get = true;
+		loc.met_post = true;
+		loc.met_del = true;
+
+		loc.autoindex = false;
+
+		std::vector<p_Directive>::const_iterator ite = l_it->directives.end();
+		for (std::vector<p_Directive>::const_iterator it = l_it->directives.begin() ; it != ite ; *it++)
+		{
+			if (it->name == "root")
+			{
+				loc.root = it->values[0];
+			}
+			else if (it->name == "index")
+			{
+				loc.index = it->values[0];
+			}
+			else if (it->name == "proxy_pass")
+			{
+				loc.cgi = it->values[0];
+			}
+			else if (it->name == "limit_except")
+			{
+				loc.met_get = false;
+				loc.met_post = false;
+				loc.met_del = false;
+
+				for (size_t i = 0 ; i < it->values.size() ; ++i)
+				{
+					if (it->values[i] == "GET")
+						loc.met_get = true;
+					else if (it->values[i] == "POST")
+						loc.met_post = true;
+					else if (it->values[i] == "DEL")
+						loc.met_del = true;
+					else
+					{
+						std::cerr << "Error\nMethods in limit_except doesn't exist" << std::endl;
+						return false;
+					}
+				}
+			}
+			else if (it->name == "autoindex")
+			{
+				if (it->values[0].tolower() == "on")
+					loc.autoindex = true;
+				else if (it->values[0].tolower() == "off")
+					loc.autoindex = false;
+				else
+				{
+					std::cerr << "Error\nAutoindex should be 'on' or 'off'" << std::endl;
+					return false;
+				}
+			}
+			else if (it->name == "return")
+			{
+				std::istringstream	iss(it->values[0]);
+				int		ret;
+				iss >> ret;
+				if (ret < 100 || ret > 599)
+				{
+					std::cerr << "Error\nNot a valid error page number" << std::endl;
+					return false;
+				}
+				loc.ret = ret;
+			}
+		}
+		s.addLocation(loc);
+	}
+
+	return true;
+}
+
+// TODO: check if keyword already exist and append
+bool	initServer(Server s, p_Server ps)
+{
+	std::vector<p_Directive>::const_iterator ite = ps.directives.end();
+	for (std::vector<p_Directive>::const_iterator it = ps.directives.begin() ; it != ite ; *it++)
+	{
+		if (it->name == "listen")
+		{
+			std::istringstream	iss(it->values[0]);
+			int	port;
+			iss >> port;
+			if (port < 1024 || port > 65535)
+			{
+				std::cerr << "Error\nListen doesnt have a valid port number" << std::endl;
+				return false;
+			}
+			s.setPort(port);
+		}
+		else if (it->name == "interface")
+		{
+			std::istringstream	iss(it->values[0]);
+			int		nb;
+			char	del;
+			for (int i = 0 ; i < 3 ; ++i)
+			{
+				iss >> nb;
+				iss >> del;
+				if (nb < 0 || nb > 255 || del != '.')
+				{
+					std::cerr << "Error\nInterface IP wrongly formatted" << std::endl;
+					return false;
+				}
+			}
+			iss >> nb;
+			iss >> del;
+			if (nb < 0 || nb > 255 || del != 0)
+			{
+				std::cerr << "Error\nInterface IP wrongly formatted" << std::endl;
+				return false;
+			}
+			s.setInterface(it->values[0]);
+		}
+		else if (it->name == "error_page")
+		{
+			std::istringstream	iss(it->values[0]);
+			int		ret;
+			iss >> ret;
+			if (ret < 100 || ret > 599)
+			{
+				std::cerr << "Error\nNot a valid error page number" << std::endl;
+				return false;
+			}
+			s.addErrPage(ret, it->values[1]);
+		}
+		else if (it->name == "client_max_body_size")
+		{
+			std::istringstream	iss(it->values[0]);
+			long		size;
+			iss >> size;
+			if (size < 0 )
+			{
+				std::cerr << "Error\nClient body size can't be negative" << std::endl;
+				return false;
+			}
+			s.setClientMaxBody(size);
+		}
+		else if (it->name == "root")
+		{
+			s.setRoot(it->values[0]);
+		}
+		else if (it->name == "index")
+		{
+			s.setIndex(it->values[0]);
+		}
+	}
+
+	return true;
+}
 
 // TODO: check if those who need number are indeed numbers
-
 
 bool	checkDupLoc(p_Server s)
 {

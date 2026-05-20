@@ -9,7 +9,7 @@
 class Config
 {
 	public:
-		Config(std::string filename);
+		Config(std::string filename); // TODO: use Semantic to init
 		std::vector<Server>	getServers() { return m_servers; };
 	private:
 		std::vector<Server> m_servers;
