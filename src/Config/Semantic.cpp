@@ -9,18 +9,20 @@
 #include "Config/keywords.h"
 #include "Server/Server.hpp"
 #include <sstream>
+#include <cctype>
+#include <algorithm>
 
 // TODO: check if enough instructions in file
 /**
  * server -> need at least 1
- * listen -> might default to 80
+ * listen -> might default to 8080
  * location -> path always start with '/'
  * root -> maybe force no end '/'
  * interface -> maybe be multi instead of uniq
  * 
  */
 
-bool	initServer(Server s, p_Server ps)
+bool	initLocation(Server s, p_Server ps)
 {
 	std::vector<p_Location>::const_iterator l_ite = ps.locations.end();
 	for (std::vector<p_Location>::const_iterator l_it = ps.locations.begin() ; l_it != l_ite ; *l_it++)
@@ -44,7 +46,10 @@ bool	initServer(Server s, p_Server ps)
 			}
 			else if (it->name == "index")
 			{
-				loc.index = it->values[0];
+				for (size_t i = 0 ; i < it->values.size() ; ++i)
+				{
+					loc.index.push_back(it->values[i]);
+				}
 			}
 			else if (it->name == "proxy_pass")
 			{
@@ -73,9 +78,9 @@ bool	initServer(Server s, p_Server ps)
 			}
 			else if (it->name == "autoindex")
 			{
-				if (it->values[0].tolower() == "on")
+				if (it->values[0] == "on")
 					loc.autoindex = true;
-				else if (it->values[0].tolower() == "off")
+				else if (it->values[0] == "off")
 					loc.autoindex = false;
 				else
 				{
@@ -102,9 +107,12 @@ bool	initServer(Server s, p_Server ps)
 	return true;
 }
 
-// TODO: check if keyword already exist and append
 bool	initServer(Server s, p_Server ps)
 {
+	s.setPort(8080);
+	s.setInterface("0.0.0.0");
+	s.setClientMaxBody(1000000);
+
 	std::vector<p_Directive>::const_iterator ite = ps.directives.end();
 	for (std::vector<p_Directive>::const_iterator it = ps.directives.begin() ; it != ite ; *it++)
 	{

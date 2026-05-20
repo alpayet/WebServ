@@ -39,12 +39,12 @@ class Server
 
 		/** SETTERS */
 		void	setPort(int port) { m_port = port; };
-		void	setInterface(std::string& interface) { m_interface = interface ; };
-		void	addErrPage(int err_nb, std::string& err_path) { m_error_pages[err_nb] = err_path; };
+		void	setInterface(const std::string& interface) { m_interface = interface ; };
+		void	addErrPage(int err_nb, const std::string& err_path) { m_error_pages[err_nb] = err_path; };
 		void	addLocation(Location location) { m_locations.push_back(location); };
 		void	setClientMaxBody(long max_body) { m_max_body = max_body; };
-		void	setRoot(std::string& root) { m_root = root ; };
-		void	setIndex(std::string& index) { m_index = index ; };
+		void	setRoot(const std::string& root) { m_root = root ; };
+		void	setIndex(const std::string& index) { m_index = index ; };
 
 		void	setup();
 
