@@ -15,18 +15,21 @@ class EpollManager : public IEventManager {
   EpollManager();
   ~EpollManager();
 
-  bool addSocket(int fd, int filter, void* udata);
+  bool addSocket(int fd, int filter);
   bool removeSocket(int fd);
 
   int waitForEvents(int timeout_ms);
 
-  void* getUserData(int index);
   int getEventFd(int index);
-  bool isReadEvent(int index);
 
  private:
   EpollManager(const EpollManager& epm);
   EpollManager& operator=(const EpollManager& epm);
+
+  struct EpollData {
+    int fd;
+    void* ptr;
+  };
 
   int m_epoll_fd;
   struct epoll_event m_events_list[N_EP_EVENTS_BUF];

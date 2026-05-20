@@ -4,13 +4,13 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "../utils/server_utils.hpp"
+#include "../../utils/server_utils.hpp"
+#include "../Server.hpp"
 
 // interdit
 #include <arpa/inet.h>
 
 #include <iostream>
-#include <ostream>
 #include <stdexcept>
 
 ClientSocket::ClientSocket() : m_socket_fd(-1), m_ip(0), m_buf() {}
@@ -49,6 +49,4 @@ ClientSocket::~ClientSocket() {
 
 int ClientSocket::getFd() const { return m_socket_fd; }
 
-void ClientSocket::setFd(const int new_fd) { m_socket_fd = new_fd; }
-
-void ClientSocket::handleKnownClient(ClientSocket* client) {}
+void ClientSocket::handleEvent(Server* server) { server->handleRequest(this); }

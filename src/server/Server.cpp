@@ -7,28 +7,32 @@
 #include <cstring>
 #include <iostream>
 
-#include "ClientSocket.hpp"
 #include "ServerConfig.hpp"
-#include "ServerSocket.hpp"
+#include "sockets/ClientSocket.hpp"
+#include "sockets/ISocket.hpp"
+#include "sockets/ServerSocket.hpp"
 
-static int g_i = 0;
-
-Server::Server() : m_event_manager(), m_server_sockets(), m_client_sockets() {}
+Server::Server() : m_ports_used(), m_event_manager(), m_sockets() {}
 
 Server::Server(const std::vector<ServerConfig>& configs)
-    : m_event_manager(), m_server_sockets(), m_client_sockets() {
-  for (std::size_t i = 0; i < configs.size(); ++i) {
-    int port = configs[i].getPort();
+    : m_ports_used(), m_event_manager(), m_sockets() {
+  m_sockets.resize(1024, NULL);
 
-    if (m_server_sockets.find(port) != m_server_sockets.end()) {
+  for (std::vector<ServerConfig>::const_iterator it_conf = configs.begin();
+       it_conf != configs.end(); ++it_conf) {
+    const int port = it_conf->getPort();
+
+    if (m_ports_used.find(port) != m_ports_used.end()) {
       std::cout << "Port " << port << " already used.\n";
       continue;
     }
 
     try {
-      ServerSocket* socket = new ServerSocket(configs[i].getHost(), port);
-      m_server_sockets.insert(std::make_pair(port, socket));
-      m_event_manager.addSocket(socket->getFd(), IEventManager::TYPE_READ, 0);
+      ServerSocket* socket = new ServerSocket(it_conf->getHost(), port);
+
+      std::cout << "New server sock, fd: " << socket->getFd() << "\n";
+      setSocket(socket->getFd(), socket);
+      m_event_manager.addSocket(socket->getFd(), IEventManager::TYPE_READ);
       // gerer erreur
     } catch (const std::exception& e) {
       std::cerr << "Cannot create server socket on port " << port << ": "
@@ -39,28 +43,34 @@ Server::Server(const std::vector<ServerConfig>& configs)
 }
 
 Server::~Server() {
-  std::map<int, ServerSocket*>::iterator it;
-  for (it = m_server_sockets.begin(); it != m_server_sockets.end(); ++it) {
-    delete it->second;
+  std::vector<ISocket*>::iterator it;
+  for (it = m_sockets.begin(); it != m_sockets.end(); ++it) {
+    delete *it;
   }
+  m_sockets.clear();
+}
 
-  std::map<int, ClientSocket*>::iterator it2;
-  for (it2 = m_client_sockets.begin(); it2 != m_client_sockets.end(); ++it2) {
-    delete it2->second;
+ISocket* Server::getSocket(const int fd) const {
+  if (fd < 0 || static_cast<std::size_t>(fd) >= m_sockets.size()) return 0;
+  return m_sockets[static_cast<std::size_t>(fd)];
+}
+
+void Server::setSocket(const int fd, ISocket* socket) {
+  if (fd < 0) return;
+  if (static_cast<std::size_t>(fd) >= m_sockets.size()) {
+    m_sockets.resize(static_cast<std::size_t>(fd) + 10, 0);
   }
+  m_sockets[static_cast<std::size_t>(fd)] = socket;
 }
 
 void Server::handleNewClient(const int fd) {
-  if (m_client_sockets.find(fd) != m_client_sockets.end()) {
-    std::cout << "Connexion on socket fd: " << fd << " already created.\n";
-  }
+  std::cout << "New client connexion from socket: " << fd << "\n";
 
   try {
     ClientSocket* socket = new ClientSocket(fd);
-    m_client_sockets.insert(std::make_pair(fd, socket));
-    m_event_manager.addSocket(socket->getFd(), IEventManager::TYPE_READ,
-                              socket);
-    g_i += 1;
+
+    setSocket(socket->getFd(), socket);
+    m_event_manager.addSocket(socket->getFd(), IEventManager::TYPE_READ);
     // gerer erreur
   } catch (const std::exception& e) {
     std::cerr << "Cannot create client socket on port " << fd << ": "
@@ -69,8 +79,11 @@ void Server::handleNewClient(const int fd) {
 }
 
 void Server::handleRequest(const ClientSocket* client) {
-  std::cout << "Handling request from client fd: " << client->getFd() << "\n";
-  sleep(1874919423);
+  if (client)
+    std::cout << "Handling request from client fd: " << client->getFd() << "\n";
+  else
+    std::cout << "No client found handle req\n";
+  sleep(9999999);
 }
 
 void Server::run() {
@@ -78,7 +91,6 @@ void Server::run() {
   while (running) {
     const int n_events = m_event_manager.waitForEvents(-1);
 
-    std::cout << "n ev : " << n_events << "\n";
     if (n_events == -1) {
       if (errno == EINTR) continue;
       std::cerr << "Error waiting, either kqueue or epoll\n";
@@ -86,11 +98,15 @@ void Server::run() {
     }
 
     for (int i = 0; i < n_events; ++i) {
-      void* data = m_event_manager.getUserData(i);
-      if (!data && g_i < 1)
-        handleNewClient(m_event_manager.getEventFd(i));
+      const int fd = m_event_manager.getEventFd(i);
+      ISocket* socket = getSocket(fd);
+
+      if (socket) std::cout << "Data received from " << socket->getFd() << "\n";
+
+      if (socket)
+        socket->handleEvent(this);
       else
-        handleRequest(static_cast<ClientSocket*>(data));
+        std::cout << "No socket in run\n";
     }
   }
 }

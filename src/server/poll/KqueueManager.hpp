@@ -17,14 +17,12 @@ class KqueueManager : public IEventManager {
   KqueueManager();
   ~KqueueManager();
 
-  bool addSocket(int fd, int filter, void* udata);
+  bool addSocket(int fd, int filter);
   bool removeSocket(int fd);
 
   int waitForEvents(int timeout_ms);
 
-  void* getUserData(int index);
   int getEventFd(int index);
-  bool isReadEvent(int index);
 
  private:
   KqueueManager(const KqueueManager& kqm);

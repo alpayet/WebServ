@@ -6,18 +6,22 @@
 #include <string>
 #include <vector>
 
+#include "ISocket.hpp"
+
 class ServerConfig;
 
 #define BACKLOG 10
 
-class ServerSocket {
+class ServerSocket : public ISocket {
  public:
-  explicit ServerSocket(const std::string&, int);
+  explicit ServerSocket(const std::string& host, int port);
   ~ServerSocket();
+
+  virtual int getFd() const;
+  virtual void handleEvent(Server* server);
 
   std::string getHost() const;
   int getPort() const;
-  int getFd() const;
 
  private:
   ServerSocket();

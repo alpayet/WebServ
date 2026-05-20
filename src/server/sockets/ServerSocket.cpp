@@ -7,11 +7,12 @@
 
 #include <cerrno>
 #include <cstring>
-#include <exception>
 #include <iostream>
+#include <stdexcept>
 
-#include "../utils/utils.hpp"
-#include "ServerConfig.hpp"
+#include "../../utils/utils.hpp"
+#include "../Server.hpp"
+#include "../ServerConfig.hpp"
 
 const std::string ServerSocket::DEFAULT_HOST = "0.0.0.0";
 
@@ -83,5 +84,9 @@ void ServerSocket::bindServerSocket(addrinfo* serv_info) {
   }
 
   freeaddrinfo(serv_info);
-  throw std::runtime_error("ServerSocket: bind/listen failed");
+  throw std::runtime_error("All tries to bind host: " + getHost() + " failed");
+}
+
+void ServerSocket::handleEvent(Server* server) {
+  server->handleNewClient(this->getFd());
 }

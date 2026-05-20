@@ -28,11 +28,11 @@ KqueueManager::~KqueueManager() {
   if (m_kqueue_fd != -1) close(m_kqueue_fd);
 }
 
-bool KqueueManager::addSocket(const int fd, const int filter, void* udata) {
+bool KqueueManager::addSocket(const int fd, const int filter) {
   struct kevent ev;
   const int kq_filter = filter == TYPE_READ ? EVFILT_READ : EVFILT_WRITE;
 
-  EV_SET(&ev, fd, kq_filter, EV_ADD | EV_ENABLE, 0, 0, udata);
+  EV_SET(&ev, fd, kq_filter, EV_ADD | EV_ENABLE, 0, 0, 0);
 
   if (kevent(m_kqueue_fd, &ev, 1, NULL, 0, 0) == -1) return false;
 
@@ -61,16 +61,8 @@ int KqueueManager::waitForEvents(const int timeout_ms) {
   return kevent(m_kqueue_fd, NULL, 0, m_events_list, N_KQ_EVENTS_BUF, 0);
 }
 
-void* KqueueManager::getUserData(const int idx) {
-  return m_events_list[idx].udata;
-}
-
-int KqueueManager::getEventFd(int idx) {
-  return static_cast<int>(m_events_list[idx].ident);
-}
-
-bool KqueueManager::isReadEvent(int idx) {
-  return m_events_list[idx].filter == EVFILT_READ;
+int KqueueManager::getEventFd(const int index) {
+  return static_cast<int>(m_events_list[index].ident);
 }
 
 #endif

@@ -3,7 +3,8 @@
 #files
 SRC_FILES = \
 	main.cpp \
-	server/Server.cpp server/ServerConfig.cpp server/ServerSocket.cpp server/ClientSocket.cpp \
+	server/Server.cpp server/ServerConfig.cpp \
+	server/sockets/ServerSocket.cpp server/sockets/ClientSocket.cpp \
 	server/poll/KqueueManager.cpp server/poll/EpollManager.cpp \
 	utils/utils.cpp utils/server_utils.cpp
 

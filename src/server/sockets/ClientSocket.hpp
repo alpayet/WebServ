@@ -3,15 +3,15 @@
 
 #include <stdint.h>
 
-class ClientSocket {
+#include "ISocket.hpp"
+
+class ClientSocket : public ISocket {
  public:
   explicit ClientSocket(int fd);
   ~ClientSocket();
 
-  int getFd() const;
-  void setFd(int new_fd);
-
-  static void handleKnownClient(ClientSocket* client);
+  virtual int getFd() const;
+  virtual void handleEvent(Server* server);
 
  private:
   ClientSocket();
