@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 19:49:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/20 12:23:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ namespace Http
 	{
 		enum Step
 		{
-			startLine,
+			start,
+			requestLine,
 			header,
 			body,
 			complete
@@ -29,7 +30,7 @@ namespace Http
 
 		std::size_t		pos;
 		Step			step;
-		Http::Request	request;
+		Request	request;
 	};
 }
 

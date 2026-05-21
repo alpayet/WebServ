@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 20:40:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/20 10:11:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ namespace Http
 		static const size_t methods_nb = sizeof(supported_methods) / sizeof(supported_methods[0]);
 		static const std::set<std::string> supported(supported_methods, supported_methods + methods_nb);
 
-		return supported.find(method) != supported.end();
+		return (supported.find(method) != supported.end());
 	}
 }

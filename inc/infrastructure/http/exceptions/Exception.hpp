@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 20:23:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/21 17:03:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ namespace Http
 			enum ErrorCode
 			{
 				invalidLineBreak,
-				malformedStartLine,
+				malformedRequestLine,
+				malformedHeaderLine,
 				invalidMethod,
 				invalidTarget,
 				invalidVersion,
