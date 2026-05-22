@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 19:46:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:03:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <string>
 
-namespace Http
+namespace http
 {
 	bool	isMethodSupported(std::string const	&method);
 }

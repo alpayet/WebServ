@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/22 20:08:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPREQUEST_HPP
-# define HTTPREQUEST_HPP
-
-# include <string>
-# include <map>
+#include "infrastructure/http/Handler.hpp"
+#include "infrastructure/http/Context.hpp"
 
 namespace http
 {
-	struct Request
-	{
-		std::string							method;
-		std::string							target;
-		std::string							protocol;
-		std::map<std::string, std::string>	headers;
-	};
-}
+	Handler::Handler(void)
+	{}
 
-#endif
+	ITransferContext	*Handler::createClientContext(void)
+	{
+		return (new Context());
+	}
+
+	void	Handler::processClient(Client &client)
+	{
+
+	}
+
+
+}

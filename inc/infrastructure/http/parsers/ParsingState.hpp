@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/20 12:23:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "infrastructure/http/Request.hpp"
 
-namespace Http
+namespace http
 {
 	struct ParsingState
 	{
@@ -30,7 +30,7 @@ namespace Http
 
 		std::size_t		pos;
 		Step			step;
-		Request	request;
+		Request			request;
 	};
 }
 

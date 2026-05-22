@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   ITransferContext.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/22 17:01:50 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/22 17:02:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPREQUEST_HPP
-# define HTTPREQUEST_HPP
+#ifndef ITRANSFERCONTEXT_HPP
+# define ITRANSFERCONTEXT_HPP
 
-# include <string>
-# include <map>
-
-namespace http
+class ITransferContext
 {
-	struct Request
-	{
-		std::string							method;
-		std::string							target;
-		std::string							protocol;
-		std::map<std::string, std::string>	headers;
-	};
-}
+	public:
+		ITransferContext(void);
+		ITransferContext(ITransferContext const &src);
+		~ITransferContext(void);
+
+		ITransferContext	&operator=(ITransferContext const &rhs);
+
+	private:
+
+};
 
 #endif

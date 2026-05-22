@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/21 17:04:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ namespace
 	}
 }
 
-namespace Http
+namespace http
 {
 	char const			_crlf[] = "\r\n";
 	std::size_t const	_crlfSize = 2;

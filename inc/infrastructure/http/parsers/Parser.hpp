@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/21 17:03:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <vector>
 # include <map>
 
-namespace Http
+namespace http
 {
 	class Parser
 	{

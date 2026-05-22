@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
+/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/22 17:54:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPREQUEST_HPP
-# define HTTPREQUEST_HPP
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
 
-# include <string>
-# include <map>
+# include <vector>
 
-namespace http
+class ITransferContext;
+
+class Client
 {
-	struct Request
-	{
-		std::string							method;
-		std::string							target;
-		std::string							protocol;
-		std::map<std::string, std::string>	headers;
-	};
-}
+	public:
+		Client(void);
+		Client(Client const &src);
+		~Client(void);
+
+		Client	&operator=(Client const &rhs);
+
+	private:
+		int					_socketFd;
+		std::vector<char>	_readBuf;
+		ITransferContext	*_transfertContext;
+};
+
 
 #endif

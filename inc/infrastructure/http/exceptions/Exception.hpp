@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/21 17:03:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:03:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <exception>
 # include <string>
 
-namespace Http
+namespace http
 {
 	class Exception : public std::exception
 	{

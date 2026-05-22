@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   ITransfertHandler.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 17:11:06 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/22 18:04:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-# define CLIENT_HPP
+#ifndef ITRANSFERTHANDLER_HPP
+# define ITRANSFERTHANDLER_HPP
 
-# include "infrastructure/parsers/ParsingContext.hpp"
-# include <vector>
+#include "infrastructure/Client.hpp"
 
-class Client
+class ITransferContext;
+
+class ITransfertHandler
 {
 	public:
-		Client(void);
-		Client(Client const &src);
-		~Client(void);
+		virtual ~ITransfertHandler() {}
 
-		Client	&operator=(Client const &rhs);
+		virtual ITransferContext*	createClientContext() = 0;
 
-	private:
-		std::vector<char>	_readBuf;
-		HttpParsingState		_parsingContext;
-		int					_socketFd;
+		virtual void	processClient(Client &client) = 0;
 };
-
 
 #endif
