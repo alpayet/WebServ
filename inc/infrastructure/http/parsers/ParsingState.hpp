@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 20:04:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/24 23:07:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPPARSINGSTATE_HPP
-# define HTTPPARSINGSTATE_HPP
+#define HTTPPARSINGSTATE_HPP
 
-# include "infrastructure/http/Request.hpp"
+#include "infrastructure/http/Request.hpp"
 
 namespace http
 {
@@ -28,10 +28,10 @@ namespace http
 			complete
 		};
 
-		std::size_t		pos;
-		Step			step;
-		Request			request;
+		std::size_t pos;
+		Step		step;
+		Request		request;
 	};
-}
+} // namespace http
 
-#endif
+#endif // HTTPPARSINGSTATE_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 20:08:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/24 23:14:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 
 namespace http
 {
-	Handler::Handler(void)
-	{}
+	Handler::Handler(void) {}
 
-	ITransferContext	*Handler::createClientContext(void)
-	{
-		return (new Context());
-	}
+	ITransferContext *Handler::createClientContext(void) { return (new Context()); }
 
-	void	Handler::processClient(Client &client)
-	{
+	void Handler::processClient(Client &client) {}
 
-	}
-
-
-}
+} // namespace http

@@ -6,24 +6,23 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:01:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/22 17:02:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/24 23:10:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITRANSFERCONTEXT_HPP
-# define ITRANSFERCONTEXT_HPP
+#define ITRANSFERCONTEXT_HPP
 
 class ITransferContext
 {
-	public:
-		ITransferContext(void);
-		ITransferContext(ITransferContext const &src);
-		~ITransferContext(void);
+  public:
+	ITransferContext(void);
+	ITransferContext(ITransferContext const &src);
+	~ITransferContext(void);
 
-		ITransferContext	&operator=(ITransferContext const &rhs);
+	ITransferContext &operator=(ITransferContext const &rhs);
 
-	private:
-
+  private:
 };
 
-#endif
+#endif // ITRANSFERCONTEXT_HPP
