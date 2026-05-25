@@ -22,7 +22,7 @@
  * 
  */
 
-bool	initLocation(Server s, p_Server ps)
+void	initLocation(Server s, p_Server ps)
 {
 	std::vector<p_Location>::const_iterator l_ite = ps.locations.end();
 	for (std::vector<p_Location>::const_iterator l_it = ps.locations.begin() ; l_it != l_ite ; *l_it++)
@@ -71,8 +71,7 @@ bool	initLocation(Server s, p_Server ps)
 						loc.met_del = true;
 					else
 					{
-						std::cerr << "Error\nMethods in limit_except doesn't exist" << std::endl;
-						return false;
+						throw SemanticException("Methods '" + it->values[i] + "' in 'limit_except' doesn't exist");
 					}
 				}
 			}
@@ -84,8 +83,7 @@ bool	initLocation(Server s, p_Server ps)
 					loc.autoindex = false;
 				else
 				{
-					std::cerr << "Error\nAutoindex should be 'on' or 'off'" << std::endl;
-					return false;
+					throw SemanticException("Autoindex should be 'on' or 'off'");
 				}
 			}
 			else if (it->name == "return")
@@ -95,19 +93,16 @@ bool	initLocation(Server s, p_Server ps)
 				iss >> ret;
 				if (ret < 100 || ret > 599)
 				{
-					std::cerr << "Error\nNot a valid error page number" << std::endl;
-					return false;
+					throw SemanticException ("Not a valid error page number");
 				}
 				loc.ret = ret;
 			}
 		}
 		s.addLocation(loc);
 	}
-
-	return true;
 }
 
-bool	initServer(Server s, p_Server ps)
+void	initServer(Server s, p_Server ps)
 {
 	s.setPort(8080);
 	s.setInterface("0.0.0.0");
@@ -123,8 +118,7 @@ bool	initServer(Server s, p_Server ps)
 			iss >> port;
 			if (port < 1024 || port > 65535)
 			{
-				std::cerr << "Error\nListen doesnt have a valid port number" << std::endl;
-				return false;
+				throw SemanticException ("Listen doesnt have a valid port number");
 			}
 			s.setPort(port);
 		}
@@ -139,16 +133,14 @@ bool	initServer(Server s, p_Server ps)
 				iss >> del;
 				if (nb < 0 || nb > 255 || del != '.')
 				{
-					std::cerr << "Error\nInterface IP wrongly formatted" << std::endl;
-					return false;
+					throw SemanticException ("Interface IP wrongly formatted");
 				}
 			}
 			iss >> nb;
 			iss >> del;
 			if (nb < 0 || nb > 255 || del != 0)
 			{
-				std::cerr << "Error\nInterface IP wrongly formatted" << std::endl;
-				return false;
+				throw SemanticException ("Error\nInterface IP wrongly formatted");
 			}
 			s.setInterface(it->values[0]);
 		}
@@ -159,8 +151,7 @@ bool	initServer(Server s, p_Server ps)
 			iss >> ret;
 			if (ret < 100 || ret > 599)
 			{
-				std::cerr << "Error\nNot a valid error page number" << std::endl;
-				return false;
+				throw SemanticException ("Not a valid error page number");
 			}
 			s.addErrPage(ret, it->values[1]);
 		}
@@ -171,8 +162,7 @@ bool	initServer(Server s, p_Server ps)
 			iss >> size;
 			if (size < 0 )
 			{
-				std::cerr << "Error\nClient body size can't be negative" << std::endl;
-				return false;
+				throw SemanticException ("Client body size can't be negative");
 			}
 			s.setClientMaxBody(size);
 		}
@@ -185,13 +175,11 @@ bool	initServer(Server s, p_Server ps)
 			s.setIndex(it->values[0]);
 		}
 	}
-
-	return true;
 }
 
 // TODO: check if those who need number are indeed numbers
 
-bool	checkDupLoc(p_Server s)
+void	checkDupLoc(p_Server s)
 {
 	size_t	nb_locs = s.locations.size();
 	std::string	path1, path2;
@@ -204,15 +192,13 @@ bool	checkDupLoc(p_Server s)
 			path2 = s.locations[j].path;
 			if (path1 == path2)
 			{
-				std::cerr << "Error\nMultiple location blocks with the same path" << std::endl;
-				return false;
+				throw SemanticException ("Multiple location blocks with the same path");
 			}
 		}
 	}
-	return true;
 }
 
-bool	checkOverlap(p_Config c)
+void	checkOverlap(p_Config c)
 {
 	size_t	nb_servers = c.servers.size();
 	std::string	port1, port2;
@@ -250,17 +236,14 @@ bool	checkOverlap(p_Config c)
 			{
 				if (ip1 == ip2)
 				{
-					std::cerr << "Error\nSame couple interface:port for different servers" << std::endl;
-					return false;
+					throw SemanticException ("Same couple interface:port for different servers");
 				}
 				if (ip1 == "0.0.0.0" || ip2 == "0.0.0.0")
 				{
-					std::cerr << "Error\nOverlapping of IP addresses with same port for different servers" << std::endl;
-					return false;
+					throw SemanticException ("Overlapping of IP addresses with same port for different servers");
 				}
 			}
 		}
 	}
-	return true;
 }
 

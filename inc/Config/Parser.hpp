@@ -6,7 +6,7 @@
 # include <string>
 # include <map>
 # include <iterator>
-# include <exception>
+# include "Config/Config.hpp"
 
 struct p_Directive
 {
@@ -30,6 +30,12 @@ struct p_Config
 {
 	std::vector<p_Server> servers;
 };
+		
+class ParserFormatException : public ConfigException
+{
+	public:
+		ParserFormatException(const std::string& msg) throw() : ConfigException("Error\nWrongly formatted file, " + msg) {};
+};
 
 class Parser
 {
@@ -40,20 +46,15 @@ class Parser
 		p_Config	getConfig() const;
 		void		parse(p_Config& config);
 
-		class ParserException : public std::exception
-		{
-			public:
-				ParserException(const std::string& msg) throw() : m_msg(msg) {};
-				virtual ~ParserException() throw() {};
-				virtual const char* what() const throw() { return m_msg.c_str(); };
-			protected:
-				std::string m_msg;
-		};
-		class ParserFormatException : public ParserException
-		{
-			public:
-				ParserFormatException(const std::string& msg) throw() : ParserException("Error\nWrongly formatted file, " + msg) {};
-		};
+		// class ParserException : public std::exception
+		// {
+		// 	public:
+		// 		ParserException(const std::string& msg) throw() : m_msg(msg) {};
+		// 		virtual ~ParserException() throw() {};
+		// 		virtual const char* what() const throw() { return m_msg.c_str(); };
+		// 	protected:
+		// 		std::string m_msg;
+		// };
 
 	private:
 		Parser(Parser& other);

@@ -60,25 +60,27 @@ int main(int argc, char** argv)
 	{
 		prs.parse(conf);
 	}
-	catch (const Parser::ParserFormatException& e)
+	catch (const ParserFormatException& e)
 	{
 		std::cerr << e.what() << std::endl;
 		return 1;
 	}
 	std::cout << conf << std::endl;
 
-	if (!checkOverlap(conf))
+	try
 	{
+		checkOverlap(conf);
+		for (size_t i = 0 ; i < conf.servers.size() ; ++i)
+		{
+			checkDupLoc(conf.servers[i]);
+		}
+	}
+	catch (const SemanticException& e)
+	{
+		std::cerr << e.what() << std::endl;
 		return 1;
 	}
 
-	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
-	{
-		if (!checkDupLoc(conf.servers[i]))
-		{
-			return 1;
-		}
-	}
 	std::cout << "No trouble" << std::endl;
 
 	return 0;

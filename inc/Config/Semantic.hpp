@@ -6,18 +6,19 @@
 	
 // };
 
-# include <exception>
+# include "Config/Config.hpp"
 # include <string>
 
-class SemanticException : std::exception
-{
-	protected:
-		std::string m_msg;
+// class ConfigException;
 
+class SemanticException : public ConfigException
+{
+	public:
+		SemanticException(const std::string& msg) throw() : ConfigException("Error\n" + msg) {};
 };
 
 #include "Config/Parser.hpp"
-bool	checkOverlap(p_Config c);
-bool	checkDupLoc(p_Server s);
+void	checkOverlap(p_Config c);
+void	checkDupLoc(p_Server s);
 
 #endif
