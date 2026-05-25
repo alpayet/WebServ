@@ -1,21 +1,11 @@
 #include "Config/Tokenizer.hpp"
+#include <iostream>
+#include <iterator>
 #include <algorithm>
 
 Tokenizer::Tokenizer()
 {
 
-}
-
-Tokenizer::Tokenizer(Tokenizer& other)
-{
-	(void)(other);
-}
-
-Tokenizer&	Tokenizer::operator=(Tokenizer& other)
-{
-
-	(void)(other);
-	return *this;
 }
 
 Tokenizer::~Tokenizer()
@@ -37,7 +27,6 @@ const std::string	etokenToStr(e_token t)
 	}
 }
 
-#include <iostream>
 Token	Tokenizer::tokenize(std::string str)
 {
 	Token t;
@@ -53,13 +42,12 @@ Token	Tokenizer::tokenize(std::string str)
 
 				continue ;
 			}
-			std::string sub = str.substr(i, j - i); // TODO: check erase function for string
+			std::string sub = str.substr(i, j - i);
 			if (sub[sub.size() - 1] == ';')
 			{
-				std::string sub2 = sub.substr(0, sub.size() - 1); // TODO: check erase function for string
+				std::string sub2 = sub.substr(0, sub.size() - 1);
 				tokenizeChar(t, sub2);
 				tokenizeChar(t, ";");
-				// ++j; //? probably gonna haunt me
 			}
 			else
 			{
@@ -141,17 +129,11 @@ void	Tokenizer::tokenizeStr(Token& t, std::string str)
 	}
 }
 
-void	Tokenizer::tokenizeInt(Token& t, int nb)
-{
-	(void) (t);
-	(void) (nb);
-}
-
 /** GETTERS & SETTERS*/
 std::string 		Tokenizer::getFile() const { return m_file; };
 
 std::vector<Token>	Tokenizer::getTokens() const { return m_tokens; };
-#include <iterator>
+
 std::ostream& operator<<(std::ostream& os, const Tokenizer& t)
 {
 	std::vector<Token> tokens;

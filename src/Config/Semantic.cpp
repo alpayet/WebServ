@@ -12,16 +12,6 @@
 #include <cctype>
 #include <algorithm>
 
-// TODO: check if enough instructions in file
-/**
- * server -> need at least 1
- * listen -> might default to 8080
- * location -> path always start with '/'
- * root -> maybe force no end '/'
- * interface -> maybe be multi instead of uniq
- * 
- */
-
 void	initLocation(Server s, p_Server ps)
 {
 	std::vector<p_Location>::const_iterator l_ite = ps.locations.end();
@@ -140,7 +130,7 @@ void	initServer(Server s, p_Server ps)
 			iss >> del;
 			if (nb < 0 || nb > 255 || del != 0)
 			{
-				throw SemanticException ("Error\nInterface IP wrongly formatted");
+				throw SemanticException ("Interface IP wrongly formatted");
 			}
 			s.setInterface(it->values[0]);
 		}

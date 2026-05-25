@@ -1,40 +1,48 @@
 
 #include "Server/Server.hpp"
 #include <iostream>
+#include <iterator>
+#include <vector>
+#include <string>
+#include <map>
 
-// std::ostream& operator<<(std::ostream& os, const Location& l)
-// {
-// 	os << "\t***LOCATION***" << std::endl;
-// 	os << "\tPath: " 		<< l.path << std::endl;
-// 	os << "\tRoot: " 		<< l.root << std::endl;
-// 	os << "\tIndex: " 		<< l.index << std::endl;
-// 	os << "\tCGI: " 		<< l.cgi << std::endl;
-// 	os << "\tMethods: " 	<< l.methods << std::endl;
-// 	os << "\tAutoindex: " 	<< l.autoindex << std::endl;
-// 	os << "\tReturn: " 		<< l.ret << std::endl;
-// 	os << "\t**ENDLOCATION**" << std::endl;
+std::ostream& operator<<(std::ostream& os, const Location& l)
+{
+	os << "\t***LOCATION***" << std::endl;
+	os << "\tPath: " 		<< l.path << std::endl;
+	os << "\tRoot: " 		<< l.root << std::endl;
+	std::vector<std::string>::const_iterator	ite = l.index.end();
+	for (std::vector<std::string>::const_iterator it = l.index.begin() ; it != ite ; ++it)
+		os << "\tIndex: " 		<< *it << std::endl;
+	os << "\tCGI: " 		<< l.cgi << std::endl;
+	os << "\tMethods: " 	<< std::endl;
+	os << std::boolalpha  << "\t\tGET= "<< l.met_get << std::endl;
+	os << std::boolalpha << "\t\tPOST= " << l.met_post << std::endl;
+	os << std::boolalpha << "\t\tDEL= " << l.met_del << std::endl;
+	os << "\tAutoindex: " 	<< l.autoindex << std::endl;
+	os << "\tReturn: " 		<< l.ret << std::endl;
+	os << "\t**ENDLOCATION**" << std::endl;
 
-// 	return os;
-// }
+	return os;
+}
 
-// std::ostream& operator<<(std::ostream& os, const Server& s)
-// {
-// 	os << "***SERVER***" << std::endl;
+std::ostream& operator<<(std::ostream& os, const Server& s)
+{
+	os << "***SERVER***" << std::endl;
 
-// 	os << "\t***DIRECTIVE***" << std::endl;
-// 	os << "\tPort: " 					<< s.getPort() << std::endl;
-// 	os << "\tName: " 					<< s.getName() << std::endl;
-// 	// TODO: for
-// 	std::vector<Directive>::const_iterator d_ite = s_it->directives.end();
-// 	for (std::vector<Directive>::const_iterator d_it = s_it->directives.begin() ; d_it != d_ite ; *d_it++)
-// 	{
-// 		os << "\tError pages: " 			<< s << std::endl;
-// 	}
-// 	// endfor
-// 	os << "\tClient max body size: " 	<< s.getClientMaxBody() << std::endl;
-// 	os << "\t**ENDDIRECTIVE**" << std::endl;
+	os << "\tPort: " 					<< s.getPort() << std::endl;
+	os << "\tInterface: " 				<< s.getInterface() << std::endl;
+	os << "\tRoot: " 					<< s.getRoot() << std::endl;
+	os << "\tIndex: " 					<< s.getIndex() << std::endl;
+	os << "\tError pages: " 			<< std::endl;
+	std::map<int, std::string> err_pages = s.getErrPages();
+	std::map<int, std::string>::const_iterator ite = err_pages.end();
+	for (std::map<int, std::string>::const_iterator it = err_pages.begin() ; it != ite ; ++it)
+	{
+		os << "\t\t" << it->first << " => " << it->second << std::endl;
+	}
+	os << "\tClient max body size: " 	<< s.getClientMaxBody() << std::endl;
+	os << "**ENDSERVER**" << std::endl;
 
-// 	os << "**ENDSERVER**" << std::endl;
-
-// 	return os;
-// }
+	return os;
+}

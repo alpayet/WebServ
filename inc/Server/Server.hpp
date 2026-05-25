@@ -27,21 +27,23 @@ class Server
 	public:
 		/** CTOR */
 		// TODO: constructors / destructor
+		Server();
+		~Server();
 
 		/** GETTERS */
-		int	getPort() { return m_port; };
-		std::string	getInterface() { return m_interface; };
-		std::map<int, std::string>	getErrPages() { return m_error_pages; };
-		std::vector<Location>	getLocations() { return m_locations; };
-		int	getClientMaxBody() { return m_max_body; };
-		std::string	getRoot() { return m_root; };
-		std::string	getIndex() { return m_index; };
+		int	getPort() const { return m_port; };
+		const std::string&	getInterface() const { return m_interface; };
+		const std::map<int, std::string>&	getErrPages() const { return m_error_pages; };
+		const std::vector<Location>&	getLocations() const { return m_locations; };
+		int	getClientMaxBody() const { return m_max_body; };
+		const std::string&	getRoot() const { return m_root; };
+		const std::string&	getIndex() const { return m_index; };
 
 		/** SETTERS */
 		void	setPort(int port) { m_port = port; };
 		void	setInterface(const std::string& interface) { m_interface = interface ; };
 		void	addErrPage(int err_nb, const std::string& err_path) { m_error_pages[err_nb] = err_path; };
-		void	addLocation(Location location) { m_locations.push_back(location); };
+		void	addLocation(const Location& location) { m_locations.push_back(location); };
 		void	setClientMaxBody(long max_body) { m_max_body = max_body; };
 		void	setRoot(const std::string& root) { m_root = root ; };
 		void	setIndex(const std::string& index) { m_index = index ; };

@@ -14,8 +14,6 @@ class Tokenizer
 	public:
 		/** CONSTRUCTORS */
 		Tokenizer();
-		Tokenizer(Tokenizer& other);
-		Tokenizer&	operator=(Tokenizer& other);
 		~Tokenizer();
 
 		
@@ -33,7 +31,9 @@ class Tokenizer
 
 		void	tokenizeChar(Token& t, std::string str);
 		void	tokenizeStr(Token& t, std::string str);
-		void	tokenizeInt(Token& t, int nb);
+		
+		Tokenizer(Tokenizer& other);
+		Tokenizer&	operator=(Tokenizer& other);
 };
 
 std::ostream& operator<<(std::ostream& os, const Tokenizer& t);
