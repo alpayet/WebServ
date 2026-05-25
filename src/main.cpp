@@ -56,8 +56,13 @@ int main(int argc, char** argv)
 
 	Parser prs(tok.getTokens());
 	p_Config conf;
-	if (!prs.parse(conf))
+	try
 	{
+		prs.parse(conf);
+	}
+	catch (const Parser::ParserFormatException& e)
+	{
+		std::cerr << e.what() << std::endl;
 		return 1;
 	}
 	std::cout << conf << std::endl;

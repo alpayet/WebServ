@@ -1,6 +1,7 @@
 #include "Config/Parser.hpp"
 #include "Config/keywords.h"
 #include <iostream>
+#include <sstream>
 
 Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 {
@@ -9,26 +10,27 @@ Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 	m_ite = m_tokens.end();
 }
 
-bool	Parser::expect(char c)
+void	Parser::expect(char c)
 {
 	if ((m_it->type == char_lbracket && c == '{')
 		|| (m_it->type == char_rbracket && c == '}')
 		|| (m_it->type == char_end && c == ';'))
-		return true;
-	std::cerr << "Error\nWrongly formatted file, expected a '" << c
-			<< "' instead of '" << m_it->data[0] << "'" << std::endl;
-	return false;
+		return ;
+	std::ostringstream os;
+	os << "expected a '" << c << "' instead of '" << m_it->data[0] << "'";
+	throw ParserFormatException (os.str());
 }
 
 template<typename T>
-bool	Parser::parseDirective(T& t, e_block comp)
+p_Directive	Parser::parseDirective(T& t, e_block comp)
 {
 	p_Directive direc;
 
 	if (m_it->type != res_word)
 	{
-		std::cerr << "Error\nWrongly formatted file, expected a directive name" << m_it->data << std::endl;
-		return false;
+		std::ostringstream os;
+		os << "expected a directive name" << m_it->data;
+		throw ParserFormatException(os.str());
 	}
 
 	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
@@ -39,8 +41,7 @@ bool	Parser::parseDirective(T& t, e_block comp)
 		{
 			if (keywords[i].e_block == comp)
 			{
-				std::cerr << "Error\n'" << m_it->data << "' can't be outside a location block" << std::endl;
-				return false;
+				throw ParserFormatException (m_it->data + "' can't be outside a location block");
 			}
 			if (keywords[i].e_uniqness == uniq)
 			{
@@ -49,8 +50,9 @@ bool	Parser::parseDirective(T& t, e_block comp)
 				{
 					if (d_it->name == m_it->data)
 					{
-						std::cerr << "Error\nLocation can't have multiple '" << m_it->data << "'" << std::endl;
-						return false;
+						std::ostringstream os;
+						os << "location can't have multiple '" << m_it->data << "'";
+						throw ParserFormatException (os.str());
 					}
 				}
 			}
@@ -66,70 +68,57 @@ bool	Parser::parseDirective(T& t, e_block comp)
 	{
 		if (keywords[i].max_args < nb_val)
 		{
-			std::cerr << "Error\n'" << direc.name << "' can have more than " << keywords[i].max_args << " values" << std::endl;
-			return false;
+			std::ostringstream os;
+			os << direc.name << "' can have more than " << keywords[i].max_args << " values";
+			throw ParserFormatException (os.str());
 		}
 		direc.values.push_back(m_it->data);
 	}
 	if (keywords[i].min_args > nb_val)
 	{
-		std::cerr << "Error\n'" << direc.name << "' needs at least " << keywords[i].min_args << " values" << std::endl;
-		return false;
+		std::ostringstream os;
+		os << direc.name << "' needs at least " << keywords[i].min_args << " values";
+		throw ParserFormatException (os.str());
 	}
-
-	if (!expect(';'))
-	{
-		return false;
-	}
+	expect(';');
 	*m_it++;
 	t.directives.push_back(direc);
-	return true;
+	return direc;
 
 }
 
-bool	Parser::parseLocation(p_Server& serv)
+p_Location	Parser::parseLocation(p_Server& serv)
 {
 	*m_it++;
 	if (m_it->type != str_type)
 	{
-		std::cerr << "Error\nWrongly formatted file, expected a directory for the location block" << std::endl;
-		return false;
+		throw ParserFormatException ("expected a directory for the location block");
 	}
 
 	p_Location loc;
 	loc.path = m_it->data;
 	*m_it++;
-	if (!expect('{'))
-	{
-		return false;
-	}	
+	expect('{');	
 	*m_it++;
+
 	while (m_it != m_ite && m_it->type != char_rbracket)
 	{
 		if (m_it->type == res_word && m_it->data == "location")
 		{
-			std::cerr << "Error\nLocation block can't contain another location block" << std::endl;
-			return false;
+			throw ParserFormatException ("location block can't contain another location block");
 		}
-
-		if (!parseDirective(loc, inserv))
-		{
-			return false;
-		}
+		parseDirective(loc, inserv);
 	}
-	if (!expect('}'))
-		return false;
+	expect('}');
 	*m_it++;
 	serv.locations.push_back(loc);
-	return true;
+	return loc;
 }
 
-bool	Parser::parseServer()
+p_Server	Parser::parseServer()
 {
 	*m_it++;
-	if (!expect('{'))
-		return false;
-	
+	expect('{');
 	*m_it++;
 
 	p_Server serv;
@@ -138,55 +127,43 @@ bool	Parser::parseServer()
 	{
 		if (m_it->type == res_word && m_it->data == "server")
 		{
-			std::cerr << "Error\nServer block can't contain another server block" << std::endl;
-			return false;
+			throw ("server block can't contain another server block");
 		}
 		if (m_it->type == res_word && m_it->data == "location")
 		{
-			if (!parseLocation(serv))
-			{
-				return false;
-			}
+			parseLocation(serv);
 		}
 		else
 		{
-			if (!parseDirective(serv, inloc))
-			{
-				return false;
-			}
+			parseDirective(serv, inloc);
 		}
 	}
-	if (!expect('}'))
-		return false;
+	expect('}');
 	*m_it++;
 	m_config.servers.push_back(serv);
-	return true;
+	return serv;
 }
 
-bool	Parser::parseConfig()
+void	Parser::parseConfig()
 {
 	while (m_it != m_ite)
 	{
 		if	(m_it->type == res_word && m_it->data == "server")
 		{
-			if (!parseServer())
-			{
-				return false;
-			}
+			parseServer();
+		}
+		else
+		{
+			throw ParserFormatException("server block should start with 'server' instead of '" + m_it->data + "'");
 		}
 	}
-	return true;
 }
 
-bool	Parser::parse(p_Config& config)
+void	Parser::parse(p_Config& config)
 {
-	if (!parseConfig())
-	{
-		return false;
-	}
+	parseConfig();
 	// TODO: probably deep copy too
 	config = m_config;
-	return true;
 }
 
 std::ostream& operator<<(std::ostream& os, const p_Config& c)

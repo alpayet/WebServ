@@ -44,10 +44,8 @@ struct Keyword
 
 static const Keyword keywords[] = {
 	{"server",				 str_type, 0, 0, multi, inserv},
-	{"root",				 str_type, 1, 1, uniq, both}, // maybe multi
-	{"index",				 str_type, 1, 9, uniq, both}, // maybe multi
-	// {"root",				 str_type, 1, inloc}, // maybe multi
-	// {"index",				 str_type, 9, inloc}, // maybe multi
+	{"root",				 str_type, 1, 1, uniq, both},
+	{"index",				 str_type, 1, 9, uniq, both},
 	{"error_page",			 str_type, 2, 2, multi, inserv},
 	{"location",			 str_type, 1, 1, multi, inserv},
 	{"listen",				 int_type, 1, 1, uniq, inserv},

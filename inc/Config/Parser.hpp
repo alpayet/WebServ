@@ -6,6 +6,7 @@
 # include <string>
 # include <map>
 # include <iterator>
+# include <exception>
 
 struct p_Directive
 {
@@ -37,7 +38,22 @@ class Parser
 		~Parser() {};
 
 		p_Config	getConfig() const;
-		bool		parse(p_Config& config);
+		void		parse(p_Config& config);
+
+		class ParserException : public std::exception
+		{
+			public:
+				ParserException(const std::string& msg) throw() : m_msg(msg) {};
+				virtual ~ParserException() throw() {};
+				virtual const char* what() const throw() { return m_msg.c_str(); };
+			protected:
+				std::string m_msg;
+		};
+		class ParserFormatException : public ParserException
+		{
+			public:
+				ParserFormatException(const std::string& msg) throw() : ParserException("Error\nWrongly formatted file, " + msg) {};
+		};
 
 	private:
 		Parser(Parser& other);
@@ -49,11 +65,11 @@ class Parser
 
 		p_Config	m_config;
 		template<typename T>
-		bool	parseDirective(T& t, e_block comp);
-		bool	parseLocation(p_Server& serv);
-		bool	parseServer();
-		bool	parseConfig();
-		bool	expect(char c);
+		p_Directive	parseDirective(T& t, e_block comp);
+		p_Location	parseLocation(p_Server& serv);
+		p_Server	parseServer();
+		void		parseConfig();
+		void	expect(char c);
 };
 
 std::ostream& operator<<(std::ostream& os, const p_Config& c);
