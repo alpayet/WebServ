@@ -2,10 +2,9 @@
 # define PARSER_HPP
 
 # include <vector>
-# include "Tokenizer.hpp"
 # include <string>
-# include <map>
 # include <iterator>
+# include "Config/Tokenizer.hpp"
 # include "Config/Config.hpp"
 
 struct p_Directive
@@ -45,16 +44,6 @@ class Parser
 
 		p_Config	getConfig() const;
 		void		parse(p_Config& config);
-
-		// class ParserException : public std::exception
-		// {
-		// 	public:
-		// 		ParserException(const std::string& msg) throw() : m_msg(msg) {};
-		// 		virtual ~ParserException() throw() {};
-		// 		virtual const char* what() const throw() { return m_msg.c_str(); };
-		// 	protected:
-		// 		std::string m_msg;
-		// };
 
 	private:
 		Parser(Parser& other);

@@ -1,19 +1,14 @@
 #include "Config/Semantic.hpp"
-// #include "Server/Server.hpp"
 #include "Config/Parser.hpp"
 #include <vector>
 #include <iterator>
-#include <string>
-#include <iostream>
-
-#include "Config/keywords.h"
-#include "Server/Server.hpp"
 #include <sstream>
-#include <cctype>
-#include <algorithm>
 
-void	initLocation(Server s, p_Server ps)
+void	initLocation(Server& s, p_Server ps)
 {
+	if (ps.locations.empty())
+		return ;
+
 	std::vector<p_Location>::const_iterator l_ite = ps.locations.end();
 	for (std::vector<p_Location>::const_iterator l_it = ps.locations.begin() ; l_it != l_ite ; *l_it++)
 	{
@@ -91,12 +86,15 @@ void	initLocation(Server s, p_Server ps)
 		s.addLocation(loc);
 	}
 }
-
-void	initServer(Server s, p_Server ps)
+#include <iostream>
+void	initServer(Server& s, p_Server ps)
 {
 	s.setPort(8080);
 	s.setInterface("0.0.0.0");
 	s.setClientMaxBody(1000000);
+
+	if (ps.directives.empty())
+		return ;
 
 	std::vector<p_Directive>::const_iterator ite = ps.directives.end();
 	for (std::vector<p_Directive>::const_iterator it = ps.directives.begin() ; it != ite ; *it++)
@@ -127,10 +125,9 @@ void	initServer(Server s, p_Server ps)
 				}
 			}
 			iss >> nb;
-			iss >> del;
-			if (nb < 0 || nb > 255 || del != 0)
+			if (nb < 0 || nb > 255 || !iss.eof())
 			{
-				throw SemanticException ("Interface IP wrongly formatted");
+				throw SemanticException ("Interface IP wrongly formatted = ");
 			}
 			s.setInterface(it->values[0]);
 		}
@@ -167,11 +164,11 @@ void	initServer(Server s, p_Server ps)
 	}
 }
 
-// TODO: check if those who need number are indeed numbers
-
 void	checkDupLoc(p_Server s)
 {
 	size_t	nb_locs = s.locations.size();
+	if (nb_locs == 0)
+		return ;
 	std::string	path1, path2;
 
 	for (size_t i = 0 ; i < nb_locs - 1 ; ++i)
@@ -191,6 +188,8 @@ void	checkDupLoc(p_Server s)
 void	checkOverlap(p_Config c)
 {
 	size_t	nb_servers = c.servers.size();
+	if (nb_servers < 2)
+		return ;
 	std::string	port1, port2;
 	std::string	ip1, ip2;
 

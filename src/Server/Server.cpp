@@ -6,6 +6,19 @@
 #include <string>
 #include <map>
 
+#include "Config/Semantic.hpp"
+
+Server::Server()
+{
+	
+}
+
+Server::~Server()
+{
+
+}
+
+
 std::ostream& operator<<(std::ostream& os, const Location& l)
 {
 	os << "\t***LOCATION***" << std::endl;

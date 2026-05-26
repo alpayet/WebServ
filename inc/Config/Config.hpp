@@ -3,8 +3,8 @@
 
 # include <vector>
 # include <string>
-# include "Server/Server.hpp"
 # include <exception>
+# include "Server/Server.hpp"
 
 class ConfigException : public std::exception
 {
@@ -19,8 +19,8 @@ class ConfigException : public std::exception
 class Config
 {
 	public:
-		Config(std::string filename); // TODO: use Semantic to init
-		std::vector<Server>	getServers() { return m_servers; };
+		Config(char* filename); // TODO: use Semantic to init
+		const std::vector<Server>&	getServers() const { return m_servers; };
 	private:
 		std::vector<Server> m_servers;
 };
