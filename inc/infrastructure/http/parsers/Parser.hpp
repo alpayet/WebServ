@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:09:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/26 19:19:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace http
 	class Parser
 	{
 	  public:
-		static ParsingState::Step parse(std::vector<char> const &readBuf, ParsingState &state);
+		static ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
 
 	  private:
 		Parser(void) {}
@@ -43,6 +43,12 @@ namespace http
 			std::vector<char>::const_iterator itLineEnd,
 			ParsingState					 &state
 		);
+		static void parseContentLength(ParsingState &state);
+		static void parseBody(
+			std::vector<char>::const_iterator itStart,
+			std::vector<char>::const_iterator itLineEnd,
+			ParsingState					 &state
+		);
 
 		static std::string Parser::extractMethod(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
@@ -57,11 +63,8 @@ namespace http
 		static bool hasLineBreak(
 			std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
 		);
-		static void skipLeadingCrlf(
-			std::vector<char>::const_iterator &itStart,
-			std::vector<char> const			  &readBuf,
-			ParsingState					  &state
-		);
+
+		static std::vector<char>::iterator findCRLF(std::vector<char> &readBuf);
 	};
 } // namespace http
 

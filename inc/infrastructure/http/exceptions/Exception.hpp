@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:09:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/26 01:22:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace http
 			invalidVersion,
 			invalidHeaderKey,
 			invalidHeaderValue,
+			invalidContentLength,
 			payloadTooLarge
 		};
 

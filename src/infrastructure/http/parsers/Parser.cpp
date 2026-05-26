@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:12:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/26 19:19:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include <algorithm>
+#include <cerrno>
 
 namespace
 {
@@ -95,35 +96,76 @@ namespace http
 	char const		  _whiteSpaces[] = "\t ";
 	std::size_t const _whiteSpaceSize = 2;
 
-	ParsingState::Step Parser::parse(std::vector<char> const &readBuf, ParsingState &state)
+	ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state)
 	{
-		std::vector<char>::const_iterator it_start = readBuf.begin() + state.pos;
+		bool can_continue = true;
 
-		if (state.step == ParsingState::start)
-			skipLeadingCrlf(it_start, readBuf, state);
-
-		std::vector<char>::const_iterator it_line_end =
-			std::search(it_start, readBuf.end(), _crlf, _crlf + _crlfSize);
-
-		if (it_line_end != readBuf.end())
+		while (can_continue && !readBuf.empty())
 		{
 			switch (state.step)
 			{
-			case ParsingState::requestLine:
-				parseRequestLine(it_start, it_line_end, state);
-				break;
-			case ParsingState::header:
-				parseHeaderLine(it_start, it_line_end, state);
-				break;
-			default:
-				break;
+				case ParsingState::start:
+					std::vector<char>::iterator it_start = readBuf.begin();
+					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
+					if (it_start == it_line_end)
+					{
+						readBuf.erase(it_start, it_start + _crlfSize);
+						break;
+					}
+					if (*it_start == '\r' && it_start + 1 != readBuf.end())
+						state.step = ParsingState::requestLine;
+				case ParsingState::requestLine:
+					std::vector<char>::iterator it_start = readBuf.begin();
+					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
+
+					if (it_line_end == readBuf.end())
+					{
+						can_continue = false;
+						break;
+					}
+					parseRequestLine(it_start, it_line_end, state);
+					readBuf.erase(it_start, it_line_end + _crlfSize);
+					state.step = ParsingState::header;
+					break;
+				case ParsingState::header:
+					std::vector<char>::const_iterator it_start = readBuf.begin();
+					std::vector<char>::const_iterator it_line_end = findCRLF(readBuf);
+
+					if (it_line_end == readBuf.end())
+					{
+						can_continue = false;
+						break;
+					}
+					if (it_start == it_line_end)
+					{
+						if (state.request.contentLength != 0 && expectsBody(state.request.method))
+						{
+							readBuf.erase(it_start, it_start + _crlfSize);
+							state.step = ParsingState::body;
+							break;
+						}
+						else
+						{
+							state.step = ParsingState::complete;
+							can_continue = false;
+							break;
+						}
+					}
+					parseRequestLine(it_start, it_line_end, state);
+					parseContentLength(state);
+					readBuf.erase(it_start, it_line_end + _crlfSize);
+					break;
+				case ParsingState::body:
+					parseBody(it_start, it_line_end, state);
+					if (state.bodyBytesRead == state.request.contentLength)
+					{
+						state.step = ParsingState::complete;
+						can_continue = false;
+						break;
+					}
+				default:
+					break;
 			}
-			// if (context.step == ParsingContext::Complete)
-			// {
-			// 	RequestEntity	request_entity = RequestMapper::toDomain(this->_requestDto);
-			// 	this->_requestInputPort->handle(request_entity);
-			// }
-			state.pos += std::distance(it_start, it_line_end) + _crlfSize;
 		}
 		return (state.step);
 	}
@@ -145,8 +187,6 @@ namespace http
 
 		if (std::find_if(it, itLineEnd, is_not_whitespaces) != itLineEnd)
 			throw Exception(Exception::malformedRequestLine);
-
-		state.step = ParsingState::header;
 	}
 
 	void Parser::parseHeaderLine(
@@ -155,12 +195,6 @@ namespace http
 		ParsingState					 &state
 	)
 	{
-		if (itStart == itLineEnd)
-		{
-			state.step = ParsingState::body;
-			return;
-		}
-
 		if (hasLineBreak(itStart, itLineEnd))
 			throw Exception(Exception::invalidLineBreak);
 
@@ -180,6 +214,37 @@ namespace http
 		trim(value, _whiteSpaces);
 
 		state.request.headers[key] = value;
+	}
+
+	void Parser::parseContentLength(ParsingState &state)
+	{
+		std::map<std::string, std::string>::const_iterator it =
+			state.request.headers.find("content-length");
+
+		if (it == state.request.headers.end())
+			return;
+
+		std::string content_length = state.request.headers["content-length"];
+		if (content_length.empty())
+			throw Exception(Exception::invalidContentLength);
+
+		char *endptr;
+		errno = 0;
+		unsigned long val = std::strtoul(content_length.c_str(), &endptr, 10);
+
+		if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
+			throw Exception(Exception::invalidContentLength);
+		// if (val > setting.maxbody)
+		// 	throw
+		state.request.contentLength = static_cast<size_t>(val);
+	}
+
+	void Parser::parseBody(
+		std::vector<char>::const_iterator itStart,
+		std::vector<char>::const_iterator itLineEnd,
+		ParsingState					 &state
+	)
+	{
 	}
 
 	std::string Parser::extractMethod(
@@ -248,18 +313,8 @@ namespace http
 		return ((std::find_first_of(itStart, itEnd, _crlf, _crlf + _crlfSize) != itEnd));
 	}
 
-	void Parser::skipLeadingCrlf(
-		std::vector<char>::const_iterator &itStart,
-		std::vector<char> const			  &readBuf,
-		ParsingState					  &state
-	)
+	std::vector<char>::iterator Parser::findCRLF(std::vector<char> &readBuf)
 	{
-		while (std::search(itStart, readBuf.end(), _crlf, _crlf + _crlfSize) == itStart)
-		{
-			itStart += _crlfSize;
-			state.pos += _crlfSize;
-		}
-		if (itStart != readBuf.end() || (*itStart == '\r' && itStart + 1 != readBuf.end()))
-			state.step = ParsingState::requestLine;
+		return (std::search(readBuf.begin(), readBuf.end(), _crlf, _crlf + _crlfSize));
 	}
 } // namespace http

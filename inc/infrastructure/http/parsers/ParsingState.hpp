@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:07:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:23:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ namespace http
 			complete
 		};
 
-		std::size_t pos;
 		Step		step;
 		Request		request;
+		std::size_t bodyBytesRead;
 	};
 } // namespace http
 

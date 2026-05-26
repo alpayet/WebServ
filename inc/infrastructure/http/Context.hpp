@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:04:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:09:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:21:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ namespace http
 	{
 	  public:
 		Context(void) {}
+
 		ParsingState state;
 
 	  private:
