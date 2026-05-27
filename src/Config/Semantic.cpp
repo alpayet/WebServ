@@ -40,7 +40,7 @@ void	initLocation(Server& s, p_Server ps)
 			{
 				loc.cgi = it->values[0];
 			}
-			else if (it->name == "limit_except")
+			else if (it->name == "allow_methods")
 			{
 				loc.met_get = false;
 				loc.met_post = false;
@@ -56,7 +56,7 @@ void	initLocation(Server& s, p_Server ps)
 						loc.met_del = true;
 					else
 					{
-						throw SemanticException("Methods '" + it->values[i] + "' in 'limit_except' doesn't exist");
+						throw SemanticException("Methods '" + it->values[i] + "' in 'allow_methods' doesn't exist");
 					}
 				}
 			}

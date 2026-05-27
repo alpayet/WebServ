@@ -48,50 +48,6 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	// std::ifstream	file(argv[1]);
-	// if (file.fail())
-	// {
-	// 	std::cerr << "Error.\nFile couldn't be openned." << std::endl;
-	// 	return 1;
-	// }
-
-	// std::ostringstream buf;
-	// buf << file.rdbuf();
-	// std::string file_str = buf.str();
-
-	// Tokenizer tok;
-	// tok.tokenize(file_str);
-
-	// // if (debug)
-	// // std::cout << tok << std::endl;
-
-	// Parser prs(tok.getTokens());
-	// p_Config conf;
-	// try
-	// {
-	// 	prs.parse(conf);
-	// }
-	// catch (const ParserFormatException& e)
-	// {
-	// 	std::cerr << e.what() << std::endl;
-	// 	return 1;
-	// }
-	// std::cout << conf << std::endl;
-
-	// try
-	// {
-	// 	checkOverlap(conf);
-	// 	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
-	// 	{
-	// 		checkDupLoc(conf.servers[i]);
-	// 	}
-	// }
-	// catch (const SemanticException& e)
-	// {
-	// 	std::cerr << e.what() << std::endl;
-	// 	return 1;
-	// }
-
 	std::cout << "No trouble" << std::endl;
 
 	return 0;

@@ -52,7 +52,7 @@ static const Keyword keywords[] = {
 	{"interface",			 str_type, 1, 1, uniq, inserv},
 	{"client_max_body_size", int_type, 1, 1, uniq, inserv},
 	{"proxy_pass",			 str_type, 1, 1, uniq, inloc},
-	{"limit_except",		 str_type, 1, 3, uniq, inloc},
+	{"allow_methods",		 str_type, 1, 3, uniq, inloc},
 	{"autoindex",			 str_type, 1, 1, uniq, inloc},
 	{"return",				 int_type, 1, 1, uniq, inloc}
 };
