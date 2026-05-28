@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/26 01:22:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 02:45:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ namespace http
 		enum ErrorCode
 		{
 			invalidLineBreak,
-			malformedRequestLine,
-			malformedHeaderLine,
-			invalidMethod,
-			invalidTarget,
-			invalidVersion,
-			invalidHeaderKey,
-			invalidHeaderValue,
-			invalidContentLength,
-			payloadTooLarge
+			requestLineMalformed,
+			headerLineMalformed,
+			methodInvalid,
+			targetInvalid,
+			versionInvalid,
+			headerKeyInvalid,
+			headerValueInvalid,
+			contentLengthInvalid,
+			bodyTooLarge,
+			bodyFileOpenFailed,
+			bodyFileWriteFailed
 		};
 
 	  public:

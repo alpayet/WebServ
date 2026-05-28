@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/26 19:19:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 03:32:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ namespace http
 	  private:
 		Parser(void) {}
 
-		static char const		 _crlf[];
-		static std::size_t const _crlfSize;
-		static char const		 _whiteSpaces[];
-		static std::size_t const _whiteSpacesSize[];
+		static char const _crlf[];
+		static char const _whiteSpaces[];
 
 		static void parseRequestLine(
 			std::vector<char>::const_iterator itStart,
@@ -44,11 +42,7 @@ namespace http
 			ParsingState					 &state
 		);
 		static void parseContentLength(ParsingState &state);
-		static void parseBody(
-			std::vector<char>::const_iterator itStart,
-			std::vector<char>::const_iterator itLineEnd,
-			ParsingState					 &state
-		);
+		static void parseBody(std::vector<char> &readBuf, ParsingState &state);
 
 		static std::string Parser::extractMethod(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

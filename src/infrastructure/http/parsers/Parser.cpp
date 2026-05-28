@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/26 19:19:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 03:37:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,8 @@ namespace
 
 namespace http
 {
-	char const		  _crlf[] = "\r\n";
-	std::size_t const _crlfSize = 2;
-	char const		  _whiteSpaces[] = "\t ";
-	std::size_t const _whiteSpaceSize = 2;
+	char const Parser::_crlf[] = "\r\n";
+	char const Parser::_whiteSpaces[] = "\t ";
 
 	ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state)
 	{
@@ -109,7 +107,7 @@ namespace http
 					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 					if (it_start == it_line_end)
 					{
-						readBuf.erase(it_start, it_start + _crlfSize);
+						readBuf.erase(it_start, it_start + sizeof(_crlf) - 1);
 						break;
 					}
 					if (*it_start == '\r' && it_start + 1 != readBuf.end())
@@ -124,7 +122,7 @@ namespace http
 						break;
 					}
 					parseRequestLine(it_start, it_line_end, state);
-					readBuf.erase(it_start, it_line_end + _crlfSize);
+					readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
 					state.step = ParsingState::header;
 					break;
 				case ParsingState::header:
@@ -140,7 +138,7 @@ namespace http
 					{
 						if (state.request.contentLength != 0 && expectsBody(state.request.method))
 						{
-							readBuf.erase(it_start, it_start + _crlfSize);
+							readBuf.erase(it_start, it_start + sizeof(_crlf) - 1);
 							state.step = ParsingState::body;
 							break;
 						}
@@ -153,10 +151,11 @@ namespace http
 					}
 					parseRequestLine(it_start, it_line_end, state);
 					parseContentLength(state);
-					readBuf.erase(it_start, it_line_end + _crlfSize);
+					readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
 					break;
 				case ParsingState::body:
-					parseBody(it_start, it_line_end, state);
+					parseBody(readBuf, state);
+					readBuf.clear();
 					if (state.bodyBytesRead == state.request.contentLength)
 					{
 						state.step = ParsingState::complete;
@@ -186,7 +185,7 @@ namespace http
 		state.request.protocol = extractProtocol(it, itLineEnd);
 
 		if (std::find_if(it, itLineEnd, is_not_whitespaces) != itLineEnd)
-			throw Exception(Exception::malformedRequestLine);
+			throw Exception(Exception::requestLineMalformed);
 	}
 
 	void Parser::parseHeaderLine(
@@ -201,15 +200,15 @@ namespace http
 		std::vector<char>::const_iterator it_colon;
 		it_colon = std::find(itStart, itLineEnd, ':');
 		if (it_colon == itLineEnd)
-			throw Exception(Exception::malformedHeaderLine);
+			throw Exception(Exception::headerLineMalformed);
 
 		if (!is_valid_key_syntax(itStart, it_colon))
-			throw Exception(Exception::invalidHeaderKey);
+			throw Exception(Exception::headerKeyInvalid);
 		std::string key(itStart, it_colon);
 		std::transform(key.begin(), key.end(), key.begin(), to_lower_safe);
 
 		if (!is_valid_value_syntax(it_colon + 1, itLineEnd))
-			throw Exception(Exception::invalidHeaderValue);
+			throw Exception(Exception::headerValueInvalid);
 		std::string value(it_colon + 1, itLineEnd);
 		trim(value, _whiteSpaces);
 
@@ -226,39 +225,40 @@ namespace http
 
 		std::string content_length = state.request.headers["content-length"];
 		if (content_length.empty())
-			throw Exception(Exception::invalidContentLength);
+			throw Exception(Exception::contentLengthInvalid);
 
 		char *endptr;
 		errno = 0;
 		unsigned long val = std::strtoul(content_length.c_str(), &endptr, 10);
 
 		if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
-			throw Exception(Exception::invalidContentLength);
+			throw Exception(Exception::contentLengthInvalid);
 		// if (val > setting.maxbody)
-		// 	throw
+		// throw Exception(Exception::bodyTooLarge);
 		state.request.contentLength = static_cast<size_t>(val);
 	}
 
-	void Parser::parseBody(
-		std::vector<char>::const_iterator itStart,
-		std::vector<char>::const_iterator itLineEnd,
-		ParsingState					 &state
-	)
+	void Parser::parseBody(std::vector<char> &readBuf, ParsingState &state)
 	{
+		state.bodyBytesRead += readBuf.size();
+		// if (state.bodyBytesRead > setting.maxbody)
+		// throw Exception(Exception::bodyTooLarge);
+		state.request.body.append(readBuf);
 	}
 
 	std::string Parser::extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 	)
 	{
-		std::vector<char>::const_iterator it_method_end =
-			std::find_first_of(it, itLineEnd, _whiteSpaces, _whiteSpaces + _whiteSpaceSize);
+		std::vector<char>::const_iterator it_method_end = std::find_first_of(
+			it, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1
+		);
 		if (it_method_end == itLineEnd)
-			throw Exception(Exception::malformedRequestLine);
+			throw Exception(Exception::requestLineMalformed);
 
 		std::string method(it, it_method_end);
 		if (!isMethodSupported(method))
-			throw Exception(Exception::invalidMethod);
+			throw Exception(Exception::methodInvalid);
 
 		it = it_method_end;
 		return (method);
@@ -271,16 +271,16 @@ namespace http
 		std::vector<char>::const_iterator it_target_start =
 			std::find_if(it, itLineEnd, is_not_whitespaces);
 		if (it_target_start == itLineEnd)
-			throw Exception(Exception::malformedRequestLine);
+			throw Exception(Exception::requestLineMalformed);
 
 		std::vector<char>::const_iterator it_target_end = std::find_first_of(
-			it_target_start, itLineEnd, _whiteSpaces, _whiteSpaces + _whiteSpaceSize
+			it_target_start, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1
 		);
 		if (it_target_end == itLineEnd)
-			throw Exception(Exception::malformedRequestLine);
+			throw Exception(Exception::requestLineMalformed);
 
 		if (!is_valid_target_syntax(it_target_start, it_target_end))
-			throw Exception(Exception::invalidTarget);
+			throw Exception(Exception::targetInvalid);
 		std::string target(it_target_start, it_target_end);
 
 		it = it_target_end;
@@ -294,10 +294,10 @@ namespace http
 		std::vector<char>::const_iterator it_protocol_start =
 			std::find_if(it, itLineEnd, is_not_whitespaces);
 		if (it_protocol_start == itLineEnd)
-			throw Exception(Exception::malformedRequestLine);
+			throw Exception(Exception::requestLineMalformed);
 
 		std::vector<char>::const_iterator it_protocol_end = std::find_first_of(
-			it_protocol_start, itLineEnd, _whiteSpaces, _whiteSpaces + _whiteSpaceSize
+			it_protocol_start, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1
 		);
 
 		std::string protocol(it_protocol_start, it_protocol_end);
@@ -310,11 +310,11 @@ namespace http
 		std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
 	)
 	{
-		return ((std::find_first_of(itStart, itEnd, _crlf, _crlf + _crlfSize) != itEnd));
+		return ((std::find_first_of(itStart, itEnd, _crlf, _crlf + sizeof(_crlf) - 1) != itEnd));
 	}
 
 	std::vector<char>::iterator Parser::findCRLF(std::vector<char> &readBuf)
 	{
-		return (std::search(readBuf.begin(), readBuf.end(), _crlf, _crlf + _crlfSize));
+		return (std::search(readBuf.begin(), readBuf.end(), _crlf, _crlf + sizeof(_crlf) - 1));
 	}
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 18:04:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:11:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 03:41:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 namespace http
 {
 	Exception::Exception(std::string const &message, ErrorCode const internalCode) throw()
-		: _message(message),
-		  _internalCode(internalCode)
+		: _message(message), _internalCode(internalCode)
 	{
 	}
 
 	Exception::Exception(ErrorCode const internalCode) throw()
-		: _message("HttpException"),
-		  _internalCode(internalCode)
+		: _message("HttpException"), _internalCode(internalCode)
 	{
 	}
 

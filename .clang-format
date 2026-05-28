@@ -22,7 +22,7 @@ AllowAllParametersOfDeclarationOnNextLine: true
 BinPackParameters: false
 
 # Constructor Initializers
-PackConstructorInitializers: Never
+PackConstructorInitializers: BinPack
 
 # Alignment of consecutive declarations
 AlignConsecutiveDeclarations: true
