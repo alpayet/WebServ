@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:29:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 03:47:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define BODYFILE_HPP
 
 #include <fstream>
+#include <string>
 #include <vector>
 
 namespace http

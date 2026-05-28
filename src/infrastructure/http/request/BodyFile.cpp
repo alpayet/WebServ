@@ -6,13 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:09:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/28 03:48:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/BodyFile.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
-#include <algorithm>
 #include <cstdlib>
 
 namespace http
