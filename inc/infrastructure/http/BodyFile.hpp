@@ -1,39 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ParsingState.hpp                                   :+:      :+:    :+:   */
+/*   BodyFile.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/29 01:47:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/29 01:48:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPPARSINGSTATE_HPP
-#define HTTPPARSINGSTATE_HPP
+#ifndef HTTPBODYFILE_HPP
+#define HTTPBODYFILE_HPP
 
-#include "infrastructure/http/Request.hpp"
+#include <fstream>
+#include <string>
+#include <vector>
 
 namespace http
 {
-	struct ParsingState
+	class BodyFile
 	{
-		enum Step
-		{
-			start,
-			requestLine,
-			header,
-			body,
-			complete
-		};
+	  public:
+		BodyFile(void) {}
 
-		ParsingState(void) : step(start), bodyBytesRead(0) {}
+		void append(std::vector<char> const &data);
 
-		Step		step;
-		Request		request;
-		std::size_t bodyBytesRead;
+	  private:
+		BodyFile(BodyFile const &src) {}
+		BodyFile &operator=(BodyFile const &rhs) {}
+
+		std::ofstream _file;
+		std::string	  _path;
+
+		static char const _pathTemplate[];
+
+		static std::string generateUniquePath(void);
 	};
 } // namespace http
 
-#endif // HTTPPARSINGSTATE_HPP
+#endif // HTTPBODYFILE_HPP

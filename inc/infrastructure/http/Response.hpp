@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ParsingState.hpp                                   :+:      :+:    :+:   */
+/*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/29 01:47:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/29 01:49:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPPARSINGSTATE_HPP
-#define HTTPPARSINGSTATE_HPP
-
-#include "infrastructure/http/Request.hpp"
+#ifndef HTTPRESPONSE_HPP
+#define HTTPRESPONSE_HPP
 
 namespace http
 {
-	struct ParsingState
+	struct Response
 	{
-		enum Step
-		{
-			start,
-			requestLine,
-			header,
-			body,
-			complete
-		};
-
-		ParsingState(void) : step(start), bodyBytesRead(0) {}
-
-		Step		step;
-		Request		request;
-		std::size_t bodyBytesRead;
+		/* data */
 	};
 } // namespace http
 
-#endif // HTTPPARSINGSTATE_HPP
+#endif // HTTPRESPONSE_HPP

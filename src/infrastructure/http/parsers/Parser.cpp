@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:37:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/29 02:16:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,11 @@ namespace http
 			state.request.headers.find("content-length");
 
 		if (it == state.request.headers.end())
+		{
+			if (expectsBody(state.request.method))
+				throw Exception(Exception::contentLengthRequired);
 			return;
+		}
 
 		std::string content_length = state.request.headers["content-length"];
 		if (content_length.empty())
@@ -233,16 +237,18 @@ namespace http
 
 		if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
 			throw Exception(Exception::contentLengthInvalid);
-		// if (val > setting.maxbody)
-		// throw Exception(Exception::bodyTooLarge);
+		// TODO: check maxbody dans les settings
+		//  if (val > setting.maxbody)
+		//  throw Exception(Exception::bodyTooLarge);
 		state.request.contentLength = static_cast<size_t>(val);
 	}
 
 	void Parser::parseBody(std::vector<char> &readBuf, ParsingState &state)
 	{
 		state.bodyBytesRead += readBuf.size();
-		// if (state.bodyBytesRead > setting.maxbody)
-		// throw Exception(Exception::bodyTooLarge);
+		// TODO: check maxbody dans les settings
+		//  if (state.bodyBytesRead > setting.maxbody)
+		//  throw Exception(Exception::bodyTooLarge);
 		state.request.body.append(readBuf);
 	}
 
@@ -283,6 +289,7 @@ namespace http
 			throw Exception(Exception::targetInvalid);
 		std::string target(it_target_start, it_target_end);
 
+		// TODO: 414 URI Too Long a géré
 		it = it_target_end;
 		return (target);
 	}
@@ -303,6 +310,7 @@ namespace http
 		std::string protocol(it_protocol_start, it_protocol_end);
 
 		it = it_protocol_end;
+		// TODO: check la version http du serv
 		return (protocol);
 	}
 

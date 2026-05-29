@@ -1,42 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BodyFile.hpp                                       :+:      :+:    :+:   */
+/*   Router.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:47:53 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/29 02:03:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BODYFILE_HPP
-#define BODYFILE_HPP
-
-#include <fstream>
-#include <string>
-#include <vector>
+#ifndef HTTROUTER_HPP
+#define HTTPROUTER_HPP
 
 namespace http
 {
-	class BodyFile
+	struct Request;
+	struct Response;
+
+	class Router
 	{
 	  public:
-		BodyFile(void) {}
+		Router(void);
+		Router(Router const &src);
+		~Router(void);
 
-		void append(std::vector<char> const &data);
+		Router &operator=(Router const &rhs);
+
+		void route(Request const &request, Response &response);
 
 	  private:
-		BodyFile(BodyFile const &src) {}
-		BodyFile &operator=(BodyFile const &rhs) {}
-
-		std::ofstream _file;
-		std::string	  _path;
-
-		static char const _pathTemplate[];
-
-		static std::string generateUniquePath(void);
 	};
 } // namespace http
 
-#endif // BODYFILE_HPP
+#endif // HTTPROUTER_HPP

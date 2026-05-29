@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 02:45:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/29 02:37:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ namespace http
 			requestLineMalformed,
 			headerLineMalformed,
 			methodInvalid,
+			methodNotAllowed,
 			targetInvalid,
 			versionInvalid,
 			headerKeyInvalid,
 			headerValueInvalid,
 			contentLengthInvalid,
+			contentLengthRequired,
 			bodyTooLarge,
 			bodyFileOpenFailed,
 			bodyFileWriteFailed
