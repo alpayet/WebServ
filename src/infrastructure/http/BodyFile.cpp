@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/29 01:47:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:41:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ namespace http
 
 	void BodyFile::append(const std::vector<char> &data)
 	{
-		if (!this->_file.is_open())
+		if (!_file.is_open())
 		{
-			this->_path = generateUniquePath();
-			this->_file.open(this->_path.c_str());
-			if (!this->_file.is_open())
+			_path = generateUniquePath();
+			_file.open(_path.c_str());
+			if (!_file.is_open())
 				throw Exception(Exception::bodyFileOpenFailed);
 		}
 
-		if (!this->_file.write(&data[0], data.size()))
+		if (!_file.write(&data[0], data.size()))
 			throw Exception(Exception::bodyFileOpenFailed);
 	}
 

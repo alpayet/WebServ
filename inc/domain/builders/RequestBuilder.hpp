@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 01:41:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:25:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:55:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ class RequestBuilder
 	RequestEntity build(void);
 
   private:
-	RequestBuilder(RequestBuilder const &src) {}
-	RequestBuilder &operator=(RequestBuilder const &rhs) {}
+	RequestBuilder(RequestBuilder const &src);
+	RequestBuilder &operator=(RequestBuilder const &rhs);
 
 	std::string						   _target;
 	std::string						   _protocol;

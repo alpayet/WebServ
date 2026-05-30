@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Context.hpp                                        :+:      :+:    :+:   */
+/*   UploadFileController.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 17:04:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:56:24 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/29 20:10:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/30 02:03:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPCONTEXT_HPP
-#define HTTPCONTEXT_HPP
-
-#include "infrastructure/ITransferContext.hpp"
-#include "infrastructure/http/parsers/ParsingState.hpp"
+#include "infrastructure/http/Request.hpp"
+#include "infrastructure/http/Response.hpp"
+#include "infrastructure/http/controllers/UploadFileController.hpp"
 
 namespace http
 {
-	class Context : public ITransferContext
-	{
-	  public:
-		Context(void) {}
+	UploadFileController::UploadFileController(void) {}
 
-		ParsingState state;
-
-	  private:
-		Context(Context const &src);
-		Context &operator=(Context const &rhs);
-	};
+	void UploadFileController::operator()(const Request &request, Response &response) {}
 } // namespace http
-
-#endif // HTTPCONTEXT_HPP

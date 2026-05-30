@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:32:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:56:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace http
 		static ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
 
 	  private:
-		Parser(void) {}
+		Parser(void);
 
 		static char const _crlf[];
 		static char const _whiteSpaces[];

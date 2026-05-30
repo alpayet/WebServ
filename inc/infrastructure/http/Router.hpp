@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/29 02:03:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:56:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,18 @@
 
 namespace http
 {
-	struct Request;
-	struct Response;
-
 	class Router
 	{
 	  public:
-		Router(void);
-		Router(Router const &src);
-		~Router(void);
-
-		Router &operator=(Router const &rhs);
+		Router(UploadFileController &uploadFileController);
 
 		void route(Request const &request, Response &response);
 
 	  private:
+		Router(Router const &src);
+		Router &operator=(Router const &rhs);
+
+		UploadFileController &_uploadFileController;
 	};
 } // namespace http
 

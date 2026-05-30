@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BodyFile.hpp                                       :+:      :+:    :+:   */
+/*   UploadFileController.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:57:13 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/29 20:09:43 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/30 01:55:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPBODYFILE_HPP
-#define HTTPBODYFILE_HPP
-
-#include <fstream>
-#include <string>
-#include <vector>
+#ifndef HTTPUPLOADFILECONTROLLER_HPP
+#define HTTPUPLOADFILECONTROLLER_HPP
 
 namespace http
 {
-	class BodyFile
+	class UploadFileController
 	{
 	  public:
-		BodyFile(void) {}
+		UploadFileController(void);
 
-		void append(std::vector<char> const &data);
+		void operator()(Request const &request, Response &response);
 
 	  private:
-		BodyFile(BodyFile const &src);
-		BodyFile &operator=(BodyFile const &rhs);
-
-		std::ofstream _file;
-		std::string	  _path;
-
-		static char const _pathTemplate[];
-
-		static std::string generateUniquePath(void);
+		UploadFileController(UploadFileController const &src);
+		UploadFileController &operator=(UploadFileController const &rhs);
 	};
+
 } // namespace http
 
-#endif // HTTPBODYFILE_HPP
+#endif // HTTPUPLOADFILECONTROLLER_HPP

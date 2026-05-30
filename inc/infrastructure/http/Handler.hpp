@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:15:09 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:09:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:56:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ namespace http
 		virtual void processClient(Client &client);
 
 	  private:
-		Handler(Handler const &src) {}
-		Handler &operator=(Handler const &rhs) {}
+		Handler(Handler const &src);
+		Handler &operator=(Handler const &rhs);
 	};
 } // namespace http
 

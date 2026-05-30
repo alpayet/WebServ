@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 18:04:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/28 03:41:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/30 01:41:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace http
 	{
 	}
 
-	Exception::ErrorCode Exception::getErrorCode(void) const { return (this->_internalCode); }
+	Exception::ErrorCode Exception::getErrorCode(void) const { return (_internalCode); }
 
-	char const *Exception::what(void) const throw() { return (this->_message.c_str()); }
+	char const *Exception::what(void) const throw() { return (_message.c_str()); }
 } // namespace http
