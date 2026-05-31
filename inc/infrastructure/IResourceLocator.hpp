@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IFileRepository.hpp                                :+:      :+:    :+:   */
+/*   IRessourceLocator.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 23:02:22 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/31 23:35:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IFILEREPOSITORY_HPP
-#define IFILEREPOSITORY_HPP
+#ifndef IRESOURCELOCATOR_HPP
+#define IRESOURCELOCATOR_HPP
 
 #include <string>
 
-struct UploadFileDto;
-
-class IFileRepository
+// TODO: faire herité la config de cette interface et implementer resolvePhysicalPath
+class IResourceLocator
 {
   public:
-	virtual ~IFileRepository(void) {}
+	virtual ~IResourceLocator(void) {}
 
-	virtual void save(UploadFileDto const &dto) = 0;
+	virtual std::string resolvePhysicalPath(std::string const &target) const = 0;
 };
 
-#endif // IFILEREPOSITORY_HPP
+#endif // IRESOURCELOCATOR_HPP

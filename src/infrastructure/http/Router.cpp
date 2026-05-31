@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 01:12:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/31 21:27:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@ namespace http
 		if (method == "GET")
 		{
 		}
+		if (method == "PUT")
+		{
+			_uploadFileController(request, response);
+		}
 		if (method == "POST")
 		{
-			// TODO: faire une methode bool hasUploadStore() const; de Location
-			// if (!location.hasUploadStore())
-			// 	throw Exception(Exception::methodNotAllowed);
-
-			_uploadFileController(request, response);
 		}
 	}
 } // namespace http
