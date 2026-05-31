@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileRequestDto.hpp                           :+:      :+:    :+:   */
+/*   UploadFileDtoMapper.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:28:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/24 23:08:17 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 02:32:50 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/31 02:46:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UPLOADFILEREQUESTDTO_HPP
-#define UPLOADFILEREQUESTDTO_HPP
+#ifndef UPLOADFILEDTOMAPPER_HPP
+#define UPLOADFILEDTOMAPPER_HPP
 
-#endif // UPLOADFILEREQUESTDTO_HPP
+#include "application/use_cases/UploadFileDto.hpp"
+
+namespace http
+{
+	struct Request;
+
+	class UploadFileDtoMapper
+	{
+	  public:
+		static UploadFileDto toDto(Request const &request);
+
+	  private:
+		UploadFileDtoMapper(void);
+	};
+} // namespace http
+
+#endif // UPLOADFILEDTOMAPPER_HPP

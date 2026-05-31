@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ParsingState.hpp                                   :+:      :+:    :+:   */
+/*   UploadFileDtoMapper.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 02:46:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 02:40:18 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/31 03:47:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPPARSINGSTATE_HPP
-#define HTTPPARSINGSTATE_HPP
-
+#include "infrastructure/http/mappers/UploadFileDtoMapper.hpp"
 #include "infrastructure/http/Request.hpp"
 
 namespace http
 {
-	struct ParsingState
+	UploadFileDto UploadFileDtoMapper::toDto(const Request &request)
 	{
-		enum Step
-		{
-			start,
-			requestLine,
-			header,
-			body,
-			complete
-		};
-
-		ParsingState(void) : step(start), bodyBytesRead(0) {}
-
-		Step		step;
-		Request		request;
-		std::size_t bodyBytesRead;
-	};
+		(UploadFileDto){.target = request.target, .temporaryFilePath = request.body.getPath()};
+	}
 } // namespace http
-
-#endif // HTTPPARSINGSTATE_HPP

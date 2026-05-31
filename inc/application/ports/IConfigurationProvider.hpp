@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ParsingState.hpp                                   :+:      :+:    :+:   */
+/*   IConfigurationProvider.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 02:46:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/31 04:12:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPPARSINGSTATE_HPP
-#define HTTPPARSINGSTATE_HPP
+#ifndef ICONFIGURATIONPROVIDER_HPP
+#define ICONFIGURATIONPROVIDER_HPP
 
-#include "infrastructure/http/Request.hpp"
-
-namespace http
+class IConfigurationProvider
 {
-	struct ParsingState
-	{
-		enum Step
-		{
-			start,
-			requestLine,
-			header,
-			body,
-			complete
-		};
+  public:
+	IConfigurationProvider(void);
+	IConfigurationProvider(IConfigurationProvider const &src);
+	~IConfigurationProvider(void);
 
-		ParsingState(void) : step(start), bodyBytesRead(0) {}
+	IConfigurationProvider &operator=(IConfigurationProvider const &rhs);
 
-		Step		step;
-		Request		request;
-		std::size_t bodyBytesRead;
-	};
-} // namespace http
+  private:
+};
 
-#endif // HTTPPARSINGSTATE_HPP
+#endif // ICONFIGURATIONPROVIDER_HPP

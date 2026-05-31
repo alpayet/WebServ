@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileRequestDto.cpp                           :+:      :+:    :+:   */
+/*   UploadFileDto.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:28:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/18 16:05:37 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 02:38:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/05/31 02:38:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "UploadFileRequestDto.hpp"
+#include "UploadFileDto.hpp"
 
-UploadFileRequestDto::UploadFileRequestDto(void)
-{}
+UploadFileDto::UploadFileDto(void) {}
 
-UploadFileRequestDto::UploadFileRequestDto(const UploadFileRequestDto &src)
-{
-	*this = src;
-}
+UploadFileDto::UploadFileDto(const UploadFileDto &src) { *this = src; }
 
-UploadFileRequestDto::~UploadFileRequestDto(void)
-{}
+UploadFileDto::~UploadFileDto(void) {}
 
-UploadFileRequestDto	&UploadFileRequestDto::operator=(UploadFileRequestDto const &rhs)
+UploadFileDto &UploadFileDto::operator=(UploadFileDto const &rhs)
 {
 	if (this != &rhs)
 	{

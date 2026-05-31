@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:57:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/31 03:45:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ namespace http
 		BodyFile(void) {}
 
 		void append(std::vector<char> const &data);
+
+		std::string const &getPath(void) const;
 
 	  private:
 		BodyFile(BodyFile const &src);

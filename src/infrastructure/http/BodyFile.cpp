@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:41:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/05/31 03:46:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ namespace http
 			throw Exception(Exception::bodyFileOpenFailed);
 	}
 
-	std::string BodyFile::generateUniquePath(void)
+	std::string const &http::BodyFile::getPath() const { return (_path); }
+	std::string		   BodyFile::generateUniquePath(void)
 	{
 		std::string unique_path(_pathTemplate);
 
