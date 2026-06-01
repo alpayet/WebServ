@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 22:38:59 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 23:36:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/02 00:20:37 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define FILEREPOSITORY_HPP
 
 #include "application/ports/IFileRepository.hpp"
+#include <string>
 
 class IResourceLocator;
 
@@ -30,6 +31,9 @@ class FileRepository : public IFileRepository
 	FileRepository &operator=(FileRepository const &rhs);
 
 	IResourceLocator &_resourceLocator;
+
+	static void moveFile(std::string const &source, std::string const &destination);
+	static void copyAndDelete(std::string const &source, std::string const &destination);
 };
 
 #endif // FILEREPOSITORY_HPP
