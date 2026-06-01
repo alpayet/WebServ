@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/29 02:16:23 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/01 21:25:37 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "http/message/IRequest.hpp"
 #include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
 #include <algorithm>
 #include <cerrno>
 
@@ -94,6 +95,11 @@ namespace http
 	char const Parser::_crlf[] = "\r\n";
 	char const Parser::_whiteSpaces[] = "\t ";
 
+	Parser::Parser(IRequestValidationPolicy &requestValidationPolicy)
+		: _requestValidationPolicy(requestValidationPolicy)
+	{
+	}
+
 	ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state)
 	{
 		bool can_continue = true;
@@ -116,6 +122,9 @@ namespace http
 					std::vector<char>::iterator it_start = readBuf.begin();
 					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 
+					state.currenLineSize += std::distance(it_start, it_line_end);
+					if (state.currenLineSize > _requestValidationPolicy.getMaxRequestLineSize())
+						throw Exception(Exception::requestLineTooLarge);
 					if (it_line_end == readBuf.end())
 					{
 						can_continue = false;
@@ -123,17 +132,23 @@ namespace http
 					}
 					parseRequestLine(it_start, it_line_end, state);
 					readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
+					state.currenLineSize = 0;
 					state.step = ParsingState::header;
 					break;
 				case ParsingState::header:
 					std::vector<char>::const_iterator it_start = readBuf.begin();
 					std::vector<char>::const_iterator it_line_end = findCRLF(readBuf);
 
+					state.currenLineSize += std::distance(it_start, it_line_end);
+					if (state.currenLineSize > _requestValidationPolicy.getMaxHeaderLineSize())
+						throw Exception(Exception::HeaderLineTooLarge);
 					if (it_line_end == readBuf.end())
 					{
 						can_continue = false;
 						break;
 					}
+					if (++state.currentHeaderCount > _requestValidationPolicy.getMaxHeaderCount())
+						throw Exception(Exception::HeaderCountTooLarge);
 					if (it_start == it_line_end)
 					{
 						if (state.request.contentLength != 0 && expectsBody(state.request.method))
@@ -152,6 +167,7 @@ namespace http
 					parseRequestLine(it_start, it_line_end, state);
 					parseContentLength(state);
 					readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
+					state.currenLineSize = 0;
 					break;
 				case ParsingState::body:
 					parseBody(readBuf, state);
@@ -175,6 +191,7 @@ namespace http
 		ParsingState					 &state
 	)
 	{
+		// if (std::distance(itStart, itLineEnd))
 		if (hasLineBreak(itStart, itLineEnd))
 			throw Exception(Exception::invalidLineBreak);
 
@@ -237,18 +254,16 @@ namespace http
 
 		if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
 			throw Exception(Exception::contentLengthInvalid);
-		// TODO: check maxbody dans les settings
-		//  if (val > setting.maxbody)
-		//  throw Exception(Exception::bodyTooLarge);
+		if (val > _requestValidationPolicy.getMaxBodySize(state.request.target))
+			throw Exception(Exception::bodyTooLarge);
 		state.request.contentLength = static_cast<size_t>(val);
 	}
 
 	void Parser::parseBody(std::vector<char> &readBuf, ParsingState &state)
 	{
 		state.bodyBytesRead += readBuf.size();
-		// TODO: check maxbody dans les settings
-		//  if (state.bodyBytesRead > setting.maxbody)
-		//  throw Exception(Exception::bodyTooLarge);
+		if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize(state.request.target))
+			throw Exception(Exception::bodyTooLarge);
 		state.request.body.append(readBuf);
 	}
 
@@ -289,7 +304,6 @@ namespace http
 			throw Exception(Exception::targetInvalid);
 		std::string target(it_target_start, it_target_end);
 
-		// TODO: 414 URI Too Long a géré
 		it = it_target_end;
 		return (target);
 	}
@@ -309,8 +323,9 @@ namespace http
 
 		std::string protocol(it_protocol_start, it_protocol_end);
 
+		if (protocol != _requestValidationPolicy.getSupportedHttpVersion())
+			throw Exception(Exception::versionInvalid);
 		it = it_protocol_end;
-		// TODO: check la version http du serv
 		return (protocol);
 	}
 

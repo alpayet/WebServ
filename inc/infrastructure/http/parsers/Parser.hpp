@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:56:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/01 20:04:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,41 @@
 
 namespace http
 {
+	class IRequestValidationPolicy;
+
 	class Parser
 	{
 	  public:
-		static ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
+		Parser(IRequestValidationPolicy &requestValidationPolicy);
+
+		ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
 
 	  private:
-		Parser(void);
+		IRequestValidationPolicy &_requestValidationPolicy;
 
 		static char const _crlf[];
 		static char const _whiteSpaces[];
 
-		static void parseRequestLine(
+		void parseRequestLine(
 			std::vector<char>::const_iterator itStart,
 			std::vector<char>::const_iterator itLineEnd,
 			ParsingState					 &state
 		);
-		static void parseHeaderLine(
+		void parseHeaderLine(
 			std::vector<char>::const_iterator itStart,
 			std::vector<char>::const_iterator itLineEnd,
 			ParsingState					 &state
 		);
-		static void parseContentLength(ParsingState &state);
-		static void parseBody(std::vector<char> &readBuf, ParsingState &state);
+		void parseContentLength(ParsingState &state);
+		void parseBody(std::vector<char> &readBuf, ParsingState &state);
 
-		static std::string Parser::extractMethod(
+		std::string Parser::extractMethod(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 		);
-		static std::string Parser::extractTarget(
+		std::string Parser::extractTarget(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 		);
-		static std::string Parser::extractProtocol(
+		std::string Parser::extractProtocol(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 		);
 

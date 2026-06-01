@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRessourceLocator.hpp                              :+:      :+:    :+:   */
+/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 23:35:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/01 17:52:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <string>
 
-// TODO: faire herité la config de cette interface et implementer resolvePhysicalPath
+// TODO: faire herité la config de cette interface
 class IResourceLocator
 {
   public:

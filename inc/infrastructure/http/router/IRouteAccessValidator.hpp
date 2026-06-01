@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Router.hpp                                         :+:      :+:    :+:   */
+/*   IRouteAccessValidator.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 01:10:31 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/01 17:40:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/01 21:35:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTROUTER_HPP
-#define HTTPROUTER_HPP
+#ifndef HTTPIROUTEACCESSVALIDATOR_HPP
+#define HTTPIROUTEACCESSVALIDATOR_HPP
+
+// TODO: faire herité la config de cette interface
+#include <string>
+#include <vector>
 
 namespace http
 {
-	class Router
+	class IRouteAccessValidator
 	{
 	  public:
-		Router(UploadFileController &uploadFileController);
+		virtual ~IRouteAccessValidator(void) {}
 
-		void route(Request const &request, Response &response);
-
-	  private:
-		Router(Router const &src);
-		Router &operator=(Router const &rhs);
-
-		UploadFileController &_uploadFileController;
+		virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const = 0;
 	};
 } // namespace http
 
-#endif // HTTPROUTER_HPP
+#endif // HTTPIROUTEACCESSVALIDATOR_HPP
