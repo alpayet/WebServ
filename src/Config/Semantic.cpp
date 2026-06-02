@@ -94,6 +94,7 @@ void	initServer(Server& s, p_Server ps)
 	s.setPort(8080);
 	s.setInterface("0.0.0.0");
 	s.setClientMaxBody(1000000);
+	// s.setRoot("."); // TODO: maybe change
 
 	if (ps.directives.empty())
 		return ;
@@ -163,6 +164,10 @@ void	initServer(Server& s, p_Server ps)
 		{
 			s.setIndex(it->values[0]);
 		}
+	}
+	if (s.getRoot().empty())
+	{
+		throw SemanticException ("A server must have a root");
 	}
 }
 

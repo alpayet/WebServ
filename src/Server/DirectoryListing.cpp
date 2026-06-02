@@ -2,16 +2,34 @@
 
 #include "Server/Server.hpp"
 #include <string>
-
-std::string	resolveURI(const Location& loc)
-{
-	return loc.root;    
-}
-
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <cstring>
+#include <fcntl.h>
+#include <unistd.h>
+
+std::string	resolveURI(const Location& loc)
+{
+	std::string	uri;
+	
+	for (size_t i = 0 ; i < loc.index.size() ; ++i)
+	{
+		int fd = open((loc.root + loc.index[i]).c_str(), O_RDONLY);
+		if (fd > 0)
+		{
+			uri = loc.root + loc.index[i];
+			close(fd);
+			return uri;
+		}
+	}
+	DIR*	dir_ptr = opendir(loc.root.c_str());
+	if (dir_ptr)
+		uri = loc.root;
+	else
+		; // TODO: uri = error_page 403; 
+	return uri;
+}
 
 // TODO: no size for directory && add date && rename ".." to "parent directory"
 #include <iostream>
