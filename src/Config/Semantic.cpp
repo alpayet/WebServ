@@ -91,13 +91,10 @@ void	initLocation(Server& s, p_Server ps)
 #include <iostream>
 void	initServer(Server& s, p_Server ps)
 {
-	s.setPort(8080);
-	s.setInterface("0.0.0.0");
-	s.setClientMaxBody(1000000);
-	// s.setRoot("."); // TODO: maybe change
-
 	if (ps.directives.empty())
-		return ;
+	{
+		throw SemanticException ("A server must have a root");
+	}
 
 	std::vector<p_Directive>::const_iterator ite = ps.directives.end();
 	for (std::vector<p_Directive>::const_iterator it = ps.directives.begin() ; it != ite ; *it++)

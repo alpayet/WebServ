@@ -17,6 +17,14 @@ struct Location
 	bool						met_del;
 	bool						autoindex;
 	int							ret;
+
+	Location() :
+		met_get(true),
+		met_post(true),
+		met_del(true),
+		autoindex(false),
+		ret(0)
+	{};
 };
 
 class Server
@@ -24,8 +32,12 @@ class Server
 	public:
 		/** CTOR */
 		// TODO: constructors / destructor
-		Server();
-		~Server();
+		Server() :
+			m_port(8080),
+			m_interface("0.0.0.0"),
+			m_max_body(1000000)
+		{};
+		~Server() {};
 
 		/** GETTERS */
 		int	getPort() const { return m_port; };

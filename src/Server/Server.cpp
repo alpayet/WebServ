@@ -8,17 +8,6 @@
 
 #include "Config/Semantic.hpp"
 
-Server::Server()
-{
-	
-}
-
-Server::~Server()
-{
-
-}
-
-
 std::ostream& operator<<(std::ostream& os, const Location& l)
 {
 	os << "\t***LOCATION***" << std::endl;
@@ -48,13 +37,23 @@ std::ostream& operator<<(std::ostream& os, const Server& s)
 	os << "\tRoot: " 					<< s.getRoot() << std::endl;
 	os << "\tIndex: " 					<< s.getIndex() << std::endl;
 	os << "\tError pages: " 			<< std::endl;
-	std::map<int, std::string> err_pages = s.getErrPages();
-	std::map<int, std::string>::const_iterator ite = err_pages.end();
-	for (std::map<int, std::string>::const_iterator it = err_pages.begin() ; it != ite ; ++it)
-	{
-		os << "\t\t" << it->first << " => " << it->second << std::endl;
+	{	
+		std::map<int, std::string> err_pages = s.getErrPages();
+		std::map<int, std::string>::const_iterator ite = err_pages.end();
+		for (std::map<int, std::string>::const_iterator it = err_pages.begin() ; it != ite ; ++it)
+		{
+			os << "\t\t" << it->first << " => " << it->second << std::endl;
+		}
 	}
 	os << "\tClient max body size: " 	<< s.getClientMaxBody() << std::endl;
+	{
+		std::vector<Location> locs = s.getLocations();
+		std::vector<Location>::const_iterator ite = locs.end();
+		for (std::vector<Location>::const_iterator it = locs.begin() ; it != ite ; ++it)
+		{
+			os << *it;
+		}
+	}
 	os << "**ENDSERVER**" << std::endl;
 
 	return os;
