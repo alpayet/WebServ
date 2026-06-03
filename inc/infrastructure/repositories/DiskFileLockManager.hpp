@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 01:12:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/03 02:42:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/03 21:56:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class DiskFileLockManager
   public:
 	enum LockMode
 	{
+		unlocked,
 		read,
 		write
 	};
@@ -30,13 +31,13 @@ class DiskFileLockManager
 
 	void unlock(std::string const &path);
 
-	LockMode isLocked(std::string const &path);
+	LockMode isLocked(std::string const &path) const;
 
   private:
 	DiskFileLockManager(DiskFileLockManager const &src);
 	DiskFileLockManager &operator=(DiskFileLockManager const &rhs);
 
-	std::map<std::string, bool> _lockedPaths;
+	std::map<std::string, LockMode> _lockedPaths;
 };
 
 #endif // DISKFILELOCKMANAGER_HPP

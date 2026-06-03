@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileUseCase.hpp                              :+:      :+:    :+:   */
+/*   IStaticResourceRepository.hpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
+/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
 /*   Updated: 2026/06/04 01:02:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UPLOADFILEUSECASE_HPP
-#define UPLOADFILEUSECASE_HPP
+#ifndef ISTATICFILEREPOSITORY_HPP
+#define ISTATICFILEREPOSITORY_HPP
 
-class IConfigProvider;
-class IStaticResourceRepository;
-class UploadFileDto;
+#include <string>
 
-class UploadFileUseCase
+class StaticResource;
+
+class IStaticResourceRepository
 {
   public:
-	UploadFileUseCase(
-		IConfigProvider &configProvider, IStaticResourceRepository &staticFileRepository
-	);
+	virtual ~IStaticResourceRepository(void) {}
 
-	void execute(UploadFileDto const &dto);
-
-  private:
-	UploadFileUseCase(UploadFileUseCase const &src);
-	UploadFileUseCase &operator=(UploadFileUseCase const &rhs);
-
-	IConfigProvider			  &_configProvider;
-	IStaticResourceRepository &_staticFileRepository;
+	virtual StaticResource const *findById(std::string const &id) = 0;
+	virtual bool				  exists(std::string const &id) = 0;
+	virtual void				  remove(std::string const &id) = 0;
 };
 
-#endif // UPLOADFILEUSECASE_HPP
+#endif // ISTATICFILEREPOSITORY_HPP

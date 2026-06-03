@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 16:35:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 01:10:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/UploadFileUseCase.hpp"
-#include "domain/ports/IStaticFileRepository.hpp"
+#include "domain/ports/IStaticResourceRepository.hpp"
 
 UploadFileUseCase::UploadFileUseCase(
 	IConfigProvider &configProvider, IStaticFileRepository &staticFileRepository

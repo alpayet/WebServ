@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 19:57:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/03 22:56:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ namespace http
 {
 	char const BodyFile::_pathTemplate[] = "/tmp/webserv_body_XXXXXX";
 
-	void BodyFile::append(const std::vector<char> &data)
+	void BodyFile::append(std::vector<char> const &data)
 	{
 		if (!_file.is_open())
 		{
 			_path = generateUniquePath();
+
 			_file.open(_path.c_str(), std::ios::binary);
 			if (!_file.is_open())
 				throw Exception(Exception::bodyFileOpenFailed);

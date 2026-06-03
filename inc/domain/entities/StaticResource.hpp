@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticFileRepository.hpp                          :+:      :+:    :+:   */
+/*   StaticResource.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 13:56:23 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 01:00:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICFILEREPOSITORY_HPP
-#define ISTATICFILEREPOSITORY_HPP
+#ifndef STATICRESOURCE_HPP
+#define STATICRESOURCE_HPP
 
 #include <string>
 
-class StaticFile;
+class IDataSource;
 
-class IStaticFileRepository
+class StaticResource
 {
   public:
-	virtual ~IStaticFileRepository(void) {}
+	StaticResource(const std::string &id, IDataSource *dataSource);
 
-	virtual void save(StaticFile const &file) = 0;
+	std::string const &getId(void) const;
+	IDataSource const *getDataSource(void) const;
+
+  private:
+	StaticResource(StaticResource const &src);
+	StaticResource &operator=(StaticResource const &rhs);
+
+	std::string	 _id;
+	IDataSource *_dataSource;
 };
 
-#endif // ISTATICFILEREPOSITORY_HPP
+#endif // STATICRESOURCE_HPP

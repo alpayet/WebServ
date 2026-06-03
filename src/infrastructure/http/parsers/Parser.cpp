@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 21:25:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/03 22:01:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ namespace http
 					state.step = ParsingState::header;
 					break;
 				case ParsingState::header:
-					std::vector<char>::const_iterator it_start = readBuf.begin();
-					std::vector<char>::const_iterator it_line_end = findCRLF(readBuf);
+					std::vector<char>::iterator it_start = readBuf.begin();
+					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 
 					state.currenLineSize += std::distance(it_start, it_line_end);
 					if (state.currenLineSize > _requestValidationPolicy.getMaxHeaderLineSize())
@@ -191,7 +191,6 @@ namespace http
 		ParsingState					 &state
 	)
 	{
-		// if (std::distance(itStart, itLineEnd))
 		if (hasLineBreak(itStart, itLineEnd))
 			throw Exception(Exception::invalidLineBreak);
 
@@ -244,7 +243,7 @@ namespace http
 			return;
 		}
 
-		std::string content_length = state.request.headers["content-length"];
+		std::string content_length = (*it).second;
 		if (content_length.empty())
 			throw Exception(Exception::contentLengthInvalid);
 
@@ -259,7 +258,7 @@ namespace http
 		state.request.contentLength = static_cast<size_t>(val);
 	}
 
-	void Parser::parseBody(std::vector<char> &readBuf, ParsingState &state)
+	void Parser::parseBody(std::vector<char> const &readBuf, ParsingState &state)
 	{
 		state.bodyBytesRead += readBuf.size();
 		if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize(state.request.target))

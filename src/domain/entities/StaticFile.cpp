@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   StaticFile.hpp                                     :+:      :+:    :+:   */
+/*   StaticFile.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 15:34:13 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 01:00:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STATICFILE_HPP
-#define STATICFILE_HPP
+#include "domain/entities/StaticResource.hpp"
 
-#include <string>
-
-class IDataSource;
-
-class StaticFile
+StaticResource::StaticResource(const std::string &id, IDataSource *dataSource)
+	: _id(id), _dataSource(dataSource)
 {
-  public:
-	StaticFile(const std::string &logicalPath, IDataSource *dataSource);
+}
 
-	const std::string &getLogicalPath(void);
-	IDataSource		  *getDataSource(void);
+std::string const &StaticResource::getId(void) const { return (_id); }
 
-  private:
-	std::string	 _logicalPath;
-	IDataSource *_dataSource;
-};
-
-#endif // STATICFILE_HPP
+IDataSource const *StaticResource::getDataSource(void) const { return (_dataSource); }

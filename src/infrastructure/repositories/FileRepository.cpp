@@ -6,23 +6,27 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 23:37:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 00:27:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 00:58:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/repository/FileRepository.hpp"
 #include "application/use_cases/UploadFileDto.hpp"
-#include "infrastructure/repository/IResourceLocator.hpp"
+#include "infrastructure/repositories/DiskFileLockManager.hpp"
+#include "infrastructure/repositories/DiskFileRepository.hpp"
+#include "infrastructure/repositories/IResourceLocator.hpp"
 #include <cstdio>
 
-FileRepository::FileRepository(IResourceLocator &resourceLocator)
-	: _resourceLocator(resourceLocator)
+DiskFileRepository::DiskFileRepository(
+	IResourceLocator &resourceLocator, DiskFileLockManager &diskFileLockManager
+)
+	: _resourceLocator(resourceLocator), _diskFileLockManager(diskFileLockManager)
+
 {
 }
 
-void FileRepository::save(const UploadFileDto &dto)
+void DiskFileRepository::save(StaticResource const &file)
 {
-	std::string const &physical_path = _resourceLocator.resolvePhysicalPath(dto.target);
+	std::string const &physical_path = _resourceLocator.resolvePhysicalPath(file.getId());
 	// TODO : throw en cas derreur
 	moveFile(dto.temporaryFilePath, physical_path);
 }

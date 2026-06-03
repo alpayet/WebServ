@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 20:04:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/03 20:57:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ namespace http
 			ParsingState					 &state
 		);
 		void parseContentLength(ParsingState &state);
-		void parseBody(std::vector<char> &readBuf, ParsingState &state);
+		void parseBody(std::vector<char> const &readBuf, ParsingState &state);
 
 		std::string Parser::extractMethod(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
