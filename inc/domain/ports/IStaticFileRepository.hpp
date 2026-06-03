@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
+/*   IStaticFileRepository.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 17:52:23 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/02 13:56:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCELOCATOR_HPP
-#define IRESOURCELOCATOR_HPP
+#ifndef ISTATICFILEREPOSITORY_HPP
+#define ISTATICFILEREPOSITORY_HPP
 
 #include <string>
 
-// TODO: faire herité la config de cette interface
-class IResourceLocator
+class StaticFile;
+
+class IStaticFileRepository
 {
   public:
-	virtual ~IResourceLocator(void) {}
+	virtual ~IStaticFileRepository(void) {}
 
-	virtual std::string resolvePhysicalPath(std::string const &target) const = 0;
+	virtual void save(StaticFile const &file) = 0;
 };
 
-#endif // IRESOURCELOCATOR_HPP
+#endif // ISTATICFILEREPOSITORY_HPP

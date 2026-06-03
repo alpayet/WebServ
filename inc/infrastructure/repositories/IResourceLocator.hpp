@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   StaticFile.hpp                                     :+:      :+:    :+:   */
+/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 15:34:13 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/03 01:24:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STATICFILE_HPP
-#define STATICFILE_HPP
+#ifndef IRESOURCELOCATOR_HPP
+#define IRESOURCELOCATOR_HPP
 
 #include <string>
 
-class IDataSource;
-
-class StaticFile
+// TODO: faire herité la config de cette interface
+class IResourceLocator
 {
   public:
-	StaticFile(const std::string &logicalPath, IDataSource *dataSource);
+	virtual ~IResourceLocator(void) {}
 
-	const std::string &getLogicalPath(void);
-	IDataSource		  *getDataSource(void);
-
-  private:
-	std::string	 _logicalPath;
-	IDataSource *_dataSource;
+	virtual std::string resolvePhysicalPath(std::string const &uri) const = 0;
 };
 
-#endif // STATICFILE_HPP
+#endif // IRESOURCELOCATOR_HPP

@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IFileRepository.hpp                                :+:      :+:    :+:   */
+/*   FileDataSource.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 23:02:22 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/02 16:15:43 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/02 20:39:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IFILEREPOSITORY_HPP
-#define IFILEREPOSITORY_HPP
+#ifndef FILEDATASOURCE_HPP
+#define FILEDATASOURCE_HPP
 
+#include "domain/ports/IDataSource.hpp"
 #include <string>
 
-struct UploadFileDto;
-
-class IFileRepository
+class FileDataSource : public IDataSource
 {
   public:
-	virtual ~IFileRepository(void) {}
+	virtual ~FileDataSource(void) {}
 
-	virtual void save(UploadFileDto const &dto) = 0;
+	virtual std::vector<char> readChunk(void) const;
+
+	std::string getFilePath(void) const;
+
+  private:
+	std::string _filePath;
 };
 
-#endif // IFILEREPOSITORY_HPP
+#endif // FILEDATASOURCE_HPP

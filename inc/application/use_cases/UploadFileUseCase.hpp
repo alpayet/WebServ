@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 17:31:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/02 13:59:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #define UPLOADFILEUSECASE_HPP
 
 class IConfigProvider;
-class IFileRepository;
+class IStaticFileRepository;
 class UploadFileDto;
 
 class UploadFileUseCase
 {
   public:
-	UploadFileUseCase(IConfigProvider &configProvider, IFileRepository &fileRepository);
+	UploadFileUseCase(IConfigProvider &configProvider, IStaticFileRepository &staticFileRepository);
 
 	void execute(UploadFileDto const &dto);
 
@@ -28,8 +28,8 @@ class UploadFileUseCase
 	UploadFileUseCase(UploadFileUseCase const &src);
 	UploadFileUseCase &operator=(UploadFileUseCase const &rhs);
 
-	IConfigProvider &_configProvider;
-	IFileRepository &_fileRepository;
+	IConfigProvider		  &_configProvider;
+	IStaticFileRepository &_staticFileRepository;
 };
 
 #endif // UPLOADFILEUSECASE_HPP

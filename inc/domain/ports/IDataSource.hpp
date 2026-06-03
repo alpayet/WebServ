@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   StaticFile.hpp                                     :+:      :+:    :+:   */
+/*   IDataSource.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 15:34:13 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/02 15:59:27 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/02 16:11:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STATICFILE_HPP
-#define STATICFILE_HPP
+#ifndef IDATASOURCE_HPP
+#define IDATASOURCE_HPP
 
-#include <string>
+#include <vector>
 
-class IDataSource;
-
-class StaticFile
+class IDataSource
 {
   public:
-	StaticFile(const std::string &logicalPath, IDataSource *dataSource);
+	virtual ~IDataSource(void) {}
 
-	const std::string &getLogicalPath(void);
-	IDataSource		  *getDataSource(void);
-
-  private:
-	std::string	 _logicalPath;
-	IDataSource *_dataSource;
+	virtual std::vector<char> readAll(void) const = 0;
 };
 
-#endif // STATICFILE_HPP
+#endif // IDATASOURCE_HPP
