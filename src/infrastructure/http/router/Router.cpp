@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/03 02:08:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:51:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/http/Request.hpp"
 #include "infrastructure/http/Response.hpp"
-#include "infrastructure/http/controllers/UploadFileController.hpp"
+#include "infrastructure/http/controllers/FindStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/router/IRouteAccessValidator.hpp"
 #include <algorithm>
@@ -21,7 +21,8 @@
 namespace http
 {
 	Router::Router(
-		IRouteAccessValidator &routeAccessValidator, UploadFileController &uploadFileController
+		IRouteAccessValidator		   &routeAccessValidator,
+		UploadStaticResourceController &uploadFileController
 	)
 		: _routeAccessValidator(routeAccessValidator), _uploadFileController(uploadFileController)
 	{
@@ -40,10 +41,6 @@ namespace http
 
 		if (method == "GET")
 		{
-		}
-		if (method == "PUT")
-		{
-			_uploadFileController(request, response);
 		}
 		if (method == "POST")
 		{

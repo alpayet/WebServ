@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpMessage.cpp                                    :+:      :+:    :+:   */
+/*   UploadStaticResourceDto.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 22:57:54 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:41:16 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:50:01 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 23:50:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HttpMessage.hpp"
+#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
 
-HttpMessage::HttpMessage(void) : _headers() {}
+UploadStaticResourceDto::UploadStaticResourceDto(void) {}
 
-HttpMessage::HttpMessage(std::map<std::string, std::string> const &headers) : _headers(headers) {}
+UploadStaticResourceDto::UploadStaticResourceDto(const UploadStaticResourceDto &src)
+{
+	*this = src;
+}
 
-HttpMessage::HttpMessage(const HttpMessage &src) : _headers(src._headers) {}
+UploadStaticResourceDto::~UploadStaticResourceDto(void) {}
 
-HttpMessage &HttpMessage::operator=(HttpMessage const &rhs)
+UploadStaticResourceDto &UploadStaticResourceDto::operator=(UploadStaticResourceDto const &rhs)
 {
 	if (this != &rhs)
-		_headers = rhs._headers;
+	{
+		//
+	}
 	return (*this);
 }

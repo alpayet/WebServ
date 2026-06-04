@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileUseCase.cpp                              :+:      :+:    :+:   */
+/*   UploadStaticResourceDtoMapper.cpp                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 01:10:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 02:40:18 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 23:25:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/UploadFileUseCase.hpp"
-#include "domain/ports/IStaticResourceRepository.hpp"
+#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
+#include "infrastructure/http/Request.hpp"
 
-UploadFileUseCase::UploadFileUseCase(
-	IConfigProvider &configProvider, IStaticFileRepository &staticFileRepository
-)
-	: _configProvider(configProvider), _staticFileRepository(staticFileRepository)
+namespace http
 {
-}
-
-void UploadFileUseCase::execute(const UploadFileDto &dto) {}
+	UploadStaticResourceDto UploadStaticResourceDtoMapper::toDto(const Request &request)
+	{
+		(UploadStaticResourceDto){
+			.target = request.target, .temporaryFilePath = request.body.getPath()
+		};
+	}
+} // namespace http

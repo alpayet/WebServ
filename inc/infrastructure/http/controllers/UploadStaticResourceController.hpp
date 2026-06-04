@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileController.hpp                           :+:      :+:    :+:   */
+/*   UploadStaticResourceController.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 20:09:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 04:05:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:42:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPUPLOADFILECONTROLLER_HPP
-#define HTTPUPLOADFILECONTROLLER_HPP
+#ifndef HTTPUPLOADSTATICRESOURCECONTROLLER_HPP
+#define HTTPUPLOADSTATICRESOURCECONTROLLER_HPP
 
-class UploadFileUseCase;
+class UploadStaticResourceUseCase;
 
 namespace http
 {
-	class UploadFileController
+	class Request;
+	class Response;
+
+	class UploadStaticResourceController
 	{
 	  public:
-		UploadFileController(UploadFileUseCase &uploadFileUseCase);
+		UploadStaticResourceController(UploadStaticResourceUseCase &uploadFileUseCase);
 
 		void operator()(Request const &request, Response &response);
 
 	  private:
-		UploadFileController(UploadFileController const &src);
-		UploadFileController &operator=(UploadFileController const &rhs);
+		UploadStaticResourceController(UploadStaticResourceController const &src);
+		UploadStaticResourceController &operator=(UploadStaticResourceController const &rhs);
 
-		UploadFileUseCase &_uploadFileUseCase;
+		UploadStaticResourceUseCase &_uploadFileUseCase;
 	};
 
 } // namespace http
 
-#endif // HTTPUPLOADFILECONTROLLER_HPP
+#endif // HTTPUPLOADSTATICRESOURCECONTROLLER_HPP

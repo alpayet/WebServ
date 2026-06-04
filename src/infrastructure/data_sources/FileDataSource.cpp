@@ -6,23 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 16:31:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 19:42:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 21:54:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/data_sources/FileDataSource.hpp"
 #include "infrastructure/data_sources/DataSourcesException.hpp"
-#include <fstream>
 
-std::vector<char> FileDataSource::readAll(void) const
-{
-	std::ifstream	  ifs(_filePath.c_str());
-	std::vector<char> fileContents;
+FileDataSource::FileDataSource(const std::string &filePath) : _filePath(filePath) {}
 
-	if (!ifs.is_open())
-		throw(DataSourcesException(DataSourcesException::fileOpenFailed));
-
-	ifs.
-}
+std::vector<char> FileDataSource::readChunk(void) const {}
 
 std::string FileDataSource::getFilePath(void) const { return (_filePath); }

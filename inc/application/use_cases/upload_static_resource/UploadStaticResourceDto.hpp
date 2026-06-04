@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpResponseDto.hpp                                :+:      :+:    :+:   */
+/*   UploadStaticResourceDto.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/03 19:13:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/07 19:46:37 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 15:28:44 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 23:42:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPRESPONSEDTO_HPP
-# define HTTPRESPONSEDTO_HPP
+#ifndef UPLOADSTATICRESOURCEREQUESTDTO_HPP
+#define UPLOADSTATICRESOURCEREQUESTDTO_HPP
 
-struct HttpResponseDto
+#include <string>
+
+struct UploadStaticResourceDto
 {
+	std::string temporaryFilePath;
+	std::string target;
 };
 
-#endif
+#endif // UPLOADSTATICRESOURCEREQUESTDTO_HPP

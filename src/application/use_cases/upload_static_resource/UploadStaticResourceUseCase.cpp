@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HttpMessage.hpp                                    :+:      :+:    :+:   */
+/*   UploadStaticResourceUseCase.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 22:31:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/30 19:58:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 01:10:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPMESSAGE_HPP
-# define HTTPMESSAGE_HPP
+#include "application/use_cases/upload_static_resource/UploadStaticResourceUseCase.hpp"
+#include "domain/ports/IStaticResourceRepository.hpp"
 
-# include <map>
-# include <string>
-
-class HttpMessage
+UploadStaticResourceUseCase::UploadStaticResourceUseCase(
+	IStaticResourceRepository &staticFileRepository
+)
+	: _staticFileRepository(staticFileRepository)
 {
-	public:
-		HttpMessage(void);
-		HttpMessage(std::map<std::string, std::string> const &_headers);
-		HttpMessage(HttpMessage const &src);
-		virtual ~HttpMessage(void) {}
+}
 
-		HttpMessage	&operator=(HttpMessage const &rhs);
-
-	protected:
-		std::map<std::string, std::string> _headers;
-		//body
-};
-
-#endif
+void UploadStaticResourceUseCase::execute(const UploadStaticResourceDto &dto) {}

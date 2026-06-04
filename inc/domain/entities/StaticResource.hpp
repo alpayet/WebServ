@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 01:00:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:00:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ class IDataSource;
 class StaticResource
 {
   public:
+	StaticResource(void);
 	StaticResource(const std::string &id, IDataSource *dataSource);
+	~StaticResource(void);
 
 	std::string const &getId(void) const;
 	IDataSource const *getDataSource(void) const;
+
+	void StaticResource::init(std::string const &id, IDataSource *dataSource);
 
   private:
 	StaticResource(StaticResource const &src);

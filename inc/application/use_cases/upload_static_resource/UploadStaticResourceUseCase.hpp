@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadFileUseCase.hpp                              :+:      :+:    :+:   */
+/*   UploadStaticResourceUseCase.hpp                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 01:02:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:48:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UPLOADFILEUSECASE_HPP
-#define UPLOADFILEUSECASE_HPP
+#ifndef UPLOADSTATICRESOURCEUSECASE_HPP
+#define UPLOADSTATICRESOURCEUSECASE_HPP
 
-class IConfigProvider;
 class IStaticResourceRepository;
-class UploadFileDto;
+class UploadStaticResourceDto;
 
-class UploadFileUseCase
+class UploadStaticResourceUseCase
 {
   public:
-	UploadFileUseCase(
-		IConfigProvider &configProvider, IStaticResourceRepository &staticFileRepository
-	);
+	UploadStaticResourceUseCase(IStaticResourceRepository &staticFileRepository);
 
-	void execute(UploadFileDto const &dto);
+	void execute(UploadStaticResourceDto const &dto);
 
   private:
-	UploadFileUseCase(UploadFileUseCase const &src);
-	UploadFileUseCase &operator=(UploadFileUseCase const &rhs);
+	UploadStaticResourceUseCase(UploadStaticResourceUseCase const &src);
+	UploadStaticResourceUseCase &operator=(UploadStaticResourceUseCase const &rhs);
 
-	IConfigProvider			  &_configProvider;
 	IStaticResourceRepository &_staticFileRepository;
 };
 
-#endif // UPLOADFILEUSECASE_HPP
+#endif // UPLOADSTATICRESOURCEUSECASE_HPP

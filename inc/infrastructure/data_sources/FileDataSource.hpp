@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 16:15:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/02 20:39:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 21:54:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 class FileDataSource : public IDataSource
 {
   public:
+	FileDataSource(std::string const &filePath);
 	virtual ~FileDataSource(void) {}
 
 	virtual std::vector<char> readChunk(void) const;

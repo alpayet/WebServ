@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/03 02:08:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:15:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 namespace http
 {
 	class IRouteAccessValidator;
-	class UploadFileController;
+	class UploadStaticResourceController;
 	class Request;
 	class Response;
 
@@ -24,7 +24,8 @@ namespace http
 	{
 	  public:
 		Router(
-			IRouteAccessValidator &routeAccessValidator, UploadFileController &uploadFileController
+			IRouteAccessValidator		   &routeAccessValidator,
+			UploadStaticResourceController &uploadFileController
 		);
 
 		void route(Request const &request, Response &response);
@@ -35,7 +36,7 @@ namespace http
 
 		IRouteAccessValidator &_routeAccessValidator;
 
-		UploadFileController &_uploadFileController;
+		UploadStaticResourceController &_uploadFileController;
 	};
 } // namespace http
 

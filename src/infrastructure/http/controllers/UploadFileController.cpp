@@ -6,26 +6,28 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 20:10:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/31 04:18:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:25:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/controllers/UploadFileController.hpp"
-#include "application/use_cases/UploadFileUseCase.hpp"
+#include "application/use_cases/upload_static_resource/UploadStaticResourceUseCase.hpp"
 #include "infrastructure/http/Request.hpp"
 #include "infrastructure/http/Response.hpp"
-#include "mappers/UploadFileDtoMapper.hpp"
+#include "infrastructure/http/controllers/UploadStaticResourceController.hpp"
+#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
 
 namespace http
 {
-	UploadFileController::UploadFileController(UploadFileUseCase &uploadFileUseCase)
+	UploadStaticResourceController::UploadStaticResourceController(
+		UploadStaticResourceUseCase &uploadFileUseCase
+	)
 		: _uploadFileUseCase(uploadFileUseCase)
 	{
 	}
 
-	void UploadFileController::operator()(const Request &request, Response &response)
+	void UploadStaticResourceController::operator()(const Request &request, Response &response)
 	{
-		UploadFileDto dto = UploadFileDtoMapper::toDto(request);
+		UploadStaticResourceDto dto = UploadStaticResourceDtoMapper::toDto(request);
 
 		_uploadFileUseCase.execute(dto);
 	}

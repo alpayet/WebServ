@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRequest.hpp                                       :+:      :+:    :+:   */
+/*   FindStaticResourceController.hpp                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/19 20:09:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/04/30 21:17:18 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/04 23:46:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IREQUEST_HPP
-# define IREQUEST_HPP
+#ifndef FINDSTATICRESOURCECONTROLLER_HPP
+#define FINDSTATICRESOURCECONTROLLER_HPP
 
-#include <string>
-
-class IRequest
+class FindStaticResourceController
 {
-	public:
-		enum MethodType
-		{
-			Get,
-			Post,
-			Delete,
-			Unknown
-		};
+  public:
+	FindStaticResourceController(void);
+	FindStaticResourceController(FindStaticResourceController const &src);
+	~FindStaticResourceController(void);
 
-	public:
-		virtual ~IRequest(void) {}
+	FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
 
-		virtual MethodType			getMethod(void) const = 0;
-		virtual std::string const	&getTarget(void) const = 0;
-		virtual std::string const	&getProtocol(void) const = 0;
-
-		virtual IRequest	*clone(void) const = 0;
+  private:
 };
 
-#endif
+#endif // FINDSTATICRESOURCECONTROLLER_HPP

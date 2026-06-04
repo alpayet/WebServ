@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 01:02:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/04 23:43:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICFILEREPOSITORY_HPP
-#define ISTATICFILEREPOSITORY_HPP
+#ifndef ISTATICRESOURCEREPOSITORY_HPP
+#define ISTATICRESOURCEREPOSITORY_HPP
 
 #include <string>
 
@@ -22,9 +22,9 @@ class IStaticResourceRepository
   public:
 	virtual ~IStaticResourceRepository(void) {}
 
-	virtual StaticResource const *findById(std::string const &id) = 0;
-	virtual bool				  exists(std::string const &id) = 0;
-	virtual void				  remove(std::string const &id) = 0;
+	virtual void findById(std::string const &id, StaticResource &resource) = 0;
+	virtual bool exists(std::string const &id) = 0;
+	virtual void remove(std::string const &id) = 0;
 };
 
-#endif // ISTATICFILEREPOSITORY_HPP
+#endif // ISTATICRESOURCEREPOSITORY_HPP
