@@ -19,7 +19,7 @@ class ConfigException : public std::exception
 class Config
 {
 	public:
-		Config(char* filename); // TODO: use Semantic to init
+		Config(char* filename);
 		const std::vector<Server>&	getServers() const { return m_servers; };
 	private:
 		std::vector<Server> m_servers;

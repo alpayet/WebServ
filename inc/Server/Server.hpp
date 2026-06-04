@@ -11,7 +11,6 @@ struct Location
 	std::string					root;
 	std::vector<std::string>	index;
 	std::string					cgi; // maybe vector
-	// std::string					methods;
 	bool						met_get;
 	bool						met_post;
 	bool						met_del;
@@ -31,7 +30,6 @@ class Server
 {
 	public:
 		/** CTOR */
-		// TODO: constructors / destructor
 		Server() :
 			m_port(8080),
 			m_interface("0.0.0.0"),
@@ -56,8 +54,6 @@ class Server
 		void	setClientMaxBody(long max_body) { m_max_body = max_body; };
 		void	setRoot(const std::string& root) { m_root = root ; };
 		void	setIndex(const std::string& index) { m_index = index ; };
-
-		void	setup();
 
 	private:
 		int							m_port;

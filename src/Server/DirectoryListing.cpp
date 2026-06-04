@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+
+
 std::string	resolveURI(const Location& loc)
 {
 	std::string	uri;
@@ -88,7 +90,14 @@ void	displayListing(std::string dir_name)
 	char	t_buf[80];
 	strftime(t_buf, sizeof(t_buf), "%c", &t_local);
 	std::cout << "\t<tr>" << std::endl;
-	std::cout << "\t\t<td><a href=\"..\">Previous directory</a></td>" << std::endl;
+	size_t	pos = dir_name.find_last_of('/');
+	if (pos == dir_name.size() - 1)
+	{
+		dir_name.erase(dir_name.end() - 1);
+		pos = dir_name.find_last_of('/');
+	}
+	std::string	prev_dir = dir_name.substr(0, pos);
+	std::cout << "\t\t<td><a href=\"" << prev_dir << "\">Previous directory</a></td>" << std::endl;
 	std::cout << "\t\t<td>" << t_buf << "</td>" << std::endl;
 	std::cout << "\t\t<td>-</td>" << std::endl;
 	std::cout << "\t</tr>" << std::endl;
@@ -128,3 +137,5 @@ void	displayListing(std::string dir_name)
 
 //! directory listing needs resolved uri
 // TODO: resolves url (root to replace location, alias-like mapping)
+
+

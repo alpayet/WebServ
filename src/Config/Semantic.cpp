@@ -194,8 +194,8 @@ void	checkOverlap(p_Config c)
 	size_t	nb_servers = c.servers.size();
 	if (nb_servers < 2)
 		return ;
-	std::string	port1, port2;
-	std::string	ip1, ip2;
+	std::string	port1 = "8080", port2 = "8080";
+	std::string	ip1 = "0.0.0.0", ip2 = "0.0.0.0";
 
 	for (size_t i = 0 ; i < nb_servers - 1 ; ++i)
 	{

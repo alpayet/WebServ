@@ -1,4 +1,4 @@
-* This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis *
+*This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis*
 
 # Description
 The goal is to make an HTTP server.
@@ -10,27 +10,58 @@ The goal is to make an HTTP server.
 
 # Instructions
 To launch the program, use the command line
-`./webserv [configuration file]`
+`./webserv <configuration file>`
 Configuration file ressemble the server block of the nginx file:
 ```
 server {
-	listen 80;
+	listen 8081;
+	interface 10.15.2.1;
+
+	root /var/www/html/
+	
 	location / {
-		root "lalala";
+		root /var/www/html/example;
+		index index.html index.htm;
 	}
+	
+	location /banana/ {
+		return 404;
+	}
+
+	location /lalala/ {
+		autoindex on;
+	}
+	
+	error_page 500 /500.html;
+	error_page 404 /404.html;
 }
 ```
 Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
 
 
 `server`: defines the start of a server setup
+
 `location`: starts of the location block for a specific path
+
 `listen`: defines the port used
-`interface`: hostname (either url or ip address)
+
+`interface`: ip address
+
 `root`:  
+
 `index`:
-`cgi`:
-`error_page`:
+
+`proxy_pass`:
+
+`error_page`: 
+
+`client_max_body_size`: 
+
+`limit_except`: turn all methods to false, then the mentionned ones are the one allowed
+
+`autoindex`: when on, go to directory listing
+
+`return`: directly return the error code mentionned
 
 
 

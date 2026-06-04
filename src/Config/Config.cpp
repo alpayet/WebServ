@@ -22,6 +22,10 @@ Config::Config(char* filename)
 
 	Tokenizer tok;
 	tok.tokenize(file_str);
+	if (tok.getTokens().empty())
+	{
+		throw ConfigException ("File is empty.");
+	}
 
 	Parser prs(tok.getTokens());
 	p_Config conf;
