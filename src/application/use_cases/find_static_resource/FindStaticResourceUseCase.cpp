@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceDto.cpp                        :+:      :+:    :+:   */
+/*   FindStaticResourceUseCase.cpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 23:50:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 23:50:18 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/05 16:29:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
+#include "application/use_cases/find_static_resource/FindStaticResourceUseCase.hpp"
 
-UploadStaticResourceDto::UploadStaticResourceDto(void) {}
+FindStaticResourceUseCase::FindStaticResourceUseCase(void) {}
 
-UploadStaticResourceDto::UploadStaticResourceDto(const UploadStaticResourceDto &src)
+FindStaticResourceUseCase::FindStaticResourceUseCase(const FindStaticResourceUseCase &src)
 {
 	*this = src;
 }
 
-UploadStaticResourceDto::~UploadStaticResourceDto(void) {}
+FindStaticResourceUseCase::~FindStaticResourceUseCase(void) {}
 
-UploadStaticResourceDto &UploadStaticResourceDto::operator=(UploadStaticResourceDto const &rhs)
+FindStaticResourceUseCase &
+FindStaticResourceUseCase::operator=(FindStaticResourceUseCase const &rhs)
 {
 	if (this != &rhs)
 	{

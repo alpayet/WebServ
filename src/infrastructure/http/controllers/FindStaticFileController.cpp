@@ -1,28 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FindStaticResourceUseCase.hpp                      :+:      :+:    :+:   */
+/*   FindStaticFileController.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 16:28:42 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/05 16:30:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifndef FINDSTATICRESOURCEUSECASE_HPP
-#define FINDSTATICRESOURCEUSECASE_HPP
-
-class FindStaticResourceUseCase
-{
-  public:
-	FindStaticResourceUseCase(void);
-	FindStaticResourceUseCase(FindStaticResourceUseCase const &src);
-	~FindStaticResourceUseCase(void);
-
-	FindStaticResourceUseCase &operator=(FindStaticResourceUseCase const &rhs);
-
-  private:
-};
-
-#endif // FINDSTATICRESOURCEUSECASE_HPP
