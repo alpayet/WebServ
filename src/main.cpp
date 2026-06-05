@@ -2,10 +2,10 @@
 #include <string>
 #include <fstream>
 
-#include "Config/Tokenizer.hpp"
-#include "Config/Parser.hpp"
-#include "Config/Semantic.hpp"
-#include "Config/Config.hpp"
+#include "config/Tokenizer.hpp"
+#include "config/Parser.hpp"
+#include "config/Semantic.hpp"
+#include "config/Config.hpp"
 
 
 #include <sstream>

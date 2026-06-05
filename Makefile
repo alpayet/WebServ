@@ -3,8 +3,8 @@
 NAME := webserv
 
 SRCS_DIR := src/
-CONF_DIR := src/Config/
-SERV_DIR := src/Server/
+CONF_DIR := src/config/
+SERV_DIR := src/server/
 INCS_DIR := inc/
 OBJS_DIR := .build/
 
@@ -50,9 +50,9 @@ re: fclean
 # #files
 # SRC_FILES = \
 # 	main.cpp \
-# 	Config/Parser.cpp \
-# 	Config/Tokenizer.cpp \
-# 	Config/Server.cpp
+# 	config/Parser.cpp \
+# 	config/Tokenizer.cpp \
+# 	config/Server.cpp
 
 # #directories
 # SRC_DIR = src/
