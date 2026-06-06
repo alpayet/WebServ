@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Exception.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 21:17:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/05 14:10:09 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ namespace http
 			contentLengthInvalid,
 			contentLengthRequired,
 			requestLineTooLarge,
-			HeaderLineTooLarge,
-			HeaderCountTooLarge,
+			headerLineTooLarge,
+			headerCountTooLarge,
 			bodyTooLarge,
 			bodyFileOpenFailed,
 			bodyFileWriteFailed

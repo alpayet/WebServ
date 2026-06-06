@@ -9,8 +9,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
-
 std::string	resolveURI(const Location& loc)
 {
 	std::string	uri;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRequestValidationPolicy.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 18:25:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/01 21:34:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/05 14:39:02 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ namespace http
 	  public:
 		virtual ~IRequestValidationPolicy(void) {};
 
-		virtual std::string getSupportedHttpVersion(void) const = 0;
-		virtual std::size_t getMaxRequestLineSize(void) const = 0;
-		virtual std::size_t getMaxHeaderLineSize(void) const = 0;
-		virtual std::size_t getMaxHeaderCount(void) const = 0;
 		virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
 	};
 } // namespace http

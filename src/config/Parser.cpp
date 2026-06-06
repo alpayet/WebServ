@@ -5,7 +5,6 @@
 
 Parser::Parser(const std::vector<Token>& tokens): m_tokens(tokens)
 {
-	// TODO: deep copy
 	m_it = m_tokens.begin();
 	m_ite = m_tokens.end();
 }
@@ -29,7 +28,7 @@ p_Directive	Parser::parseDirective(T& t, e_block comp)
 	if (m_it->type != res_word)
 	{
 		std::ostringstream os;
-		os << "expected a directive name" << m_it->data;
+		os << "expected a directive name, not " << m_it->data;
 		throw ParserFormatException(os.str());
 	}
 
@@ -162,7 +161,6 @@ void	Parser::parseConfig()
 void	Parser::parse(p_Config& config)
 {
 	parseConfig();
-	// TODO: probably deep copy too
 	config = m_config;
 }
 
