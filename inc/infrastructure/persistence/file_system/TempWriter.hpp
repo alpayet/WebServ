@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 04:09:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 17:57:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace fileSystem
 		std::string const _tempFileName;
 		std::string		  _tempFilePath;
 
-		static std::string generateUniqueFile(char const *pathTemplate);
+		static std::string generateUniqueTempFile(std::string const &fileName);
 	};
 } // namespace fileSystem
 

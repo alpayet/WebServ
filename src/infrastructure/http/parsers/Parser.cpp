@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 02:30:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 17:47:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,7 @@ namespace http
 					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 
 					state.currenLineSize += std::distance(it_start, it_line_end);
-					if (state.currenLineSize > _requestValidationPolicy.getMaxRequestLineSize())
-						throw Exception(Exception::requestLineTooLarge);
+					validateRequestLineSize(state.currenLineSize);
 					if (it_line_end == readBuf.end())
 					{
 						can_continue = false;
@@ -139,15 +138,14 @@ namespace http
 					std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 
 					state.currenLineSize += std::distance(it_start, it_line_end);
-					if (state.currenLineSize > _requestValidationPolicy.getMaxHeaderLineSize())
-						throw Exception(Exception::HeaderLineTooLarge);
+					validateHeaderLineSize(state.currenLineSize);
 					if (it_line_end == readBuf.end())
 					{
 						can_continue = false;
 						break;
 					}
-					if (++state.currentHeaderCount > _requestValidationPolicy.getMaxHeaderCount())
-						throw Exception(Exception::HeaderCountTooLarge);
+					++state.currentHeaderCount;
+					validateHeaderCount(state.currentHeaderCount);
 					if (it_start == it_line_end)
 					{
 						if (state.request.contentLength != 0 && expectsBody(state.request.method))
@@ -337,5 +335,23 @@ namespace http
 	std::vector<char>::iterator Parser::findCRLF(std::vector<char> &readBuf)
 	{
 		return (std::search(readBuf.begin(), readBuf.end(), _crlf, _crlf + sizeof(_crlf) - 1));
+	}
+
+	void Parser::validateRequestLineSize(std::size_t size)
+	{
+		if (size > _requestValidationPolicy.getMaxRequestLineSize())
+			throw Exception(Exception::requestLineTooLarge);
+	}
+
+	void Parser::validateHeaderLineSize(std::size_t size)
+	{
+		if (size > _requestValidationPolicy.getMaxHeaderLineSize())
+			throw Exception(Exception::requestLineTooLarge);
+	}
+
+	void Parser::validateHeaderCount(std::size_t count)
+	{
+		if (count > _requestValidationPolicy.getMaxHeaderCount())
+			throw Exception(Exception::HeaderCountTooLarge);
 	}
 } // namespace http

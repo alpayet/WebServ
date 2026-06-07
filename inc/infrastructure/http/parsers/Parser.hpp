@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 17:43:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ namespace http
 		);
 
 		static std::vector<char>::iterator findCRLF(std::vector<char> &readBuf);
+
+		void validateRequestLineSize(std::size_t size);
+		void validateHeaderLineSize(std::size_t size);
+		void validateHeaderCount(std::size_t size);
 	};
 } // namespace http
 

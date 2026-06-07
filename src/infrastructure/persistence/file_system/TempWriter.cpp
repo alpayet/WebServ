@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 04:08:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 17:57:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ namespace fileSystem
 	{
 		if (!_tempFile.is_open())
 		{
-			_tempFilePath = generateUniqueFile((_tempFileName + "XXXXXX").c_str());
+			_tempFilePath = generateUniqueTempFile(_tempFileName);
 			_tempFile.open(_tempFileName.c_str(), std::ios::binary);
 			if (!_tempFile.is_open())
 				throw Exception(Exception::fileOpenFailed);
 		}
-		if (!_tempFile.write(&data[0], data.size()))
+		else if (!_tempFile.write(&data[0], data.size()))
 			throw Exception(Exception::fileWriteFailed);
 	}
 
-	std::string TempWriter::generateUniqueFile(char const *pathTemplate)
+	std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
 	{
-		std::string unique_path(pathTemplate);
+		std::string unique_path(("/tmp/" + fileName + "XXXXXX").c_str());
 
 		int fd = mkstemp(&unique_path[0]);
 
