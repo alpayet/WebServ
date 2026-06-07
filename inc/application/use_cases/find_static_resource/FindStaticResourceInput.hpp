@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
+/*   FindStaticResourceInput.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 19:34:34 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 20:08:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
-#define ISTATICRESOURCEREADERPROVIDER_HPP
+#ifndef FINDSTATICRESOURCEINPUT_HPP
+#define FINDSTATICRESOURCEINPUT_HPP
 
 #include <string>
 
-class IResourceReader;
-
-class IStaticResourceReaderProvider
+struct FindStaticResourceInput
 {
-  public:
-	virtual ~IStaticResourceReaderProvider(void) {}
-
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
+	std::string id;
 };
 
-#endif // ISTATICRESOURCEREADERPROVIDER_HPP
+#endif // FINDSTATICRESOURCEINPUT_HPP

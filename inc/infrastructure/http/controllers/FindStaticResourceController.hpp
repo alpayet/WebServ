@@ -6,25 +6,32 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 16:48:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 21:04:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FINDSTATICRESOURCECONTROLLER_HPP
 #define FINDSTATICRESOURCECONTROLLER_HPP
 
+class FindStaticResourceUseCase;
+
 namespace http
 {
+	class Request;
+	class Response;
+
 	class FindStaticResourceController
 	{
 	  public:
-		FindStaticResourceController(void);
-		FindStaticResourceController(FindStaticResourceController const &src);
-		~FindStaticResourceController(void);
+		FindStaticResourceController(FindStaticResourceUseCase &useCase);
 
-		FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
+		void operator()(Request const &request, Response &response);
 
 	  private:
+		FindStaticResourceController(FindStaticResourceController const &src);
+		FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
+
+		FindStaticResourceUseCase &_useCase;
 	};
 } // namespace http
 

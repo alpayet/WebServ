@@ -17,8 +17,6 @@
 #include "domain/repositories/IStaticResourceRepository.hpp"
 #include <string>
 
-class StaticResource;
-
 namespace fileSystem
 {
 	class IResourceLocator;

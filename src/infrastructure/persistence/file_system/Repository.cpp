@@ -13,6 +13,7 @@
 #include "infrastructure/persistence/file_system/Repository.hpp"
 #include "domain/entities/StaticResource.hpp"
 #include "infrastructure/persistence/file_system/IResourceLocator.hpp"
+#include "infrastructure/persistence/file_system/Reader.hpp"
 
 namespace fileSystem
 {
@@ -23,5 +24,10 @@ namespace fileSystem
 		return (StaticResource(id, _resourceLocator.resolvePhysicalPath(id)));
 	}
 
-	IResourceReader *Repository::createReader(const std::string &id) {}
+	void fileSystem::Repository::remove(const std::string &id) {}
+
+	IResourceReader *Repository::createReader(const std::string &storageLocation)
+	{
+		return (new Reader(storageLocation));
+	}
 } // namespace fileSystem

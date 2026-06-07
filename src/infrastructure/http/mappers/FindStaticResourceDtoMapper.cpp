@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
+/*   FindStaticResourceDtoMapper.hpp                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 19:34:34 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:12:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
-#define ISTATICRESOURCEREADERPROVIDER_HPP
+#include "application/use_cases/find_static_resource/FindStaticResourceInput.hpp"
+#include "infrastructure/http/Request.hpp"
+#include "infrastructure/http/mappers/FindStaticResourceDtoMapper.hpp"
 
-#include <string>
-
-class IResourceReader;
-
-class IStaticResourceReaderProvider
+namespace http
 {
-  public:
-	virtual ~IStaticResourceReaderProvider(void) {}
-
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
-};
-
-#endif // ISTATICRESOURCEREADERPROVIDER_HPP
+	FindStaticResourceInput FindStaticResourceDtoMapper::toDto(const Request &request)
+	{
+		(FindStaticResourceInput){.id = request.target};
+	}
+} // namespace http

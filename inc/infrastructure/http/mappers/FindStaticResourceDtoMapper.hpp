@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceDtoMapper.hpp                  :+:      :+:    :+:   */
+/*   FindStaticResourceDtoMapper.hpp                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 02:32:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:08:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UPLOADSTATICRESOURCEDTOMAPPER_HPP
-#define UPLOADSTATICRESOURCEDTOMAPPER_HPP
+#ifndef FINDSTATICRESOURCEDTOMAPPER_HPP
+#define FINDSTATICRESOURCEDTOMAPPER_HPP
 
-#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
+struct FindStaticResourceInput;
 
 namespace http
 {
 	struct Request;
 
-	class UploadStaticResourceDtoMapper
+	class FindStaticResourceDtoMapper
 	{
 	  public:
-		static UploadStaticResourceDto toDto(Request const &request);
+		static FindStaticResourceInput toDto(Request const &request);
 
 	  private:
-		UploadStaticResourceDtoMapper(void);
+		FindStaticResourceDtoMapper(void);
 	};
 } // namespace http
 
-#endif // UPLOADSTATICRESOURCEDTOMAPPER_HPP
+#endif // FINDSTATICRESOURCEDTOMAPPER_HPP

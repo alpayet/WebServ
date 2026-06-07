@@ -6,21 +6,21 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 03:40:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 19:41:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILESYSTEMREADER_HPP
 #define FILESYSTEMREADER_HPP
 
-#include "domain/repositories/IStaticResourceRepository.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include <fstream>
 #include <string>
 #include <vector>
 
 namespace fileSystem
 {
-	class Reader : public IStaticResourceRepository
+	class Reader : public IResourceReader
 	{
 	  public:
 		Reader(std::string const &path);

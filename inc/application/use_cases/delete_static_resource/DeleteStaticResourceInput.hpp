@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
+/*   DeleteStaticResourceInput.hpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 19:34:34 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:29:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
-#define ISTATICRESOURCEREADERPROVIDER_HPP
+#ifndef DELETESTATICRESOURCEINPUT_HPP
+#define DELETESTATICRESOURCEINPUT_HPP
 
-#include <string>
-
-class IResourceReader;
-
-class IStaticResourceReaderProvider
+struct DeleteStaticResourceInput
 {
-  public:
-	virtual ~IStaticResourceReaderProvider(void) {}
-
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
 };
 
-#endif // ISTATICRESOURCEREADERPROVIDER_HPP
+#endif // DELETESTATICRESOURCEINPUT_HPP

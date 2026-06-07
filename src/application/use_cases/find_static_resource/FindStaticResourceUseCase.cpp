@@ -6,12 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 00:19:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 20:11:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/find_static_resource/FindStaticResourceUseCase.hpp"
 #include "application/ports/IStaticResourceReaderProvider.hpp"
+#include "application/use_cases/find_static_resource/FindStaticResourceInput.hpp"
+#include "application/use_cases/find_static_resource/FindStaticResourceOutput.hpp"
+#include "domain/entities/StaticResource.hpp"
 #include "domain/repositories/IStaticResourceRepository.hpp"
 
 FindStaticResourceUseCase::FindStaticResourceUseCase(
@@ -23,4 +26,11 @@ FindStaticResourceUseCase::FindStaticResourceUseCase(
 {
 }
 
-void FindStaticResourceUseCase::execute(const FindStaticResourceDto &dto) {}
+FindStaticResourceOutput FindStaticResourceUseCase::execute(const FindStaticResourceInput &dtoInput)
+{
+	StaticResource	 static_resource = _staticResourceRepository.findById(dtoInput.id);
+	IResourceReader *resourceReader =
+		_staticResourceReaderProvider.createReader(static_resource.getStorageLocation());
+
+	return ((FindStaticResourceOutput){.resourceReader = resourceReader});
+}

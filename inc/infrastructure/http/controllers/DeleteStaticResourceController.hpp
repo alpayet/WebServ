@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceController.hpp                 :+:      :+:    :+:   */
+/*   DeleteStaticResourceController.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 20:09:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 16:47:49 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:31:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPUPLOADSTATICRESOURCECONTROLLER_HPP
-#define HTTPUPLOADSTATICRESOURCECONTROLLER_HPP
+#ifndef FINDSTATICRESOURCECONTROLLER_HPP
+#define FINDSTATICRESOURCECONTROLLER_HPP
 
-class UploadStaticResourceUseCase;
+class DeleteStaticResourceUseCase;
 
 namespace http
 {
 	class Request;
 	class Response;
 
-	class UploadStaticResourceController
+	class DeleteStaticResourceController
 	{
 	  public:
-		UploadStaticResourceController(UploadStaticResourceUseCase &uploadFileUseCase);
+		DeleteStaticResourceController(DeleteStaticResourceUseCase &useCase);
 
 		void operator()(Request const &request, Response &response);
 
 	  private:
-		UploadStaticResourceController(UploadStaticResourceController const &src);
-		UploadStaticResourceController &operator=(UploadStaticResourceController const &rhs);
+		DeleteStaticResourceController(DeleteStaticResourceController const &src);
+		DeleteStaticResourceController &operator=(DeleteStaticResourceController const &rhs);
 
-		UploadStaticResourceUseCase &_uploadFileUseCase;
+		DeleteStaticResourceUseCase &_useCase;
 	};
-
 } // namespace http
 
-#endif // HTTPUPLOADSTATICRESOURCECONTROLLER_HPP
+#endif // FINDSTATICRESOURCECONTROLLER_HPP

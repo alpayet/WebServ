@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
+/*   DeleteStaticResourceDtoMapper.hpp                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 19:34:34 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:34:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
-#define ISTATICRESOURCEREADERPROVIDER_HPP
+#ifndef DELETESTATICRESOURCEDTOMAPPER_HPP
+#define DELETESTATICRESOURCEDTOMAPPER_HPP
 
-#include <string>
+struct DeleteStaticResourceInput;
 
-class IResourceReader;
-
-class IStaticResourceReaderProvider
+namespace http
 {
-  public:
-	virtual ~IStaticResourceReaderProvider(void) {}
+	struct Request;
 
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
-};
+	class DeleteStaticResourceDtoMapper
+	{
+	  public:
+		static DeleteStaticResourceInput toDto(Request const &request);
 
-#endif // ISTATICRESOURCEREADERPROVIDER_HPP
+	  private:
+		DeleteStaticResourceDtoMapper(void);
+	};
+} // namespace http
+
+#endif // DELETESTATICRESOURCEDTOMAPPER_HPP

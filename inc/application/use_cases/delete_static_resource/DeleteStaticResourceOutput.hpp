@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceDtoMapper.cpp                  :+:      :+:    :+:   */
+/*   DeleteStaticResourceOutput.hpp                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 02:40:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/06 23:58:31 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 20:02:00 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 21:29:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/upload_static_resource/UploadStaticResourceDto.hpp"
-#include "infrastructure/http/Request.hpp"
+#ifndef DELETESTATICRESOURCEOUTPUT_HPP
+#define DELETESTATICRESOURCEOUTPUT_HPP
 
-namespace http
+class IResourceReader;
+
+struct DeleteStaticResourceOutput
 {
-	UploadStaticResourceDto UploadStaticResourceDtoMapper::toDto(const Request &request)
-	{
-		(UploadStaticResourceDto){
-			.id = request.target, .temporaryFilePath = request.body.getPath()
-		};
-	}
-} // namespace http
+};
+
+#endif // DELETESTATICRESOURCEOUTPUT_HPP
