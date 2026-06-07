@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FindStaticResourceDto.hpp                          :+:      :+:    :+:   */
+/*   Reader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/06 23:59:09 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 03:36:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FINDSTATICRESOURCEDTO_HPP
-#define FINDSTATICRESOURCEDTO_HPP
+#include "infrastructure/persistence/file_system/Reader.hpp"
 
-#include <string>
-
-struct UploadStaticResourceDto
+namespace fileSystem
 {
-	std::string	 id;
-};
+	Reader::Reader(std::string const &path) : _path(path), _file() {}
 
-#endif // FINDSTATICRESOURCEDTO_HPP
+	std::vector<char> Reader::Reader::readChunk() const {}
+} // namespace fileSystem

@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DiskFileRepository.cpp                             :+:      :+:    :+:   */
+/*   fileSystemRepository.cpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 23:37:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 00:53:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/repositories/DiskFileRepository.hpp"
+#include "infrastructure/persistence/file_system/Repository.hpp"
 #include "domain/entities/StaticResource.hpp"
-#include "domain/ports/IDataSource.hpp"
-#include "infrastructure/data_sources/FileDataSource.hpp"
-#include "infrastructure/repositories/IResourceLocator.hpp"
+#include "infrastructure/persistence/file_system/IResourceLocator.hpp"
 
-DiskFileRepository::DiskFileRepository(IResourceLocator &resourceLocator)
-	: _resourceLocator(resourceLocator)
+namespace fileSystem
 {
-}
+	Repository::Repository(IResourceLocator &resourceLocator) : _resourceLocator(resourceLocator) {}
 
-void DiskFileRepository::findById(std::string const &id, StaticResource &resource)
-{
-	IDataSource *dataSource = new FileDataSource(_resourceLocator.resolvePhysicalPath(id));
+	StaticResource Repository::findById(std::string const &id)
+	{
+		return (StaticResource(id, _resourceLocator.resolvePhysicalPath(id)));
+	}
 
-	resource.init(id, dataSource);
-}
+	IResourceReader *Repository::createReader(const std::string &id) {}
+} // namespace fileSystem

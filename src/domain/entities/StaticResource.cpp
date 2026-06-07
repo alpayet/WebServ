@@ -6,28 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 00:43:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "domain/entities/StaticResource.hpp"
 
-StaticResource::StaticResource() : _id(), _dataSource(NULL) {}
-
-StaticResource::StaticResource(const std::string &id, IDataSource *dataSource)
-	: _id(id), _dataSource(dataSource)
+StaticResource::StaticResource(const std::string &id, const std::string &storageLocation)
+	: _id(id), _storageLocation(storageLocation)
 {
 }
-
-StaticResource::~StaticResource() { delete _dataSource; }
 
 std::string const &StaticResource::getId(void) const { return (_id); }
 
-IDataSource const *StaticResource::getDataSource(void) const { return (_dataSource); }
-
-void StaticResource::init(std::string const &id, IDataSource *dataSource)
-{
-	delete _dataSource;
-	_id = id;
-	_dataSource = dataSource;
-}
+std::string const &StaticResource::getStorageLocation(void) const { return (_storageLocation); }

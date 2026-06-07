@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
+/*   IResourceReader.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 00:58:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCELOCATOR_HPP
-#define IRESOURCELOCATOR_HPP
+#ifndef IRESOURCEREADER_HPP
+#define IRESOURCEREADER_HPP
 
-#include <string>
+#include <vector>
 
-// TODO: faire herité la config de cette interface
-class IResourceLocator
+class IResourceReader
 {
   public:
-	virtual ~IResourceLocator(void) {}
+	virtual ~IResourceReader(void) {}
 
-	virtual std::string resolvePhysicalPath(std::string const &uri) const = 0;
+	virtual std::vector<char> readChunk(void) const = 0;
 };
 
-#endif // IRESOURCELOCATOR_HPP
+#endif // IRESOURCEREADER_HPP

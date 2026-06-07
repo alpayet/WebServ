@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceUseCase.cpp                              :+:      :+:    :+:   */
+/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:25:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 01:10:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 00:15:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/upload_static_resource/UploadStaticResourceUseCase.hpp"
-#include "domain/ports/IStaticResourceRepository.hpp"
+#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
+#define ISTATICRESOURCEREADERPROVIDER_HPP
 
-UploadStaticResourceUseCase::UploadStaticResourceUseCase(
-	IStaticResourceRepository &staticFileRepository
-)
-	: _staticFileRepository(staticFileRepository)
+#include <string>
+
+class IResourceReader;
+
+class IStaticResourceReaderProvider
 {
-}
+  public:
+	virtual ~IStaticResourceReaderProvider(void) {}
 
-void UploadStaticResourceUseCase::execute(const UploadStaticResourceDto &dto) {}
+	virtual IResourceReader *createReader(std::string const &id) = 0;
+};
+
+#endif // ISTATICRESOURCEREADERPROVIDER_HPP

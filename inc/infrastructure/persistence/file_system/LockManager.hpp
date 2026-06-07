@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DiskFileLockManager.hpp                            :+:      :+:    :+:   */
+/*   fileSystemLockManager.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,34 +10,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DISKFILELOCKMANAGER_HPP
-#define DISKFILELOCKMANAGER_HPP
+#ifndef FILESYSTEMLOCKMANAGER_HPP
+#define FILESYSTEMLOCKMANAGER_HPP
 
 #include <map>
 #include <string>
 
-class DiskFileLockManager
+namespace fileSystem
 {
-  public:
-	enum LockMode
+	class LockManager
 	{
-		unlocked,
-		read,
-		write
+	  public:
+		enum LockMode
+		{
+			unlocked,
+			read,
+			write
+		};
+
+	  public:
+		bool tryLock(std::string const &path, LockMode mode);
+
+		void unlock(std::string const &path);
+
+		LockMode isLocked(std::string const &path) const;
+
+	  private:
+		LockManager(LockManager const &src);
+		LockManager &operator=(LockManager const &rhs);
+
+		std::map<std::string, LockMode> _lockedPaths;
 	};
 
-  public:
-	bool tryLock(std::string const &path, LockMode mode);
+} // namespace fileSystem
 
-	void unlock(std::string const &path);
-
-	LockMode isLocked(std::string const &path) const;
-
-  private:
-	DiskFileLockManager(DiskFileLockManager const &src);
-	DiskFileLockManager &operator=(DiskFileLockManager const &rhs);
-
-	std::map<std::string, LockMode> _lockedPaths;
-};
-
-#endif // DISKFILELOCKMANAGER_HPP
+#endif // FILESYSTEMLOCKMANAGER_HPP

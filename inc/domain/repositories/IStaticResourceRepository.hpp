@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UploadStaticResourceDto.hpp                        :+:      :+:    :+:   */
+/*   IStaticResourceRepository.hpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 15:28:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 20:42:48 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/31 04:12:08 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/07 00:52:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UPLOADSTATICRESOURCEREQUESTDTO_HPP
-#define UPLOADSTATICRESOURCEREQUESTDTO_HPP
+#ifndef ISTATICRESOURCEREPOSITORY_HPP
+#define ISTATICRESOURCEREPOSITORY_HPP
 
 #include <string>
 
-class IDataSource;
+class StaticResource;
 
-struct UploadStaticResourceDto
+class IStaticResourceRepository
 {
-	std::string	 target;
-	IDataSource *dataSource;
+  public:
+	virtual ~IStaticResourceRepository(void) {}
+
+	virtual StaticResource findById(std::string const &id) = 0;
+	virtual bool		   exists(std::string const &id) = 0;
+	virtual void		   remove(std::string const &id) = 0;
 };
 
-#endif // UPLOADSTATICRESOURCEREQUESTDTO_HPP
+#endif // ISTATICRESOURCEREPOSITORY_HPP

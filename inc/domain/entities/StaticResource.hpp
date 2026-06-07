@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/07 00:52:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,17 @@
 
 #include <string>
 
-class IDataSource;
-
 class StaticResource
 {
   public:
-	StaticResource(void);
-	StaticResource(const std::string &id, IDataSource *dataSource);
-	~StaticResource(void);
+	StaticResource(std::string const &id, std::string const &storageLocation);
 
 	std::string const &getId(void) const;
-	IDataSource const *getDataSource(void) const;
-
-	void StaticResource::init(std::string const &id, IDataSource *dataSource);
+	std::string const &getStorageLocation(void) const;
 
   private:
-	StaticResource(StaticResource const &src);
-	StaticResource &operator=(StaticResource const &rhs);
-
-	std::string	 _id;
-	IDataSource *_dataSource;
+	std::string _id;
+	std::string _storageLocation;
 };
 
 #endif // STATICRESOURCE_HPP
