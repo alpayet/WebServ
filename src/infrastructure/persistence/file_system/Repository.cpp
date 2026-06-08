@@ -12,8 +12,10 @@
 
 #include "infrastructure/persistence/file_system/Repository.hpp"
 #include "domain/entities/StaticResource.hpp"
+#include "infrastructure/persistence/file_system/Exception.hpp"
 #include "infrastructure/persistence/file_system/IResourceLocator.hpp"
 #include "infrastructure/persistence/file_system/Reader.hpp"
+#include <cerrno>
 
 namespace fileSystem
 {
@@ -24,7 +26,26 @@ namespace fileSystem
 		return (StaticResource(id, _resourceLocator.resolvePhysicalPath(id)));
 	}
 
-	void fileSystem::Repository::remove(const std::string &id) {}
+	void fileSystem::Repository::remove(const std::string &id)
+	{
+		std::string physical_path = _resourceLocator.resolvePhysicalPath(id);
+
+		if (std::remove(physical_path.c_str()) == 0)
+			return;
+		switch (errno)
+		{
+			case ENOENT:
+				throw Exception(Exception::fileNotFound);
+				break;
+			case EACCES:
+			case EPERM:
+				throw Exception(Exception::permissionDenied);
+				break;
+			default:
+				throw Exception(Exception::internalErrorFileUnlinkFailed);
+				break;
+		}
+	}
 
 	IResourceReader *Repository::createReader(const std::string &storageLocation)
 	{

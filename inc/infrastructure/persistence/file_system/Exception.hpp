@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 03:42:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 03:49:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/08 16:17:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ namespace fileSystem
 	  public:
 		enum ErrorCode
 		{
-			fileOpenFailed,
-			fileUnlinkFailed,
-			fileWriteFailed,
+			internalErrorFileOpenFailed,
+			internalErrorFileUnlinkFailed,
+			internalErrorFileWriteFailed,
+			fileNotFound,
+			permissionDenied
 		};
 
 	  public:

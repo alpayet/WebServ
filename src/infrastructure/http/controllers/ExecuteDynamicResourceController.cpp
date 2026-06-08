@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FindStaticFileController.cpp                       :+:      :+:    :+:   */
+/*   ExecuteDynamicResourceController.cpp               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 21:38:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/08 22:24:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/find_static_resource/FindStaticResourceInput.hpp"
-#include "application/use_cases/find_static_resource/FindStaticResourceOutput.hpp"
-#include "application/use_cases/find_static_resource/FindStaticResourceUseCase.hpp"
+#include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceInput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceOutput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceUseCase.hpp"
 #include "infrastructure/http/Request.hpp"
 #include "infrastructure/http/Response.hpp"
-#include "infrastructure/http/controllers/FindStaticResourceController.hpp"
-#include "infrastructure/http/mappers/FindStaticResourceDtoMapper.hpp"
+#include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
 
 namespace http
 {
-	FindStaticResourceController::FindStaticResourceController(FindStaticResourceUseCase &useCase)
+	ExecuteDynamicResourceController::ExecuteDynamicResourceController(
+		ExecuteDynamicResourceUseCase &useCase
+	)
 		: _useCase(useCase)
 	{
 	}
 
-	void FindStaticResourceController::operator()(const Request &request, Response &response)
+	void ExecuteDynamicResourceController::operator()(const Request &request, Response &response)
 	{
-		FindStaticResourceInput dto = FindStaticResourceDtoMapper::toDto(request);
+		ExecuteDynamicResourceInput dto = ExecuteDynamicResourceDtoMapper::toDto(request);
 
 		_useCase.execute(dto);
 	}

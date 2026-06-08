@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceInput.hpp                      :+:      :+:    :+:   */
+/*   ExecuteDynamicResourceDtoMapper.hpp                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 19:43:49 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/08 22:20:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETESTATICRESOURCEINPUT_HPP
-#define DELETESTATICRESOURCEINPUT_HPP
+#ifndef EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
+#define EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
 
-#include <string>
+struct ExecuteDynamicResourceInput;
 
-struct DeleteStaticResourceInput
+namespace http
 {
-	std::string id;
-};
+	struct Request;
 
-#endif // DELETESTATICRESOURCEINPUT_HPP
+	class ExecuteDynamicResourceDtoMapper
+	{
+	  public:
+		static ExecuteDynamicResourceInput toDto(Request const &request);
+
+	  private:
+		ExecuteDynamicResourceDtoMapper(void);
+	};
+} // namespace http
+
+#endif // EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP

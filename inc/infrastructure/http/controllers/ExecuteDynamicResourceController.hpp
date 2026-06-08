@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceController.hpp                 :+:      :+:    :+:   */
+/*   ExecuteDynamicResourceController.hpp               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 22:19:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/08 22:20:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETESTATICRESOURCECONTROLLER_HPP
-#define DELETESTATICRESOURCECONTROLLER_HPP
+#ifndef EXECUTEDYNAMICRESOURCECONTROLLER_HPP
+#define EXECUTEDYNAMICRESOURCECONTROLLER_HPP
 
-class DeleteStaticResourceUseCase;
+class ExecuteDynamicResourceUseCase;
 
 namespace http
 {
 	class Request;
 	class Response;
 
-	class DeleteStaticResourceController
+	class ExecuteDynamicResourceController
 	{
 	  public:
-		DeleteStaticResourceController(DeleteStaticResourceUseCase &useCase);
+		ExecuteDynamicResourceController(ExecuteDynamicResourceUseCase &useCase);
 
 		void operator()(Request const &request, Response &response);
 
 	  private:
-		DeleteStaticResourceController(DeleteStaticResourceController const &src);
-		DeleteStaticResourceController &operator=(DeleteStaticResourceController const &rhs);
+		ExecuteDynamicResourceController(ExecuteDynamicResourceController const &src);
+		ExecuteDynamicResourceController &operator=(ExecuteDynamicResourceController const &rhs);
 
-		DeleteStaticResourceUseCase &_useCase;
+		ExecuteDynamicResourceUseCase &_useCase;
 	};
 } // namespace http
 
-#endif // DELETESTATICRESOURCECONTROLLER_HPP
+#endif // EXECUTEDYNAMICRESOURCECONTROLLER_HPP

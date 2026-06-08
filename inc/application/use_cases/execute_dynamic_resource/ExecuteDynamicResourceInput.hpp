@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FileDataSource.cpp                                 :+:      :+:    :+:   */
+/*   ExecuteDynamicResourceInput.hpp                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/02 16:31:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/08 22:04:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/data_sources/FileDataSource.hpp"
-#include "infrastructure/data_sources/DataSourcesException.hpp"
+#ifndef EXECUTEDYNAMICRESOURCEINPUT_HPP
+#define EXECUTEDYNAMICRESOURCEINPUT_HPP
 
-FileDataSource::FileDataSource(const std::string &filePath) : _filePath(filePath) {}
+#include <string>
 
-std::vector<char> FileDataSource::readChunk(void) const {}
+struct ExecuteDynamicResourceInput
+{
+	std::string id;
+};
 
-std::string FileDataSource::getFilePath(void) const { return (_filePath); }
+#endif // EXECUTEDYNAMICRESOURCEINPUT_HPP

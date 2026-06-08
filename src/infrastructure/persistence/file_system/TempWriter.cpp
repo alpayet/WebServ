@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 17:57:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/08 22:01:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 namespace fileSystem
 {
+	char const TempWriter::_tmpDir[] = "/tmp/";
+
 	TempWriter::TempWriter(std::string const &tempFileName)
 		: _tempFile(), _tempFileName(tempFileName), _tempFilePath()
 	{
@@ -24,8 +26,8 @@ namespace fileSystem
 
 	TempWriter::~TempWriter(void)
 	{
-		if (unlink(_tempFilePath.c_str()) != 0)
-			throw Exception(Exception::fileUnlinkFailed);
+		if (std::remove(_tempFilePath.c_str()) != 0)
+			throw Exception(Exception::internalErrorFileUnlinkFailed);
 	}
 
 	void TempWriter::writeChunk(std::vector<char> const &data)
@@ -35,22 +37,22 @@ namespace fileSystem
 			_tempFilePath = generateUniqueTempFile(_tempFileName);
 			_tempFile.open(_tempFileName.c_str(), std::ios::binary);
 			if (!_tempFile.is_open())
-				throw Exception(Exception::fileOpenFailed);
+				throw Exception(Exception::internalErrorFileOpenFailed);
 		}
 		else if (!_tempFile.write(&data[0], data.size()))
-			throw Exception(Exception::fileWriteFailed);
+			throw Exception(Exception::internalErrorFileWriteFailed);
 	}
 
 	std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
 	{
-		std::string unique_path(("/tmp/" + fileName + "XXXXXX").c_str());
+		std::string unique_path((_tmpDir + fileName + "XXXXXX").c_str());
 
 		int fd = mkstemp(&unique_path[0]);
 
 		if (fd < 0)
-			throw Exception(Exception::fileOpenFailed);
+			throw Exception(Exception::internalErrorFileOpenFailed);
 		if (close(fd) < 0)
-			throw Exception(Exception::fileOpenFailed);
+			throw Exception(Exception::internalErrorFileOpenFailed);
 		return (unique_path);
 	}
 } // namespace fileSystem

@@ -6,25 +6,25 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 16:31:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/08 22:21:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/use_cases/delete_static_resource/DeleteStaticResourceUseCase.hpp"
-#include "application/use_cases/delete_static_resource/DeleteStaticResourceInput.hpp"
-#include "application/use_cases/delete_static_resource/DeleteStaticResourceOutput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceInput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceOutput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceUseCase.hpp"
 #include "domain/entities/StaticResource.hpp"
 #include "domain/repositories/IStaticResourceRepository.hpp"
 
-DeleteStaticResourceUseCase::DeleteStaticResourceUseCase(
+ExecuteDynamicResourceUseCase::ExecuteDynamicResourceUseCase(
 	IStaticResourceRepository &staticResourceRepository
 )
 	: _staticResourceRepository(staticResourceRepository)
 {
 }
 
-DeleteStaticResourceOutput
-DeleteStaticResourceUseCase::execute(const DeleteStaticResourceInput &dtoInput)
+ExecuteDynamicResourceOutput
+ExecuteDynamicResourceUseCase::execute(const ExecuteDynamicResourceInput &dtoInput)
 {
 	_staticResourceRepository.remove(dtoInput.id);
 }
