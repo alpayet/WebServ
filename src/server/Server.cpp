@@ -65,24 +65,47 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 	return os;
 }
 
-Location findLocationFromUri(std::string const &uri) {}
+Location findLocationFromUri(std::string const &uri)
+{
+	std::vector<Location>::iterator ite = this->location.end();
+	for (std::vector<Location>::iterator it = this->>location.begin() ; it != ite ; ++it)
+	{
+		std::string cmp;
+		if (!it->root.empty())
+			cmp = it->root;
+		else
+			cmp = this->root;
+		cmp += it->index; // TODO: loop or maybe get rid of file idk
+		if (cmp == uri)
+			return *it;
+	}
+	return 0; //? maybe throw
+}
 
 std::string Server::resolvePhysicalPath(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	/**
-	 * find location from uri
-	 * return location path?
-	 */
+	if (loc == 0)
+	{
+		throw ("could resolve physical path");
+	}
+	std::string path = loc.path;
+	return path;
 }
 
 std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	if ()
-		std::vector<std::string> methods;
-
-	if (m_location)
+	if (loc == 0)
+		throw ("couldnt fetch allowed methods");
+	std::vector<std::string> methods;
+	if (loc.met_get)
+		methods.push_back("GET");
+	if (loc.met_post)
+		methods.push_back("POST");
+	if (loc.met_del)
+		methods.push_back("DELETE");
+	return (methods);
 }
 
 std::size_t Server::getMaxBodySize(std::string const &uri) const { return (m_max_body); }
