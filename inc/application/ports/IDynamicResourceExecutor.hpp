@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceReader.hpp                                :+:      :+:    :+:   */
+/*   IDynamicResourceExecutor.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 00:58:27 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 22:31:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCEREADER_HPP
-#define IRESOURCEREADER_HPP
+#ifndef IDYNAMICRESOURCEEXECUTOR_HPP
+#define IDYNAMICRESOURCEEXECUTOR_HPP
 
-#include <vector>
+#include <string>
 
-class IResourceReader
+class IDynamicResourceExecutor
 {
   public:
-	virtual ~IResourceReader(void) {}
+	virtual ~IDynamicResourceExecutor(void) {}
 
-	virtual std::vector<char> readChunk(void) const = 0;
+	virtual void execute(std::string const &storagePath, std::string const &bodyPath, ) = 0;
 };
 
-#endif // IRESOURCEREADER_HPP
+#endif // IDYNAMICRESOURCEEXECUTOR_HPP

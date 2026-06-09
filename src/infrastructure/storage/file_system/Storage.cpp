@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:23:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 namespace fileSystem
 {
 
-	void fileSystem::Storage::remove(std::string const &storageLocation)
+	void fileSystem::Storage::remove(std::string const &storagePath)
 	{
-		if (std::remove(storageLocation.c_str()) == 0)
+		if (std::remove(storagePath.c_str()) == 0)
 			return;
 		switch (errno)
 		{
@@ -37,8 +37,8 @@ namespace fileSystem
 		}
 	}
 
-	IResourceReader *Storage::createReader(std::string const &storageLocation)
+	IStaticResourceReader *Storage::createReader(std::string const &storagePath)
 	{
-		return (new Reader(storageLocation));
+		return (new Reader(storagePath));
 	}
 } // namespace fileSystem

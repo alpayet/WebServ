@@ -6,18 +6,18 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 20:02:00 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 20:54:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 21:44:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FINDSTATICRESOURCEOUTPUT_HPP
 #define FINDSTATICRESOURCEOUTPUT_HPP
 
-class IResourceReader;
+class IStaticResourceReader;
 
 struct FindStaticResourceOutput
 {
-	IResourceReader *resourceReader;
+	IStaticResourceReader *resourceReader;
 };
 
 #endif // FINDSTATICRESOURCEOUTPUT_HPP

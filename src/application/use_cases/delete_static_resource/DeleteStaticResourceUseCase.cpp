@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:46:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:24:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ DeleteStaticResourceUseCase::DeleteStaticResourceUseCase(
 DeleteStaticResourceOutput
 DeleteStaticResourceUseCase::execute(DeleteStaticResourceInput const &dtoInput)
 {
-	std::string storage_location = _staticResourceLocator.locate(dtoInput.id);
-	_staticResourceStorage.remove(storage_location);
+	std::string storage_path = _staticResourceLocator.locate(dtoInput.id);
+	_staticResourceStorage.remove(storage_path);
 }

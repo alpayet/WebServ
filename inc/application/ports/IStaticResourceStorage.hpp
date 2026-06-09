@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:10:04 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:38:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:22:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 #include <string>
 
-class IResourceReader;
+class IStaticResourceReader;
 
 class IStaticResourceStorage
 {
   public:
 	virtual ~IStaticResourceStorage(void) {}
 
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
-	virtual void			 remove(std::string const &storageLocation) = 0;
+	virtual IStaticResourceReader *createReader(std::string const &storagePath) = 0;
+	virtual void				   remove(std::string const &storagePath) = 0;
 };
 
 #endif // ISTATICRESOURCESTORAGE_HPP

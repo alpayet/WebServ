@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 22:05:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:04:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 class ExecuteDynamicResourceInput;
 class ExecuteDynamicResourceOutput;
-class IStaticResourceRepository;
+class IDynamicResourceExecutor;
 
 class ExecuteDynamicResourceUseCase
 {
   public:
-	ExecuteDynamicResourceUseCase(IStaticResourceRepository &staticResourceRepository);
+	ExecuteDynamicResourceUseCase(IDynamicResourceExecutor &dynamicResourceExecutor);
 
 	ExecuteDynamicResourceOutput execute(ExecuteDynamicResourceInput const &dtoInput);
 
@@ -28,7 +28,7 @@ class ExecuteDynamicResourceUseCase
 	ExecuteDynamicResourceUseCase(ExecuteDynamicResourceUseCase const &src);
 	ExecuteDynamicResourceUseCase &operator=(ExecuteDynamicResourceUseCase const &rhs);
 
-	IStaticResourceRepository &_staticResourceRepository;
+	IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 
 #endif // EXECUTEDYNAMICRESOURCEUSECASE_HPP

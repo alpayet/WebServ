@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceOutput.hpp                     :+:      :+:    :+:   */
+/*   IStaticResourceReader.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 20:02:00 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 22:10:03 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 21:55:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETESTATICRESOURCEOUTPUT_HPP
-#define DELETESTATICRESOURCEOUTPUT_HPP
+#ifndef ISTATICRESOURCEREADER_HPP
+#define ISTATICRESOURCEREADER_HPP
 
-struct DeleteStaticResourceOutput
+#include <vector>
+
+class IStaticResourceReader
 {
+  public:
+	virtual ~IStaticResourceReader(void) {}
+
+	virtual std::vector<char> readChunk(void) = 0;
 };
 
-#endif // DELETESTATICRESOURCEOUTPUT_HPP
+#endif // ISTATICRESOURCEREADER_HPP

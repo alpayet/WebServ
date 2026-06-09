@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceOutput.hpp                     :+:      :+:    :+:   */
+/*   IDynamicResourceLocator.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 20:02:00 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 22:10:03 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 21:49:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETESTATICRESOURCEOUTPUT_HPP
-#define DELETESTATICRESOURCEOUTPUT_HPP
+#ifndef IDYNAMICRESOURCELOCATOR_HPP
+#define IDYNAMICRESOURCELOCATOR_HPP
 
-struct DeleteStaticResourceOutput
+#include <string>
+// TODO: faire herité la config de cette interface
+
+class IDynamicResourceLocator
 {
+  public:
+	virtual ~IDynamicResourceLocator(void) {}
+
+	virtual std::string locate(std::string const &id) const = 0;
 };
 
-#endif // DELETESTATICRESOURCEOUTPUT_HPP
+#endif // IDYNAMICRESOURCELOCATOR_HPP

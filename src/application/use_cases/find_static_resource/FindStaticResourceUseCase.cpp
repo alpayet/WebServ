@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:24:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:24:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ FindStaticResourceUseCase::FindStaticResourceUseCase(
 
 FindStaticResourceOutput FindStaticResourceUseCase::execute(FindStaticResourceInput const &dtoInput)
 {
-	std::string		 storage_location = _staticResourceLocator.locate(dtoInput.id);
-	IResourceReader *resource_reader = _staticResourceStorage.createReader(storage_location);
+	std::string			   storage_path = _staticResourceLocator.locate(dtoInput.id);
+	IStaticResourceReader *resource_reader = _staticResourceStorage.createReader(storage_path);
 
-	StaticResource(dtoInput.id, storage_location);
+	StaticResource(dtoInput.id, storage_path);
 
 	return ((FindStaticResourceOutput){.resourceReader = resource_reader});
 }

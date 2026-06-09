@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:29:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:51:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:22:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ namespace fileSystem
 	  public:
 		virtual ~Storage(void) {}
 
-		virtual void			 remove(std::string const &storageLocation);
-		virtual IResourceReader *createReader(std::string const &storageLocation);
+		virtual void				   remove(std::string const &storagePath);
+		virtual IStaticResourceReader *createReader(std::string const &storagePath);
 
 	  private:
 		Storage(Storage const &src);

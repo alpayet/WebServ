@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:00:03 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@ namespace fileSystem
 {
 	Reader::Reader(std::string const &path) : _path(path), _file() {}
 
-	std::vector<char> Reader::Reader::readChunk() const {}
+	std::vector<char> fileSystem::Reader::readChunk(void) {}
+
 } // namespace fileSystem

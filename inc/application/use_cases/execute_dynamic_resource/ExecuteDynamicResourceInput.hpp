@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 00:21:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 22:01:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 struct ExecuteDynamicResourceInput
 {
 	std::string id;
-	std::map <
 };
 
 #endif // EXECUTEDYNAMICRESOURCEINPUT_HPP
