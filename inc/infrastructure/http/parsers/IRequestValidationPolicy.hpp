@@ -6,7 +6,7 @@
 /*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 18:25:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 14:39:02 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/09 13:15:15 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace http
 	  public:
 		virtual ~IRequestValidationPolicy(void) {};
 
-		virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
+		virtual std::size_t getMaxBodySize() const = 0;
 	};
 } // namespace http
 

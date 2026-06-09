@@ -65,30 +65,30 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 	return os;
 }
 
-Location findLocationFromUri(std::string const &uri)
+Location Server::findLocationFromUri(std::string const &uri) const
 {
-	std::vector<Location>::iterator ite = this->location.end();
-	for (std::vector<Location>::iterator it = this->>location.begin() ; it != ite ; ++it)
+	std::vector<Location>::const_iterator ite = this->m_locations.end();
+	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
 	{
 		std::string cmp;
 		if (!it->root.empty())
 			cmp = it->root;
 		else
-			cmp = this->root;
-		cmp += it->index; // TODO: loop or maybe get rid of file idk
+			cmp = this->m_root;
+		cmp += it->index[0]; // TODO: loop or maybe get rid of file idk
 		if (cmp == uri)
 			return *it;
 	}
-	return 0; //? maybe throw
+	throw("banana");
 }
 
 std::string Server::resolvePhysicalPath(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	if (loc == 0)
-	{
-		throw ("could resolve physical path");
-	}
+	// if (loc == 0)
+	// {
+	// 	throw("could resolve physical path");
+	// }
 	std::string path = loc.path;
 	return path;
 }
@@ -96,8 +96,8 @@ std::string Server::resolvePhysicalPath(std::string const &uri) const
 std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	if (loc == 0)
-		throw ("couldnt fetch allowed methods");
+	// if (loc == 0)
+	// 	throw("couldnt fetch allowed methods");
 	std::vector<std::string> methods;
 	if (loc.met_get)
 		methods.push_back("GET");
@@ -108,5 +108,5 @@ std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
 	return (methods);
 }
 
-std::size_t Server::getMaxBodySize(std::string const &uri) const { return (m_max_body); }
+std::size_t Server::getMaxBodySize() const { return (m_max_body); }
 // void param

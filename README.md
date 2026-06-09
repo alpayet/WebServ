@@ -73,3 +73,5 @@ Some differences exist between the two files such as no redefinition of values, 
 [Code(quoi); article on network programmation](https://www.codequoi.com/programmation-reseau-via-socket-en-c/)
 
 [Nginx server block](https://docs.nginx.com/nginx/admin-guide/web-server/web-server/)
+
+[CGI](https://www.oreilly.com/openbook/cgi/ch01_04.html)

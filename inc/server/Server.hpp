@@ -33,7 +33,7 @@ class Server : public IResourceLocator,
 	~Server() {};
 
 	/** GETTERS */
-	uint16_t						  getPort() const { return m_port; };
+	unsigned short					  getPort() const { return m_port; };
 	const std::string				 &getInterface() const { return m_interface; };
 	const std::map<int, std::string> &getErrPages() const { return m_error_pages; };
 	const std::vector<Location>		 &getLocations() const { return m_locations; };
@@ -51,12 +51,13 @@ class Server : public IResourceLocator,
 	void setIndex(const std::string &index) { m_index = index; };
 
 	/** GETTERS from parents */
+	Location						 findLocationFromUri(std::string const &uri) const;
 	virtual std::string				 resolvePhysicalPath(std::string const &uri) const;
 	virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const;
-	virtual std::size_t				 getMaxBodySize(std::string const &uri) const; // void param
+	virtual std::size_t				 getMaxBodySize() const; // void param
 
   private:
-	short					   m_port;
+	unsigned short			   m_port;
 	std::string				   m_interface;
 	std::map<int, std::string> m_error_pages;
 	std::vector<Location>	   m_locations;
