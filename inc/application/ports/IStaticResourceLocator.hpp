@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
+/*   IStaticResourceLocator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 04:11:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 03:40:09 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/09 03:30:53 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 04:26:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILESYSTEMIRESOURCELOCATOR_HPP
-#define FILESYSTEMIRESOURCELOCATOR_HPP
+#ifndef ISTATICRESOURCELOCATOR_HPP
+#define ISTATICRESOURCELOCATOR_HPP
 
 #include <string>
-
 // TODO: faire herité la config de cette interface
-namespace fileSystem
+
+class IStaticResourceLocator
 {
-	class IResourceLocator
-	{
-	  public:
-		virtual ~IResourceLocator(void) {}
+  public:
+	virtual ~IStaticResourceLocator(void) {}
 
-		virtual std::string resolvePhysicalPath(std::string const &uri) const = 0;
-	};
-} // namespace fileSystem
+	virtual std::string locate(std::string const &id) const = 0;
+};
 
-#endif // FILESYSTEMIRESOURCELOCATOR_HPP
+#endif // ISTATICRESOURCELOCATOR_HPP

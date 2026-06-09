@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReaderProvider.hpp                  :+:      :+:    :+:   */
+/*   Reader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:04:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 19:34:34 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADERPROVIDER_HPP
-#define ISTATICRESOURCEREADERPROVIDER_HPP
+#include "infrastructure/storage/file_system/Reader.hpp"
 
-#include <string>
-
-class IResourceReader;
-
-class IStaticResourceReaderProvider
+namespace fileSystem
 {
-  public:
-	virtual ~IStaticResourceReaderProvider(void) {}
+	Reader::Reader(std::string const &path) : _path(path), _file() {}
 
-	virtual IResourceReader *createReader(std::string const &storageLocation) = 0;
-};
-
-#endif // ISTATICRESOURCEREADERPROVIDER_HPP
+	std::vector<char> Reader::Reader::readChunk() const {}
+} // namespace fileSystem

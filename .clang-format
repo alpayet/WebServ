@@ -44,6 +44,10 @@ SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
 
+# Qualifier order
+QualifierAlignment: Custom
+QualifierOrder: ['inline', 'static', 'type', 'const', 'volatile']
+
 # Include sorting and cleanup
 FixNamespaceComments: true
 SortIncludes: true

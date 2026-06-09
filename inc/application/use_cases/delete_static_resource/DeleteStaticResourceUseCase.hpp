@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 21:27:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 04:46:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 class DeleteStaticResourceInput;
 class DeleteStaticResourceOutput;
-class IStaticResourceRepository;
+class IStaticResourceLocator;
+class IStaticResourceStorage;
 
 class DeleteStaticResourceUseCase
 {
   public:
-	DeleteStaticResourceUseCase(IStaticResourceRepository &staticResourceRepository);
+	DeleteStaticResourceUseCase(
+		IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
+	);
 
 	DeleteStaticResourceOutput execute(DeleteStaticResourceInput const &dtoInput);
 
@@ -28,7 +31,8 @@ class DeleteStaticResourceUseCase
 	DeleteStaticResourceUseCase(DeleteStaticResourceUseCase const &src);
 	DeleteStaticResourceUseCase &operator=(DeleteStaticResourceUseCase const &rhs);
 
-	IStaticResourceRepository &_staticResourceRepository;
+	IStaticResourceLocator &_staticResourceLocator;
+	IStaticResourceStorage &_staticResourceStorage;
 };
 
 #endif // DELETESTATICRESOURCEUSECASE_HPP

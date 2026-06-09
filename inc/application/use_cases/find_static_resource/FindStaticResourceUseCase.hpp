@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 20:07:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 04:12:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,14 @@
 
 class FindStaticResourceInput;
 class FindStaticResourceOutput;
-class IStaticResourceRepository;
-class IStaticResourceReaderProvider;
+class IStaticResourceLocator;
+class IStaticResourceStorage;
 
 class FindStaticResourceUseCase
 {
   public:
 	FindStaticResourceUseCase(
-		IStaticResourceRepository	  &staticResourceRepository,
-		IStaticResourceReaderProvider &staticResourceReaderProvider
+		IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
 	);
 
 	FindStaticResourceOutput execute(FindStaticResourceInput const &dtoInput);
@@ -32,8 +31,8 @@ class FindStaticResourceUseCase
 	FindStaticResourceUseCase(FindStaticResourceUseCase const &src);
 	FindStaticResourceUseCase &operator=(FindStaticResourceUseCase const &rhs);
 
-	IStaticResourceRepository	  &_staticResourceRepository;
-	IStaticResourceReaderProvider &_staticResourceReaderProvider;
+	IStaticResourceLocator &_staticResourceLocator;
+	IStaticResourceStorage &_staticResourceStorage;
 };
 
 #endif // FINDSTATICRESOURCEUSECASE_HPP

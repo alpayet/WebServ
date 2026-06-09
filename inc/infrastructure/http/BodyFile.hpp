@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 18:27:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPBODYFILE_HPP
 #define HTTPBODYFILE_HPP
 
-#include "infrastructure/persistence/file_system/TempWriter.hpp"
+#include "infrastructure/storage/file_system/TempWriter.hpp"
 
 namespace http
 {

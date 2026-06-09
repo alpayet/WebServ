@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fileSystemRepository.cpp                             :+:      :+:    :+:   */
+/*   Storage.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/31 23:37:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 00:53:50 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/persistence/file_system/Repository.hpp"
-#include "domain/entities/StaticResource.hpp"
-#include "infrastructure/persistence/file_system/Exception.hpp"
-#include "infrastructure/persistence/file_system/IResourceLocator.hpp"
-#include "infrastructure/persistence/file_system/Reader.hpp"
+#include "infrastructure/storage/file_system/Storage.hpp"
+#include "infrastructure/storage/file_system/Exception.hpp"
+#include "infrastructure/storage/file_system/Reader.hpp"
 #include <cerrno>
 
 namespace fileSystem
 {
-	Repository::Repository(IResourceLocator &resourceLocator) : _resourceLocator(resourceLocator) {}
 
-	StaticResource Repository::findById(std::string const &id)
+	void fileSystem::Storage::remove(std::string const &storageLocation)
 	{
-		return (StaticResource(id, _resourceLocator.resolvePhysicalPath(id)));
-	}
-
-	void fileSystem::Repository::remove(const std::string &id)
-	{
-		std::string physical_path = _resourceLocator.resolvePhysicalPath(id);
-
-		if (std::remove(physical_path.c_str()) == 0)
+		if (std::remove(storageLocation.c_str()) == 0)
 			return;
 		switch (errno)
 		{
@@ -47,7 +37,7 @@ namespace fileSystem
 		}
 	}
 
-	IResourceReader *Repository::createReader(const std::string &storageLocation)
+	IResourceReader *Storage::createReader(std::string const &storageLocation)
 	{
 		return (new Reader(storageLocation));
 	}

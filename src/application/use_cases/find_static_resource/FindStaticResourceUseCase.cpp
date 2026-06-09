@@ -6,31 +6,30 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 20:11:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 04:24:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/find_static_resource/FindStaticResourceUseCase.hpp"
-#include "application/ports/IStaticResourceReaderProvider.hpp"
+#include "application/ports/IStaticResourceLocator.hpp"
+#include "application/ports/IStaticResourceStorage.hpp"
 #include "application/use_cases/find_static_resource/FindStaticResourceInput.hpp"
 #include "application/use_cases/find_static_resource/FindStaticResourceOutput.hpp"
 #include "domain/entities/StaticResource.hpp"
-#include "domain/repositories/IStaticResourceRepository.hpp"
 
 FindStaticResourceUseCase::FindStaticResourceUseCase(
-	IStaticResourceRepository	  &staticResourceRepository,
-	IStaticResourceReaderProvider &staticResourceReaderProvider
+	IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
 )
-	: _staticResourceRepository(staticResourceRepository),
-	  _staticResourceReaderProvider(staticResourceReaderProvider)
+	: _staticResourceLocator(staticResourceLocator), _staticResourceStorage(staticResourceStorage)
 {
 }
 
-FindStaticResourceOutput FindStaticResourceUseCase::execute(const FindStaticResourceInput &dtoInput)
+FindStaticResourceOutput FindStaticResourceUseCase::execute(FindStaticResourceInput const &dtoInput)
 {
-	StaticResource	 static_resource = _staticResourceRepository.findById(dtoInput.id);
-	IResourceReader *resourceReader =
-		_staticResourceReaderProvider.createReader(static_resource.getStorageLocation());
+	std::string		 storage_location = _staticResourceLocator.locate(dtoInput.id);
+	IResourceReader *resource_reader = _staticResourceStorage.createReader(storage_location);
 
-	return ((FindStaticResourceOutput){.resourceReader = resourceReader});
+	StaticResource(dtoInput.id, storage_location);
+
+	return ((FindStaticResourceOutput){.resourceReader = resource_reader});
 }

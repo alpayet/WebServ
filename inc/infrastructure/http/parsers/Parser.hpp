@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 17:43:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 00:06:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ namespace http
 		std::string Parser::extractMethod(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 		);
-		std::string Parser::extractTarget(
-			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
+		void Parser::extractTargetandQuery(
+			std::vector<char>::const_iterator &it,
+			std::vector<char>::const_iterator  itLineEnd,
+			ParsingState					  &state
 		);
 		std::string Parser::extractProtocol(
 			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

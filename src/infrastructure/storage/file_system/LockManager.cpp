@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/persistence/file_system/LockManager.hpp"
+#include "infrastructure/storage/file_system/LockManager.hpp"
 #include <algorithm>
 
 namespace fileSystem
 {
-	bool LockManager::tryLock(const std::string &path, LockManager::LockMode mode)
+	bool LockManager::tryLock(std::string const &path, LockManager::LockMode mode)
 	{
 		if (this->isLocked(path) != unlocked)
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 17:47:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 00:06:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ namespace
 
 	bool is_invalid_key_char(unsigned char c)
 	{
-		static const std::string specials_authorized = "!#$%&'*+-.^_`|~";
+		static std::string const specials_authorized = "?!#$%&'*+-.^_`|~";
 
 		return (!(std::isalnum(c) || specials_authorized.find(c) != std::string::npos));
 	}
@@ -194,7 +194,7 @@ namespace http
 		std::vector<char>::const_iterator it = itStart;
 
 		state.request.method = extractMethod(it, itLineEnd);
-		state.request.target = extractTarget(it, itLineEnd);
+		extractTargetandQuery(it, itLineEnd, state);
 		state.request.protocol = extractProtocol(it, itLineEnd);
 
 		if (std::find_if(it, itLineEnd, is_not_whitespaces) != itLineEnd)
@@ -281,8 +281,10 @@ namespace http
 		return (method);
 	}
 
-	std::string Parser::extractTarget(
-		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
+	void Parser::extractTargetandQuery(
+		std::vector<char>::const_iterator &it,
+		std::vector<char>::const_iterator  itLineEnd,
+		ParsingState					  &state
 	)
 	{
 		std::vector<char>::const_iterator it_target_start =
@@ -298,10 +300,13 @@ namespace http
 
 		if (!is_valid_target_syntax(it_target_start, it_target_end))
 			throw Exception(Exception::targetInvalid);
-		std::string target(it_target_start, it_target_end);
+
+		std::vector<char>::const_iterator it_query = std::find(it_target_start, it_target_end, '?');
+
+		state.request.target = std::string(it_target_start, it_query);
+		state.request.query = std::string(it_query + 1, it_target_end);
 
 		it = it_target_end;
-		return (target);
 	}
 
 	std::string Parser::extractProtocol(

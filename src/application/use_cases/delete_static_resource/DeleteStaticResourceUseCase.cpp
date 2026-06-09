@@ -6,25 +6,27 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 16:31:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/09 04:46:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/delete_static_resource/DeleteStaticResourceUseCase.hpp"
+#include "application/ports/IStaticResourceLocator.hpp"
+#include "application/ports/IStaticResourceStorage.hpp"
 #include "application/use_cases/delete_static_resource/DeleteStaticResourceInput.hpp"
 #include "application/use_cases/delete_static_resource/DeleteStaticResourceOutput.hpp"
 #include "domain/entities/StaticResource.hpp"
-#include "domain/repositories/IStaticResourceRepository.hpp"
 
 DeleteStaticResourceUseCase::DeleteStaticResourceUseCase(
-	IStaticResourceRepository &staticResourceRepository
+	IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
 )
-	: _staticResourceRepository(staticResourceRepository)
+	: _staticResourceLocator(staticResourceLocator), _staticResourceStorage(staticResourceStorage)
 {
 }
 
 DeleteStaticResourceOutput
-DeleteStaticResourceUseCase::execute(const DeleteStaticResourceInput &dtoInput)
+DeleteStaticResourceUseCase::execute(DeleteStaticResourceInput const &dtoInput)
 {
-	_staticResourceRepository.remove(dtoInput.id);
+	std::string storage_location = _staticResourceLocator.locate(dtoInput.id);
+	_staticResourceStorage.remove(storage_location);
 }
