@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 22:22:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 01:11:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,10 @@
 class DynamicResource
 {
   public:
-	DynamicResource(
-		std::string const						 &id,
-		std::string const						 &storagePath,
-		std::map<std::string, std::string> const &environment
-	);
+	DynamicResource(std::string const &id, std::string const &storagePath);
 
-	std::string const						 &getId(void) const;
-	std::string const						 &getstoragePath(void) const;
-	std::map<std::string, std::string> const &getEnvironment(void) const;
+	std::string const &getId(void) const;
+	std::string const &getstoragePath(void) const;
 
   private:
 	std::string _id;
