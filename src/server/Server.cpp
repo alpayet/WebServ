@@ -67,21 +67,29 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 
 Location Server::findLocationFromUri(std::string const &uri) const
 {
+	std::size_t pos = uri.find_last_of('/');
+	std::string dir_path;
+	if (pos == std::string::npos)
+		dir_path = uri;
+	else
+		dir_path = uri.substr(0, pos);
+
 	std::vector<Location>::const_iterator ite = this->m_locations.end();
 	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
 	{
 		std::string cmp;
-		if (!it->root.empty())
-			cmp = it->root;
-		else
-			cmp = this->m_root;
-		cmp += it->index[0]; // TODO: loop or maybe get rid of file idk
-		if (cmp == uri)
+		if (!it->path.empty())
+			cmp = it->path;
+		// else
+		// 	cmp = this->m_root;
+		// TODO: check if need the else
+		if (cmp == dir_path)
 			return *it;
 	}
 	throw("banana");
 }
 
+// TODO: get root from path - file and append file to root
 std::string Server::resolvePhysicalPath(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
@@ -89,8 +97,17 @@ std::string Server::resolvePhysicalPath(std::string const &uri) const
 	// {
 	// 	throw("could resolve physical path");
 	// }
-	std::string path = loc.path;
-	return path;
+	std::string phy_path;
+	if (!loc.root.empty())
+		phy_path = loc.root;
+	else
+		phy_path = m_root + loc.path;
+
+	std::size_t pos = uri.find_last_of('/');
+	if (pos != std::string::npos)
+		phy_path += uri.substr(pos, uri.size() - pos);
+
+	return phy_path;
 }
 
 std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const

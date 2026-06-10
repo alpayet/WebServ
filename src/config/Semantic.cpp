@@ -6,6 +6,8 @@
 
 // TODO: check location end with '/'
 // TODO: end root with '/'
+// TODO: check location and root start with '/'
+// TODO: manage one line config file, so better check/use of ';'
 void initLocation(Server &s, p_Server ps)
 {
 	if (ps.locations.empty())
