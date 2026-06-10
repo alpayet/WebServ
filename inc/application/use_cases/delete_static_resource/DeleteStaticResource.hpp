@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceUseCase.hpp                    :+:      :+:    :+:   */
+/*   DeleteStaticResource.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:46:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 17:54:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,25 @@ class DeleteStaticResourceOutput;
 class IStaticResourceLocator;
 class IStaticResourceStorage;
 
-class DeleteStaticResourceUseCase
+namespace useCase
 {
-  public:
-	DeleteStaticResourceUseCase(
-		IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
-	);
+	class DeleteStaticResource
+	{
+	  public:
+		DeleteStaticResource(
+			IStaticResourceLocator &staticResourceLocator,
+			IStaticResourceStorage &staticResourceStorage
+		);
 
-	DeleteStaticResourceOutput execute(DeleteStaticResourceInput const &dtoInput);
+		DeleteStaticResourceOutput execute(DeleteStaticResourceInput const &dtoInput);
 
-  private:
-	DeleteStaticResourceUseCase(DeleteStaticResourceUseCase const &src);
-	DeleteStaticResourceUseCase &operator=(DeleteStaticResourceUseCase const &rhs);
+	  private:
+		DeleteStaticResource(DeleteStaticResource const &src);
+		DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	IStaticResourceLocator &_staticResourceLocator;
-	IStaticResourceStorage &_staticResourceStorage;
-};
+		IStaticResourceLocator &_staticResourceLocator;
+		IStaticResourceStorage &_staticResourceStorage;
+	};
+} // namespace useCase
 
 #endif // DELETESTATICRESOURCEUSECASE_HPP

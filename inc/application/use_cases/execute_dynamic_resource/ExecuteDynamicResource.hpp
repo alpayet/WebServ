@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ExecuteDynamicResourceUseCase.hpp                  :+:      :+:    :+:   */
+/*   ExecuteDynamicResource.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 01:06:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 17:52:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,25 @@ class ExecuteDynamicResourceOutput;
 class IDynamicResourceExecutor;
 class IDynamicResourceLocator;
 
-class ExecuteDynamicResourceUseCase
+namespace useCase
 {
-  public:
-	ExecuteDynamicResourceUseCase(
-		IDynamicResourceExecutor &dynamicResourceExecutor,
-		IDynamicResourceLocator	 &dynamicResourceLocator
-	);
+	class ExecuteDynamicResource
+	{
+	  public:
+		ExecuteDynamicResource(
+			IDynamicResourceExecutor &dynamicResourceExecutor,
+			IDynamicResourceLocator	 &dynamicResourceLocator
+		);
 
-	ExecuteDynamicResourceOutput execute(ExecuteDynamicResourceInput const &dtoInput);
+		ExecuteDynamicResourceOutput execute(ExecuteDynamicResourceInput const &dtoInput);
 
-  private:
-	ExecuteDynamicResourceUseCase(ExecuteDynamicResourceUseCase const &src);
-	ExecuteDynamicResourceUseCase &operator=(ExecuteDynamicResourceUseCase const &rhs);
+	  private:
+		ExecuteDynamicResource(ExecuteDynamicResource const &src);
+		ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-	IDynamicResourceLocator	 &_dynamicResourceLocator;
-	IDynamicResourceExecutor &_dynamicResourceExecutor;
-};
+		IDynamicResourceLocator	 &_dynamicResourceLocator;
+		IDynamicResourceExecutor &_dynamicResourceExecutor;
+	};
+} // namespace useCase
 
 #endif // EXECUTEDYNAMICRESOURCEUSECASE_HPP

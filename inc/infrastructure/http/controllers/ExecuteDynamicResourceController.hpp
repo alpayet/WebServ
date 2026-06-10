@@ -6,14 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 22:20:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 19:41:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTEDYNAMICRESOURCECONTROLLER_HPP
 #define EXECUTEDYNAMICRESOURCECONTROLLER_HPP
 
-class ExecuteDynamicResourceUseCase;
+namespace useCase
+{
+	class ExecuteDynamicResource;
+} // namespace useCase
 
 namespace http
 {
@@ -23,7 +26,7 @@ namespace http
 	class ExecuteDynamicResourceController
 	{
 	  public:
-		ExecuteDynamicResourceController(ExecuteDynamicResourceUseCase &useCase);
+		ExecuteDynamicResourceController(useCase::ExecuteDynamicResource &useCase);
 
 		void operator()(Request const &request, Response &response);
 
@@ -31,7 +34,7 @@ namespace http
 		ExecuteDynamicResourceController(ExecuteDynamicResourceController const &src);
 		ExecuteDynamicResourceController &operator=(ExecuteDynamicResourceController const &rhs);
 
-		ExecuteDynamicResourceUseCase &_useCase;
+		useCase::ExecuteDynamicResource &_useCase;
 	};
 } // namespace http
 

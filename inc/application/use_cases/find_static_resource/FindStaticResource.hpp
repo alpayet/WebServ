@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FindStaticResourceUseCase.hpp                      :+:      :+:    :+:   */
+/*   FindStaticResource.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:12:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 17:53:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,25 @@ class FindStaticResourceOutput;
 class IStaticResourceLocator;
 class IStaticResourceStorage;
 
-class FindStaticResourceUseCase
+namespace useCase
 {
-  public:
-	FindStaticResourceUseCase(
-		IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
-	);
+	class FindStaticResource
+	{
+	  public:
+		FindStaticResource(
+			IStaticResourceLocator &staticResourceLocator,
+			IStaticResourceStorage &staticResourceStorage
+		);
 
-	FindStaticResourceOutput execute(FindStaticResourceInput const &dtoInput);
+		FindStaticResourceOutput execute(FindStaticResourceInput const &dtoInput);
 
-  private:
-	FindStaticResourceUseCase(FindStaticResourceUseCase const &src);
-	FindStaticResourceUseCase &operator=(FindStaticResourceUseCase const &rhs);
+	  private:
+		FindStaticResource(FindStaticResource const &src);
+		FindStaticResource &operator=(FindStaticResource const &rhs);
 
-	IStaticResourceLocator &_staticResourceLocator;
-	IStaticResourceStorage &_staticResourceStorage;
-};
+		IStaticResourceLocator &_staticResourceLocator;
+		IStaticResourceStorage &_staticResourceStorage;
+	};
+} // namespace useCase
 
 #endif // FINDSTATICRESOURCEUSECASE_HPP

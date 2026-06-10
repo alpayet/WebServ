@@ -6,14 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 22:19:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 19:40:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DELETESTATICRESOURCECONTROLLER_HPP
 #define DELETESTATICRESOURCECONTROLLER_HPP
 
-class DeleteStaticResourceUseCase;
+namespace useCase
+{
+	class DeleteStaticResource;
+} // namespace useCase
 
 namespace http
 {
@@ -23,7 +26,7 @@ namespace http
 	class DeleteStaticResourceController
 	{
 	  public:
-		DeleteStaticResourceController(DeleteStaticResourceUseCase &useCase);
+		DeleteStaticResourceController(useCase::DeleteStaticResource &useCase);
 
 		void operator()(Request const &request, Response &response);
 
@@ -31,7 +34,7 @@ namespace http
 		DeleteStaticResourceController(DeleteStaticResourceController const &src);
 		DeleteStaticResourceController &operator=(DeleteStaticResourceController const &rhs);
 
-		DeleteStaticResourceUseCase &_useCase;
+		useCase::DeleteStaticResource &_useCase;
 	};
 } // namespace http
 

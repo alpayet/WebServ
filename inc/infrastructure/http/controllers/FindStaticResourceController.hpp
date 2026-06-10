@@ -6,14 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 21:04:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/10 19:43:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FINDSTATICRESOURCECONTROLLER_HPP
 #define FINDSTATICRESOURCECONTROLLER_HPP
 
-class FindStaticResourceUseCase;
+namespace useCase
+{
+	class FindStaticResource;
+} // namespace useCase
 
 namespace http
 {
@@ -23,7 +26,7 @@ namespace http
 	class FindStaticResourceController
 	{
 	  public:
-		FindStaticResourceController(FindStaticResourceUseCase &useCase);
+		FindStaticResourceController(useCase::FindStaticResource &useCase);
 
 		void operator()(Request const &request, Response &response);
 
@@ -31,7 +34,7 @@ namespace http
 		FindStaticResourceController(FindStaticResourceController const &src);
 		FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
 
-		FindStaticResourceUseCase &_useCase;
+		useCase::FindStaticResource &_useCase;
 	};
 } // namespace http
 
