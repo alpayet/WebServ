@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:50:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 19:51:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "application/ports/RoutePolicy.hpp"
 #include <string>
 
-class IStaticResourceLocator;
+class IResourceLocator;
 class IStaticResourceStorage;
 struct RoutePolicy;
 
@@ -36,8 +36,7 @@ namespace useCase
 
 	  public:
 		DeleteStaticResource(
-			IStaticResourceLocator &staticResourceLocator,
-			IStaticResourceStorage &staticResourceStorage
+			IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 		);
 
 		Output execute(Input const &dtoInput);
@@ -46,7 +45,7 @@ namespace useCase
 		DeleteStaticResource(DeleteStaticResource const &src);
 		DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-		IStaticResourceLocator &_staticResourceLocator;
+		IResourceLocator	   &_resourceLocator;
 		IStaticResourceStorage &_staticResourceStorage;
 	};
 } // namespace useCase

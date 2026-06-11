@@ -6,22 +6,21 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 17:53:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 19:51:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/find_static_resource/FindStaticResource.hpp"
-#include "application/ports/IStaticResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
+#include "application/ports/IresourceLocator.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace useCase
 {
 	FindStaticResource::FindStaticResource(
-		IStaticResourceLocator &staticResourceLocator, IStaticResourceStorage &staticResourceStorage
+		IresourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 	)
-		: _staticResourceLocator(staticResourceLocator),
-		  _staticResourceStorage(staticResourceStorage)
+		: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage)
 	{
 	}
 
@@ -29,7 +28,7 @@ namespace useCase
 	FindStaticResource::execute(FindStaticResource::Input const &dtoInput)
 	{
 		std::string storage_path =
-			_staticResourceLocator.locate(dtoInput.id, dtoInput.routePolicy.rootPath);
+			_resourceLocator.locate(dtoInput.id, dtoInput.routePolicy.rootPath);
 
 		StaticResource static_resource(dtoInput.id, storage_path);
 

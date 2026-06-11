@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IDynamicResourceLocator.hpp                        :+:      :+:    :+:   */
+/*   IResourceLocator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 17:49:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 19:55:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IDYNAMICRESOURCELOCATOR_HPP
-#define IDYNAMICRESOURCELOCATOR_HPP
+#ifndef IRESOURCELOCATOR_HPP
+#define IRESOURCELOCATOR_HPP
 
 #include <string>
+
 // TODO: faire herité la config de cette interface
 
-class IDynamicResourceLocator
+struct SystemResourceInfo
 {
-  public:
-	virtual ~IDynamicResourceLocator(void) {}
-
-	virtual std::string locate(std::string const &id, std::string const &rootPath) const = 0;
+	/* data */
 };
 
-#endif // IDYNAMICRESOURCELOCATOR_HPP
+class IResourceLocator
+{
+  public:
+	virtual ~IResourceLocator(void) {}
+
+	virtual SystemResourceInfo locate(std::string const &id, std::string const &rootPath) const = 0;
+};
+
+#endif // IRESOURCELOCATOR_HPP

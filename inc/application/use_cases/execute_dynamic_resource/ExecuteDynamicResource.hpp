@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:50:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 19:52:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <string>
 
 class IDynamicResourceExecutor;
-class IDynamicResourceLocator;
+class IResourceLocator;
 
 namespace useCase
 {
@@ -37,8 +37,7 @@ namespace useCase
 
 	  public:
 		ExecuteDynamicResource(
-			IDynamicResourceExecutor &dynamicResourceExecutor,
-			IDynamicResourceLocator	 &dynamicResourceLocator
+			IDynamicResourceExecutor &dynamicResourceExecutor, IResourceLocator &resourceLocator
 		);
 
 		Output execute(Input const &dtoInput);
@@ -47,7 +46,7 @@ namespace useCase
 		ExecuteDynamicResource(ExecuteDynamicResource const &src);
 		ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-		IDynamicResourceLocator	 &_dynamicResourceLocator;
+		IResourceLocator		 &_resourceLocator;
 		IDynamicResourceExecutor &_dynamicResourceExecutor;
 	};
 } // namespace useCase
