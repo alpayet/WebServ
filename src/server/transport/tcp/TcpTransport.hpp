@@ -21,7 +21,9 @@ class TcpTransport : public ITransport {
   void init();
 
   std::vector<int> getReadableFds();
-  std::vector<int> getWritableFds();
+
+  std::string processEvent(int fd);
+  void sendResponse(int fd, const std::string& data);
 
   void closeConnection(int fd);
 
@@ -40,7 +42,7 @@ class TcpTransport : public ITransport {
 
   int initServerSocket(const std::string& host, int port);
   void handleNewClient(int fd);
-  void handleRequest(int fd);
+  std::string handleClientRequest(int fd);
 };
 
 #endif  // TCPTRANSPORT_HPP

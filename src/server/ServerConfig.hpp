@@ -19,7 +19,7 @@ class ServerConfig {
   explicit ServerConfig(const std::string&, int);
   ~ServerConfig();
 
-  std::string getHost() const;
+  const std::string& getHost() const;
   int getPort() const;
 
  private:
