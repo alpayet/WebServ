@@ -45,7 +45,7 @@ bool EpollManager::addSocket(const int fd, const int filter) {
 }
 
 bool EpollManager::removeSocket(const int fd) {
-  struct epoll_event ev = {};
+  struct epoll_event ev = {0};
   std::memset(&ev, 0, sizeof(ev));
 
   if (epoll_ctl(m_epoll_fd, EPOLL_CTL_DEL, fd, &ev)) return false;

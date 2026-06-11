@@ -6,6 +6,8 @@
 
 #include "server/Server.hpp"
 #include "server/ServerConfig.hpp"
+#include "server/transfer/FakeTransfer.hpp"
+#include "server/transport/tcp/TcpTransport.hpp"
 
 volatile sig_atomic_t running = 1;
 
@@ -38,9 +40,10 @@ int main() {
 
   configs.push_back(ServerConfig("localhost", 3000));
   configs.push_back(ServerConfig("0.0.0.0", 8000));
-  configs.push_back(ServerConfig("1", 8080));
+  configs.push_back(ServerConfig("localhost", 3000));
   try {
-    Server server(configs);
+    Server server(new TcpTransport(configs),
+                  new FakeTransfer("Hello worldito\n"));
 
     server.run();
   } catch (std::exception& e) {
