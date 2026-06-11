@@ -6,14 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 21:34:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:43:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DELETESTATICRESOURCEDTOMAPPER_HPP
 #define DELETESTATICRESOURCEDTOMAPPER_HPP
 
-struct DeleteStaticResourceInput;
+#include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
+
+struct RoutePolicy;
 
 namespace http
 {
@@ -22,7 +24,8 @@ namespace http
 	class DeleteStaticResourceDtoMapper
 	{
 	  public:
-		static DeleteStaticResourceInput toDto(Request const &request);
+		static useCase::DeleteStaticResource::Input
+		toDto(Request const &request, RoutePolicy const &routePolicy);
 
 	  private:
 		DeleteStaticResourceDtoMapper(void);

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 22:20:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:44:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
 #define EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
 
-struct ExecuteDynamicResourceInput;
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 
 namespace http
 {
@@ -22,7 +22,8 @@ namespace http
 	class ExecuteDynamicResourceDtoMapper
 	{
 	  public:
-		static ExecuteDynamicResourceInput toDto(Request const &request);
+		static useCase::ExecuteDynamicResource::Input
+		toDto(Request const &request, RoutePolicy const &routePolicy);
 
 	  private:
 		ExecuteDynamicResourceDtoMapper(void);

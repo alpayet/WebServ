@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRouteAccessValidator.hpp                          :+:      :+:    :+:   */
+/*   RoutePolicy.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/01 17:40:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/11 15:18:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPIROUTEACCESSVALIDATOR_HPP
-#define HTTPIROUTEACCESSVALIDATOR_HPP
+#ifndef ROUTEPOLICY_HPP
+#define ROUTEPOLICY_HPP
 
-// TODO: faire herité la config de cette interface
 #include <string>
 #include <vector>
 
-namespace http
+struct RoutePolicy
 {
-	class IRouteAccessValidator
-	{
-	  public:
-		virtual ~IRouteAccessValidator(void) {}
+	std::string				 rootPath;
+	bool					 isListingEnabled;
+	std::string				 defaultIndex;
+	std::vector<std::string> allowedMethods;
+};
 
-		virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const = 0;
-	};
-} // namespace http
-
-#endif // HTTPIROUTEACCESSVALIDATOR_HPP
+#endif // ROUTEPOLICY_HPP

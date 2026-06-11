@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 19:43:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:25:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ namespace useCase
 	class FindStaticResource;
 } // namespace useCase
 
+struct RoutePolicy;
+
 namespace http
 {
 	class Request;
@@ -28,7 +30,9 @@ namespace http
 	  public:
 		FindStaticResourceController(useCase::FindStaticResource &useCase);
 
-		void operator()(Request const &request, Response &response);
+		void FindStaticResourceController::operator()(
+			Request const &request, Response &response, RoutePolicy const &routePolicy
+		);
 
 	  private:
 		FindStaticResourceController(FindStaticResourceController const &src);

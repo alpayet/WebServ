@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 19:41:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:35:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ namespace useCase
 	class ExecuteDynamicResource;
 } // namespace useCase
 
+struct RoutePolicy;
+
 namespace http
 {
 	class Request;
@@ -28,7 +30,9 @@ namespace http
 	  public:
 		ExecuteDynamicResourceController(useCase::ExecuteDynamicResource &useCase);
 
-		void operator()(Request const &request, Response &response);
+		void ExecuteDynamicResourceController::operator()(
+			Request const &request, Response &response, RoutePolicy const &routePolicy
+		);
 
 	  private:
 		ExecuteDynamicResourceController(ExecuteDynamicResourceController const &src);

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/07 21:08:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:45:19 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FINDSTATICRESOURCEDTOMAPPER_HPP
 #define FINDSTATICRESOURCEDTOMAPPER_HPP
 
-struct FindStaticResourceInput;
+#include "application/use_cases/find_static_resource/FindStaticResource.hpp"
 
 namespace http
 {
@@ -22,7 +22,8 @@ namespace http
 	class FindStaticResourceDtoMapper
 	{
 	  public:
-		static FindStaticResourceInput toDto(Request const &request);
+		static useCase::FindStaticResource::Input
+		toDto(Request const &request, RoutePolicy const &routePolicy);
 
 	  private:
 		FindStaticResourceDtoMapper(void);

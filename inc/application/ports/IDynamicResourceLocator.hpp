@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 21:49:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 17:49:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class IDynamicResourceLocator
   public:
 	virtual ~IDynamicResourceLocator(void) {}
 
-	virtual std::string locate(std::string const &id) const = 0;
+	virtual std::string locate(std::string const &id, std::string const &rootPath) const = 0;
 };
 
 #endif // IDYNAMICRESOURCELOCATOR_HPP

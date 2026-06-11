@@ -6,15 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 17:54:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 17:51:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "application/ports/IStaticResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
-#include "application/use_cases/delete_static_resource/DeleteStaticResourceInput.hpp"
-#include "application/use_cases/delete_static_resource/DeleteStaticResourceOutput.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace useCase
@@ -27,10 +25,11 @@ namespace useCase
 	{
 	}
 
-	DeleteStaticResourceOutput
-	DeleteStaticResource::execute(DeleteStaticResourceInput const &dtoInput)
+	DeleteStaticResource::Output
+	DeleteStaticResource::execute(DeleteStaticResource::Input const &dtoInput)
 	{
-		std::string storage_path = _staticResourceLocator.locate(dtoInput.id);
+		std::string storage_path =
+			_staticResourceLocator.locate(dtoInput.id, dtoInput.routePolicy.rootPath);
 
 		_staticResourceStorage.remove(storage_path);
 	}

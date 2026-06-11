@@ -6,18 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 19:45:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:54:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/FindStaticResourceController.hpp"
 #include "application/use_cases/find_static_resource/FindStaticResource.hpp"
-#include "application/use_cases/find_static_resource/FindStaticResourceInput.hpp"
-#include "application/use_cases/find_static_resource/FindStaticResourceOutput.hpp"
 #include "infrastructure/http/Request.hpp"
 #include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/mappers/FindStaticResourceDtoMapper.hpp"
 
+struct RoutePolicy;
 namespace http
 {
 	FindStaticResourceController::FindStaticResourceController(useCase::FindStaticResource &useCase)
@@ -25,9 +24,12 @@ namespace http
 	{
 	}
 
-	void FindStaticResourceController::operator()(Request const &request, Response &response)
+	void FindStaticResourceController::operator()(
+		Request const &request, Response &response, RoutePolicy const &routePolicy
+	)
 	{
-		FindStaticResourceInput dto = FindStaticResourceDtoMapper::toDto(request);
+		useCase::FindStaticResource::Input dto =
+			FindStaticResourceDtoMapper::toDto(request, routePolicy);
 
 		_useCase.execute(dto);
 	}

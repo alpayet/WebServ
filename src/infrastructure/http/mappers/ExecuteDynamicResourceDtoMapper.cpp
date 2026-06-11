@@ -6,18 +6,19 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 00:09:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/11 15:52:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
-#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResourceInput.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "infrastructure/http/Request.hpp"
 
 namespace http
 {
-	ExecuteDynamicResourceInput ExecuteDynamicResourceDtoMapper::toDto(Request const &request)
+	useCase::ExecuteDynamicResource::Input
+	ExecuteDynamicResourceDtoMapper::toDto(Request const &request, RoutePolicy const &routePolicy)
 	{
-		(ExecuteDynamicResourceInput){.id = request.target};
+		(useCase::ExecuteDynamicResource::Input){.id = request.target, .routePolicy = routePolicy};
 	}
 } // namespace http
