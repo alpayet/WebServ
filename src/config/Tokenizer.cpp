@@ -27,41 +27,79 @@ const std::string	etokenToStr(e_token t)
 	}
 }
 
-Token	Tokenizer::tokenize(std::string str)
+Token	Tokenizer::tokenize(const std::string& str)
 {
 	Token t;
 	
 	for (size_t i = 0 ; i < str.size() ; )
 	{
-		size_t j = str.find_first_of(" \t\n\v\f\r", i);
-		if (j != std::string::npos)
+		size_t j = str.find_first_of(" \t\n\v\f\r;{}", i);
+		
+		if (j != std::string::npos && i == j)
 		{
-			if (i == j)
-			{
-				++i;
-
-				continue ;
-			}
-			std::string sub = str.substr(i, j - i);
-			if (sub[sub.size() - 1] == ';')
-			{
-				std::string sub2 = sub.substr(0, sub.size() - 1);
-				tokenizeChar(t, sub2);
+			if (str[j] == ';')
 				tokenizeChar(t, ";");
-			}
-			else
-			{
-				tokenizeChar(t, sub);
-			}
+			if (str[j] == '{')
+				tokenizeChar(t, "{");
+			if (str[j] == '}')
+				tokenizeChar(t, "}");
+			++i;
+			continue ;
 		}
-		else
+		std::string sub;
+		if (j == std::string::npos)
 		{
-			tokenizeChar(t, &str[i]);
+			sub = str.substr(i);
+			tokenizeChar(t, sub);
 			break ;
 		}
+		sub = str.substr(i, j - i);
+		tokenizeChar(t, sub);
+		if (str[j] == ';')
+				tokenizeChar(t, ";");
+		if (str[j] == '{')
+			tokenizeChar(t, "{");
+		if (str[j] == '}')
+			tokenizeChar(t, "}");
 		i = j + 1;
 	}
 	return t;
+	// Token t;
+	
+	// for (size_t i = 0 ; i < str.size() ; )
+	// {
+	// 	size_t j = str.find_first_of(" \t\n\v\f\r", i);
+	// 	if (j != std::string::npos)
+	// 	{
+	// 		// if (str[j] == ';')
+	// 		// {
+	// 		// 	tokenizeChar(t, ";");
+	// 		// }
+	// 		if (i == j)
+	// 		{
+	// 			++i;
+	// 			continue ;
+	// 		}
+	// 		std::string sub = str.substr(i, j - i);
+	// 		if (!sub.empty() && sub[sub.size() - 1] == ';')
+	// 		{
+	// 			std::string sub2 = sub.substr(0, sub.size() - 1);
+	// 			tokenizeChar(t, sub2);
+	// 			tokenizeChar(t, ";");
+	// 		}
+	// 		else
+	// 		{
+	// 			tokenizeChar(t, sub);
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		tokenizeChar(t, str.substr(i));// &str[i]);
+	// 		break ;
+	// 	}
+	// 	i = j + 1;
+	// }
+	// return t;
 }
 
 void	Tokenizer::addToken(Token token)
@@ -69,7 +107,7 @@ void	Tokenizer::addToken(Token token)
 	m_tokens.push_back(token);
 }
 
-void	Tokenizer::tokenizeChar(Token& t, std::string str)
+void	Tokenizer::tokenizeChar(Token& t, const std::string& str)
 {
 	if (str.size() > 1)
 	{
@@ -98,7 +136,7 @@ void	Tokenizer::tokenizeChar(Token& t, std::string str)
 	addToken(t);
 }
 
-void	Tokenizer::tokenizeStr(Token& t, std::string str)
+void	Tokenizer::tokenizeStr(Token& t, const std::string& str)
 {
 	char *ptr;
 

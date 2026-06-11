@@ -15,7 +15,10 @@ void Parser::expect(char c)
 		(m_it->type == char_end && c == ';'))
 		return;
 	std::ostringstream os;
-	os << "expected a '" << c << "' instead of '" << m_it->data[0] << "'";
+	if (m_it->type == 0)
+		os << "expected a '" << c << "' instead of end of file";
+	else
+		os << "expected a '" << c << "' instead of '" << m_it->data[0] << "'";
 	throw ParserFormatException(os.str());
 }
 

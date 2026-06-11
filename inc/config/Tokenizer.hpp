@@ -17,7 +17,7 @@ class Tokenizer
 
 		
 		/** FUNCTIONS */
-		Token	tokenize(std::string str);
+		Token	tokenize(const std::string& str);
 		void	addToken(Token token);
 
 		/** GETTERS & SETTERS*/
@@ -28,8 +28,8 @@ class Tokenizer
 		std::string			m_file;
 		std::vector<Token>	m_tokens;
 
-		void	tokenizeChar(Token& t, std::string str);
-		void	tokenizeStr(Token& t, std::string str);
+		void	tokenizeChar(Token& t, const std::string& str);
+		void	tokenizeStr(Token& t, const std::string& str);
 		
 		Tokenizer(Tokenizer& other);
 		Tokenizer&	operator=(Tokenizer& other);
