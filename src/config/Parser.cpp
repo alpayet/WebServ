@@ -11,6 +11,8 @@ Parser::Parser(const std::vector<Token> &tokens) : m_tokens(tokens)
 
 void Parser::expect(char c)
 {
+	if (m_it == m_ite)
+		throw ParserFormatException("unexpected end of file");
 	if ((m_it->type == char_lbracket && c == '{') || (m_it->type == char_rbracket && c == '}') ||
 		(m_it->type == char_end && c == ';'))
 		return;
@@ -47,7 +49,7 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 			{
 				std::vector<p_Directive>::const_iterator d_ite = t.directives.end();
 				for (std::vector<p_Directive>::const_iterator d_it = t.directives.begin();
-					 d_it != d_ite; *d_it++)
+					 d_it != d_ite; ++d_it)
 				{
 					if (d_it->name == m_it->data)
 					{
@@ -62,10 +64,10 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 	}
 
 	direc.name = m_it->data;
-	*m_it++;
+	++m_it;
 
 	int nb_val = 1;
-	for (; m_it->type == str_type || m_it->type == int_type; *m_it++, ++nb_val)
+	for (; m_it->type == str_type || m_it->type == int_type; ++m_it, ++nb_val)
 	{
 		if (keywords[i].max_args < nb_val)
 		{
@@ -83,14 +85,14 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 		throw ParserFormatException(os.str());
 	}
 	expect(';');
-	*m_it++;
+	++m_it;
 	t.directives.push_back(direc);
 	return direc;
 }
 
 p_Location Parser::parseLocation(p_Server &serv)
 {
-	*m_it++;
+	++m_it;
 	if (m_it->type != str_type)
 	{
 		throw ParserFormatException("expected a directory for the location block");
@@ -98,9 +100,9 @@ p_Location Parser::parseLocation(p_Server &serv)
 
 	p_Location loc;
 	loc.path = m_it->data;
-	*m_it++;
+	++m_it;
 	expect('{');
-	*m_it++;
+	++m_it;
 
 	while (m_it != m_ite && m_it->type != char_rbracket)
 	{
@@ -111,16 +113,16 @@ p_Location Parser::parseLocation(p_Server &serv)
 		parseDirective(loc, inserv);
 	}
 	expect('}');
-	*m_it++;
+	++m_it;
 	serv.locations.push_back(loc);
 	return loc;
 }
 
 p_Server Parser::parseServer()
 {
-	*m_it++;
+	++m_it;
 	expect('{');
-	*m_it++;
+	++m_it;
 
 	p_Server serv;
 
@@ -128,7 +130,7 @@ p_Server Parser::parseServer()
 	{
 		if (m_it->type == res_word && m_it->data == "server")
 		{
-			throw("server block can't contain another server block");
+			throw ParserFormatException("server block can't contain another server block");
 		}
 		if (m_it->type == res_word && m_it->data == "location")
 		{
@@ -140,7 +142,7 @@ p_Server Parser::parseServer()
 		}
 	}
 	expect('}');
-	*m_it++;
+	++m_it;
 	m_config.servers.push_back(serv);
 	return serv;
 }
@@ -171,23 +173,23 @@ void Parser::parse(p_Config &config)
 std::ostream &operator<<(std::ostream &os, const p_Config &c)
 {
 	std::vector<p_Server>::const_iterator s_ite = c.servers.end();
-	for (std::vector<p_Server>::const_iterator s_it = c.servers.begin(); s_it != s_ite; *s_it++)
+	for (std::vector<p_Server>::const_iterator s_it = c.servers.begin(); s_it != s_ite; ++s_it)
 	{
 		os << "***SERVER***" << std::endl;
 		std::vector<p_Location>::const_iterator l_ite = s_it->locations.end();
 		for (std::vector<p_Location>::const_iterator l_it = s_it->locations.begin(); l_it != l_ite;
-			 *l_it++)
+			 ++l_it)
 		{
 			os << "\tPath: " << l_it->path << std::endl;
 			std::vector<p_Directive>::const_iterator d_ite = l_it->directives.end();
 			for (std::vector<p_Directive>::const_iterator d_it = l_it->directives.begin();
-				 d_it != d_ite; *d_it++)
+				 d_it != d_ite; ++d_it)
 			{
 				os << "\t\tName: " << d_it->name << std::endl;
 				os << "\t\tValues: ";
 				std::vector<std::string>::const_iterator str_ite = d_it->values.end();
 				for (std::vector<std::string>::const_iterator str_it = d_it->values.begin();
-					 str_it != str_ite; *str_it++)
+					 str_it != str_ite; ++str_it)
 				{
 					os << *str_it << " ";
 				}
@@ -196,13 +198,13 @@ std::ostream &operator<<(std::ostream &os, const p_Config &c)
 		}
 		std::vector<p_Directive>::const_iterator d_ite = s_it->directives.end();
 		for (std::vector<p_Directive>::const_iterator d_it = s_it->directives.begin();
-			 d_it != d_ite; *d_it++)
+			 d_it != d_ite; ++d_it)
 		{
 			os << "\tName: " << d_it->name << std::endl;
 			os << "\tValues: ";
 			std::vector<std::string>::const_iterator str_ite = d_it->values.end();
 			for (std::vector<std::string>::const_iterator str_it = d_it->values.begin();
-				 str_it != str_ite; *str_it++)
+				 str_it != str_ite; ++str_it)
 			{
 				os << *str_it << " ";
 			}

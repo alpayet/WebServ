@@ -39,9 +39,9 @@ Token	Tokenizer::tokenize(const std::string& str)
 		{
 			if (str[j] == ';')
 				tokenizeChar(t, ";");
-			if (str[j] == '{')
+			else if (str[j] == '{')
 				tokenizeChar(t, "{");
-			if (str[j] == '}')
+			else if (str[j] == '}')
 				tokenizeChar(t, "}");
 			++i;
 			continue ;
@@ -57,49 +57,13 @@ Token	Tokenizer::tokenize(const std::string& str)
 		tokenizeChar(t, sub);
 		if (str[j] == ';')
 				tokenizeChar(t, ";");
-		if (str[j] == '{')
+		else if (str[j] == '{')
 			tokenizeChar(t, "{");
-		if (str[j] == '}')
+		else if (str[j] == '}')
 			tokenizeChar(t, "}");
 		i = j + 1;
 	}
 	return t;
-	// Token t;
-	
-	// for (size_t i = 0 ; i < str.size() ; )
-	// {
-	// 	size_t j = str.find_first_of(" \t\n\v\f\r", i);
-	// 	if (j != std::string::npos)
-	// 	{
-	// 		// if (str[j] == ';')
-	// 		// {
-	// 		// 	tokenizeChar(t, ";");
-	// 		// }
-	// 		if (i == j)
-	// 		{
-	// 			++i;
-	// 			continue ;
-	// 		}
-	// 		std::string sub = str.substr(i, j - i);
-	// 		if (!sub.empty() && sub[sub.size() - 1] == ';')
-	// 		{
-	// 			std::string sub2 = sub.substr(0, sub.size() - 1);
-	// 			tokenizeChar(t, sub2);
-	// 			tokenizeChar(t, ";");
-	// 		}
-	// 		else
-	// 		{
-	// 			tokenizeChar(t, sub);
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		tokenizeChar(t, str.substr(i));// &str[i]);
-	// 		break ;
-	// 	}
-	// 	i = j + 1;
-	// }
-	// return t;
 }
 
 void	Tokenizer::addToken(Token token)
