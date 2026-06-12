@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Response.hpp                                       :+:      :+:    :+:   */
+/*   ResourceType.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:59 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/12 16:40:38 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/12 18:12:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPRESPONSE_HPP
-#define HTTPRESPONSE_HPP
-
-namespace http {
-struct Response
+namespace domain {
+enum ResourceType
 {
-	/* data */
+	leaf,
+	collection
 };
-} // namespace http
-
-#endif // HTTPRESPONSE_HPP
+} // namespace domain

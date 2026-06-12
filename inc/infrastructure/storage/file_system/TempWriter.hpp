@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/08 21:58:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,27 @@
 #include <string>
 #include <vector>
 
-namespace fileSystem
+namespace fileSystem {
+class TempWriter
 {
-	class TempWriter
-	{
-	  public:
-		TempWriter(std::string const &tempFileName);
-		~TempWriter(void);
+  public:
+	TempWriter(std::string const &tempFileName);
+	~TempWriter(void);
 
-		void writeChunk(std::vector<char> const &data);
+	void writeChunk(std::vector<char> const &data);
 
-	  private:
-		TempWriter(TempWriter const &src);
-		TempWriter &operator=(TempWriter const &rhs);
+  private:
+	TempWriter(TempWriter const &src);
+	TempWriter &operator=(TempWriter const &rhs);
 
-		std::ofstream	  _tempFile;
-		std::string const _tempFileName;
-		std::string		  _tempFilePath;
+	std::ofstream	  _tempFile;
+	std::string const _tempFileName;
+	std::string		  _tempFilePath;
 
-		static char const _tmpDir[];
+	static char const _tmpDir[];
 
-		static std::string generateUniqueTempFile(std::string const &fileName);
-	};
+	static std::string generateUniqueTempFile(std::string const &fileName);
+};
 } // namespace fileSystem
 
 #endif // TEMPFILESYSTEMWRITER_HPP

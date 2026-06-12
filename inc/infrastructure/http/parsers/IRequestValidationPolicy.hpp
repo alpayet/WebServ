@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 18:25:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@
 // TODO: faire herité la config de cette interface
 #include <string>
 
-namespace http
+namespace http {
+class IRequestValidationPolicy
 {
-	class IRequestValidationPolicy
-	{
-	  public:
-		virtual ~IRequestValidationPolicy(void) {};
+  public:
+	virtual ~IRequestValidationPolicy(void) {};
 
-		virtual std::string getSupportedHttpVersion(void) const = 0;
-		virtual std::size_t getMaxRequestLineSize(void) const = 0;
-		virtual std::size_t getMaxHeaderLineSize(void) const = 0;
-		virtual std::size_t getMaxHeaderCount(void) const = 0;
-		virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
-	};
+	virtual std::string getSupportedHttpVersion(void) const = 0;
+	virtual std::size_t getMaxRequestLineSize(void) const = 0;
+	virtual std::size_t getMaxHeaderLineSize(void) const = 0;
+	virtual std::size_t getMaxHeaderCount(void) const = 0;
+	virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
+};
 } // namespace http
 
 #endif // HTTPIREQUESTVALIDATIONPOLICY_HPP

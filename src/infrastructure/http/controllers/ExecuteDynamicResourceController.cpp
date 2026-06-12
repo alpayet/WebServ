@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:54:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:23:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,20 @@
 #include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
 
-namespace http
+namespace http {
+ExecuteDynamicResourceController::ExecuteDynamicResourceController(
+	app::useCase::ExecuteDynamicResource &useCase
+)
+	: _useCase(useCase)
+{}
+
+void ExecuteDynamicResourceController::operator()(
+	Request const &request, Response &response, app::RoutePolicy const &routePolicy
+)
 {
-	ExecuteDynamicResourceController::ExecuteDynamicResourceController(
-		useCase::ExecuteDynamicResource &useCase
-	)
-		: _useCase(useCase)
-	{
-	}
+	app::useCase::ExecuteDynamicResource::Input dto =
+		ExecuteDynamicResourceDtoMapper::toDto(request, routePolicy);
 
-	void ExecuteDynamicResourceController::operator()(
-		Request const &request, Response &response, RoutePolicy const &routePolicy
-	)
-	{
-		useCase::ExecuteDynamicResource::Input dto =
-			ExecuteDynamicResourceDtoMapper::toDto(request, routePolicy);
-
-		_useCase.execute(dto);
-	}
+	_useCase.execute(dto);
+}
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:55:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:26:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,20 @@
 #include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/mappers/DeleteStaticResourceDtoMapper.hpp"
 
-namespace http
+namespace http {
+DeleteStaticResourceController::DeleteStaticResourceController(
+	app::useCase::DeleteStaticResource &useCase
+)
+	: _useCase(useCase)
+{}
+
+void DeleteStaticResourceController::operator()(
+	Request const &request, Response &response, app::RoutePolicy const &routePolicy
+)
 {
-	DeleteStaticResourceController::DeleteStaticResourceController(
-		useCase::DeleteStaticResource &useCase
-	)
-		: _useCase(useCase)
-	{
-	}
+	app::useCase::DeleteStaticResource::Input dto =
+		DeleteStaticResourceDtoMapper::toDto(request, routePolicy);
 
-	void DeleteStaticResourceController::operator()(
-		Request const &request, Response &response, RoutePolicy const &routePolicy
-	)
-	{
-		useCase::DeleteStaticResource::Input dto =
-			DeleteStaticResourceDtoMapper::toDto(request, routePolicy);
-
-		_useCase.execute(dto);
-	}
+	_useCase.execute(dto);
+}
 } // namespace http

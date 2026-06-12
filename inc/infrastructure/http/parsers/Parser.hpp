@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 00:06:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,58 +18,60 @@
 #include <string>
 #include <vector>
 
-namespace http
+namespace http {
+class IRequestValidationPolicy;
+
+class Parser
 {
-	class IRequestValidationPolicy;
+  public:
+	Parser(IRequestValidationPolicy &requestValidationPolicy);
 
-	class Parser
-	{
-	  public:
-		Parser(IRequestValidationPolicy &requestValidationPolicy);
+	ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
 
-		ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
+  private:
+	Parser(Parser const &src);
+	Parser &operator=(Parser const &rhs);
 
-	  private:
-		IRequestValidationPolicy &_requestValidationPolicy;
+	IRequestValidationPolicy &_requestValidationPolicy;
 
-		static char const _crlf[];
-		static char const _whiteSpaces[];
+	static char const _crlf[];
+	static char const _whiteSpaces[];
 
-		void parseRequestLine(
-			std::vector<char>::const_iterator itStart,
-			std::vector<char>::const_iterator itLineEnd,
-			ParsingState					 &state
-		);
-		void parseHeaderLine(
-			std::vector<char>::const_iterator itStart,
-			std::vector<char>::const_iterator itLineEnd,
-			ParsingState					 &state
-		);
-		void parseContentLength(ParsingState &state);
-		void parseBody(std::vector<char> const &readBuf, ParsingState &state);
+	void parseRequestLine(
+		std::vector<char>::const_iterator itStart,
+		std::vector<char>::const_iterator itLineEnd,
+		ParsingState					 &state
+	);
+	void parseHeaderLine(
+		std::vector<char>::const_iterator itStart,
+		std::vector<char>::const_iterator itLineEnd,
+		ParsingState					 &state
+	);
+	void parseContentLength(ParsingState &state);
+	void parseBody(std::vector<char> const &readBuf, ParsingState &state);
 
-		std::string Parser::extractMethod(
-			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
-		);
-		void Parser::extractTargetandQuery(
-			std::vector<char>::const_iterator &it,
-			std::vector<char>::const_iterator  itLineEnd,
-			ParsingState					  &state
-		);
-		std::string Parser::extractProtocol(
-			std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
-		);
+	std::string Parser::extractMethod(
+		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
+	);
+	void Parser::extractTargetandQuery(
+		std::vector<char>::const_iterator &it,
+		std::vector<char>::const_iterator  itLineEnd,
+		ParsingState					  &state
+	);
+	std::string Parser::extractProtocol(
+		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
+	);
 
-		static bool hasLineBreak(
-			std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
-		);
+	static bool hasLineBreak(
+		std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
+	);
 
-		static std::vector<char>::iterator findCRLF(std::vector<char> &readBuf);
+	static std::vector<char>::iterator findCRLF(std::vector<char> &readBuf);
 
-		void validateRequestLineSize(std::size_t size);
-		void validateHeaderLineSize(std::size_t size);
-		void validateHeaderCount(std::size_t size);
-	};
+	void validateRequestLineSize(std::size_t size);
+	void validateHeaderLineSize(std::size_t size);
+	void validateHeaderCount(std::size_t size);
+};
 } // namespace http
 
 #endif // HTTPREQUESTPARSER_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:44:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:19:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,18 @@
 
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 
-namespace http
+namespace http {
+struct Request;
+
+class ExecuteDynamicResourceDtoMapper
 {
-	struct Request;
+  public:
+	static app::useCase::ExecuteDynamicResource::Input
+	toDto(Request const &request, app::RoutePolicy const &routePolicy);
 
-	class ExecuteDynamicResourceDtoMapper
-	{
-	  public:
-		static useCase::ExecuteDynamicResource::Input
-		toDto(Request const &request, RoutePolicy const &routePolicy);
-
-	  private:
-		ExecuteDynamicResourceDtoMapper(void);
-	};
+  private:
+	ExecuteDynamicResourceDtoMapper(void);
+};
 } // namespace http
 
 #endif // EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP

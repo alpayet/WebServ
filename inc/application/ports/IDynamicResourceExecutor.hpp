@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 01:15:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:06:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 
 // TODO: faire herité CGI de cette interface
+namespace app {
 class IDynamicResourceExecutor
 {
   public:
@@ -26,5 +27,6 @@ class IDynamicResourceExecutor
 		std::string const &storagePath, std::map<std::string, std::string> const &parameters
 	) = 0;
 };
+} // namespace app
 
 #endif // IDYNAMICRESOURCEEXECUTOR_HPP

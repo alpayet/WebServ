@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:51:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:24:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "infrastructure/http/Request.hpp"
 
-namespace http
+namespace http {
+app::useCase::DeleteStaticResource::Input
+DeleteStaticResourceDtoMapper::toDto(Request const &request, app::RoutePolicy const &routePolicy)
 {
-	useCase::DeleteStaticResource::Input
-	DeleteStaticResourceDtoMapper::toDto(Request const &request, RoutePolicy const &routePolicy)
-	{
-		(useCase::DeleteStaticResource::Input){.id = request.target, .routePolicy = routePolicy};
-	}
+	(app::useCase::DeleteStaticResource::Input){.id = request.target, .routePolicy = routePolicy};
+}
 } // namespace http

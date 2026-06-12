@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 04:50:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 
 #include "infrastructure/storage/file_system/TempWriter.hpp"
 
-namespace http
+namespace http {
+class BodyFile
 {
-	class BodyFile
-	{
-	  public:
-		BodyFile(void);
+  public:
+	BodyFile(void);
 
-		void append(std::vector<char> const &data);
+	void append(std::vector<char> const &data);
 
-	  private:
-		fileSystem::TempWriter _writer;
+  private:
+	fileSystem::TempWriter _writer;
 
-		static char const _nameTemplate[];
-	};
+	static char const _nameTemplate[];
+};
 } // namespace http
 
 #endif // HTTPBODYFILE_HPP

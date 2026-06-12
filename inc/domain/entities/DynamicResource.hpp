@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/10 01:11:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:12:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 
+namespace domain {
 class DynamicResource
 {
   public:
@@ -25,8 +26,12 @@ class DynamicResource
 	std::string const &getstoragePath(void) const;
 
   private:
+	DynamicResource(DynamicResource const &src);
+	DynamicResource &operator=(DynamicResource const &rhs);
+
 	std::string _id;
 	std::string _storagePath;
 };
+} // namespace domain
 
 #endif // DYNAMICRESOURCE_HPP

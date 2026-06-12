@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:10:04 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 22:22:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:07:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 
+namespace app {
 class IStaticResourceReader;
 
 class IStaticResourceStorage
@@ -25,5 +26,6 @@ class IStaticResourceStorage
 	virtual IStaticResourceReader *createReader(std::string const &storagePath) = 0;
 	virtual void				   remove(std::string const &storagePath) = 0;
 };
+} // namespace app
 
 #endif // ISTATICRESOURCESTORAGE_HPP

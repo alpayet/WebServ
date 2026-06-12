@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:45:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:20:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,18 @@
 
 #include "application/use_cases/find_static_resource/FindStaticResource.hpp"
 
-namespace http
+namespace http {
+struct Request;
+
+class FindStaticResourceDtoMapper
 {
-	struct Request;
+  public:
+	static app::useCase::FindStaticResource::Input
+	toDto(Request const &request, app::RoutePolicy const &routePolicy);
 
-	class FindStaticResourceDtoMapper
-	{
-	  public:
-		static useCase::FindStaticResource::Input
-		toDto(Request const &request, RoutePolicy const &routePolicy);
-
-	  private:
-		FindStaticResourceDtoMapper(void);
-	};
+  private:
+	FindStaticResourceDtoMapper(void);
+};
 } // namespace http
 
 #endif // FINDSTATICRESOURCEDTOMAPPER_HPP

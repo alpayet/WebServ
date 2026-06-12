@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:54:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:27:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,20 @@
 #include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/mappers/FindStaticResourceDtoMapper.hpp"
 
-struct RoutePolicy;
-namespace http
+namespace http {
+FindStaticResourceController::FindStaticResourceController(
+	app::useCase::FindStaticResource &useCase
+)
+	: _useCase(useCase)
+{}
+
+void FindStaticResourceController::operator()(
+	Request const &request, Response &response, app::RoutePolicy const &routePolicy
+)
 {
-	FindStaticResourceController::FindStaticResourceController(useCase::FindStaticResource &useCase)
-		: _useCase(useCase)
-	{
-	}
+	app::useCase::FindStaticResource::Input dto =
+		FindStaticResourceDtoMapper::toDto(request, routePolicy);
 
-	void FindStaticResourceController::operator()(
-		Request const &request, Response &response, RoutePolicy const &routePolicy
-	)
-	{
-		useCase::FindStaticResource::Input dto =
-			FindStaticResourceDtoMapper::toDto(request, routePolicy);
-
-		_useCase.execute(dto);
-	}
+	_useCase.execute(dto);
+}
 } // namespace http

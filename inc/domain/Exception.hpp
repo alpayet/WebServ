@@ -5,40 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:30 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/12 18:12:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPEXCEPTION_HPP
-#define HTTPEXCEPTION_HPP
+#ifndef DOMAINEXCEPTION_HPP
+#define DOMAINEXCEPTION_HPP
 
 #include <exception>
 #include <string>
 
-namespace http {
+namespace domain {
 class Exception : public std::exception
 {
   public:
 	enum ErrorCode
 	{
-		invalidLineBreak,
-		requestLineMalformed,
-		headerLineMalformed,
-		methodInvalid,
-		methodNotAllowed,
-		targetInvalid,
-		versionInvalid,
-		headerKeyInvalid,
-		headerValueInvalid,
-		contentLengthInvalid,
-		contentLengthRequired,
-		requestLineTooLarge,
-		HeaderLineTooLarge,
-		HeaderCountTooLarge,
-		bodyTooLarge,
-		bodyFileOpenFailed,
-		bodyFileWriteFailed
+		PathTraversalDetected,
 	};
 
   public:
@@ -54,6 +38,6 @@ class Exception : public std::exception
 	std::string _message;
 	ErrorCode	_internalCode;
 };
-} // namespace http
+} // namespace domain
 
-#endif // HTTPEXCEPTION_HPP
+#endif // DOMAINEXCEPTION_HPP

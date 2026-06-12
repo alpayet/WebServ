@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 19:52:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:08:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,38 @@
 #include <map>
 #include <string>
 
+namespace app {
 class IDynamicResourceExecutor;
 class IResourceLocator;
 
-namespace useCase
+namespace useCase {
+class ExecuteDynamicResource
 {
-	class ExecuteDynamicResource
+  public:
+	struct Input
 	{
-	  public:
-		struct Input
-		{
-			std::string						   id;
-			RoutePolicy						   routePolicy;
-			std::map<std::string, std::string> metaVariables;
-		};
-		struct Output
-		{
-		};
-
-	  public:
-		ExecuteDynamicResource(
-			IDynamicResourceExecutor &dynamicResourceExecutor, IResourceLocator &resourceLocator
-		);
-
-		Output execute(Input const &dtoInput);
-
-	  private:
-		ExecuteDynamicResource(ExecuteDynamicResource const &src);
-		ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
-
-		IResourceLocator		 &_resourceLocator;
-		IDynamicResourceExecutor &_dynamicResourceExecutor;
+		std::string						   id;
+		RoutePolicy						   routePolicy;
+		std::map<std::string, std::string> metaVariables;
 	};
+	struct Output
+	{};
+
+  public:
+	ExecuteDynamicResource(
+		IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+	);
+
+	Output execute(Input const &dtoInput);
+
+  private:
+	ExecuteDynamicResource(ExecuteDynamicResource const &src);
+	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
+
+	IResourceLocator		 &_resourceLocator;
+	IDynamicResourceExecutor &_dynamicResourceExecutor;
+};
 } // namespace useCase
+} // namespace app
 
 #endif // EXECUTEDYNAMICRESOURCEUSECASE_HPP

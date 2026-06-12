@@ -16,31 +16,30 @@
 #include <map>
 #include <string>
 
-namespace fileSystem
+namespace fileSystem {
+class LockManager
 {
-	class LockManager
+  public:
+	enum LockMode
 	{
-	  public:
-		enum LockMode
-		{
-			unlocked,
-			read,
-			write
-		};
-
-	  public:
-		bool tryLock(std::string const &path, LockMode mode);
-
-		void unlock(std::string const &path);
-
-		LockMode isLocked(std::string const &path) const;
-
-	  private:
-		LockManager(LockManager const &src);
-		LockManager &operator=(LockManager const &rhs);
-
-		std::map<std::string, LockMode> _lockedPaths;
+		unlocked,
+		read,
+		write
 	};
+
+  public:
+	bool tryLock(std::string const &path, LockMode mode);
+
+	void unlock(std::string const &path);
+
+	LockMode isLocked(std::string const &path) const;
+
+  private:
+	LockManager(LockManager const &src);
+	LockManager &operator=(LockManager const &rhs);
+
+	std::map<std::string, LockMode> _lockedPaths;
+};
 
 } // namespace fileSystem
 

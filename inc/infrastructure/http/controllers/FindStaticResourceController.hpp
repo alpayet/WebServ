@@ -6,40 +6,36 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 15:25:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:23:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FINDSTATICRESOURCECONTROLLER_HPP
 #define FINDSTATICRESOURCECONTROLLER_HPP
 
-namespace useCase
-{
-	class FindStaticResource;
+namespace useCase {
+class FindStaticResource;
 } // namespace useCase
 
-struct RoutePolicy;
+namespace http {
+class Request;
+class Response;
 
-namespace http
+class FindStaticResourceController
 {
-	class Request;
-	class Response;
+  public:
+	FindStaticResourceController(app::useCase::FindStaticResource &useCase);
 
-	class FindStaticResourceController
-	{
-	  public:
-		FindStaticResourceController(useCase::FindStaticResource &useCase);
+	void FindStaticResourceController::operator()(
+		Request const &request, Response &response, app::RoutePolicy const &routePolicy
+	);
 
-		void FindStaticResourceController::operator()(
-			Request const &request, Response &response, RoutePolicy const &routePolicy
-		);
+  private:
+	FindStaticResourceController(FindStaticResourceController const &src);
+	FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
 
-	  private:
-		FindStaticResourceController(FindStaticResourceController const &src);
-		FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
-
-		useCase::FindStaticResource &_useCase;
-	};
+	app::useCase::FindStaticResource &_useCase;
+};
 } // namespace http
 
 #endif // FINDSTATICRESOURCECONTROLLER_HPP

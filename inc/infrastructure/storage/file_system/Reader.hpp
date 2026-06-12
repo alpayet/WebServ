@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 21:58:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:21:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,21 @@
 #include <string>
 #include <vector>
 
-namespace fileSystem
+namespace fileSystem {
+class Reader : public app::IStaticResourceReader
 {
-	class Reader : public IStaticResourceReader
-	{
-	  public:
-		Reader(std::string const &path);
+  public:
+	Reader(std::string const &path);
 
-		virtual std::vector<char> readChunk(void);
+	virtual std::vector<char> readChunk(void);
 
-	  private:
-		Reader(Reader const &src);
-		Reader &operator=(Reader const &rhs);
+  private:
+	Reader(Reader const &src);
+	Reader &operator=(Reader const &rhs);
 
-		std::ifstream _file;
-		std::string	  _path;
-	};
+	std::ifstream _file;
+	std::string	  _path;
+};
 } // namespace fileSystem
 
 #endif // FILESYSTEMREADER_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:15:09 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 
 #include "infrastructure/ITransfertHandler.hpp"
 
-namespace http
+namespace http {
+class Handler : public ITransfertHandler
 {
-	class Handler : public ITransfertHandler
-	{
-	  public:
-		Handler(void);
-		virtual ~Handler(void) {}
+  public:
+	Handler(void);
+	virtual ~Handler(void) {}
 
-		virtual ITransferContext *createClientContext(void);
+	virtual ITransferContext *createClientContext(void);
 
-		virtual void processClient(Client &client);
+	virtual void processClient(Client &client);
 
-	  private:
-		Handler(Handler const &src);
-		Handler &operator=(Handler const &rhs);
-	};
+  private:
+	Handler(Handler const &src);
+	Handler &operator=(Handler const &rhs);
+};
 } // namespace http
 
 #endif // HTTPHANDLER_HPP

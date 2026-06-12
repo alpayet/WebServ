@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:29:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/09 22:22:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:21:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,19 @@
 #include "application/ports/IStaticResourceStorage.hpp"
 #include <string>
 
-namespace fileSystem
+namespace fileSystem {
+class Storage : public app::IStaticResourceStorage
 {
-	class Storage : public IStaticResourceStorage
-	{
-	  public:
-		virtual ~Storage(void) {}
+  public:
+	virtual ~Storage(void) {}
 
-		virtual void				   remove(std::string const &storagePath);
-		virtual IStaticResourceReader *createReader(std::string const &storagePath);
+	virtual void						remove(std::string const &storagePath);
+	virtual app::IStaticResourceReader *createReader(std::string const &storagePath);
 
-	  private:
-		Storage(Storage const &src);
-		Storage &operator=(Storage const &rhs);
-	};
+  private:
+	Storage(Storage const &src);
+	Storage &operator=(Storage const &rhs);
+};
 } // namespace fileSystem
 
 #endif // FILESYSTEMSTORAGE_HPP

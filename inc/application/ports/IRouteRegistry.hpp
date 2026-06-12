@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 12:20:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:07:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 
+namespace app {
 struct RoutePolicy;
 
 // TODO: faire herité la config de cette interface
@@ -25,5 +26,6 @@ class IRouteRegistry
 
 	virtual RoutePolicy match(std::string const &id) = 0;
 };
+} // namespace app
 
 #endif // IROUTEREGISTRY_HPP

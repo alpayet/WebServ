@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/11 19:55:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:07:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 
 #include <string>
 
+namespace app {
+struct SystemResourceInfo;
 // TODO: faire herité la config de cette interface
-
-struct SystemResourceInfo
-{
-	/* data */
-};
 
 class IResourceLocator
 {
@@ -29,5 +26,6 @@ class IResourceLocator
 
 	virtual SystemResourceInfo locate(std::string const &id, std::string const &rootPath) const = 0;
 };
+} // namespace app
 
 #endif // IRESOURCELOCATOR_HPP
