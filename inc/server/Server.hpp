@@ -39,7 +39,7 @@ class Server : public IResourceLocator,
 	const std::vector<Location>		 &getLocations() const { return m_locations; };
 	int								  getClientMaxBody() const { return m_max_body; };
 	const std::string				 &getRoot() const { return m_root; };
-	const std::string				 &getIndex() const { return m_index; };
+	const std::vector<std::string>	 &getIndex() const { return m_index; };
 
 	/** SETTERS */
 	void setPort(int port) { m_port = port; };
@@ -48,7 +48,7 @@ class Server : public IResourceLocator,
 	void addLocation(const Location &location) { m_locations.push_back(location); };
 	void setClientMaxBody(long max_body) { m_max_body = max_body; };
 	void setRoot(const std::string &root) { m_root = root; };
-	void setIndex(const std::string &index) { m_index = index; };
+	void addIndex(const std::string &index) { m_index.push_back(index); };
 
 	/** GETTERS from parents */
 	Location						 findLocationFromUri(std::string const &uri) const;
@@ -63,7 +63,7 @@ class Server : public IResourceLocator,
 	std::vector<Location>	   m_locations;
 	std::size_t				   m_max_body;
 	std::string				   m_root;
-	std::string				   m_index;
+	std::vector<std::string>   m_index;
 };
 
 std::ostream &operator<<(std::ostream &os, const Location &l);

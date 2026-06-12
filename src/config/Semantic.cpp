@@ -19,6 +19,11 @@ void initLocation(Server &s, p_Server ps)
 	{
 		Location loc;
 
+		if (l_it->path[0] != '/' || l_it->path[l_it->path.size() - 1] != '/')
+			throw SemanticException(
+				"location path should be a directory from absolute path (so start and end with "
+				"'/')"
+			);
 		loc.path = l_it->path;
 
 		loc.met_get = true;
@@ -33,12 +38,19 @@ void initLocation(Server &s, p_Server ps)
 		{
 			if (it->name == "root")
 			{
+				if (it->values[0][0] != '/' || it->values[0][it->values[0].size() - 1] != '/')
+					throw SemanticException(
+						"`root` should be a directory from absolute path (so start and end with "
+						"'/')"
+					);
 				loc.root = it->values[0];
 			}
 			else if (it->name == "index")
 			{
 				for (size_t i = 0; i < it->values.size(); ++i)
 				{
+					if (it->values[i].find("/") != std::string::npos)
+						throw SemanticException("`index` should just be a file, not a path to one");
 					loc.index.push_back(it->values[i]);
 				}
 			}
@@ -84,7 +96,7 @@ void initLocation(Server &s, p_Server ps)
 				std::istringstream iss(it->values[0]);
 				int				   ret;
 				iss >> ret;
-				if (ret < 100 || ret > 599)
+				if (ret < 100 || ret > 599 || !iss.eof())
 				{
 					throw SemanticException("Not a valid error page number");
 				}
@@ -110,7 +122,7 @@ void initServer(Server &s, p_Server ps)
 			std::istringstream iss(it->values[0]);
 			int				   port;
 			iss >> port;
-			if (port < 1024 || port > 65535)
+			if (port < 1024 || port > 65535 || !iss.eof())
 			{
 				throw SemanticException("Listen doesnt have a valid port number");
 			}
@@ -150,22 +162,36 @@ void initServer(Server &s, p_Server ps)
 		}
 		else if (it->name == "client_max_body_size")
 		{
+			if (it->values[0].find("-") != std::string::npos)
+			{
+				throw SemanticException("Client body size can't be negative");
+			}
 			std::istringstream iss(it->values[0]);
 			std::size_t		   size;
 			iss >> size;
-			// if (size < 0 )
-			// {
-			// 	throw SemanticException ("Client body size can't be negative");
-			// }
+			if (!iss.eof())
+			{
+				throw SemanticException("Client body size can't have non-digit value");
+			}
 			s.setClientMaxBody(size);
 		}
 		else if (it->name == "root")
 		{
+			if (it->values[0][0] != '/' || it->values[0][it->values[0].size() - 1] != '/')
+				throw SemanticException(
+					"`root` should be a directory from absolute path (so start and end with "
+					"'/')"
+				);
 			s.setRoot(it->values[0]);
 		}
 		else if (it->name == "index")
 		{
-			s.setIndex(it->values[0]);
+			for (size_t i = 0; i < it->values.size(); ++i)
+			{
+				if (it->values[i].find("/") != std::string::npos)
+					throw SemanticException("`index` should just be a file, not a path to one");
+				s.addIndex(it->values[i]);
+			}
 		}
 	}
 	if (s.getRoot().empty())

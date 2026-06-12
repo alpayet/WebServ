@@ -41,7 +41,11 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 	os << "\tPort: " << s.getPort() << std::endl;
 	os << "\tInterface: " << s.getInterface() << std::endl;
 	os << "\tRoot: " << s.getRoot() << std::endl;
-	os << "\tIndex: " << s.getIndex() << std::endl;
+	{
+		std::vector<std::string>::const_iterator ite = s.getIndex().end();
+		for (std::vector<std::string>::const_iterator it = s.getIndex().begin(); it != ite; ++it)
+			os << "\tIndex: " << *it << std::endl;
+	}
 	os << "\tError pages: " << std::endl;
 	{
 		std::map<int, std::string>				   err_pages = s.getErrPages();
