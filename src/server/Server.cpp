@@ -77,17 +77,12 @@ Location Server::findLocationFromUri(std::string const &uri) const
 		dir_path = uri;
 	else
 		dir_path = uri.substr(0, pos);
-
+	// TODO: check that the '/' is in dir_path
 	std::vector<Location>::const_iterator ite = this->m_locations.end();
 	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
 	{
-		std::string cmp;
-		if (!it->path.empty())
-			cmp = it->path;
-		// else
-		// 	cmp = this->m_root;
 		// TODO: check if need the else
-		if (cmp == dir_path)
+		if (it->path == dir_path)
 			return *it;
 	}
 	throw("banana");
@@ -97,28 +92,23 @@ Location Server::findLocationFromUri(std::string const &uri) const
 std::string Server::resolvePhysicalPath(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	// if (loc == 0)
-	// {
-	// 	throw("could resolve physical path");
-	// }
+
 	std::string phy_path;
 	if (!loc.root.empty())
 		phy_path = loc.root;
 	else
 		phy_path = m_root + loc.path;
-
+	// TODO: check if no double '/'
 	std::size_t pos = uri.find_last_of('/');
 	if (pos != std::string::npos)
 		phy_path += uri.substr(pos, uri.size() - pos);
-
 	return phy_path;
 }
 
 std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-	// if (loc == 0)
-	// 	throw("couldnt fetch allowed methods");
+
 	std::vector<std::string> methods;
 	if (loc.met_get)
 		methods.push_back("GET");

@@ -106,7 +106,7 @@ void initLocation(Server &s, p_Server ps)
 		s.addLocation(loc);
 	}
 }
-#include <iostream>
+
 void initServer(Server &s, p_Server ps)
 {
 	if (ps.directives.empty())

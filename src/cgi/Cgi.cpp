@@ -33,6 +33,7 @@ void Cgi::execute(
 )
 {
 	// TODO: make pointer array (env) with dto infos to pass to execve
+	int *p[1024];
 
 	// TODO: if post open file at content_location (it's a path)
 }
