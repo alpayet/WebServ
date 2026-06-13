@@ -6,28 +6,53 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 23:01:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 03:46:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "domain/entities/StaticResource.hpp"
+#include "domain/Exception.hpp"
+#include "domain/value_objects/ResourceMetaData.hpp"
 
-StaticResource::StaticResource() : _id(), _dataSource(NULL) {}
+namespace domain {
 
-StaticResource::StaticResource(const std::string &id, IDataSource *dataSource)
-	: _id(id), _dataSource(dataSource)
+StaticResource::StaticResource(
+	std::string const	   &id,
+	std::string const	   &rootPath,
+	bool const				isListingEnabled,
+	ResourceMetaData const &targetMetaData,
+	ResourceMetaData const &indexMetaData
+)
+	: _id(id), _metaData(targetMetaData)
 {
+	if (indexMetaData.isCollection())
+	{
+		if (!indexMetaData.isReadable() || indexMetaData.isCollection())
+		{
+			if (!isListingEnabled)
+				throw Exception(Exception::listingDisabled);
+			_intent = generateListing;
+			return;
+		}
+		_metaData = indexMetaData;
+		_intent = serveIndex;
+	}
+	else
+		_intent = serveContent;
+	if (_metaData.getStoragePath().find(rootPath) != 0)
+		throw Exception(Exception::pathTraversalDetected);
+	if (!_metaData.isReadable())
+		throw Exception(Exception::staticResourceNotReadable);
 }
 
-StaticResource::~StaticResource() { delete _dataSource; }
-
-std::string const &StaticResource::getId(void) const { return (_id); }
-
-IDataSource const *StaticResource::getDataSource(void) const { return (_dataSource); }
-
-void StaticResource::init(std::string const &id, IDataSource *dataSource)
+std::string const &StaticResource::getStoragePath(void) const
 {
-	delete _dataSource;
-	_id = id;
-	_dataSource = dataSource;
+	return (_metaData.getStoragePath());
 }
+
+bool StaticResource::shouldServeContent(void) const { return (_intent == serveContent); }
+
+bool StaticResource::shouldServeIndex(void) const { return (_intent == serveIndex); }
+
+bool StaticResource::shouldGenerateListing(void) const { return (_intent == generateListing); }
+} // namespace domain

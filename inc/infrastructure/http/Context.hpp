@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:04:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/05/30 01:56:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@
 #include "infrastructure/ITransferContext.hpp"
 #include "infrastructure/http/parsers/ParsingState.hpp"
 
-namespace http
+namespace http {
+class Context : public ITransferContext
 {
-	class Context : public ITransferContext
-	{
-	  public:
-		Context(void) {}
+  public:
+	Context(void) {}
 
-		ParsingState state;
+	ParsingState state;
 
-	  private:
-		Context(Context const &src);
-		Context &operator=(Context const &rhs);
-	};
+  private:
+	Context(Context const &src);
+	Context &operator=(Context const &rhs);
+};
 } // namespace http
 
 #endif // HTTPCONTEXT_HPP

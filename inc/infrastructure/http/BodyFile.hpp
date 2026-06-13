@@ -6,39 +6,28 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/03 22:32:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/12 18:16:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPBODYFILE_HPP
 #define HTTPBODYFILE_HPP
 
-#include <fstream>
-#include <string>
-#include <vector>
+#include "infrastructure/storage/file_system/TempWriter.hpp"
 
-namespace http
+namespace http {
+class BodyFile
 {
-	class BodyFile
-	{
-	  public:
-		BodyFile(void) {}
+  public:
+	BodyFile(void);
 
-		void append(std::vector<char> const &data);
+	void append(std::vector<char> const &data);
 
-		std::string const &getPath(void) const;
+  private:
+	fileSystem::TempWriter _writer;
 
-	  private:
-		BodyFile(BodyFile const &src);
-		BodyFile &operator=(BodyFile const &rhs);
-
-		std::ofstream _file;
-		std::string	  _path;
-
-		static char const _pathTemplate[];
-
-		static std::string generateUniquePath(void);
-	};
+	static char const _nameTemplate[];
+};
 } // namespace http
 
 #endif // HTTPBODYFILE_HPP

@@ -10,10 +10,25 @@ TabWidth: 4
 IndentWidth: 4
 UseTab: Always
 IndentCaseLabels: true
-NamespaceIndentation: All
+NamespaceIndentation: None
 
-# Brace breaking styles (Allman)
-BreakBeforeBraces: Allman
+# Brace breaking styles (Allman) except for namespace
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel:        true
+  AfterClass:            true
+  AfterControlStatement: Always
+  AfterEnum:             true
+  AfterFunction:         true
+  AfterStruct:           true
+  AfterUnion:            true
+  BeforeCatch:           true
+  BeforeElse:            true
+  IndentBraces:          false
+  SplitEmptyFunction:    false
+  SplitEmptyRecord:      false
+  SplitEmptyNamespace:   false
+  AfterNamespace:        false
 
 # Function Signatures & Arguments
 AlwaysBreakAfterReturnType: None
@@ -43,6 +58,10 @@ SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 1
+
+# Qualifier order
+QualifierAlignment: Custom
+QualifierOrder: ['inline', 'static', 'type', 'const', 'volatile']
 
 # Include sorting and cleanup
 FixNamespaceComments: true

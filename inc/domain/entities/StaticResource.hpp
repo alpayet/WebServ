@@ -6,35 +6,50 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/04 23:00:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 03:44:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STATICRESOURCE_HPP
 #define STATICRESOURCE_HPP
 
+#include "domain/value_objects/ResourceMetaData.hpp"
 #include <string>
 
-class IDataSource;
-
+namespace domain {
 class StaticResource
 {
   public:
-	StaticResource(void);
-	StaticResource(const std::string &id, IDataSource *dataSource);
-	~StaticResource(void);
+	enum HandlingIntent
+	{
+		serveContent,
+		serveIndex,
+		generateListing
+	};
 
-	std::string const &getId(void) const;
-	IDataSource const *getDataSource(void) const;
+  public:
+	StaticResource(
+		std::string const	   &id,
+		std::string const	   &rootPath,
+		bool const				isListingEnabled,
+		ResourceMetaData const &targetMetaData,
+		ResourceMetaData const &indexMetaData
+	);
 
-	void StaticResource::init(std::string const &id, IDataSource *dataSource);
+	std::string const &getStoragePath(void) const;
+
+	bool shouldServeContent(void) const;
+	bool shouldServeIndex(void) const;
+	bool shouldGenerateListing(void) const;
 
   private:
 	StaticResource(StaticResource const &src);
 	StaticResource &operator=(StaticResource const &rhs);
 
-	std::string	 _id;
-	IDataSource *_dataSource;
+	std::string		 _id;
+	HandlingIntent	 _intent;
+	ResourceMetaData _metaData;
 };
+} // namespace domain
 
 #endif // STATICRESOURCE_HPP
