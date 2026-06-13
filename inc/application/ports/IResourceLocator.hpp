@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 03:32:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 14:53:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ class IResourceLocator
 {
   public:
 	virtual ~IResourceLocator(void) {}
-
+	// TODO: id = uri pour marylene
 	virtual SystemResourceInfos
 	locate(std::string const &id, std::string const &rootPath) const = 0;
 
+	// TODO: id = envoyer SystemResourceInfos du 1er index existant
 	virtual SystemResourceInfos
-	locate_index(std::string const &index_id, std::string const &rootPath) const = 0;
+	locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const = 0;
 };
 } // namespace app
 

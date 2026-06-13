@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 02:29:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 15:03:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ class IRouteRegistry
 {
   public:
 	virtual ~IRouteRegistry(void) {}
-
+	// TODO: id = uri pour marylene
+	// TODO: if return, throw at the beginning
 	virtual RoutePolicy match(std::string const &id) = 0;
 };
 } // namespace app

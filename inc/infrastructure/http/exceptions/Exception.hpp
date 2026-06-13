@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 01:09:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 15:09:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ class Exception : public std::exception
   public:
 	Exception(std::string const &message, ErrorCode const internalCode) throw();
 	Exception(ErrorCode const internalCode) throw();
+	//TODO: faire une surcharge du construteur qui prend un int en param pour pouvoir throw nimporte laquelle error code
 	virtual ~Exception(void) throw() {}
 
 	ErrorCode getErrorCode(void) const;

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 03:36:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 15:00:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ struct RoutePolicy
 {
 	std::string				 rootPath;
 	bool					 isListingEnabled;
-	std::string				 defaultIndexId;
+	std::vector<std::string> indexesId;
 	std::vector<std::string> allowedMethods;
 };
 } // namespace app

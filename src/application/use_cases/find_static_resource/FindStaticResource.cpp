@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 03:47:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 15:13:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ FindStaticResource::Output FindStaticResource::execute(FindStaticResource::Input
 	SystemResourceInfos target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.routePolicy.rootPath);
 	SystemResourceInfos index_infos = _resourceLocator.locate_index(
-		dtoInput.routePolicy.defaultIndexId, dtoInput.routePolicy.rootPath
+		dtoInput.routePolicy.indexesId, dtoInput.routePolicy.rootPath
 	);
 
 	domain::ResourceMetaData target_meta_data(
@@ -45,6 +45,7 @@ FindStaticResource::Output FindStaticResource::execute(FindStaticResource::Input
 		dtoInput.id, dtoInput.routePolicy.rootPath, dtoInput.routePolicy.isListingEnabled,
 		target_meta_data, index_meta_data
 	);
+
 	IStaticResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getStoragePath());
 
