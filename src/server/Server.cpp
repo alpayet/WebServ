@@ -6,9 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "application/ports/SystemResourceInfos.hpp"
 #include "config/Semantic.hpp"
 
-std::ostream &operator<<(std::ostream &os, const Location &l)
+std::ostream &operator<<(std::ostream &os, Location const &l)
 {
 	os << "\t***LOCATION***" << std::endl;
 	os << "\tPath: " << l.path << std::endl;
@@ -34,7 +35,7 @@ std::ostream &operator<<(std::ostream &os, const Location &l)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const Server &s)
+std::ostream &operator<<(std::ostream &os, Server const &s)
 {
 	os << "***SERVER***" << std::endl;
 
@@ -71,55 +72,79 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 
 // TODO: check if ' location.path == /'
 // TODO: while, until no slash
-Location Server::findLocationFromUri(std::string const &uri) const
-{
-	std::size_t pos = uri.find_last_of('/');
-	std::string dir_path;
-	if (pos == std::string::npos)
-		dir_path = uri;
-	else
-		dir_path = uri.substr(0, pos);
-	// TODO: check that the '/' is in dir_path
-	std::vector<Location>::const_iterator ite = this->m_locations.end();
-	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
-	{
-		// TODO: check if need the else
-		if (it->path == dir_path)
-			return *it;
-	}
-	throw("banana");
-}
+// Location Server::findLocationFromUri(std::string const &uri) const
+// {
+// 	std::size_t pos = uri.find_last_of('/');
+// 	std::string dir_path;
+// 	if (pos == std::string::npos)
+// 		dir_path = uri;
+// 	else
+// 		dir_path = uri.substr(0, pos);
+// 	// TODO: check that the '/' is in dir_path
+// 	std::vector<Location>::const_iterator ite = this->m_locations.end();
+// 	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
+// 	{
+// 		// TODO: check if need the else
+// 		if (it->path == dir_path)
+// 			return *it;
+// 	}
+// 	throw("banana");
+// }
 
-// TODO: get root from path - file and append file to root
-std::string Server::resolvePhysicalPath(std::string const &uri) const
-{
-	Location loc = findLocationFromUri(uri);
+// // TODO: get root from path - file and append file to root
+// std::string Server::resolvePhysicalPath(std::string const &uri) const
+// {
+// 	Location loc = findLocationFromUri(uri);
 
-	std::string phy_path;
-	if (!loc.root.empty())
-		phy_path = loc.root;
-	else
-		phy_path = m_root + loc.path;
-	// TODO: check if no double '/'
-	std::size_t pos = uri.find_last_of('/');
-	if (pos != std::string::npos)
-		phy_path += uri.substr(pos, uri.size() - pos);
-	return phy_path;
-}
+// 	std::string phy_path;
+// 	if (!loc.root.empty())
+// 		phy_path = loc.root;
+// 	else
+// 		phy_path = m_root + loc.path;
+// 	// TODO: check if no double '/'
+// 	std::size_t pos = uri.find_last_of('/');
+// 	if (pos != std::string::npos)
+// 		phy_path += uri.substr(pos, uri.size() - pos);
+// 	return phy_path;
+// }
 
-std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
-{
-	Location loc = findLocationFromUri(uri);
+// std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
+// {
+// 	Location loc = findLocationFromUri(uri);
 
-	std::vector<std::string> methods;
-	if (loc.met_get)
-		methods.push_back("GET");
-	if (loc.met_post)
-		methods.push_back("POST");
-	if (loc.met_del)
-		methods.push_back("DELETE");
-	return (methods);
-}
+// 	std::vector<std::string> methods;
+// 	if (loc.met_get)
+// 		methods.push_back("GET");
+// 	if (loc.met_post)
+// 		methods.push_back("POST");
+// 	if (loc.met_del)
+// 		methods.push_back("DELETE");
+// 	return (methods);
+// }
 
-std::size_t Server::getMaxBodySize() const { return (m_max_body); }
+std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }
 // void param
+
+app::SystemResourceInfos Server::locate(std::string const &id, std::string const &rootPath) const
+{
+	(void)(id);
+	(void)(rootPath);
+	return app::SystemResourceInfos();
+}
+
+// TODO: id = envoyer SystemResourceInfos du 1er index existant
+app::SystemResourceInfos
+Server::locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const
+{
+	(void)(indexesId);
+	(void)(rootPath);
+	return app::SystemResourceInfos();
+}
+
+std::string Server::getSupportedHttpVersion(void) const { return "125"; }
+
+std::size_t Server::getMaxRequestLineSize(void) const { return 125; }
+
+std::size_t Server::getMaxHeaderLineSize(void) const { return 125; }
+
+std::size_t Server::getMaxHeaderCount(void) const { return 125; }

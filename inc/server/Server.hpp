@@ -1,9 +1,8 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include "application/ports/IResourceLocator.hpp"
 #include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
-#include "infrastructure/http/router/IRouteAccessValidator.hpp"
-#include "infrastructure/repositories/IResourceLocator.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -23,9 +22,7 @@ struct Location
 	Location() : met_get(true), met_post(true), met_del(true), autoindex(false), ret(0) {};
 };
 
-class Server : public IResourceLocator,
-			   public http::IRouteAccessValidator,
-			   public http::IRequestValidationPolicy
+class Server : public app::IResourceLocator, public http::IRequestValidationPolicy
 {
   public:
 	/** CTOR */
@@ -34,27 +31,38 @@ class Server : public IResourceLocator,
 
 	/** GETTERS */
 	unsigned short					  getPort() const { return m_port; };
-	const std::string				 &getInterface() const { return m_interface; };
-	const std::map<int, std::string> &getErrPages() const { return m_error_pages; };
-	const std::vector<Location>		 &getLocations() const { return m_locations; };
+	std::string const				 &getInterface() const { return m_interface; };
+	std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
+	std::vector<Location> const		 &getLocations() const { return m_locations; };
 	int								  getClientMaxBody() const { return m_max_body; };
-	const std::string				 &getRoot() const { return m_root; };
-	const std::vector<std::string>	 &getIndex() const { return m_index; };
+	std::string const				 &getRoot() const { return m_root; };
+	std::vector<std::string> const	 &getIndex() const { return m_index; };
 
 	/** SETTERS */
 	void setPort(int port) { m_port = port; };
-	void setInterface(const std::string &interface) { m_interface = interface; };
-	void addErrPage(int err_nb, const std::string &err_path) { m_error_pages[err_nb] = err_path; };
-	void addLocation(const Location &location) { m_locations.push_back(location); };
+	void setInterface(std::string const &interface) { m_interface = interface; };
+	void addErrPage(int err_nb, std::string const &err_path) { m_error_pages[err_nb] = err_path; };
+	void addLocation(Location const &location) { m_locations.push_back(location); };
 	void setClientMaxBody(long max_body) { m_max_body = max_body; };
-	void setRoot(const std::string &root) { m_root = root; };
-	void addIndex(const std::string &index) { m_index.push_back(index); };
+	void setRoot(std::string const &root) { m_root = root; };
+	void addIndex(std::string const &index) { m_index.push_back(index); };
 
 	/** GETTERS from parents */
-	Location						 findLocationFromUri(std::string const &uri) const;
-	virtual std::string				 resolvePhysicalPath(std::string const &uri) const;
-	virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const;
-	virtual std::size_t				 getMaxBodySize() const; // void param
+	// Location						 findLocationFromUri(std::string const &uri) const;
+	// virtual std::string				 resolvePhysicalPath(std::string const &uri) const;
+	// virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const;
+	virtual std::string getSupportedHttpVersion(void) const;
+	virtual std::size_t getMaxRequestLineSize(void) const;
+	virtual std::size_t getMaxHeaderLineSize(void) const;
+	virtual std::size_t getMaxHeaderCount(void) const;
+	virtual std::size_t getMaxBodySize(void) const; // void param
+
+	virtual app::SystemResourceInfos
+	locate(std::string const &id, std::string const &rootPath) const;
+
+	// TODO: id = envoyer SystemResourceInfos du 1er index existant
+	virtual app::SystemResourceInfos
+	locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const;
 
   private:
 	unsigned short			   m_port;
@@ -66,7 +74,7 @@ class Server : public IResourceLocator,
 	std::vector<std::string>   m_index;
 };
 
-std::ostream &operator<<(std::ostream &os, const Location &l);
-std::ostream &operator<<(std::ostream &os, const Server &s);
+std::ostream &operator<<(std::ostream &os, Location const &l);
+std::ostream &operator<<(std::ostream &os, Server const &s);
 
 #endif
