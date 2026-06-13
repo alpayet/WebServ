@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 01:09:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ class Exception : public std::exception
 		contentLengthInvalid,
 		contentLengthRequired,
 		requestLineTooLarge,
-		HeaderLineTooLarge,
-		HeaderCountTooLarge,
+		headerLineTooLarge,
+		headerCountTooLarge,
 		bodyTooLarge,
 		bodyFileOpenFailed,
 		bodyFileWriteFailed

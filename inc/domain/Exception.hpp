@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:12:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 02:47:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		PathTraversalDetected,
+		pathTraversalDetected,
+		pathMissing,
+		typeUnsupported,
+		staticResourceNotReadable,
+		listingDisabled
 	};
 
   public:

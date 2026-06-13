@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:07:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 02:29:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 #include <string>
 
+// TODO: faire herité la config de cette interface
 namespace app {
 struct RoutePolicy;
 
-// TODO: faire herité la config de cette interface
 class IRouteRegistry
 {
   public:

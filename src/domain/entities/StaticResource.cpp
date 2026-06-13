@@ -6,35 +6,53 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:13:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 03:46:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "domain/entities/StaticResource.hpp"
 #include "domain/Exception.hpp"
+#include "domain/value_objects/ResourceMetaData.hpp"
 
 namespace domain {
+
 StaticResource::StaticResource(
-	std::string const  &id,
-	std::string const	rootPath,
-	std::string const  &storagePath,
-	ResourceType		type,
-	ResourcePermissions permissions,
-	std::size_t			contentLenght
+	std::string const	   &id,
+	std::string const	   &rootPath,
+	bool const				isListingEnabled,
+	ResourceMetaData const &targetMetaData,
+	ResourceMetaData const &indexMetaData
 )
-	: _id(id), _contentLenght(contentLenght)
+	: _id(id), _metaData(targetMetaData)
 {
-	if (storagePath.find(rootPath) != 0)
-		throw domain::Exception(domain::Exception::PathTraversalDetected);
+	if (indexMetaData.isCollection())
+	{
+		if (!indexMetaData.isReadable() || indexMetaData.isCollection())
+		{
+			if (!isListingEnabled)
+				throw Exception(Exception::listingDisabled);
+			_intent = generateListing;
+			return;
+		}
+		_metaData = indexMetaData;
+		_intent = serveIndex;
+	}
+	else
+		_intent = serveContent;
+	if (_metaData.getStoragePath().find(rootPath) != 0)
+		throw Exception(Exception::pathTraversalDetected);
+	if (!_metaData.isReadable())
+		throw Exception(Exception::staticResourceNotReadable);
 }
 
-// std::string			_id;
-// std::string			_storagePath;
-// HandlingIntent		_intent;
-// std::size_t			_contentLenght;
-// ResourcePermissions _permission;
+std::string const &StaticResource::getStoragePath(void) const
+{
+	return (_metaData.getStoragePath());
+}
 
-std::string const &StaticResource::getId(void) const { return (_id); }
+bool StaticResource::shouldServeContent(void) const { return (_intent == serveContent); }
 
-std::string const &StaticResource::getStoragePath(void) const { return (_storagePath); }
+bool StaticResource::shouldServeIndex(void) const { return (_intent == serveIndex); }
+
+bool StaticResource::shouldGenerateListing(void) const { return (_intent == generateListing); }
 } // namespace domain

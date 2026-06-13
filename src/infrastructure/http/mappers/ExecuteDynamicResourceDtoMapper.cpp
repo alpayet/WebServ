@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:24:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 01:44:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ namespace http {
 app::useCase::ExecuteDynamicResource::Input
 ExecuteDynamicResourceDtoMapper::toDto(Request const &request, app::RoutePolicy const &routePolicy)
 {
-	(app::useCase::ExecuteDynamicResource::Input){.id = request.target, .routePolicy = routePolicy};
+	return ((app::useCase::ExecuteDynamicResource::Input){
+		.id = request.target, .routePolicy = routePolicy
+	});
 }
 } // namespace http
