@@ -24,12 +24,28 @@
  * identify script language
  */
 
+#include "cgi/Cgi.hpp"
+#include <string>
+
 // TODO:
 // FindStaticResourceUseCase
 // ExecuteDynamicResourceUseCase
 // content_location = empty if get
+void getInterpreter(const std::string &filename)
+{
+	std::size_t pos = filename.find_last_of(".");
+
+	if (pos == std::string::npos)
+	{
+		throw("banana");
+		// TODO : if she-bang, no throw
+	}
+}
+
 void Cgi::execute(
-	std::string storage_location, std::string content_location, ExecuteDynamicResourceInput dto
+	const std::string			&storage_location,
+	const std::string			&content_location,
+	ExecuteDynamicResourceInput &dto
 )
 {
 	// TODO: make pointer array (env) with dto infos to pass to execve

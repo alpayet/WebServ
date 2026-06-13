@@ -69,6 +69,8 @@ std::ostream &operator<<(std::ostream &os, const Server &s)
 	return os;
 }
 
+// TODO: check if ' location.path == /'
+// TODO: while, until no slash
 Location Server::findLocationFromUri(std::string const &uri) const
 {
 	std::size_t pos = uri.find_last_of('/');
