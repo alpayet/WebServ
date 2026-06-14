@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SystemResourceInfos.hpp                            :+:      :+:    :+:   */
+/*   IServeStaticResourcePresenter.hpp                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/11 19:48:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 16:45:24 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/13 23:07:35 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/14 21:31:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SYSTEMSTATICRESOURCEINFO_HPP
-#define SYSTEMSTATICRESOURCEINFO_HPP
+#ifndef ISERVESTATICRESOURCEPRESENTER_HPP
+#define ISERVESTATICRESOURCEPRESENTER_HPP
 
-#include "domain/enums/ResourcePermissions.hpp"
-#include "domain/enums/ResourceType.hpp"
 #include <string>
 
 namespace app {
-struct SystemResourceInfos
+class IStaticResourceReader;
+
+class IServeStaticResourcePresenter
 {
-	std::string storagePath;
-	// TODO: utiliser methodes de archi/storage/file_system
-	domain::ResourceType		type;
-	domain::ResourcePermissions permissions;
-	std::size_t					contentlength;
-	bool						canBeDeleted;
-	bool						exists;
+  public:
+	virtual ~IServeStaticResourcePresenter() {}
+
+	virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
+
+	virtual void presentListing(std::string const &storagePath) = 0;
 };
 } // namespace app
 
-#endif // SYSTEMSTATICRESOURCEINFO_HPP
+#endif // ISERVESTATICRESOURCEPRESENTER_HPP

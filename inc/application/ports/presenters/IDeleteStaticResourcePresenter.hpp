@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourcePresenter.hpp                       :+:      :+:    :+:   */
+/*   IDeleteStaticResourcePresenter.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/13 23:07:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 23:17:13 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/14 21:47:46 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/14 21:49:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEPRESENTER_HPP
-#define ISTATICRESOURCEPRESENTER_HPP
+#ifndef IDELETESTATICRESOURCEPRESENTER_HPP
+#define IDELETESTATICRESOURCEPRESENTER_HPP
 
-#include <string>
-
-namespace app {
-class IStaticResourceReader;
-
-class IStaticResourcePresenter
+class IDeleteStaticResourcePresenter
 {
   public:
-	virtual ~IStaticResourcePresenter() {}
+	IDeleteStaticResourcePresenter(void);
+	IDeleteStaticResourcePresenter(IDeleteStaticResourcePresenter const &src);
+	~IDeleteStaticResourcePresenter(void);
 
-	virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
+	IDeleteStaticResourcePresenter &operator=(IDeleteStaticResourcePresenter const &rhs);
 
-	virtual void presentListing(std::string const &storagePath) = 0;
+  private:
 };
-} // namespace app
 
-#endif // ISTATICRESOURCEPRESENTER_HPP
+#endif // IDELETESTATICRESOURCEPRESENTER_HPP

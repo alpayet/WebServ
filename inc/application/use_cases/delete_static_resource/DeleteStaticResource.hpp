@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:26:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 21:48:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 namespace app {
 class IResourceLocator;
 class IStaticResourceStorage;
+class IDeleteStaticResourcePresenter;
 
 namespace useCase {
 class DeleteStaticResource
@@ -34,7 +35,9 @@ class DeleteStaticResource
 
   public:
 	DeleteStaticResource(
-		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		IResourceLocator			   &resourceLocator,
+		IStaticResourceStorage		   &staticResourceStorage,
+		IDeleteStaticResourcePresenter &deleteStaticResourcePresenter
 	);
 
 	Output execute(Input const &dtoInput);
@@ -43,8 +46,9 @@ class DeleteStaticResource
 	DeleteStaticResource(DeleteStaticResource const &src);
 	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	IResourceLocator	   &_resourceLocator;
-	IStaticResourceStorage &_staticResourceStorage;
+	IResourceLocator			   &_resourceLocator;
+	IStaticResourceStorage		   &_staticResourceStorage;
+	IDeleteStaticResourcePresenter &_deleteStaticResourcePresenter;
 };
 } // namespace useCase
 } // namespace app

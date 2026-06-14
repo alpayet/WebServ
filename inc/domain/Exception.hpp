@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 01:21:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 15:20:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class Exception : public std::exception
 		pathTraversalDetected,
 		pathMissing,
 		typeUnsupported,
-		listingDisabled
 	};
 
   public:
