@@ -70,43 +70,41 @@ std::ostream &operator<<(std::ostream &os, Server const &s)
 	return os;
 }
 
-// TODO: check if ' location.path == /'
-// TODO: while, until no slash
-// Location Server::findLocationFromUri(std::string const &uri) const
-// {
-// 	std::size_t pos = uri.find_last_of('/');
-// 	std::string dir_path;
-// 	if (pos == std::string::npos)
-// 		dir_path = uri;
-// 	else
-// 		dir_path = uri.substr(0, pos);
-// 	// TODO: check that the '/' is in dir_path
-// 	std::vector<Location>::const_iterator ite = this->m_locations.end();
-// 	for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
-// 	{
-// 		// TODO: check if need the else
-// 		if (it->path == dir_path)
-// 			return *it;
-// 	}
-// 	throw("banana");
-// }
+Location Server::findLocationFromUri(std::string const &uri) const
+{
+	std::size_t pos;
+	std::string dir_path = uri;
+	while (pos != std::string::npos)
+	{
+		pos = dir_path.find_last_of('/');
+		if (pos != std::string::npos)
+			dir_path = dir_path.substr(0, pos);
+		std::vector<Location>::const_iterator ite = this->m_locations.end();
+		for (std::vector<Location>::const_iterator it = this->m_locations.begin(); it != ite; ++it)
+		{
+			if (it->path == (dir_path + "/"))
+				return *it;
+		}
+	}
+	throw("no corresponding location block");
+}
 
 // // TODO: get root from path - file and append file to root
-// std::string Server::resolvePhysicalPath(std::string const &uri) const
-// {
-// 	Location loc = findLocationFromUri(uri);
+std::string Server::resolvePhysicalPath(std::string const &uri) const
+{
+	Location loc = findLocationFromUri(uri);
 
-// 	std::string phy_path;
-// 	if (!loc.root.empty())
-// 		phy_path = loc.root;
-// 	else
-// 		phy_path = m_root + loc.path;
-// 	// TODO: check if no double '/'
-// 	std::size_t pos = uri.find_last_of('/');
-// 	if (pos != std::string::npos)
-// 		phy_path += uri.substr(pos, uri.size() - pos);
-// 	return phy_path;
-// }
+	std::string phy_path;
+	if (!loc.root.empty())
+		phy_path = loc.root;
+	else
+		phy_path = m_root + loc.path;
+	// TODO: check if no double '/'
+	std::size_t pos = uri.find_last_of('/');
+	if (pos != std::string::npos)
+		phy_path += uri.substr(pos, uri.size() - pos);
+	return phy_path;
+}
 
 // std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
 // {
@@ -122,29 +120,35 @@ std::ostream &operator<<(std::ostream &os, Server const &s)
 // 	return (methods);
 // }
 
-std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }
 // void param
 
+//get 
 app::SystemResourceInfos Server::locate(std::string const &id, std::string const &rootPath) const
 {
-	(void)(id);
 	(void)(rootPath);
+	// Location loc = findLocationFromUri(id);
+	app::SystemResourceInfos.storagePath = resolvePhysicalPath(id);
 	return app::SystemResourceInfos();
 }
 
+#include <unistd.h>
 // TODO: id = envoyer SystemResourceInfos du 1er index existant
 app::SystemResourceInfos
 Server::locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const
 {
-	(void)(indexesId);
-	(void)(rootPath);
-	return app::SystemResourceInfos();
+	app::SystemResourceInfos sri;
+
+	std::vector<std::string>::std::const_iterator ite = indexesId.end();
+	for (std::vector<std::string>::std::const_iterator it = indexesId.begin() ; it != ite ; ++it)
+	{
+		// TODO: change, it's not the right path
+		if (access((rootPath + *it).c_str, F_OK) == 0)
+		{
+			sri.storagePath = rootPath + *it;
+			return sri;
+		}
+	}
+	return sri;
 }
 
-std::string Server::getSupportedHttpVersion(void) const { return "125"; }
-
-std::size_t Server::getMaxRequestLineSize(void) const { return 125; }
-
-std::size_t Server::getMaxHeaderLineSize(void) const { return 125; }
-
-std::size_t Server::getMaxHeaderCount(void) const { return 125; }
+std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }

@@ -48,9 +48,8 @@ class Server : public app::IResourceLocator, public http::IRequestValidationPoli
 	void addIndex(std::string const &index) { m_index.push_back(index); };
 
 	/** GETTERS from parents */
-	// Location						 findLocationFromUri(std::string const &uri) const;
-	// virtual std::string				 resolvePhysicalPath(std::string const &uri) const;
-	// virtual std::vector<std::string> getAllowedMethods(std::string const &uri) const;
+	std::string resolvePhysicalPath(std::string const &uri) const;
+	Location			findLocationFromUri(std::string const &uri) const;
 	virtual std::string getSupportedHttpVersion(void) const;
 	virtual std::size_t getMaxRequestLineSize(void) const;
 	virtual std::size_t getMaxHeaderLineSize(void) const;

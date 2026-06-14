@@ -24,7 +24,7 @@ class IResourceLocator
 {
   public:
 	virtual ~IResourceLocator(void) {}
-	// TODO: id = uri pour marylene
+	// TODO: id = uri
 	virtual SystemResourceInfos
 	locate(std::string const &id, std::string const &rootPath) const = 0;
 

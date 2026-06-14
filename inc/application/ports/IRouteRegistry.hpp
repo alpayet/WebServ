@@ -23,7 +23,7 @@ class IRouteRegistry
 {
   public:
 	virtual ~IRouteRegistry(void) {}
-	// TODO: id = uri pour marylene
+	// TODO: id = uri pour e
 	// TODO: if return, throw at the beginning
 	virtual RoutePolicy match(std::string const &id) = 0;
 };
