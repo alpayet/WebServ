@@ -6,26 +6,23 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 01:21:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 01:22:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOMAINEXCEPTION_HPP
-#define DOMAINEXCEPTION_HPP
+#ifndef APPEXCEPTION_HPP
+#define APPEXCEPTION_HPP
 
 #include <exception>
 #include <string>
 
-namespace domain {
+namespace app {
 class Exception : public std::exception
 {
   public:
 	enum ErrorCode
 	{
-		pathTraversalDetected,
-		pathMissing,
-		typeUnsupported,
-		listingDisabled
+		readDenied,
 	};
 
   public:
@@ -41,6 +38,6 @@ class Exception : public std::exception
 	std::string _message;
 	ErrorCode	_internalCode;
 };
-} // namespace domain
+} // namespace app
 
-#endif // DOMAINEXCEPTION_HPP
+#endif // APPEXCEPTION_HPP

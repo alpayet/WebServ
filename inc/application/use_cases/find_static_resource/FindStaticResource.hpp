@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:08:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/13 23:22:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 namespace app {
 class IResourceLocator;
 class IStaticResourceStorage;
-
-class IStaticResourceReader;
+class IStaticResourcePresenter;
 
 namespace useCase {
 class FindStaticResource
@@ -31,24 +30,23 @@ class FindStaticResource
 		std::string id;
 		RoutePolicy routePolicy;
 	};
-	struct Output
-	{
-		IStaticResourceReader *resourceReader;
-	};
 
   public:
 	FindStaticResource(
-		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		IResourceLocator		 &resourceLocator,
+		IStaticResourceStorage	 &staticResourceStorage,
+		IStaticResourcePresenter &staticResourcePresenter
 	);
 
-	Output execute(Input const &dtoInput);
+	void execute(Input const &dtoInput);
 
   private:
 	FindStaticResource(FindStaticResource const &src);
 	FindStaticResource &operator=(FindStaticResource const &rhs);
 
-	IResourceLocator	   &_resourceLocator;
-	IStaticResourceStorage &_staticResourceStorage;
+	IResourceLocator		 &_resourceLocator;
+	IStaticResourceStorage	 &_staticResourceStorage;
+	IStaticResourcePresenter &_staticResourcePresenter;
 };
 } // namespace useCase
 } // namespace app

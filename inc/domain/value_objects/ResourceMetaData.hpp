@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:42:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 02:54:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 00:47:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ class ResourceMetaData
 		std::string			storagePath,
 		ResourceType		type,
 		ResourcePermissions permissions,
-		std::size_t			contentlength
+		std::size_t			contentlength,
+		bool				canBeDeleted
 	);
 
 	std::string const &getStoragePath(void) const;
@@ -35,11 +36,14 @@ class ResourceMetaData
 	bool isReadable(void) const;
 	bool isCollection(void) const;
 
+	bool canBeDeleted(void) const;
+
   private:
 	std::string			_storagePath;
 	ResourceType		_type;
 	ResourcePermissions _permissions;
 	std::size_t			_contentlength;
+	bool				_canBeDeleted;
 };
 } // namespace domain
 

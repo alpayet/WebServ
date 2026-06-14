@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 02:53:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 01:05:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ ResourceMetaData::ResourceMetaData(
 	std::string			storagePath,
 	ResourceType		type,
 	ResourcePermissions permissions,
-	std::size_t			contentlength
+	std::size_t			contentlength,
+	bool				canBeDeleted
 )
-	: _permissions(permissions), _contentlength(contentlength)
+	: _permissions(permissions), _contentlength(contentlength), _canBeDeleted(canBeDeleted)
 {
 	if (_storagePath.empty())
 		throw Exception(Exception::pathMissing);
@@ -39,4 +40,7 @@ bool ResourceMetaData::isExecutable(void) const { return (_permissions & executa
 bool ResourceMetaData::isReadable(void) const { return (_permissions & readable); }
 
 bool ResourceMetaData::isCollection(void) const { return (_type == collection); }
+
+bool ResourceMetaData::canBeDeleted() const { return (_canBeDeleted); }
+
 } // namespace domain
