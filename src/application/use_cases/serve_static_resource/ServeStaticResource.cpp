@@ -6,16 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:38:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 03:22:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "application/Exception.hpp"
 #include "application/ports/IResourceLocator.hpp"
-#include "application/ports/presenters/IServeStaticResourcePresenter.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
 #include "application/ports/SystemResourceInfos.hpp"
+#include "application/ports/presenters/IServeStaticResourcePresenter.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace app {
@@ -31,8 +31,7 @@ ServeStaticResource::ServeStaticResource(
 
 void ServeStaticResource::execute(Input const &dtoInput)
 {
-	SystemResourceInfos target_infos =
-		_resourceLocator.locate(dtoInput.id, dtoInput.routePolicy.rootPath);
+	SystemResourceInfos		 target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
 	domain::ResourceMetaData target_meta_data(
 		target_infos.storagePath, target_infos.type, target_infos.permissions,
 		target_infos.contentlength, target_infos.canBeDeleted
@@ -40,9 +39,8 @@ void ServeStaticResource::execute(Input const &dtoInput)
 
 	if (target_meta_data.isCollection())
 	{
-		SystemResourceInfos index_infos = _resourceLocator.locateDefaultIndex(
-			dtoInput.routePolicy.indexesId, dtoInput.routePolicy.rootPath
-		);
+		SystemResourceInfos index_infos =
+			_resourceLocator.locateDefaultIndex(dtoInput.indexesId, dtoInput.rootPath);
 
 		if (!index_infos.exists)
 			generateListing(dtoInput, target_meta_data);
@@ -66,7 +64,7 @@ void ServeStaticResource::serveContent(
 	Input const &dtoInput, domain::ResourceMetaData const &metaData
 )
 {
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.routePolicy.rootPath, metaData);
+	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
 
 	if (!static_resource.isReadable())
 		throw Exception(Exception::accessDenied);
@@ -80,10 +78,10 @@ void ServeStaticResource::generateListing(
 	Input const &dtoInput, domain::ResourceMetaData const &metaData
 )
 {
-	if (!dtoInput.routePolicy.isListingEnabled)
+	if (!dtoInput.isListingEnabled)
 		throw Exception(Exception::listingDisabled);
 
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.routePolicy.rootPath, metaData);
+	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
 
 	if (!static_resource.isReadable() || !static_resource.isExecutable())
 		throw Exception(Exception::accessDenied);

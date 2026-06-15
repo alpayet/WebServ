@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 15:10:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 22:46:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ bool StaticResource::isExecutable(void) const { return (_metaData.isExecutable()
 
 bool StaticResource::canBeDeleted(void) const
 {
-	if (!_metaData.canBeDeleted())
-		return (false);
-	if (_metaData.isCollection())
-		return (false);
+	return (_metaData.canBeDeleted() && !_metaData.isCollection());
 }
 } // namespace domain

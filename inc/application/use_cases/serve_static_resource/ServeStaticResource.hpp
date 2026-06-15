@@ -6,14 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:31:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 03:35:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVESTATICRESOURCEUSECASE_HPP
 #define SERVESTATICRESOURCEUSECASE_HPP
 
-#include "application/ports/RoutePolicy.hpp"
 #include <string>
 
 namespace domain {
@@ -31,8 +30,18 @@ class ServeStaticResource
   public:
 	struct Input
 	{
-		std::string id;
-		RoutePolicy routePolicy;
+		Input(
+			std::string const			   &id,
+			std::string const			   &rootPath,
+			bool const						isListingEnabled,
+			std::vector<std::string> const &indexesId
+		)
+			: id(id), rootPath(rootPath), isListingEnabled(isListingEnabled), indexesId(indexesId)
+		{}
+		std::string				 id;
+		std::string				 rootPath;
+		bool					 isListingEnabled;
+		std::vector<std::string> indexesId;
 	};
 
   public:

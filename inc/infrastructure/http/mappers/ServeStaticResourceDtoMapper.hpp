@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:46:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 03:26:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 
 namespace http {
 struct Request;
+class RoutePolicy;
 
 class ServeStaticResourceDtoMapper
 {
   public:
 	static app::useCase::ServeStaticResource::Input
-	toDto(Request const &request, app::RoutePolicy const &routePolicy);
+	toDto(Request const &request, RoutePolicy const &routePolicy);
 
   private:
 	ServeStaticResourceDtoMapper(void);

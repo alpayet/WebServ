@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:08:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 22:54:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 namespace app {
 namespace useCase {
 ExecuteDynamicResource::ExecuteDynamicResource(
-	IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+	IResourceLocator				 &resourceLocator,
+	IDynamicResourceExecutor		 &dynamicResourceExecutor,
+	IExecuteDynamicResourcePresenter &executeDynamicResourcePresenter
 )
-	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
+	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor),
+	  _executeDynamicResourcePresenter(executeDynamicResourcePresenter)
 {}
 
 ExecuteDynamicResource::Output

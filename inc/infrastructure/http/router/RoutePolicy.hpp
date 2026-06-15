@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRouteRegistry.hpp                                 :+:      :+:    :+:   */
+/*   RoutePolicy.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 15:03:17 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/15 01:54:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IROUTEREGISTRY_HPP
-#define IROUTEREGISTRY_HPP
+#ifndef ROUTEPOLICY_HPP
+#define ROUTEPOLICY_HPP
 
 #include <string>
-
-// TODO: faire herité la config de cette interface
-namespace app {
-struct RoutePolicy;
-
-class IRouteRegistry
+#include <vector>
+namespace http {
+struct RoutePolicy
 {
-  public:
-	virtual ~IRouteRegistry(void) {}
-	// TODO: id = uri pour marylene
-	// TODO: if return, throw at the beginning
-	virtual RoutePolicy match(std::string const &id) = 0;
+	std::string				 rootPath;
+	bool					 isListingEnabled;
+	std::vector<std::string> indexesId;
+	std::vector<std::string> allowedMethods;
 };
-} // namespace app
+} // namespace http
 
-#endif // IROUTEREGISTRY_HPP
+#endif // ROUTEPOLICY_HPP

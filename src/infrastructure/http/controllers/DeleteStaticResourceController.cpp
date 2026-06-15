@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:26:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 04:33:37 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ DeleteStaticResourceController::DeleteStaticResourceController(
 {}
 
 void DeleteStaticResourceController::operator()(
-	Request const &request, Response &response, app::RoutePolicy const &routePolicy
+	Request const &request, Response &response, RoutePolicy const &routePolicy
 )
 {
 	app::useCase::DeleteStaticResource::Input dto =

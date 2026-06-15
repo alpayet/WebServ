@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:47:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 04:28:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ ServeStaticResourceController::ServeStaticResourceController(
 {}
 
 void ServeStaticResourceController::operator()(
-	Request const &request, Response &response, app::RoutePolicy const &routePolicy
+	Request const &request, Response &response, RoutePolicy const &routePolicy
 )
 {
 	app::useCase::ServeStaticResource::Input dto =

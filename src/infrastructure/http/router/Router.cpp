@@ -6,36 +6,36 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:29:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 02:55:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/router/Router.hpp"
-#include "application/ports/IRouteRegistry.hpp"
-#include "application/ports/RoutePolicy.hpp"
 #include "infrastructure/http/Request.hpp"
 #include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
-#include "infrastructure/http/controllers/FindStaticResourceController.hpp"
+#include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/router/IRouteRegistry.hpp"
+#include "infrastructure/http/router/RoutePolicy.hpp"
 #include <algorithm>
 
 namespace http {
 Router::Router(
-	app::IRouteRegistry				 &routeRegistry,
-	FindStaticResourceController	 &findStaticResourceController,
+	IRouteRegistry					 &routeRegistry,
+	ServeStaticResourceController	 &serveStaticResourceController,
 	DeleteStaticResourceController	 &deleteStaticResourceController,
 	ExecuteDynamicResourceController &executeDynamicResourceController
 )
-	: _routeRegistry(routeRegistry), _findStaticResourceController(findStaticResourceController),
+	: _routeRegistry(routeRegistry), _serveStaticResourceController(serveStaticResourceController),
 	  _deleteStaticResourceController(deleteStaticResourceController),
 	  _executeDynamicResourceController(executeDynamicResourceController)
 {}
 
 void Router::route(Request const &request, Response &response)
 {
-	app::RoutePolicy const		   &route_policy = _routeRegistry.match(request.target);
+	RoutePolicy const			   &route_policy = _routeRegistry.match(request.target);
 	std::vector<std::string> const &allowed_methods = route_policy.allowedMethods;
 	std::string const			   &method = request.method;
 
@@ -43,7 +43,7 @@ void Router::route(Request const &request, Response &response)
 		throw Exception(Exception::methodNotAllowed);
 
 	if (method == "GET")
-		_findStaticResourceController(request, response, route_policy);
+		_serveStaticResourceController(request, response, route_policy);
 	if (method == "DELETE")
 		_deleteStaticResourceController(request, response, route_policy);
 }

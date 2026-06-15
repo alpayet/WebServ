@@ -6,31 +6,34 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:12:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 01:21:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DYNAMICRESOURCE_HPP
 #define DYNAMICRESOURCE_HPP
 
-#include <map>
+#include "domain/value_objects/ResourceMetaData.hpp"
 #include <string>
 
 namespace domain {
 class DynamicResource
 {
   public:
-	DynamicResource(std::string const &id, std::string const &storagePath);
+	DynamicResource(
+		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
+	);
 
-	std::string const &getId(void) const;
-	std::string const &getstoragePath(void) const;
+	std::string const &getStoragePath(void) const;
+
+	bool isExecutable(void) const;
 
   private:
 	DynamicResource(DynamicResource const &src);
 	DynamicResource &operator=(DynamicResource const &rhs);
 
-	std::string _id;
-	std::string _storagePath;
+	std::string		 _id;
+	ResourceMetaData _metaData;
 };
 } // namespace domain
 

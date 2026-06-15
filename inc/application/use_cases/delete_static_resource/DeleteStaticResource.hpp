@@ -6,14 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:48:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 03:35:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DELETESTATICRESOURCEUSECASE_HPP
 #define DELETESTATICRESOURCEUSECASE_HPP
 
-#include "application/ports/RoutePolicy.hpp"
 #include <string>
 
 namespace app {
@@ -27,8 +26,9 @@ class DeleteStaticResource
   public:
 	struct Input
 	{
+		Input(std::string const &id, std::string const &rootPath) : id(id), rootPath(rootPath) {}
 		std::string id;
-		RoutePolicy routePolicy;
+		std::string rootPath;
 	};
 	struct Output
 	{};
