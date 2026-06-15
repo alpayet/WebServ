@@ -2,7 +2,9 @@
 #define SERVER_HPP
 
 #include "application/ports/IResourceLocator.hpp"
+#include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
+#include "infrastructure/http/router/RoutePolicy.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -22,7 +24,10 @@ struct Location
 	Location() : met_get(true), met_post(true), met_del(true), autoindex(false), ret(0) {};
 };
 
-class Server : public app::IResourceLocator, public http::IRequestValidationPolicy
+class Server : public app::IResourceLocator,
+			   public http::IRequestValidationPolicy,
+			   public http::ILimitsProvider,
+			   public http::RoutePolicy
 {
   public:
 	/** CTOR */
@@ -48,20 +53,25 @@ class Server : public app::IResourceLocator, public http::IRequestValidationPoli
 	void addIndex(std::string const &index) { m_index.push_back(index); };
 
 	/** GETTERS from parents */
-	std::string			resolvePhysicalPath(std::string const &uri) const;
-	Location			findLocationFromUri(std::string const &uri) const;
-	virtual std::string getSupportedHttpVersion(void) const;
-	virtual std::size_t getMaxRequestLineSize(void) const;
-	virtual std::size_t getMaxHeaderLineSize(void) const;
-	virtual std::size_t getMaxHeaderCount(void) const;
-	virtual std::size_t getMaxBodySize(void) const; // void param
+	std::string resolvePhysicalPath(
+		std::string const &uri, std::string const &locPath, std::string const &rootPath
+	) const;
+	Location				 findLocationFromUri(std::string const &uri) const;
+	virtual std::string		 getSupportedHttpVersion(void) const;
+	virtual std::size_t		 getMaxRequestLineSize(void) const;
+	virtual std::size_t		 getMaxHeaderLineSize(void) const;
+	virtual std::size_t		 getMaxHeaderCount(void) const;
+	virtual std::size_t		 getMaxBodySize(void) const; // void param
+	virtual std::size_t		 getMaxBodySize(std::string const &uri) const;
+	std::vector<std::string> getAllowedMethods(Location const &loc) const;
 
 	virtual app::SystemResourceInfos
-	locate(std::string const &id, std::string const &rootPath) const;
+	locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const;
+	virtual app::SystemResourceInfos locateDefaultIndex(
+		std::vector<std::string> indexesId, std::string const &locPath, std::string const &rootPath
+	) const;
 
-	// TODO: id = envoyer SystemResourceInfos du 1er index existant
-	virtual app::SystemResourceInfos
-	locateDefaultIndex(std::vector<std::string> indexesId, std::string const &rootPath) const;
+	virtual http::RoutePolicy match(std::string const &uri) const;
 
   private:
 	unsigned short			   m_port;

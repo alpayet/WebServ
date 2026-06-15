@@ -89,53 +89,74 @@ Location Server::findLocationFromUri(std::string const &uri) const
 	throw("no corresponding location block");
 }
 
-// // TODO: get root from path - file and append file to root
-std::string Server::resolvePhysicalPath(std::string const &uri) const
+std::vector<std::string> Server::getAllowedMethods(Location const &loc) const
+{
+	std::vector<std::string> methods;
+	if (loc.met_get)
+		methods.push_back("GET");
+	if (loc.met_post)
+		methods.push_back("POST");
+	if (loc.met_del)
+		methods.push_back("DELETE");
+	return (methods);
+}
+
+http::RoutePolicy Server::match(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
 
+	http::RoutePolicy route;
+	route.locPath = loc.path;
+	route.rootPath = loc.root;
+	route.isListingEnabled = loc.autoindex;
+	route.indexesId = loc.index;
+	route.allowedMethods = getAllowedMethods(loc);
+}
+// TODO: use locPath and rootPath
+std::string Server::resolvePhysicalPath(
+	std::string const &uri, std::string const &locPath, std::string const &rootPath
+) const
+{
 	std::string phy_path;
-	if (!loc.root.empty())
-		phy_path = loc.root;
+	if (!rootPath.empty())
+		phy_path = rootPath;
 	else
-		phy_path = m_root + loc.path;
-	// TODO: check if no double '/'
+		phy_path = m_root + locPath;
 	std::size_t pos = uri.find_last_of('/');
 	if (pos != std::string::npos)
 		phy_path += uri.substr(pos, uri.size() - pos);
 	return phy_path;
 }
 
-// std::vector<std::string> Server::getAllowedMethods(std::string const &uri) const
-// {
-// 	Location loc = findLocationFromUri(uri);
-
-// 	std::vector<std::string> methods;
-// 	if (loc.met_get)
-// 		methods.push_back("GET");
-// 	if (loc.met_post)
-// 		methods.push_back("POST");
-// 	if (loc.met_del)
-// 		methods.push_back("DELETE");
-// 	return (methods);
-// }
-
 // void param
 
 // get
-app::SystemResourceInfos Server::locate(std::string const &id, std::string const &rootPath) const
+app::SystemResourceInfos
+Server::locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const
 {
-	(void)(rootPath);
-	// Location loc = findLocationFromUri(id);
-	app::SystemResourceInfos.storagePath = resolvePhysicalPath(id);
+	// namespace app {
+	// struct SystemResourceInfos
+	// {
+	// 	std::string storagePath;
+	// 	domain::ResourceType		type;
+	// 	domain::ResourcePermissions permissions;
+	// 	std::size_t					contentlength;
+	// 	bool						canBeDeleted;
+	// 	bool						exists;
+	// };
+	// }
+	app::SystemResourceInfos sri;
+	sri.storagePath = resolvePhysicalPath(id, locPath, rootPath);
+	// TODO: use other function
 	return app::SystemResourceInfos();
 }
 
 #include <unistd.h>
 // TODO: id = envoyer SystemResourceInfos du 1er index existant
 // TODO: if no index in location, check server global index
-app::SystemResourceInfos
-Server::locateDefaultIndex(std::vector<std::string> indexesId, std::string const &rootPath) const
+app::SystemResourceInfos Server::locateDefaultIndex(
+	std::vector<std::string> indexesId, std::string const &locPath, std::string const &rootPath
+) const
 {
 	app::SystemResourceInfos sri;
 
@@ -171,3 +192,9 @@ std::size_t Server::getMaxHeaderCount(void) const
 }
 
 std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }
+
+std::size_t Server::getMaxBodySize(std::string const &uri) const
+{
+	static_cast<void>(uri);
+	return (m_max_body);
+}

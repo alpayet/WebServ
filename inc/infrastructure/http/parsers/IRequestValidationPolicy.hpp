@@ -6,14 +6,13 @@
 /*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 18:25:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 16:29:33 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/15 17:22:39 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPIREQUESTVALIDATIONPOLICY_HPP
 #define HTTPIREQUESTVALIDATIONPOLICY_HPP
 
-// TODO: faire herité la config de cette interface
 #include <string>
 
 namespace http {

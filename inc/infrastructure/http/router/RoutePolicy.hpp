@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RoutePolicy.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 01:54:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 18:47:40 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 namespace http {
 struct RoutePolicy
 {
+	std::string				 locPath;
 	std::string				 rootPath;
 	bool					 isListingEnabled;
 	std::vector<std::string> indexesId;
