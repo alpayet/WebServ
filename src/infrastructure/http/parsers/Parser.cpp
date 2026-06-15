@@ -6,11 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:14:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 21:56:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/parsers/Parser.hpp"
+#include "infrastructure/http/Constants.hpp"
 #include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
@@ -228,7 +229,7 @@ void Parser::parseHeaderLine(
 void Parser::parseContentLength(ParsingState &state)
 {
 	std::map<std::string, std::string>::const_iterator it =
-		state.request.headers.find("content-length");
+		state.request.headers.find(CONTENT_LENGTH);
 
 	if (it == state.request.headers.end())
 	{
@@ -237,7 +238,7 @@ void Parser::parseContentLength(ParsingState &state)
 		return;
 	}
 
-	std::string content_length = (*it).second;
+	std::string content_length = it->second;
 	if (content_length.empty())
 		throw Exception(Exception::contentLengthInvalid);
 
@@ -247,7 +248,7 @@ void Parser::parseContentLength(ParsingState &state)
 
 	if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
 		throw Exception(Exception::contentLengthInvalid);
-	if (val > _requestValidationPolicy.getMaxBodySize(state.request.target))
+	if (val > _requestValidationPolicy.getMaxBodySize())
 		throw Exception(Exception::bodyTooLarge);
 	state.request.contentLength = static_cast<size_t>(val);
 }
@@ -255,7 +256,7 @@ void Parser::parseContentLength(ParsingState &state)
 void Parser::parseBody(std::vector<char> const &readBuf, ParsingState &state)
 {
 	state.bodyBytesRead += readBuf.size();
-	if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize(state.request.target))
+	if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize())
 		throw Exception(Exception::bodyTooLarge);
 	state.request.body.append(readBuf);
 }
@@ -353,6 +354,6 @@ void Parser::validateHeaderLineSize(std::size_t size)
 void Parser::validateHeaderCount(std::size_t count)
 {
 	if (count > _requestValidationPolicy.getMaxHeaderCount())
-		throw Exception(Exception::HeaderCountTooLarge);
+		throw Exception(Exception::headerCountTooLarge);
 }
 } // namespace http

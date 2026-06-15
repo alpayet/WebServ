@@ -6,12 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:12:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:27:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTEDYNAMICRESOURCECONTROLLER_HPP
 #define EXECUTEDYNAMICRESOURCECONTROLLER_HPP
+
+#include <map>
 
 namespace app {
 namespace useCase {
@@ -41,6 +43,8 @@ class ExecuteDynamicResourceController
 
 	app::useCase::ExecuteDynamicResource &_useCase;
 	ILimitsProvider						 &_limitsProvider;
+
+	static std::map<std::string, std::string> createMetaVariables(Request const &request);
 };
 } // namespace http
 

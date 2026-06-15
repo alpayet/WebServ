@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 15:17:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 22:34:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Exception : public std::exception
 	enum ErrorCode
 	{
 		accessDenied,
+		notFound,
 		listingDisabled
 	};
 

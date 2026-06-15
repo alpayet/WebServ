@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:42:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 00:47:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:42:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ class ResourceMetaData
 {
   public:
 	ResourceMetaData(
-		std::string			storagePath,
+		std::string			resourcePath,
 		ResourceType		type,
 		ResourcePermissions permissions,
 		std::size_t			contentlength,
 		bool				canBeDeleted
 	);
 
-	std::string const &getStoragePath(void) const;
+	std::string const &getResourcePath(void) const;
 	std::size_t		   getContentLength(void) const;
 
 	bool isExecutable(void) const;
@@ -39,7 +39,7 @@ class ResourceMetaData
 	bool canBeDeleted(void) const;
 
   private:
-	std::string			_storagePath;
+	std::string			_resourcePath;
 	ResourceType		_type;
 	ResourcePermissions _permissions;
 	std::size_t			_contentlength;
