@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 03:44:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/14 15:09:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,22 @@ namespace domain {
 class StaticResource
 {
   public:
-	enum HandlingIntent
-	{
-		serveContent,
-		serveIndex,
-		generateListing
-	};
-
-  public:
 	StaticResource(
-		std::string const	   &id,
-		std::string const	   &rootPath,
-		bool const				isListingEnabled,
-		ResourceMetaData const &targetMetaData,
-		ResourceMetaData const &indexMetaData
+		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
 	);
 
 	std::string const &getStoragePath(void) const;
 
-	bool shouldServeContent(void) const;
-	bool shouldServeIndex(void) const;
-	bool shouldGenerateListing(void) const;
+	bool isReadable(void) const;
+	bool isExecutable(void) const;
+
+	bool canBeDeleted(void) const;
 
   private:
 	StaticResource(StaticResource const &src);
 	StaticResource &operator=(StaticResource const &rhs);
 
 	std::string		 _id;
-	HandlingIntent	 _intent;
 	ResourceMetaData _metaData;
 };
 } // namespace domain

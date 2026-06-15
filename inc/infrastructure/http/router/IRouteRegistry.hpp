@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BodyFile.hpp                                       :+:      :+:    :+:   */
+/*   IRouteRegistry.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 04:17:29 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/15 03:15:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPBODYFILE_HPP
-#define HTTPBODYFILE_HPP
+#ifndef IROUTEREGISTRY_HPP
+#define IROUTEREGISTRY_HPP
 
-#include "infrastructure/storage/file_system/TempWriter.hpp"
+#include <string>
 
 namespace http {
-class BodyFile
+// TODO: faire herité la config de cette interface
+struct RoutePolicy;
+
+class IRouteRegistry
 {
   public:
-	BodyFile(void);
-
-	void append(std::vector<char> const &data);
-
-	std::string const &getPath(void) const;
-	bool			   exists(void) const;
-
-  private:
-	fileSystem::TempWriter _writer;
-
-	static char const _nameTemplate[];
+	virtual ~IRouteRegistry(void) {}
+	// TODO: id = uri pour e
+	// TODO: if return, throw at the beginning
+	virtual RoutePolicy match(std::string const &uri) = 0;
 };
 } // namespace http
 
-#endif // HTTPBODYFILE_HPP
+#endif // IROUTEREGISTRY_HPP

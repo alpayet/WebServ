@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:15:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 04:18:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@
 #include <unistd.h>
 
 namespace fileSystem {
-char const TempWriter::_tmpDir[] = "/tmp/";
+char const TempWriter::_tmpDirectory[] = "/tmp/";
 
 TempWriter::TempWriter(std::string const &tempFileName)
-	: _tempFile(), _tempFileName(tempFileName), _tempFilePath()
+	: _tempFile(), _tempFileName(tempFileName), _tempFilePath(), _exists(false)
 {}
 
 TempWriter::~TempWriter(void)
 {
-	if (std::remove(_tempFilePath.c_str()) != 0)
-		throw Exception(Exception::internalErrorFileUnlinkFailed);
+	// TODO: faire un log derreur masi ne pas throw
+	if (_exists)
+		std::remove(_tempFilePath.c_str());
 }
+
+std::string TempWriter::getTempFilePath(void) const { return (_tempFilePath); }
+
+bool TempWriter::exists(void) const { return (_exists); }
 
 void TempWriter::writeChunk(std::vector<char> const &data)
 {
@@ -36,6 +41,7 @@ void TempWriter::writeChunk(std::vector<char> const &data)
 		_tempFile.open(_tempFileName.c_str(), std::ios::binary);
 		if (!_tempFile.is_open())
 			throw Exception(Exception::internalErrorFileOpenFailed);
+		_exists = true;
 	}
 	else if (!_tempFile.write(&data[0], data.size()))
 		throw Exception(Exception::internalErrorFileWriteFailed);
@@ -43,7 +49,7 @@ void TempWriter::writeChunk(std::vector<char> const &data)
 
 std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
 {
-	std::string unique_path((_tmpDir + fileName + "XXXXXX").c_str());
+	std::string unique_path((_tmpDirectory + fileName + "XXXXXX").c_str());
 
 	int fd = mkstemp(&unique_path[0]);
 

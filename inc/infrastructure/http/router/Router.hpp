@@ -6,19 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:30:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 01:52:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTROUTER_HPP
 #define HTTPROUTER_HPP
 
-namespace app {
-class IRouteRegistry;
-} // namespace app
-
 namespace http {
-class FindStaticResourceController;
+class IRouteRegistry;
+class ServeStaticResourceController;
 class DeleteStaticResourceController;
 class ExecuteDynamicResourceController;
 class Request;
@@ -28,8 +25,8 @@ class Router
 {
   public:
 	Router(
-		app::IRouteRegistry				 &routeRegistry,
-		FindStaticResourceController	 &findStaticResourceController,
+		IRouteRegistry					 &routeRegistry,
+		ServeStaticResourceController	 &serveStaticResourceController,
 		DeleteStaticResourceController	 &deleteStaticResourceController,
 		ExecuteDynamicResourceController &executeDynamicResourceController
 	);
@@ -40,9 +37,9 @@ class Router
 	Router(Router const &src);
 	Router &operator=(Router const &rhs);
 
-	app::IRouteRegistry &_routeRegistry;
+	IRouteRegistry &_routeRegistry;
 
-	FindStaticResourceController	 &_findStaticResourceController;
+	ServeStaticResourceController	 &_serveStaticResourceController;
 	DeleteStaticResourceController	 &_deleteStaticResourceController;
 	ExecuteDynamicResourceController &_executeDynamicResourceController;
 };

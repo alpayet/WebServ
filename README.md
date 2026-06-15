@@ -51,7 +51,7 @@ Some differences exist between the two files such as no redefinition of values, 
 
 `index`:
 
-`proxy_pass`:
+`cgi`:
 
 `error_page`: 
 

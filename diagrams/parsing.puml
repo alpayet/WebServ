@@ -18,7 +18,7 @@ annotation Keywords
 	interface
 	root
 	index
-	proxy_pass
+	cgi
 	error_page
 }
 

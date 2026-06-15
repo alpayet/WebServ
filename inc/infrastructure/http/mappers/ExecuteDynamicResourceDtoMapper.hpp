@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:19:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 04:26:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,19 @@
 
 namespace http {
 struct Request;
+class RoutePolicy;
 
 class ExecuteDynamicResourceDtoMapper
 {
   public:
-	static app::useCase::ExecuteDynamicResource::Input
-	toDto(Request const &request, app::RoutePolicy const &routePolicy);
+	static app::useCase::ExecuteDynamicResource::Input ExecuteDynamicResourceDtoMapper::toDto(
+		Request const							 &request,
+		RoutePolicy const						 &routePolicy,
+		std::string const						 &bodyPath,
+		std::size_t const						  contentLength,
+		std::size_t const						  maxBodySize,
+		std::map<std::string, std::string> const &metaVariables
+	);
 
   private:
 	ExecuteDynamicResourceDtoMapper(void);

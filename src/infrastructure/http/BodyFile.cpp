@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:14:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 04:18:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,9 @@ char const BodyFile::_nameTemplate[] = "webserv_body";
 BodyFile::BodyFile(void) : _writer(_nameTemplate) {}
 
 void BodyFile::append(std::vector<char> const &data) { _writer.writeChunk(data); }
+
+std::string const &BodyFile::getPath(void) const { return (_writer.getTempFilePath()); }
+
+bool BodyFile::exists(void) const { return (_writer.exists()); }
+
 } // namespace http

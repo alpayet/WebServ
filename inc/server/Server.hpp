@@ -48,7 +48,7 @@ class Server : public app::IResourceLocator, public http::IRequestValidationPoli
 	void addIndex(std::string const &index) { m_index.push_back(index); };
 
 	/** GETTERS from parents */
-	std::string resolvePhysicalPath(std::string const &uri) const;
+	std::string			resolvePhysicalPath(std::string const &uri) const;
 	Location			findLocationFromUri(std::string const &uri) const;
 	virtual std::string getSupportedHttpVersion(void) const;
 	virtual std::size_t getMaxRequestLineSize(void) const;
@@ -61,7 +61,7 @@ class Server : public app::IResourceLocator, public http::IRequestValidationPoli
 
 	// TODO: id = envoyer SystemResourceInfos du 1er index existant
 	virtual app::SystemResourceInfos
-	locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const;
+	locateDefaultIndex(std::vector<std::string> indexesId, std::string const &rootPath) const;
 
   private:
 	unsigned short			   m_port;

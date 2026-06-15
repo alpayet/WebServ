@@ -6,7 +6,7 @@
 /*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 16:31:25 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/15 14:56:01 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class IResourceLocator
 
 	// TODO: id = envoyer SystemResourceInfos du 1er index existant
 	virtual SystemResourceInfos
-	locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const = 0;
+	locateDefaultIndex(std::vector<std::string> indexesId, std::string const &rootPath) const = 0;
 };
 } // namespace app
 

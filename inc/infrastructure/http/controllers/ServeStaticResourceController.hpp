@@ -1,41 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FindStaticResourceController.hpp                   :+:      :+:    :+:   */
+/*   ServeStaticResourceController.hpp                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:23:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 01:55:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FINDSTATICRESOURCECONTROLLER_HPP
-#define FINDSTATICRESOURCECONTROLLER_HPP
+#ifndef SERVESTATICRESOURCECONTROLLER_HPP
+#define SERVESTATICRESOURCECONTROLLER_HPP
 
+namespace app {
 namespace useCase {
-class FindStaticResource;
+class ServeStaticResource;
 } // namespace useCase
+} // namespace app
 
 namespace http {
 class Request;
 class Response;
+struct RoutePolicy;
 
-class FindStaticResourceController
+class ServeStaticResourceController
 {
   public:
-	FindStaticResourceController(app::useCase::FindStaticResource &useCase);
+	ServeStaticResourceController(app::useCase::ServeStaticResource &useCase);
 
-	void FindStaticResourceController::operator()(
-		Request const &request, Response &response, app::RoutePolicy const &routePolicy
+	void ServeStaticResourceController::operator()(
+		Request const &request, Response &response, RoutePolicy const &routePolicy
 	);
 
   private:
-	FindStaticResourceController(FindStaticResourceController const &src);
-	FindStaticResourceController &operator=(FindStaticResourceController const &rhs);
+	ServeStaticResourceController(ServeStaticResourceController const &src);
+	ServeStaticResourceController &operator=(ServeStaticResourceController const &rhs);
 
-	app::useCase::FindStaticResource &_useCase;
+	app::useCase::ServeStaticResource &_useCase;
 };
 } // namespace http
 
-#endif // FINDSTATICRESOURCECONTROLLER_HPP
+#endif // SERVESTATICRESOURCECONTROLLER_HPP

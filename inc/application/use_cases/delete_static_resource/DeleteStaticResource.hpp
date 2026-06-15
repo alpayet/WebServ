@@ -6,19 +6,19 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:26:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 03:35:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DELETESTATICRESOURCEUSECASE_HPP
 #define DELETESTATICRESOURCEUSECASE_HPP
 
-#include "application/ports/RoutePolicy.hpp"
 #include <string>
 
 namespace app {
 class IResourceLocator;
 class IStaticResourceStorage;
+class IDeleteStaticResourcePresenter;
 
 namespace useCase {
 class DeleteStaticResource
@@ -26,15 +26,18 @@ class DeleteStaticResource
   public:
 	struct Input
 	{
+		Input(std::string const &id, std::string const &rootPath) : id(id), rootPath(rootPath) {}
 		std::string id;
-		RoutePolicy routePolicy;
+		std::string rootPath;
 	};
 	struct Output
 	{};
 
   public:
 	DeleteStaticResource(
-		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		IResourceLocator			   &resourceLocator,
+		IStaticResourceStorage		   &staticResourceStorage,
+		IDeleteStaticResourcePresenter &deleteStaticResourcePresenter
 	);
 
 	Output execute(Input const &dtoInput);
@@ -43,8 +46,9 @@ class DeleteStaticResource
 	DeleteStaticResource(DeleteStaticResource const &src);
 	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	IResourceLocator	   &_resourceLocator;
-	IStaticResourceStorage &_staticResourceStorage;
+	IResourceLocator			   &_resourceLocator;
+	IStaticResourceStorage		   &_staticResourceStorage;
+	IDeleteStaticResourcePresenter &_deleteStaticResourcePresenter;
 };
 } // namespace useCase
 } // namespace app

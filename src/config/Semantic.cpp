@@ -4,10 +4,6 @@
 #include <sstream>
 #include <vector>
 
-// TODO: check location end with '/'
-// TODO: end root with '/'
-// TODO: check location and root start with '/'
-// TODO: manage one line config file, so better check/use of ';'
 void initLocation(Server &s, p_Server ps)
 {
 	if (ps.locations.empty())
@@ -54,7 +50,7 @@ void initLocation(Server &s, p_Server ps)
 					loc.index.push_back(it->values[i]);
 				}
 			}
-			else if (it->name == "proxy_pass")
+			else if (it->name == "cgi")
 			{
 				loc.cgi.push_back(it->values[0]);
 			}
@@ -198,7 +194,6 @@ void initServer(Server &s, p_Server ps)
 	{
 		throw SemanticException("A server must have a root");
 	}
-	// TODO: location, if no root in loc, get serv root
 }
 
 void checkDupLoc(p_Server s)

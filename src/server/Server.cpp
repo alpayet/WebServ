@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &os, Server const &s)
 
 Location Server::findLocationFromUri(std::string const &uri) const
 {
-	std::size_t pos;
+	std::size_t pos = 0;
 	std::string dir_path = uri;
 	while (pos != std::string::npos)
 	{
@@ -122,7 +122,7 @@ std::string Server::resolvePhysicalPath(std::string const &uri) const
 
 // void param
 
-//get 
+// get
 app::SystemResourceInfos Server::locate(std::string const &id, std::string const &rootPath) const
 {
 	(void)(rootPath);
@@ -133,22 +133,41 @@ app::SystemResourceInfos Server::locate(std::string const &id, std::string const
 
 #include <unistd.h>
 // TODO: id = envoyer SystemResourceInfos du 1er index existant
+// TODO: if no index in location, check server global index
 app::SystemResourceInfos
-Server::locate_index(std::vector<std::string> indexesId, std::string const &rootPath) const
+Server::locateDefaultIndex(std::vector<std::string> indexesId, std::string const &rootPath) const
 {
 	app::SystemResourceInfos sri;
 
-	std::vector<std::string>::std::const_iterator ite = indexesId.end();
-	for (std::vector<std::string>::std::const_iterator it = indexesId.begin() ; it != ite ; ++it)
+	std::vector<std::string>::const_iterator ite = indexesId.end();
+	for (std::vector<std::string>::const_iterator it = indexesId.begin(); it != ite; ++it)
 	{
 		// TODO: change, it's not the right path
-		if (access((rootPath + *it).c_str, F_OK) == 0)
+		if (access((rootPath + *it).c_str(), F_OK) == 0)
 		{
 			sri.storagePath = rootPath + *it;
 			return sri;
 		}
 	}
 	return sri;
+}
+
+#include <limits>
+std::string Server::getSupportedHttpVersion(void) const { return ("1.0"); }
+
+std::size_t Server::getMaxRequestLineSize(void) const
+{
+	return std::numeric_limits<std::size_t>::max();
+}
+
+std::size_t Server::getMaxHeaderLineSize(void) const
+{
+	return std::numeric_limits<std::size_t>::max();
+}
+
+std::size_t Server::getMaxHeaderCount(void) const
+{
+	return std::numeric_limits<std::size_t>::max();
 }
 
 std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }

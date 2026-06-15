@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IRouteRegistry.hpp                                 :+:      :+:    :+:   */
+/*   IDeleteStaticResourcePresenter.hpp                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 15:03:17 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/14 21:47:46 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/14 21:49:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IROUTEREGISTRY_HPP
-#define IROUTEREGISTRY_HPP
+#ifndef IDELETESTATICRESOURCEPRESENTER_HPP
+#define IDELETESTATICRESOURCEPRESENTER_HPP
 
-#include <string>
-
-// TODO: faire herité la config de cette interface
-namespace app {
-struct RoutePolicy;
-
-class IRouteRegistry
+class IDeleteStaticResourcePresenter
 {
   public:
-	virtual ~IRouteRegistry(void) {}
-	// TODO: id = uri pour e
-	// TODO: if return, throw at the beginning
-	virtual RoutePolicy match(std::string const &id) = 0;
-};
-} // namespace app
+	IDeleteStaticResourcePresenter(void);
+	IDeleteStaticResourcePresenter(IDeleteStaticResourcePresenter const &src);
+	~IDeleteStaticResourcePresenter(void);
 
-#endif // IROUTEREGISTRY_HPP
+	IDeleteStaticResourcePresenter &operator=(IDeleteStaticResourcePresenter const &rhs);
+
+  private:
+};
+
+#endif // IDELETESTATICRESOURCEPRESENTER_HPP

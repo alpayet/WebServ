@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 15:00:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 01:54:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 #include <string>
 #include <vector>
-
-namespace app {
+namespace http {
 struct RoutePolicy
 {
 	std::string				 rootPath;
@@ -24,6 +23,6 @@ struct RoutePolicy
 	std::vector<std::string> indexesId;
 	std::vector<std::string> allowedMethods;
 };
-} // namespace app
+} // namespace http
 
 #endif // ROUTEPOLICY_HPP
