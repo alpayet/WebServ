@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 01:21:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:40:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ class DynamicResource
 		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
 	);
 
-	std::string const &getStoragePath(void) const;
+	std::string const &getResourcePath(void) const;
 
+	bool isReadable(void) const;
 	bool isExecutable(void) const;
 
   private:

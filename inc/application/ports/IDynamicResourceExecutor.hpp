@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 01:18:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:38:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ class IDynamicResourceExecutor
 	virtual ~IDynamicResourceExecutor(void) {}
 
 	virtual void execute(
-		std::string const &storagePath, std::map<std::string, std::string> const &metaVariables
+		std::string const						 &resourcePath,
+		std::string const						 &bodyPath,
+		std::map<std::string, std::string> const &metaVariables
 	) = 0;
 };
 } // namespace app

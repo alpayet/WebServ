@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 18:25:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 17:19:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class IRequestValidationPolicy
 	virtual std::size_t getMaxRequestLineSize(void) const = 0;
 	virtual std::size_t getMaxHeaderLineSize(void) const = 0;
 	virtual std::size_t getMaxHeaderCount(void) const = 0;
-	virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
+	virtual std::size_t getMaxBodySize(void) const = 0;
 };
 } // namespace http
 

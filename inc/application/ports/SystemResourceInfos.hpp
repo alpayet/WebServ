@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 19:48:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 16:45:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:39:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace app {
 struct SystemResourceInfos
 {
-	std::string storagePath;
+	std::string resourcePath;
 	// TODO: utiliser methodes de archi/storage/file_system
 	domain::ResourceType		type;
 	domain::ResourcePermissions permissions;

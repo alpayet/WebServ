@@ -28,7 +28,7 @@ LockManager::LockMode LockManager::isLocked(std::string const &path) const
 {
 	std::map<std::string, LockMode>::const_iterator it = _lockedPaths.find(path);
 	if (it != _lockedPaths.end())
-		return ((*it).second);
+		return (it->second);
 	return (unlocked);
 }
 } // namespace fileSystem

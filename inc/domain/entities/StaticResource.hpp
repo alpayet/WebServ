@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 15:09:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:40:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class StaticResource
 		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
 	);
 
-	std::string const &getStoragePath(void) const;
+	std::string const &getResourcePath(void) const;
 
 	bool isReadable(void) const;
 	bool isExecutable(void) const;

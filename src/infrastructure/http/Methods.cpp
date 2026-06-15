@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:14:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 21:30:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ namespace http {
 bool isMethodSupported(std::string const &method)
 {
 	static char const *supported_methods[] = {
-		"GET", "POST", "DELETE", "HEAD", "PUT", "LINK", "UNLINK",
+		GET, POST, DELETE, HEAD, PUT, LINK, UNLINK,
 	};
 	static size_t const methods_nb = sizeof(supported_methods) / sizeof(supported_methods[0]);
 
@@ -29,8 +29,8 @@ bool isMethodSupported(std::string const &method)
 bool expectsBody(std::string const &method)
 {
 	static char const *expects_body_methods[] = {
-		"POST",
-		"PUT",
+		POST,
+		PUT,
 	};
 	static size_t const methods_nb = sizeof(expects_body_methods) / sizeof(expects_body_methods[0]);
 

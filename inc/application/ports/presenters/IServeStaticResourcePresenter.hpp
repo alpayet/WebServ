@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 23:07:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 21:31:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:40:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class IServeStaticResourcePresenter
 
 	virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
 
-	virtual void presentListing(std::string const &storagePath) = 0;
+	virtual void presentListing(std::string const &resourcePath) = 0;
 };
 } // namespace app
 

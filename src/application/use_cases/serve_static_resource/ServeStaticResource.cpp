@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:22:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:45:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,12 @@ ServeStaticResource::ServeStaticResource(
 
 void ServeStaticResource::execute(Input const &dtoInput)
 {
-	SystemResourceInfos		 target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	if (!target_infos.exists)
+		throw Exception(Exception::notFound);
+
 	domain::ResourceMetaData target_meta_data(
-		target_infos.storagePath, target_infos.type, target_infos.permissions,
+		target_infos.resourcePath, target_infos.type, target_infos.permissions,
 		target_infos.contentlength, target_infos.canBeDeleted
 	);
 
@@ -47,7 +50,7 @@ void ServeStaticResource::execute(Input const &dtoInput)
 		else
 		{
 			domain::ResourceMetaData index_meta_data(
-				index_infos.storagePath, index_infos.type, index_infos.permissions,
+				index_infos.resourcePath, index_infos.type, index_infos.permissions,
 				index_infos.contentlength, index_infos.canBeDeleted
 			);
 
@@ -70,7 +73,7 @@ void ServeStaticResource::serveContent(
 		throw Exception(Exception::accessDenied);
 
 	IStaticResourceReader *resource_reader =
-		_staticResourceStorage.createReader(static_resource.getStoragePath());
+		_staticResourceStorage.createReader(static_resource.getResourcePath());
 	_serveStaticResourcePresenter.presentContent(resource_reader);
 }
 
@@ -86,7 +89,8 @@ void ServeStaticResource::generateListing(
 	if (!static_resource.isReadable() || !static_resource.isExecutable())
 		throw Exception(Exception::accessDenied);
 
-	_serveStaticResourcePresenter.presentListing(static_resource.getStoragePath());
+	// TODO: voir pour la gestion du listing si contenue d ulisting dans fichier ou direct en ram
+	_serveStaticResourcePresenter.presentListing(static_resource.getResourcePath());
 }
 } // namespace useCase
 } // namespace app

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:22:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:45:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@ DeleteStaticResource::DeleteStaticResource(
 DeleteStaticResource::Output
 DeleteStaticResource::execute(DeleteStaticResource::Input const &dtoInput)
 {
-	SystemResourceInfos		 target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	if (!target_infos.exists)
+		throw Exception(Exception::notFound);
+
 	domain::ResourceMetaData target_meta_data(
-		target_infos.storagePath, target_infos.type, target_infos.permissions,
+		target_infos.resourcePath, target_infos.type, target_infos.permissions,
 		target_infos.contentlength, target_infos.canBeDeleted
 	);
 	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, target_meta_data);
@@ -42,7 +45,7 @@ DeleteStaticResource::execute(DeleteStaticResource::Input const &dtoInput)
 	if (!static_resource.canBeDeleted())
 		throw Exception(Exception::accessDenied);
 
-	_staticResourceStorage.remove(static_resource.getStoragePath());
+	_staticResourceStorage.remove(static_resource.getResourcePath());
 }
 } // namespace useCase
 } // namespace app

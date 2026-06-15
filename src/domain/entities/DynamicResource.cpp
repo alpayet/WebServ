@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:18:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 01:20:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:41:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,17 @@ DynamicResource::DynamicResource(
 )
 	: _id(id), _metaData(metaData)
 {
-	if (_metaData.getStoragePath().find(rootPath) != 0)
+	if (_metaData.getResourcePath().find(rootPath) != 0)
 		throw Exception(Exception::pathTraversalDetected);
 }
 
-std::string const &DynamicResource::getStoragePath(void) const
+std::string const &DynamicResource::getResourcePath(void) const
 {
-	return (_metaData.getStoragePath());
+	return (_metaData.getResourcePath());
 }
 
 bool DynamicResource::isReadable(void) const { return (_metaData.isReadable()); }
 
 bool DynamicResource::isExecutable(void) const { return (_metaData.isExecutable()); }
 
-bool DynamicResource::canBeDeleted(void) const
-{
-	return (_metaData.canBeDeleted() && !_metaData.isCollection());
-}
 } // namespace domain

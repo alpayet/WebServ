@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 22:46:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 23:43:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ StaticResource::StaticResource(
 )
 	: _id(id), _metaData(metaData)
 {
-	if (_metaData.getStoragePath().find(rootPath) != 0)
+	if (_metaData.getResourcePath().find(rootPath) != 0)
 		throw Exception(Exception::pathTraversalDetected);
 }
 
-std::string const &StaticResource::getStoragePath(void) const
+std::string const &StaticResource::getResourcePath(void) const
 {
-	return (_metaData.getStoragePath());
+	return (_metaData.getResourcePath());
 }
 
 bool StaticResource::isReadable(void) const { return (_metaData.isReadable()); }
