@@ -116,7 +116,7 @@ void displayListing(std::string dir_name)
 		localtime_r(&t_mod, &t_local);
 		strftime(t_buf, sizeof(t_buf), "%c", &t_local);
 		std::cout << "\t\t<td>" << t_buf << "</td>" << std::endl;
-		if (st.st_mode & S_IFDIR)
+		if (S_ISDIR(st.st_mode))
 			std::cout << "\t\t<td>-</td>" << std::endl;
 		else
 			std::cout << "\t\t<td>" << st.st_size << "</td>" << std::endl;
