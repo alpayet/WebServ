@@ -26,25 +26,53 @@
 
 #include "cgi/Cgi.hpp"
 #include <string>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+
+bool	hasSheBang(const std::string& filename)
+{
+	int fd = open(filename.c_str(), O_RDONLY);
+	if (fd < 0)
+		return false;
+	char buf[3];
+	int bytes = read(fd, buf, 2);
+	buf[2] = '\0';
+	if (bytes <= 0)
+		return false;
+	if (std::string(buf) == "#!")
+		return true;
+	return false;
+}
+
 
 // TODO:
 // FindStaticResourceUseCase
 // ExecuteDynamicResourceUseCase
 // content_location = empty if get
-void getInterpreter(const std::string &filename)
+
+#include <map>
+#include <pair>
+
+std::map<std::string, std::pair<std::string, std::string> > interpreters = {
+	{".py", {"/bin/python/", "python3"}},
+	{".sh", {"/bin/sh/", "sh"}}
+	{".php", {"/bin/php/", "php"}}
+};
+
+std::pair<std::string, std::string> getInterpreter(const std::string &filename)
 {
 	std::size_t pos = filename.find_last_of(".");
 
-	if (pos == std::string::npos)
+	if (pos == std::string::npos || pos == 0)
 	{
 		throw("banana");
-		// TODO : if she-bang, no throw
 	}
+	std::string ext = filename.substr(pos, filename.size() - pos);
+	return interpreters[ext];
 }
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 
 // cgi for python
 void Cgi::execute(
