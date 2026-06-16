@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 02:18:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 21:45:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class DeleteStaticResource;
 namespace http {
 class Request;
 class Response;
+struct RoutePolicy;
 
 class DeleteStaticResourceController
 {

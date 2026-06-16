@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:35:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:35:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 namespace app {
 class IResourceLocator;
 class IStaticResourceStorage;
-class IDeleteStaticResourcePresenter;
 
 namespace useCase {
 class DeleteStaticResource
@@ -30,25 +29,25 @@ class DeleteStaticResource
 		std::string id;
 		std::string rootPath;
 	};
-	struct Output
-	{};
+	class IOutputPort
+	{
+	  public:
+		virtual ~IOutputPort() {}
+	};
 
   public:
 	DeleteStaticResource(
-		IResourceLocator			   &resourceLocator,
-		IStaticResourceStorage		   &staticResourceStorage,
-		IDeleteStaticResourcePresenter &deleteStaticResourcePresenter
+		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 	);
 
-	Output execute(Input const &dtoInput);
+	void execute(Input const &dtoInput, IOutputPort &outputPort);
 
   private:
 	DeleteStaticResource(DeleteStaticResource const &src);
 	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	IResourceLocator			   &_resourceLocator;
-	IStaticResourceStorage		   &_staticResourceStorage;
-	IDeleteStaticResourcePresenter &_deleteStaticResourcePresenter;
+	IResourceLocator	   &_resourceLocator;
+	IStaticResourceStorage &_staticResourceStorage;
 };
 } // namespace useCase
 } // namespace app

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 22:02:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPPARSINGSTATE_HPP
 #define HTTPPARSINGSTATE_HPP
 
-#include "infrastructure/http/Request.hpp"
+#include "infrastructure/http/messages/Request.hpp"
 
 namespace http {
 struct ParsingState

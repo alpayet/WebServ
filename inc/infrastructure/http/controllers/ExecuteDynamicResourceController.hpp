@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:27:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 22:02:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class ExecuteDynamicResource;
 namespace http {
 class Request;
 class Response;
+struct RoutePolicy;
 class ILimitsProvider;
 
 class ExecuteDynamicResourceController

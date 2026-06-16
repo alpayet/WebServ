@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:45:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:35:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,12 @@
 namespace app {
 namespace useCase {
 DeleteStaticResource::DeleteStaticResource(
-	IResourceLocator			   &resourceLocator,
-	IStaticResourceStorage		   &staticResourceStorage,
-	IDeleteStaticResourcePresenter &deleteStaticResourcePresenter
+	IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 )
-	: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage),
-	  _deleteStaticResourcePresenter(deleteStaticResourcePresenter)
+	: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage)
 {}
 
-DeleteStaticResource::Output
-DeleteStaticResource::execute(DeleteStaticResource::Input const &dtoInput)
+void DeleteStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
 	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
 	if (!target_infos.exists)

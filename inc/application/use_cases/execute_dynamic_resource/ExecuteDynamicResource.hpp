@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:06:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:34:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ class ExecuteDynamicResource
 		std::string						   bodyPath;
 		std::map<std::string, std::string> metaVariables;
 	};
-	struct Output
-	{};
+	class IOutputPort
+	{
+	  public:
+		virtual ~IOutputPort() {}
+	};
 
   public:
 	ExecuteDynamicResource(
-		IResourceLocator				 &resourceLocator,
-		IDynamicResourceExecutor		 &dynamicResourceExecutor,
-		IExecuteDynamicResourcePresenter &executeDynamicResourcePresenter
+		IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 	);
 
-	Output execute(Input const &dtoInput);
+	void execute(Input const &dtoInput, IOutputPort &outputPort);
 
   private:
 	ExecuteDynamicResource(ExecuteDynamicResource const &src);
 	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-	IResourceLocator				 &_resourceLocator;
-	IDynamicResourceExecutor		 &_dynamicResourceExecutor;
-	IExecuteDynamicResourcePresenter &_executeDynamicResourcePresenter;
+	IResourceLocator		 &_resourceLocator;
+	IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 } // namespace useCase
 } // namespace app

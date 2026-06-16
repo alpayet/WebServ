@@ -6,18 +6,18 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 21:31:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 22:02:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/http/Methods.hpp"
-#include "infrastructure/http/Request.hpp"
-#include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/messages/Request.hpp"
+#include "infrastructure/http/messages/Response.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
 #include <algorithm>

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:47:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:34:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,12 @@
 namespace app {
 namespace useCase {
 ExecuteDynamicResource::ExecuteDynamicResource(
-	IResourceLocator				 &resourceLocator,
-	IDynamicResourceExecutor		 &dynamicResourceExecutor,
-	IExecuteDynamicResourcePresenter &executeDynamicResourcePresenter
+	IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 )
-	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor),
-	  _executeDynamicResourcePresenter(executeDynamicResourcePresenter)
+	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
 {}
 
-ExecuteDynamicResource::Output
-ExecuteDynamicResource::execute(ExecuteDynamicResource::Input const &dtoInput)
+void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
 	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
 	if (!target_infos.exists)
@@ -44,6 +40,7 @@ ExecuteDynamicResource::execute(ExecuteDynamicResource::Input const &dtoInput)
 	domain::DynamicResource dynamic_resource =
 		domain::DynamicResource(dtoInput.id, dtoInput.rootPath, target_meta_data);
 
+	// TODO : voir pour les permissions du fichier cgi
 	_dynamicResourceExecutor.execute(
 		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
 	);

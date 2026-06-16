@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:44:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 16:56:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace fileSystem {
 
-void fileSystem::Storage::remove(std::string const &resourcePath)
+void Storage::remove(std::string const &resourcePath)
 {
 	if (std::remove(resourcePath.c_str()) == 0)
 		return;

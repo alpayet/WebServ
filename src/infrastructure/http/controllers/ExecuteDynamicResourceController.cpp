@@ -6,18 +6,18 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:24:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:29:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "infrastructure/http/Constants.hpp"
-#include "infrastructure/http/Request.hpp"
-#include "infrastructure/http/Response.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
+#include "infrastructure/http/messages/Request.hpp"
+#include "infrastructure/http/messages/Response.hpp"
 #include <map>
 
 namespace http {
@@ -40,7 +40,7 @@ void ExecuteDynamicResourceController::operator()(
 
 	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
 
-	app::useCase::ExecuteDynamicResource::Input dto =
+	app::useCase::ExecuteDynamicResource::Input const &dto =
 		ExecuteDynamicResourceDtoMapper::toDto(request, routePolicy, bodyPath, MetaVariables);
 
 	_useCase.execute(dto);

@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BodyFile.cpp                                       :+:      :+:    :+:   */
+/*   ServeStaticResourcePresenter.cpp                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:02:51 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/16 22:59:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/messages/BodyFile.hpp"
+#include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
 
 namespace http {
-char const BodyFile::_nameTemplate[] = "webserv_body";
 
-BodyFile::BodyFile(void) : _writer(_nameTemplate) {}
+Response const &ServeStaticResourcePresenter::getResponse() const { return (_response); }
 
-void BodyFile::append(std::vector<char> const &data) { _writer.writeChunk(data); }
+void ServeStaticResourcePresenter::presentContent(app::IStaticResourceReader *resourceReader) {}
 
-std::string const &BodyFile::getPath(void) const { return (_writer.getTempFilePath()); }
-
-bool BodyFile::exists(void) const { return (_writer.exists()); }
-
+void ServeStaticResourcePresenter::presentListing(std::vector<char> CollectionData) {}
 } // namespace http

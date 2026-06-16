@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IServeStaticResourcePresenter.hpp                  :+:      :+:    :+:   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/13 23:07:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:40:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/16 21:54:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISERVESTATICRESOURCEPRESENTER_HPP
-#define ISERVESTATICRESOURCEPRESENTER_HPP
+#ifndef HTTPREQUEST_HPP
+#define HTTPREQUEST_HPP
 
+#include "BodyFile.hpp"
+#include <map>
 #include <string>
 
-namespace app {
-class IStaticResourceReader;
-
-class IServeStaticResourcePresenter
+namespace http {
+struct Request
 {
-  public:
-	virtual ~IServeStaticResourcePresenter() {}
+	Request(void) : contentLength(0) {}
 
-	virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
-
-	virtual void presentListing(std::string const &resourcePath) = 0;
+	std::map<std::string, std::string> headers;
+	std::string						   method;
+	std::string						   target;
+	std::string						   protocol;
+	std::string						   query;
+	size_t							   contentLength;
+	BodyFile						   body;
 };
-} // namespace app
+} // namespace http
 
-#endif // ISERVESTATICRESOURCEPRESENTER_HPP
+#endif // HTTPREQUEST_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:35:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 23:19:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define SERVESTATICRESOURCEUSECASE_HPP
 
 #include <string>
+#include <vector>
 
 namespace domain {
 class ResourceMetaData;
@@ -21,8 +22,9 @@ class ResourceMetaData;
 
 namespace app {
 class IResourceLocator;
+class IStaticResourceReader;
 class IStaticResourceStorage;
-class IServeStaticResourcePresenter;
+class ICollectionExplorer;
 
 namespace useCase {
 class ServeStaticResource
@@ -43,30 +45,38 @@ class ServeStaticResource
 		bool					 isListingEnabled;
 		std::vector<std::string> indexesId;
 	};
+	class IOutputPort
+	{
+	  public:
+		virtual ~IOutputPort() {}
+
+		virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
+		virtual void presentListing(std::vector<char> CollectionData) = 0;
+	};
 
   public:
 	ServeStaticResource(
-		IResourceLocator			  &resourceLocator,
-		IStaticResourceStorage		  &staticResourceStorage,
-		IServeStaticResourcePresenter &serveStaticResourcePresenter
+		IResourceLocator	   &resourceLocator,
+		IStaticResourceStorage &staticResourceStorage,
+		ICollectionExplorer	   &collectionExplorer
 	);
 
-	void execute(Input const &dtoInput);
+	void execute(Input const &dtoInput, IOutputPort &outputPort);
 
   private:
 	ServeStaticResource(ServeStaticResource const &src);
 	ServeStaticResource &operator=(ServeStaticResource const &rhs);
 
 	void ServeStaticResource::serveContent(
-		Input const &dtoInput, domain::ResourceMetaData const &metaData
+		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 	void ServeStaticResource::generateListing(
-		Input const &dtoInput, domain::ResourceMetaData const &metaData
+		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 
-	IResourceLocator			  &_resourceLocator;
-	IStaticResourceStorage		  &_staticResourceStorage;
-	IServeStaticResourcePresenter &_serveStaticResourcePresenter;
+	IResourceLocator	   &_resourceLocator;
+	IStaticResourceStorage &_staticResourceStorage;
+	ICollectionExplorer	   &_collectionExplorer;
 };
 } // namespace useCase
 } // namespace app
