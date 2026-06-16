@@ -68,7 +68,7 @@ class Server : public app::IResourceLocator,
 
 	/** GETTERS from parents */
 	std::string resolvePhysicalPath(
-		std::string const &uri, std::string const &locPath, std::string const &rootPath
+		std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 	) const;
 	Location				 findLocationFromUri(std::string const &uri) const;
 	virtual std::string		 getSupportedHttpVersion(void) const;
@@ -81,11 +81,12 @@ class Server : public app::IResourceLocator,
 	TransportProtocol		 getTransportProtocol(void) const;
 	ApplicativeProtocol		 getApplicativeProtocol(void) const;
 
-	virtual app::SystemResourceInfos
-	locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const;
+	virtual app::SystemResourceInfos locate(
+		std::string const &id, std::string const &matchedRoute, std::string const &rootPath
+	) const;
 	virtual app::SystemResourceInfos locateDefaultIndex(
 		std::vector<std::string> const &indexesId,
-		std::string const			   &locPath,
+		std::string const			   &matchedRoute,
 		std::string const			   &rootPath
 	) const;
 

@@ -50,7 +50,7 @@ http::RoutePolicy Server::match(std::string const &uri) const
 	Location loc = findLocationFromUri(uri);
 
 	http::RoutePolicy route;
-	route.locPath = loc.path;
+	route.matchedRoute = loc.path;
 	route.rootPath = loc.root;
 	route.isListingEnabled = loc.autoindex;
 	if (!loc.index.empty())
@@ -62,16 +62,16 @@ http::RoutePolicy Server::match(std::string const &uri) const
 }
 
 std::string Server::resolvePhysicalPath(
-	std::string const &uri, std::string const &locPath, std::string const &rootPath
+	std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
 	std::string path;
 	if (rootPath.empty())
-		path = m_root + locPath.substr(1, locPath.size() - 1);
+		path = m_root + matchedRoute.substr(1, matchedRoute.size() - 1);
 	else
 		path = rootPath;
 	std::string resUri = uri;
-	resUri.replace(0, locPath.size(), path);
+	resUri.replace(0, matchedRoute.size(), path);
 	return resUri;
 }
 
@@ -114,22 +114,23 @@ app::SystemResourceInfos setSRI(std::string const &path)
 }
 
 // get
-app::SystemResourceInfos
-Server::locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const
+app::SystemResourceInfos Server::locate(
+	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
+) const
 {
 	app::SystemResourceInfos sri;
 
-	sri = setSRI(resolvePhysicalPath(id, locPath, rootPath));
+	sri = setSRI(resolvePhysicalPath(id, matchedRoute, rootPath));
 	return sri;
 }
 
 app::SystemResourceInfos Server::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
-	std::string const			   &locPath,
+	std::string const			   &matchedRoute,
 	std::string const			   &rootPath
 ) const
 {
-	std::string resPath = resolvePhysicalPath("/", locPath, rootPath);
+	std::string resPath = resolvePhysicalPath("/", matchedRoute, rootPath);
 
 	if (indexesId.empty())
 		return app::SystemResourceInfos();
