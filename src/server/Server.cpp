@@ -3,16 +3,15 @@
 
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <map>
 #include <string>
-#include <vector>
-#include <limits>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <vector>
 
 #include "application/ports/SystemResourceInfos.hpp"
 #include "config/Semantic.hpp"
-
 
 Location Server::findLocationFromUri(std::string const &uri) const
 {
@@ -53,81 +52,107 @@ http::RoutePolicy Server::match(std::string const &uri) const
 	route.locPath = loc.path;
 	route.rootPath = loc.root;
 	route.isListingEnabled = loc.autoindex;
-	route.indexesId = loc.index;
+	if (!loc.index.empty())
+		route.indexesId = loc.index;
+	else
+		route.indexesId = m_index;
 	route.allowedMethods = getAllowedMethods(loc);
+	return route;
 }
-// TODO: use locPath and rootPath
+
 std::string Server::resolvePhysicalPath(
 	std::string const &uri, std::string const &locPath, std::string const &rootPath
 ) const
 {
-	std::string phy_path;
-	if (!rootPath.empty())
-		phy_path = rootPath;
+	std::string path;
+	if (rootPath.empty())
+		path = m_root + locPath.substr(1, locPath.size() - 1);
 	else
-		phy_path = m_root + locPath;
-	std::size_t pos = uri.find_last_of('/');
-	if (pos != std::string::npos)
-		phy_path += uri.substr(pos, uri.size() - pos);
-	return phy_path;
+		path = rootPath;
+	std::string resUri = uri;
+	resUri.replace(0, locPath.size(), path);
+	return resUri;
 }
 
-// void param
+namespace fileSystem {
+inline bool exists(std::string const &path) { return access(path.c_str(), F_OK) == 0; }
 
-namespace fileSystem
+inline bool isRegularFile(std::string const &path)
 {
-	inline bool exists(const std::string& path)
-	{
-		return access(path.c_str(), F_OK) == 0;
-	}
+	struct stat st;
+	return stat(path.c_str(), &st) == 0 && S_ISREG(st.st_mode);
+}
 
-	inline bool isRegFile(const std::string& path)
-	{
-		struct stat st;
-		return stat(path.c_str(), &st) == 0 && S_ISREG(st.st_mode);
-	}
+inline bool isDirectory(std::string const &path)
+{
+	struct stat st;
+	return stat(path.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+}
 
-	inline bool isDirectory(const std::string& path)
-	{
-		struct stat st;
-		return stat(path.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
-	}
+inline bool isReadable(std::string const &path) { return access(path.c_str(), R_OK) == 0; }
 
-	inline bool isReadable(const std::string& path)
-	{
-		return access(path.c_str(), R_OK) == 0;
-	}
+inline bool isWritable(std::string const &path) { return access(path.c_str(), W_OK) == 0; }
 
-	inline bool isWritable(const std::string& path)
-	{
-		return access(path.c_str(), W_OK) == 0;
-	}
+inline bool isExecutable(std::string const &path) { return access(path.c_str(), X_OK) == 0; }
 
-	inline bool isExecutable(const std::string& path)
-	{
-		return access(path.c_str(), X_OK) == 0;
-	}
+inline std::size_t getSize(std::string const &path)
+{
+	struct stat st;
+	if (stat(path.c_str(), &st) != 0)
+		return 0; // throw ("no size");
+	return st.st_size;
+}
 
-	inline std::size_t getSize(const std::string& path)
-	{
-		struct stat st;
-		if (stat(path.c_str(), &st) != 0)
-			return 0; //throw ("no size");
-		return st.st_size;
-	}
+bool isDeletable(std::string const &path)
+{
+	std::size_t pos = path.find_last_of("/");
+	if (pos == std::string::npos)
+		return false; // TODO: check that, maybe throw
+	std::string curr_dir;
+	if (pos == 0)
+		curr_dir = "/";
+	else
+		curr_dir = path.substr(0, pos);
+	return access(curr_dir.c_str(), W_OK | X_OK) == 0;
+}
+} // namespace fileSystem
 
-	bool isDeletable(const std::string& path)
+app::SystemResourceInfos setSRI(std::string const &path)
+{
+	app::SystemResourceInfos sri;
+
+	sri.resourcePath = path;
+
+	if (!fileSystem::exists(sri.resourcePath))
 	{
-		std::size_t pos = path.find_last_of("/");
-		if (pos == std::string::npos)
-			return false; // TODO: check that, maybe throw
-		std::string curr_dir;
-		if (pos == 0)
-			curr_dir = "/"
-		else
-			curr_dir = path.substr(0, pos);
-		return access(curr_dir.c_str(), W_OK | X_OK) == 0;
+		sri.exists = false;
+		return sri; // TODO: check if need to set other values
 	}
+	sri.exists = true;
+
+	if (fileSystem::isRegularFile(sri.resourcePath))
+		sri.type = domain::leaf;
+	else if (fileSystem::isDirectory(sri.resourcePath))
+		sri.type = domain::collection;
+	else
+		sri.type = domain::unknown;
+
+	sri.permissions = domain::none;
+	if (fileSystem::isReadable(sri.resourcePath))
+		sri.permissions =
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::readable);
+	if (fileSystem::isWritable(sri.resourcePath))
+		sri.permissions =
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::writable);
+	if (fileSystem::isExecutable(sri.resourcePath))
+		sri.permissions =
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
+
+	sri.contentLength = fileSystem::getSize(sri.resourcePath);
+
+	sri.canBeDeleted = fileSystem::isDeletable(sri.resourcePath);
+
+	return sri;
 }
 
 // get
@@ -136,56 +161,31 @@ Server::locate(std::string const &id, std::string const &locPath, std::string co
 {
 	app::SystemResourceInfos sri;
 
-	sri.storagePath = resolvePhysicalPath(id, locPath, rootPath);
-	
-	if (!fileSystem::exists(sri.storagePath))
-	{
-		sri.exists = false;
-		return sri;
-	}
-	sri.exists = true;
-
-	if (fileSystem::isRegFile(sri.storagePath))
-		sri.type = leaf;
-	else if (fileSystem::isDirectory(sri.storagePath))
-		sri.type = collection;
-	else
-		sri.type = unknown;
-	
-		sri.permissions = 0;
-	if (fileSystem::isReadable(sri.storagePath))
-		sri.permission += readable;
-	if (fileSystem::isWritable(sri.storagePath))
-		sri.permission += writable;
-	if (fileSystem::isExecutable(sri.storagePath))
-		sri.permission += executable;
-
-	sri.content_length = fileSystem::getSize(sri.storagePath);
-	
-	sri.canBeDeleted = fileSystem::isDeletable(sri.storagePath);
-
-	return app::SystemResourceInfos();
+	sri = setSRI(resolvePhysicalPath(id, locPath, rootPath));
+	return sri;
 }
 
-// TODO: id = envoyer SystemResourceInfos du 1er index existant
-// TODO: if no index in location, check server global index
 app::SystemResourceInfos Server::locateDefaultIndex(
-	std::vector<std::string> indexesId, std::string const &locPath, std::string const &rootPath
+	std::vector<std::string> const &indexesId,
+	std::string const			   &locPath,
+	std::string const			   &rootPath
 ) const
 {
-	app::SystemResourceInfos sri;
+	std::string resPath = resolvePhysicalPath("/", locPath, rootPath);
+
+	if (indexesId.empty())
+		throw("banana, no index"); // TODO: check if throw
 
 	std::vector<std::string>::const_iterator ite = indexesId.end();
-	for (std::vector<std::string>::const_iterator it = indexesId.begin(); it != ite; ++it)
+	std::vector<std::string>::const_iterator it = indexesId.begin();
+	for (; it != ite; ++it)
 	{
-		// TODO: change, it's not the right path
-		if (access((rootPath + *it).c_str(), F_OK) == 0)
+		if (fileSystem::exists(resPath + *it) && fileSystem::isRegularFile(resPath + *it))
 		{
-			sri.storagePath = rootPath + *it;
-			return sri;
+			return setSRI(resPath + *it);
 		}
 	}
-	return sri;
+	return setSRI(resPath + indexesId[0]);
 }
 
 std::string Server::getSupportedHttpVersion(void) const { return ("1.0"); }
@@ -212,7 +212,6 @@ std::size_t Server::getMaxBodySize(std::string const &uri) const
 	static_cast<void>(uri);
 	return (m_max_body);
 }
-
 
 /** DISPLAY FUNCTIONS */
 std::ostream &operator<<(std::ostream &os, Location const &l)

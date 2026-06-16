@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServeStaticResource.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:45:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 14:24:30 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void ServeStaticResource::execute(Input const &dtoInput)
 
 	domain::ResourceMetaData target_meta_data(
 		target_infos.resourcePath, target_infos.type, target_infos.permissions,
-		target_infos.contentlength, target_infos.canBeDeleted
+		target_infos.contentLength, target_infos.canBeDeleted
 	);
 
 	if (target_meta_data.isCollection())

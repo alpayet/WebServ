@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SystemResourceInfos.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 19:48:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:39:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 14:00:10 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ struct SystemResourceInfos
 	// TODO: utiliser methodes de archi/storage/file_system
 	domain::ResourceType		type;
 	domain::ResourcePermissions permissions;
-	std::size_t					contentlength;
+	std::size_t					contentLength;
 	bool						canBeDeleted;
 	bool						exists;
 };

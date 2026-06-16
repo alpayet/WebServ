@@ -68,7 +68,9 @@ class Server : public app::IResourceLocator,
 	virtual app::SystemResourceInfos
 	locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const;
 	virtual app::SystemResourceInfos locateDefaultIndex(
-		std::vector<std::string> indexesId, std::string const &locPath, std::string const &rootPath
+		std::vector<std::string> const &indexesId,
+		std::string const			   &locPath,
+		std::string const			   &rootPath
 	) const;
 
 	virtual http::RoutePolicy match(std::string const &uri) const;
