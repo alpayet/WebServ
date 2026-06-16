@@ -31,8 +31,22 @@ class Server : public app::IResourceLocator,
 {
   public:
 	/** CTOR */
-	Server() : m_port(8080), m_interface("0.0.0.0"), m_max_body(1000000) {};
+	Server()
+		: m_port(8080), m_interface("0.0.0.0"), m_max_body(1000000), m_transport(TRANSPORT_TCP),
+		  m_applicative_protocol(APP_HTTP) {};
 	~Server() {};
+
+	enum TransportProtocol
+	{
+		TRANSPORT_TCP,
+		TRANSPORT_UDP
+	};
+
+	enum ApplicativeProtocol
+	{
+		APP_HTTP,
+		APP_TEST
+	};
 
 	/** GETTERS */
 	unsigned short					  getPort() const { return m_port; };
@@ -64,6 +78,8 @@ class Server : public app::IResourceLocator,
 	virtual std::size_t		 getMaxBodySize(void) const; // void param
 	virtual std::size_t		 getMaxBodySize(std::string const &uri) const;
 	std::vector<std::string> getAllowedMethods(Location const &loc) const;
+	TransportProtocol		 getTransportProtocol(void) const;
+	ApplicativeProtocol		 getApplicativeProtocol(void) const;
 
 	virtual app::SystemResourceInfos
 	locate(std::string const &id, std::string const &locPath, std::string const &rootPath) const;
@@ -83,6 +99,8 @@ class Server : public app::IResourceLocator,
 	std::size_t				   m_max_body;
 	std::string				   m_root;
 	std::vector<std::string>   m_index;
+	TransportProtocol		   m_transport;
+	ApplicativeProtocol		   m_applicative_protocol;
 };
 
 std::ostream &operator<<(std::ostream &os, Location const &l);

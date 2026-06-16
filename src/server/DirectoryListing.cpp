@@ -4,6 +4,7 @@
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
+#include <sstream>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -35,60 +36,47 @@ std::string resolveURI(Location const &loc)
 
 // TODO: no size for directory && add date && rename ".." to "parent directory"
 #include <iostream>
-void displayListing(std::string dir_name)
+std::ostringstream displayListing(std::string dir_name)
 {
 	DIR *dir_ptr = opendir(dir_name.c_str());
 
 	// TODO: generate GET method
-	/**
-	 * call get
-	 * if ok -> 200
-	 * if opendir fail -> 500
-	 *
-	 * html to generate:
-	 * <h1>"Index of " + current directory</h1>
-	 * "Name\tLast modified\tSize"
-	 * <ul>
-	 * <li><a href="..">Previous folder</a>[tab] st.st_mtime [tab] - </li>
-	 * while (read file)
-	 * 		if file
-	 * 			<li><a href="filename">filename [tab] st.st_mtime [tab] st.st_size</a></li>
-	 * 		else if directory
-	 * 			<li><a href="filename">filename [tab] st.st_mtime [tab] -</a></li>
-	 * </ul>
-	 *
-	 */
+	// TODO: check before
+	// if (!dir_ptr)
+	// {
+	// 	std::cerr << "Couldn't open the '" << dir_name << "' repository" << std::endl;
+	// 	return;
+	// 	// throw ();
+	// }
+	std::ostringstream oss;
 
-	if (!dir_ptr)
-	{
-		std::cerr << "Couldn't open the '" << dir_name << "' repository" << std::endl;
-		return;
-		// throw ();
-	}
-
-	std::cout << "<h1>Index of " << dir_name << "</h1>" << std::endl;
-	std::cout << "<table>" << std::endl;
-	std::cout << "\t<tr>" << std::endl;
-	std::cout << "\t\t<th>Name</th>" << std::endl;
-	std::cout << "\t\t<th>Last Modified</th>" << std::endl;
-	std::cout << "\t\t<th>Size</th>" << std::endl;
-	std::cout << "\t</tr>" << std::endl;
+	oss << "<!DOCTYPE html>" << std::endl;
+	oss << "<html>" << std::endl;
+	oss << "<head>" << std::endl;
+	oss << "<title>Directory listing</title>" << std::endl;
+	oss << "</head>" << std::endl;
+	oss << "<h1>Index of " << dir_name << "</h1>" << std::endl;
+	oss << "<table>" << std::endl;
+	oss << "\t<tr>" << std::endl;
+	oss << "\t\t<th>Name</th>" << std::endl;
+	oss << "\t\t<th>Last Modified</th>" << std::endl;
+	oss << "\t\t<th>Size</th>" << std::endl;
+	oss << "\t</tr>" << std::endl;
 
 	struct dirent *dir = readdir(dir_ptr);
 	struct stat	   st;
 	time_t		   t_mod = st.st_mtime;
-	if (stat(dir->d_name, &st) != 0)
-	{
-		std::cerr << "error stat" << std::endl;
-		return;
-		// throw ();
-	}
-	// TODO: seek ".." and go back to beginning
+	// if (stat(dir->d_name, &st) != 0)
+	// {
+	// 	std::cerr << "error stat" << std::endl;
+	// 	return;
+	// 	// throw ();
+	// }
 	struct tm t_local;
 	localtime_r(&t_mod, &t_local);
 	char t_buf[80];
 	strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-	std::cout << "\t<tr>" << std::endl;
+	oss << "\t<tr>" << std::endl;
 	size_t pos = dir_name.find_last_of('/');
 	if (pos == dir_name.size() - 1)
 	{
@@ -96,10 +84,10 @@ void displayListing(std::string dir_name)
 		pos = dir_name.find_last_of('/');
 	}
 	std::string prev_dir = dir_name.substr(0, pos);
-	std::cout << "\t\t<td><a href=\"" << prev_dir << "\">Previous directory</a></td>" << std::endl;
-	std::cout << "\t\t<td>" << t_buf << "</td>" << std::endl;
-	std::cout << "\t\t<td>-</td>" << std::endl;
-	std::cout << "\t</tr>" << std::endl;
+	oss << "\t\t<td><a href=\"" << prev_dir << "\">Previous directory</a></td>" << std::endl;
+	oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
+	oss << "\t\t<td>-</td>" << std::endl;
+	oss << "\t</tr>" << std::endl;
 	dir = readdir(dir_ptr);
 	while (dir != NULL)
 	{
@@ -109,30 +97,33 @@ void displayListing(std::string dir_name)
 			continue;
 		}
 		bzero(t_buf, 80);
-		std::cout << "\t<tr>" << std::endl;
-		std::cout << "\t\t<td><a href=\"" << dir->d_name << "\">" << dir->d_name << "</a></td>"
-				  << std::endl;
+		oss << "\t<tr>" << std::endl;
+		oss << "\t\t<td><a href=\"" << dir->d_name << "\">" << dir->d_name << "</a></td>"
+			<< std::endl;
 		t_mod = st.st_mtime;
 		localtime_r(&t_mod, &t_local);
 		strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-		std::cout << "\t\t<td>" << t_buf << "</td>" << std::endl;
+		oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
 		if (S_ISDIR(st.st_mode))
-			std::cout << "\t\t<td>-</td>" << std::endl;
+			oss << "\t\t<td>-</td>" << std::endl;
 		else
-			std::cout << "\t\t<td>" << st.st_size << "</td>" << std::endl;
-		std::cout << "\t</tr>" << std::endl;
-		if (stat(dir->d_name, &st) != 0)
-		{
-			std::cerr << "error stat" << std::endl;
-			return;
-			// throw ();
-		}
+			oss << "\t\t<td>" << st.st_size << "</td>" << std::endl;
+		oss << "\t</tr>" << std::endl;
+		// if (stat(dir->d_name, &st) != 0)
+		// {
+		// 	std::cerr << "error stat" << std::endl;
+		// 	return;
+		// 	// throw ();
+		// }
 		dir = readdir(dir_ptr);
 	}
 
-	std::cout << "</table>" << std::endl;
+	oss << "</table>" << std::endl;
+	oss << "</body>" << std::endl;
+	oss << "</html>" << std::endl;
 	closedir(dir_ptr);
 	dir_ptr = NULL;
+	return oss;
 }
 
 //! directory listing needs resolved uri

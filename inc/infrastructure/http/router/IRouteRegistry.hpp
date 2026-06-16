@@ -6,7 +6,7 @@
 /*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 19:15:04 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/16 17:21:34 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <string>
 
 namespace http {
-// TODO: faire herité la config de cette interface
 struct RoutePolicy;
 
 class IRouteRegistry

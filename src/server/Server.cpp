@@ -132,7 +132,7 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 	std::string resPath = resolvePhysicalPath("/", locPath, rootPath);
 
 	if (indexesId.empty())
-		throw("banana, no index"); // TODO: check if throw
+		return app::SystemResourceInfos();
 
 	std::vector<std::string>::const_iterator ite = indexesId.end();
 	std::vector<std::string>::const_iterator it = indexesId.begin();
@@ -170,6 +170,13 @@ std::size_t Server::getMaxBodySize(std::string const &uri) const
 {
 	static_cast<void>(uri);
 	return (m_max_body);
+}
+
+Server::TransportProtocol Server::getTransportProtocol(void) const { return m_transport; }
+
+Server::ApplicativeProtocol Server::getApplicativeProtocol(void) const
+{
+	return m_applicative_protocol;
 }
 
 /** DISPLAY FUNCTIONS */
