@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResourceMetaData.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:42:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:42:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 16:47:44 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class ResourceMetaData
 		std::string			resourcePath,
 		ResourceType		type,
 		ResourcePermissions permissions,
-		std::size_t			contentlength,
+		std::size_t			contentLength,
 		bool				canBeDeleted
 	);
 
@@ -42,7 +42,7 @@ class ResourceMetaData
 	std::string			_resourcePath;
 	ResourceType		_type;
 	ResourcePermissions _permissions;
-	std::size_t			_contentlength;
+	std::size_t			_contentLength;
 	bool				_canBeDeleted;
 };
 } // namespace domain

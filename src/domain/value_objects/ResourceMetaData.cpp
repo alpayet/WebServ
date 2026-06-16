@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResourceMetaData.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:42:23 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/16 16:47:44 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ ResourceMetaData::ResourceMetaData(
 	std::size_t			contentlength,
 	bool				canBeDeleted
 )
-	: _permissions(permissions), _contentlength(contentlength), _canBeDeleted(canBeDeleted)
+	: _permissions(permissions), _contentLength(contentlength), _canBeDeleted(canBeDeleted)
 {
 	if (_resourcePath.empty())
 		throw Exception(Exception::pathMissing);
@@ -33,7 +33,7 @@ ResourceMetaData::ResourceMetaData(
 
 std::string const &ResourceMetaData::getResourcePath(void) const { return (_resourcePath); }
 
-std::size_t ResourceMetaData::getContentLength(void) const { return (_contentlength); }
+std::size_t ResourceMetaData::getContentLength(void) const { return (_contentLength); }
 
 bool ResourceMetaData::isExecutable(void) const { return (_permissions & executable); }
 

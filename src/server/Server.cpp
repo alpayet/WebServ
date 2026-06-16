@@ -12,6 +12,7 @@
 
 #include "application/ports/SystemResourceInfos.hpp"
 #include "config/Semantic.hpp"
+#include "infrastructure/storage/file_system/Storage.hpp"
 
 Location Server::findLocationFromUri(std::string const &uri) const
 {
@@ -74,83 +75,40 @@ std::string Server::resolvePhysicalPath(
 	return resUri;
 }
 
-namespace fileSystem {
-inline bool exists(std::string const &path) { return access(path.c_str(), F_OK) == 0; }
-
-inline bool isRegularFile(std::string const &path)
-{
-	struct stat st;
-	return stat(path.c_str(), &st) == 0 && S_ISREG(st.st_mode);
-}
-
-inline bool isDirectory(std::string const &path)
-{
-	struct stat st;
-	return stat(path.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
-}
-
-inline bool isReadable(std::string const &path) { return access(path.c_str(), R_OK) == 0; }
-
-inline bool isWritable(std::string const &path) { return access(path.c_str(), W_OK) == 0; }
-
-inline bool isExecutable(std::string const &path) { return access(path.c_str(), X_OK) == 0; }
-
-inline std::size_t getSize(std::string const &path)
-{
-	struct stat st;
-	if (stat(path.c_str(), &st) != 0)
-		return 0; // throw ("no size");
-	return st.st_size;
-}
-
-bool isDeletable(std::string const &path)
-{
-	std::size_t pos = path.find_last_of("/");
-	if (pos == std::string::npos)
-		return false; // TODO: check that, maybe throw
-	std::string curr_dir;
-	if (pos == 0)
-		curr_dir = "/";
-	else
-		curr_dir = path.substr(0, pos);
-	return access(curr_dir.c_str(), W_OK | X_OK) == 0;
-}
-} // namespace fileSystem
-
 app::SystemResourceInfos setSRI(std::string const &path)
 {
 	app::SystemResourceInfos sri;
 
 	sri.resourcePath = path;
 
-	if (!fileSystem::exists(sri.resourcePath))
+	if (!fileSystem::Storage::exists(sri.resourcePath))
 	{
 		sri.exists = false;
-		return sri; // TODO: check if need to set other values
+		return sri;
 	}
 	sri.exists = true;
 
-	if (fileSystem::isRegularFile(sri.resourcePath))
+	if (fileSystem::Storage::isRegularFile(sri.resourcePath))
 		sri.type = domain::leaf;
-	else if (fileSystem::isDirectory(sri.resourcePath))
+	else if (fileSystem::Storage::isDirectory(sri.resourcePath))
 		sri.type = domain::collection;
 	else
 		sri.type = domain::unknown;
 
 	sri.permissions = domain::none;
-	if (fileSystem::isReadable(sri.resourcePath))
+	if (fileSystem::Storage::isReadable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::readable);
-	if (fileSystem::isWritable(sri.resourcePath))
+	if (fileSystem::Storage::isWritable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::writable);
-	if (fileSystem::isExecutable(sri.resourcePath))
+	if (fileSystem::Storage::isExecutable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
 
-	sri.contentLength = fileSystem::getSize(sri.resourcePath);
+	sri.contentLength = fileSystem::Storage::getSize(sri.resourcePath);
 
-	sri.canBeDeleted = fileSystem::isDeletable(sri.resourcePath);
+	sri.canBeDeleted = fileSystem::Storage::isDeletable(sri.resourcePath);
 
 	return sri;
 }
@@ -180,7 +138,8 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 	std::vector<std::string>::const_iterator it = indexesId.begin();
 	for (; it != ite; ++it)
 	{
-		if (fileSystem::exists(resPath + *it) && fileSystem::isRegularFile(resPath + *it))
+		if (fileSystem::Storage::exists(resPath + *it) &&
+			fileSystem::Storage::isRegularFile(resPath + *it))
 		{
 			return setSRI(resPath + *it);
 		}

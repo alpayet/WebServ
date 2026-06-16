@@ -6,7 +6,7 @@
 /*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 19:48:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 14:00:10 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/16 16:49:25 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 namespace app {
 struct SystemResourceInfos
 {
-	std::string resourcePath;
-	// TODO: utiliser methodes de archi/storage/file_system
+	std::string					resourcePath;
 	domain::ResourceType		type;
 	domain::ResourcePermissions permissions;
 	std::size_t					contentLength;
