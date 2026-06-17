@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IDynamicResourceExecutor.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:38:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 09:54:23 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <map>
 #include <string>
 
-// TODO: faire herité CGI de cette interface
 namespace app {
 class IDynamicResourceExecutor
 {

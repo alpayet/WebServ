@@ -10,32 +10,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-// TODO: src/app/use_case/serve_static_resource
-// TODO: use function from server for uri
-// std::string resolveURI(Location const &loc)
-// {
-// 	std::string uri;
-
-// 	for (size_t i = 0; i < loc.index.size(); ++i)
-// 	{
-// 		int fd = open((loc.root + loc.index[i]).c_str(), O_RDONLY);
-// 		if (fd > 0)
-// 		{
-// 			uri = loc.root + loc.index[i];
-// 			close(fd);
-// 			return uri;
-// 		}
-// 	}
-// 	DIR *dir_ptr = opendir(loc.root.c_str());
-// 	if (dir_ptr)
-// 		uri = loc.root;
-// 	else
-// 		; // TODO: uri = error_page 403;
-// 	return uri;
-// }
-
 // TODO: no size for directory && add date && rename ".." to "parent directory"
-#include <iostream>
 std::ostringstream displayListing(std::string dir_name)
 {
 	DIR *dir_ptr = opendir(dir_name.c_str());
@@ -66,6 +41,7 @@ std::ostringstream displayListing(std::string dir_name)
 	struct dirent *dir = readdir(dir_ptr);
 	struct stat	   st;
 	time_t		   t_mod = st.st_mtime;
+	stat(dir->d_name, &st);
 	// if (stat(dir->d_name, &st) != 0)
 	// {
 	// 	std::cerr << "error stat" << std::endl;
@@ -109,6 +85,7 @@ std::ostringstream displayListing(std::string dir_name)
 		else
 			oss << "\t\t<td>" << st.st_size << "</td>" << std::endl;
 		oss << "\t</tr>" << std::endl;
+		stat(dir->d_name, &st);
 		// if (stat(dir->d_name, &st) != 0)
 		// {
 		// 	std::cerr << "error stat" << std::endl;
@@ -125,6 +102,3 @@ std::ostringstream displayListing(std::string dir_name)
 	dir_ptr = NULL;
 	return oss;
 }
-
-//! directory listing needs resolved uri
-// TODO: resolves url (root to replace location, alias-like mapping)

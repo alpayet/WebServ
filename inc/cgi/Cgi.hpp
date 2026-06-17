@@ -1,14 +1,18 @@
 #ifndef CGI_HPP
-# define CGI_HPP
+#define CGI_HPP
 
+#include "application/ports/IDynamicResourceExecutor.hpp"
 
-
-class CGI
+class Cgi : public app::IDynamicResourceExecutor
 {
-	public:
-	
+  public:
+	virtual void execute(
+		std::string const						 &resourcePath,
+		std::string const						 &bodyPath,
+		std::map<std::string, std::string> const &metaVariables
+	);
 
-	private:
+  private:
 };
 
 #endif
