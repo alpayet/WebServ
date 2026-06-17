@@ -49,36 +49,24 @@ bool hasSheBang(std::string const &filename)
 	return false;
 }
 
-// TODO:
-// FindStaticResourceUseCase
-// ExecuteDynamicResourceUseCase
-// content_location = empty if get
-
 #include <map>
 #include <utility>
 
 std::map<std::string, std::pair<std::string, std::string>> interpreters = {
-	{".py", {"/opt/pyenv/shims/python3/", "python3"}},
-	{".sh", {"/bin/sh/", "sh"}},
-	{".php", {"/usr/bin/php/", "php"}}
+	{".py", {"/bin/python3", "python3"}},
+	{".sh", {"/bin/bash", "bash"}},
+	{".php", {"/bin/php", "php"}}
 };
 
 std::pair<std::string, std::string> getInterpreter(std::string const &uri)
 {
 	std::size_t pos = uri.find_last_of(".");
 
-	// TODO: if uri passed instead of just filename
 	std::size_t pos2 = uri.find_last_of("/");
 	if (pos == std::string::npos || pos2 + 1 == pos)
 	{
 		throw("banana");
 	}
-
-	// TODO: if filename passed instead of uri
-	// if (pos == std::string::npos || pos == 0)
-	// {
-	// 	throw("banana");
-	// }
 
 	std::string ext = uri.substr(pos, uri.size() - pos);
 	return interpreters[ext];
@@ -108,6 +96,11 @@ void createEnv(
 	}
 }
 
+// TODO:
+// FindStaticResourceUseCase
+// ExecuteDynamicResourceUseCase
+// content_location = empty if get
+
 void Cgi::execute(
 	std::string const						 &resourcePath,
 	std::string const						 &bodyPath,
@@ -120,6 +113,17 @@ void Cgi::execute(
 	createEnv(metaVariables, tmpEnv, envp);
 
 	int fds[2];
+
+	// TODO:
+	/**
+	 * if executable && hasSheBang
+	 * 		execve(direct executable, 0, envp)
+	 * else
+	 * {
+	 * 		interface (pair) = getInterface
+	 * 		execve(interface.first, [interface.second, resourcePath], envp)
+	 * }
+	 */
 
 	if (pipe(fds) < 0)
 	{

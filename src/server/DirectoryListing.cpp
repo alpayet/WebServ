@@ -17,12 +17,10 @@ std::ostringstream displayListing(std::string dir_name)
 
 	// TODO: generate GET method
 	// TODO: check before
-	// if (!dir_ptr)
-	// {
-	// 	std::cerr << "Couldn't open the '" << dir_name << "' repository" << std::endl;
-	// 	return;
-	// 	// throw ();
-	// }
+	if (!dir_ptr)
+	{
+		throw("banana");
+	}
 	std::ostringstream oss;
 
 	oss << "<!DOCTYPE html>" << std::endl;

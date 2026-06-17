@@ -74,4 +74,6 @@ Some differences exist between the two files such as no redefinition of values, 
 
 [Nginx server block](https://docs.nginx.com/nginx/admin-guide/web-server/web-server/)
 
-[CGI](https://www.oreilly.com/openbook/cgi/ch01_04.html)
+[CGI](https://www.stat.berkeley.edu/~spector/s133/Cgi1a.html)
+
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
