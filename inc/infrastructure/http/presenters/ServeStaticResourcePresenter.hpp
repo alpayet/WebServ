@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 00:52:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,28 @@ namespace http {
 class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::IOutputPort
 {
   public:
+	struct ViewModel
+	{
+		app::IResourceReader *reader;
+		Response			  response;
+	};
+
+  public:
 	virtual ~ServeStaticResourcePresenter() {}
 
-	Response const &getResponse(void) const;
+	ViewModel const &getViewModel(void) const;
 
-	virtual void
-	presentContent(app::ResourceStatus status, app::IResourceReader *resourceReader) = 0;
-	virtual void presentListing(app::ResourceStatus status, std::vector<char> CollectionData) = 0;
+	virtual void presentContent(
+		app::ResourceStatus const	resourceStatus,
+		std::size_t const			resourceSize,
+		app::IResourceReader const *resourceReader
+	) = 0;
+	virtual void presentListing(
+		app::ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
+	) = 0;
 
   private:
-	Response _response;
+	ViewModel _viewModel;
 };
 } // namespace http
 

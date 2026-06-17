@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 00:52:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 
 	domain::ResourceMetaData target_meta_data(
 		target_infos.resourcePath, target_infos.type, target_infos.permissions,
-		target_infos.contentlength, target_infos.canBeDeleted
+		target_infos.resourceSize, target_infos.canBeDeleted
 	);
 
 	if (target_meta_data.isCollection())
@@ -51,7 +51,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 		{
 			domain::ResourceMetaData index_meta_data(
 				index_infos.resourcePath, index_infos.type, index_infos.permissions,
-				index_infos.contentlength, index_infos.canBeDeleted
+				index_infos.resourceSize, index_infos.canBeDeleted
 			);
 
 			if (index_meta_data.isReadable() && !index_meta_data.isCollection())
@@ -63,8 +63,10 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 	serveContent(dtoInput, outputPort, target_meta_data);
 }
 
-void ServeStaticResource::serveContent(
-	Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
+void presentContent(
+	app::ResourceStatus const	resourceStatus,
+	std::size_t const			resourceSize,
+	app::IResourceReader const *resourceReader
 )
 {
 	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);

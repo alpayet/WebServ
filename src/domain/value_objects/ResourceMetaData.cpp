@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:42:23 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 00:22:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ ResourceMetaData::ResourceMetaData(
 	std::string			resourcePath,
 	ResourceType		type,
 	ResourcePermissions permissions,
-	std::size_t			contentlength,
+	std::size_t			resourceSize,
 	bool				canBeDeleted
 )
-	: _permissions(permissions), _contentlength(contentlength), _canBeDeleted(canBeDeleted)
+	: _permissions(permissions), _resourceSize(resourceSize), _canBeDeleted(canBeDeleted)
 {
 	if (_resourcePath.empty())
 		throw Exception(Exception::pathMissing);
@@ -33,7 +33,7 @@ ResourceMetaData::ResourceMetaData(
 
 std::string const &ResourceMetaData::getResourcePath(void) const { return (_resourcePath); }
 
-std::size_t ResourceMetaData::getContentLength(void) const { return (_contentlength); }
+std::size_t ResourceMetaData::getResourceSize(void) const { return (_resourceSize); }
 
 bool ResourceMetaData::isExecutable(void) const { return (_permissions & executable); }
 

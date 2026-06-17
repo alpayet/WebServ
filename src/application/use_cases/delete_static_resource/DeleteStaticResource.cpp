@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 23:35:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 00:18:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void DeleteStaticResource::execute(Input const &dtoInput, IOutputPort &outputPor
 
 	domain::ResourceMetaData target_meta_data(
 		target_infos.resourcePath, target_infos.type, target_infos.permissions,
-		target_infos.contentlength, target_infos.canBeDeleted
+		target_infos.resourceSize, target_infos.canBeDeleted
 	);
 	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, target_meta_data);
 
