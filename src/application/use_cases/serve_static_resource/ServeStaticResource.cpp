@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 23:17:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void ServeStaticResource::serveContent(
 	if (!static_resource.isReadable())
 		throw Exception(Exception::accessDenied);
 
-	IStaticResourceReader *resource_reader =
+	IResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getResourcePath());
-	outputPort.presentContent(resource_reader);
+	outputPort.presentContent(resourceFound, resource_reader);
 }
 
 void ServeStaticResource::generateListing(
@@ -93,7 +93,7 @@ void ServeStaticResource::generateListing(
 	std::vector<char> collection_data =
 		_collectionExplorer.listingCollection(static_resource.getResourcePath());
 
-	outputPort.presentListing(collection_data);
+	outputPort.presentListing(resourceFound, collection_data);
 }
 } // namespace useCase
 } // namespace app

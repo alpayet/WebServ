@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:38:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 04:14:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 
 // TODO: faire herité CGI de cette interface
 namespace app {
+class IResourceReader;
+
 class IDynamicResourceExecutor
 {
   public:
 	virtual ~IDynamicResourceExecutor(void) {}
 
-	virtual void execute(
+	virtual IResourceReader *execute(
 		std::string const						 &resourcePath,
 		std::string const						 &bodyPath,
 		std::map<std::string, std::string> const &metaVariables

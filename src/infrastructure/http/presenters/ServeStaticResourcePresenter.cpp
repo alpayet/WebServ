@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:59:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,23 @@ namespace http {
 
 Response const &ServeStaticResourcePresenter::getResponse() const { return (_response); }
 
-void ServeStaticResourcePresenter::presentContent(app::IStaticResourceReader *resourceReader) {}
+void ServeStaticResourcePresenter::presentContent(
+	app::ResourceStatus status, app::IResourceReader *resourceReader
+)
+{
+	switch (status)
+	{
+		case app::resourceFound:
 
-void ServeStaticResourcePresenter::presentListing(std::vector<char> CollectionData) {}
+			break;
+
+		default:
+			break;
+	}
+}
+
+void ServeStaticResourcePresenter::presentListing(
+	app::ResourceStatus status, std::vector<char> CollectionData
+)
+{}
 } // namespace http

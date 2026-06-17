@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IStaticResourceReader.hpp                          :+:      :+:    :+:   */
+/*   fdReader.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:07:39 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/17 04:28:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ISTATICRESOURCEREADER_HPP
-#define ISTATICRESOURCEREADER_HPP
+#include "infrastructure/storage/file_system/fdReader.hpp"
 
-#include <vector>
+namespace fileSystem {
+fdReader::fdReader(int const fd) : _fd(fd) {}
 
-namespace app {
-class IStaticResourceReader
-{
-  public:
-	virtual ~IStaticResourceReader(void) {}
-
-	virtual std::vector<char> readChunk(void) = 0;
-};
-} // namespace app
-
-#endif // ISTATICRESOURCEREADER_HPP
+std::vector<char> fdReader::readChunk(void) {}
+} // namespace fileSystem

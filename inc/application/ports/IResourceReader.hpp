@@ -1,40 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Response.hpp                                       :+:      :+:    :+:   */
+/*   IResourceReader.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 03:09:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/17 04:31:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPRESPONSE_HPP
-#define HTTPRESPONSE_HPP
+#ifndef IRESOURCEREADER_HPP
+#define IRESOURCEREADER_HPP
 
-#include <string>
 #include <vector>
 
-namespace http {
-struct Response
+namespace app {
+class IResourceReader
 {
-	struct Status
-	{
-		short		statusCode;
-		std::string reason;
-	};
-	struct Header
-	{
-		std::string name;
-		std::string value;
-	};
+  public:
+	virtual ~IResourceReader(void) {}
 
-	std::string			protocol;
-	Status				status;
-	std::vector<Header> headers;
-	std::vector<char>	body;
+	virtual std::vector<char> readChunk(void) = 0;
 };
-} // namespace http
+} // namespace app
 
-#endif // HTTPRESPONSE_HPP
+#endif // IRESOURCEREADER_HPP

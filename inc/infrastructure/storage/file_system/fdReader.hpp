@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Response.hpp                                       :+:      :+:    :+:   */
+/*   fdReader.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 03:09:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/17 04:30:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPRESPONSE_HPP
-#define HTTPRESPONSE_HPP
+#ifndef FILESYSTEMFDREADER_HPP
+#define FILESYSTEMFDREADER_HPP
 
+#include "application/ports/IResourceReader.hpp"
 #include <string>
 #include <vector>
 
-namespace http {
-struct Response
+namespace fileSystem {
+class fdReader : public app::IResourceReader
 {
-	struct Status
-	{
-		short		statusCode;
-		std::string reason;
-	};
-	struct Header
-	{
-		std::string name;
-		std::string value;
-	};
+  public:
+	fdReader(int const fd);
 
-	std::string			protocol;
-	Status				status;
-	std::vector<Header> headers;
-	std::vector<char>	body;
+	virtual std::vector<char> readChunk(void);
+
+  private:
+	fdReader(fdReader const &src);
+	fdReader &operator=(fdReader const &rhs);
+
+	int _fd;
 };
-} // namespace http
+} // namespace fileSystem
 
-#endif // HTTPRESPONSE_HPP
+#endif // FILESYSTEMFDREADER_HPP

@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Response.hpp                                       :+:      :+:    :+:   */
+/*   ResourceStatus.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 03:09:11 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/17 02:17:25 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/17 02:19:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPRESPONSE_HPP
-#define HTTPRESPONSE_HPP
+#ifndef RESOURCESTATUS_HPP
+#define RESOURCESTATUS_HPP
 
-#include <string>
-#include <vector>
-
-namespace http {
-struct Response
+namespace app {
+enum ResourceStatus
 {
-	struct Status
-	{
-		short		statusCode;
-		std::string reason;
-	};
-	struct Header
-	{
-		std::string name;
-		std::string value;
-	};
-
-	std::string			protocol;
-	Status				status;
-	std::vector<Header> headers;
-	std::vector<char>	body;
+	resourceFound
 };
-} // namespace http
+} // namespace app
 
-#endif // HTTPRESPONSE_HPP
+#endif // RESOURCESTATUS_HPP

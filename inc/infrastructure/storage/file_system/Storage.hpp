@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:29:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:43:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 04:25:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ class Storage : public app::IStaticResourceStorage
   public:
 	virtual ~Storage(void) {}
 
-	virtual void						remove(std::string const &resourcePath);
-	virtual app::IStaticResourceReader *createReader(std::string const &resourcePath);
+	virtual void				  remove(std::string const &resourcePath);
+	virtual app::IResourceReader *createReader(std::string const &resourcePath);
+	app::IResourceReader		 *createReader(int const fd);
 
   private:
 	Storage(Storage const &src);

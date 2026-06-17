@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 23:19:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVESTATICRESOURCEUSECASE_HPP
 #define SERVESTATICRESOURCEUSECASE_HPP
 
+#include "application/ResourceStatus.hpp"
 #include <string>
 #include <vector>
 
@@ -22,7 +23,7 @@ class ResourceMetaData;
 
 namespace app {
 class IResourceLocator;
-class IStaticResourceReader;
+class IResourceReader;
 class IStaticResourceStorage;
 class ICollectionExplorer;
 
@@ -50,8 +51,8 @@ class ServeStaticResource
 	  public:
 		virtual ~IOutputPort() {}
 
-		virtual void presentContent(IStaticResourceReader *resourceReader) = 0;
-		virtual void presentListing(std::vector<char> CollectionData) = 0;
+		virtual void presentContent(ResourceStatus status, IResourceReader *resourceReader) = 0;
+		virtual void presentListing(ResourceStatus status, std::vector<char> CollectionData) = 0;
 	};
 
   public:
