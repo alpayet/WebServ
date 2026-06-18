@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 16:20:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 22:12:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include <sstream>
 
 namespace http {
+
+ServeStaticResourcePresenter::ServeStaticResourcePresenter(std::string const &httpVersion)
+	: _httpVersion(httpVersion)
+{}
 
 ServeStaticResourcePresenter::ViewModel const &
 ServeStaticResourcePresenter::getViewModel(void) const
@@ -44,14 +48,12 @@ void ServeStaticResourcePresenter::presentContent(
 	std::stringstream contentLengthAsString;
 	contentLengthAsString << resourceSize;
 
-	Response::Header header = {
-		.name = header::CONTENT_LENGTH, .value = contentLengthAsString.str()
-	};
+	Response::Builder response_builder;
 
-	Response response;
-
-	response.status = responseStatus;
-	response.headers.insert(response.headers.end(), header);
+	response_builder.withProtocol(_httpVersion);
+	response_builder.withStatus(responseStatus);
+	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
+	response_builder.build();
 }
 
 void ServeStaticResourcePresenter::presentListing(

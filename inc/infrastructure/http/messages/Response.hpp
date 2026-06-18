@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 23:31:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 21:57:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 namespace http {
 struct Response
 {
+  public:
+	class Builder;
+
 	struct Status
 	{
 		unsigned short statusCode;
@@ -26,7 +29,7 @@ struct Response
 	};
 	struct Header
 	{
-		std::string name;
+		std::string key;
 		std::string value;
 	};
 
@@ -34,6 +37,19 @@ struct Response
 	Status				status;
 	std::vector<Header> headers;
 	std::vector<char>	body;
+};
+
+class Response::Builder
+{
+  public:
+	Builder		   &withProtocol(std::string const &protocol);
+	Builder		   &withStatus(Response::Status const &status);
+	Builder		   &withHeader(std::string const &key, std::string const &value);
+	Builder		   &withBody(std::vector<char> const &body);
+	Response const &build(void) const;
+
+  private:
+	Response _response;
 };
 } // namespace http
 

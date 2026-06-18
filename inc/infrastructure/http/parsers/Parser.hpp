@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 22:28:03 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 
 namespace http {
 class IRequestValidationPolicy;
+class IVersionProvider;
 
 class Parser
 {
   public:
-	Parser(IRequestValidationPolicy &requestValidationPolicy);
+	Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider);
 
 	ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
 
@@ -33,9 +34,7 @@ class Parser
 	Parser &operator=(Parser const &rhs);
 
 	IRequestValidationPolicy &_requestValidationPolicy;
-
-	static char const _crlf[];
-	static char const _whiteSpaces[];
+	IVersionProvider		 &_versionProvider;
 
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,

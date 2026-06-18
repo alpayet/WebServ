@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 14:46:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 22:43:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/parsers/Parser.hpp"
 #include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/IVersionProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/messages/Methods.hpp"
 #include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
@@ -65,10 +66,10 @@ bool is_invalid_key_char(unsigned char c)
 
 bool is_invalid_value_char(unsigned char c)
 {
-	return (!(std::isprint(c) || c == '\t' || c >= 128));
+	return (!(std::isprint(c) || c == http::HT || c >= 128));
 }
 
-bool is_not_whitespaces(char c) { return (c != ' ' && c != '\t'); }
+bool is_notWHITE_SPACES(char c) { return (c != http::SP && c != http::HT); }
 
 char to_lower_safe(unsigned char c) { return (static_cast<char>(std::tolower(c))); }
 
@@ -90,11 +91,9 @@ void trim(std::string &str, char const *to_trim)
 } // namespace
 
 namespace http {
-char const Parser::_crlf[] = "\r\n";
-char const Parser::_whiteSpaces[] = "\t ";
 
-Parser::Parser(IRequestValidationPolicy &requestValidationPolicy)
-	: _requestValidationPolicy(requestValidationPolicy)
+Parser::Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider)
+	: _requestValidationPolicy(requestValidationPolicy), _versionProvider(versionProvider)
 {}
 
 ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state)
@@ -110,10 +109,10 @@ ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state
 				std::vector<char>::iterator it_line_end = findCRLF(readBuf);
 				if (it_start == it_line_end)
 				{
-					readBuf.erase(it_start, it_start + sizeof(_crlf) - 1);
+					readBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
 					break;
 				}
-				if (*it_start == '\r' && it_start + 1 != readBuf.end())
+				if (*it_start == CR && it_start + 1 != readBuf.end())
 					state.step = ParsingState::requestLine;
 			case ParsingState::requestLine:
 				std::vector<char>::iterator it_start = readBuf.begin();
@@ -127,7 +126,7 @@ ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state
 					break;
 				}
 				parseRequestLine(it_start, it_line_end, state);
-				readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
+				readBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				state.step = ParsingState::header;
 				break;
@@ -148,7 +147,7 @@ ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state
 				{
 					if (state.request.contentLength != 0 && expectsBody(state.request.method))
 					{
-						readBuf.erase(it_start, it_start + sizeof(_crlf) - 1);
+						readBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
 						state.step = ParsingState::body;
 						break;
 					}
@@ -161,7 +160,7 @@ ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state
 				}
 				parseRequestLine(it_start, it_line_end, state);
 				parseContentLength(state);
-				readBuf.erase(it_start, it_line_end + sizeof(_crlf) - 1);
+				readBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				break;
 			case ParsingState::body:
@@ -195,7 +194,7 @@ void Parser::parseRequestLine(
 	extractTargetandQuery(it, itLineEnd, state);
 	state.request.protocol = extractProtocol(it, itLineEnd);
 
-	if (std::find_if(it, itLineEnd, is_not_whitespaces) != itLineEnd)
+	if (std::find_if(it, itLineEnd, is_notWHITE_SPACES) != itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 }
 
@@ -209,7 +208,7 @@ void Parser::parseHeaderLine(
 		throw Exception(Exception::invalidLineBreak);
 
 	std::vector<char>::const_iterator it_colon;
-	it_colon = std::find(itStart, itLineEnd, ':');
+	it_colon = std::find(itStart, itLineEnd, COLON);
 	if (it_colon == itLineEnd)
 		throw Exception(Exception::headerLineMalformed);
 
@@ -221,7 +220,7 @@ void Parser::parseHeaderLine(
 	if (!is_valid_value_syntax(it_colon + 1, itLineEnd))
 		throw Exception(Exception::headerValueInvalid);
 	std::string value(it_colon + 1, itLineEnd);
-	trim(value, _whiteSpaces);
+	trim(value, WHITE_SPACES);
 
 	state.request.headers[key] = value;
 }
@@ -266,7 +265,7 @@ std::string Parser::extractMethod(
 )
 {
 	std::vector<char>::const_iterator it_method_end =
-		std::find_first_of(it, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1);
+		std::find_first_of(it, itLineEnd, WHITE_SPACES, WHITE_SPACES + sizeof(WHITE_SPACES) - 1);
 	if (it_method_end == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
@@ -285,12 +284,12 @@ void Parser::extractTargetandQuery(
 )
 {
 	std::vector<char>::const_iterator it_target_start =
-		std::find_if(it, itLineEnd, is_not_whitespaces);
+		std::find_if(it, itLineEnd, is_notWHITE_SPACES);
 	if (it_target_start == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
 	std::vector<char>::const_iterator it_target_end = std::find_first_of(
-		it_target_start, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1
+		it_target_start, itLineEnd, WHITE_SPACES, WHITE_SPACES + sizeof(WHITE_SPACES) - 1
 	);
 	if (it_target_end == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
@@ -311,17 +310,17 @@ std::string Parser::extractProtocol(
 )
 {
 	std::vector<char>::const_iterator it_protocol_start =
-		std::find_if(it, itLineEnd, is_not_whitespaces);
+		std::find_if(it, itLineEnd, is_notWHITE_SPACES);
 	if (it_protocol_start == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
 	std::vector<char>::const_iterator it_protocol_end = std::find_first_of(
-		it_protocol_start, itLineEnd, _whiteSpaces, _whiteSpaces + sizeof(_whiteSpaces) - 1
+		it_protocol_start, itLineEnd, WHITE_SPACES, WHITE_SPACES + sizeof(WHITE_SPACES) - 1
 	);
 
 	std::string protocol(it_protocol_start, it_protocol_end);
 
-	if (protocol != _requestValidationPolicy.getSupportedHttpVersion())
+	if (protocol != _versionProvider.getHttpVersion())
 		throw Exception(Exception::versionInvalid);
 	it = it_protocol_end;
 	return (protocol);
@@ -331,12 +330,12 @@ bool Parser::hasLineBreak(
 	std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
 )
 {
-	return ((std::find_first_of(itStart, itEnd, _crlf, _crlf + sizeof(_crlf) - 1) != itEnd));
+	return ((std::find_first_of(itStart, itEnd, CRLF, CRLF + sizeof(CRLF) - 1) != itEnd));
 }
 
 std::vector<char>::iterator Parser::findCRLF(std::vector<char> &readBuf)
 {
-	return (std::search(readBuf.begin(), readBuf.end(), _crlf, _crlf + sizeof(_crlf) - 1));
+	return (std::search(readBuf.begin(), readBuf.end(), CRLF, CRLF + sizeof(CRLF) - 1));
 }
 
 void Parser::validateRequestLineSize(std::size_t size)

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 21:09:41 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 14:43:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 22:42:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #define CONSTANTS_HPP
 
 namespace http {
+
+static char const COLON = ':';
+static char const SP = ' ';
+static char const HT = '\t';
+static char const WHITE_SPACES[] = {SP, HT, '\0'};
+static char const CR = '\r';
+static char const LF = '\n';
+static char const CRLF[] = {CR, LF, '\0'};
 
 namespace header {
 static char const CONTENT_LENGTH[] = "content-Length";

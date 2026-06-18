@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:04:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 16:12:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 22:11:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Context : public ITransferContext
 	Context(void) {}
 
 	ParsingState		  state;
-	std::vector<char>	  rawHeaders;
+	std::vector<char>	  rawHeaderBlock;
 	std::vector<char>	  rawbody;
 	app::IResourceReader *reader;
 
