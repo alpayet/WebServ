@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 01:55:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:15:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class ServeStaticResource;
 
 namespace http {
 class Request;
-class Response;
+class Context;
 struct RoutePolicy;
 
 class ServeStaticResourceController
@@ -30,7 +30,7 @@ class ServeStaticResourceController
 	ServeStaticResourceController(app::useCase::ServeStaticResource &useCase);
 
 	void ServeStaticResourceController::operator()(
-		Request const &request, Response &response, RoutePolicy const &routePolicy
+		Request const &request, Context &context, RoutePolicy const &routePolicy
 	);
 
   private:

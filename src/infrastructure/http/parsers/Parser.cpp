@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 21:56:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 14:46:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/parsers/Parser.hpp"
 #include "infrastructure/http/Constants.hpp"
-#include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/messages/Methods.hpp"
 #include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
 #include <algorithm>
 #include <cerrno>
@@ -229,7 +229,7 @@ void Parser::parseHeaderLine(
 void Parser::parseContentLength(ParsingState &state)
 {
 	std::map<std::string, std::string>::const_iterator it =
-		state.request.headers.find(CONTENT_LENGTH);
+		state.request.headers.find(header::LOWER_CONTENT_LENGTH);
 
 	if (it == state.request.headers.end())
 	{

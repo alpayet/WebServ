@@ -6,18 +6,18 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 23:29:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:14:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
 #include "infrastructure/http/messages/Request.hpp"
-#include "infrastructure/http/messages/Response.hpp"
 #include <map>
 
 namespace http {
@@ -28,7 +28,7 @@ ExecuteDynamicResourceController::ExecuteDynamicResourceController(
 {}
 
 void ExecuteDynamicResourceController::operator()(
-	Request const &request, Response &response, RoutePolicy const &routePolicy
+	Request const &request, Context &context, RoutePolicy const &routePolicy
 )
 {
 	std::string bodyPath;
@@ -51,19 +51,19 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 {
 	std::map<std::string, std::string> metaVariable;
 
-	metaVariable["REQUEST_METHOD"] = request.method;
+	metaVariable[cgiMeta::REQUEST_METHOD] = request.method;
 	if (!request.query.empty())
-		metaVariable["QUERY_STRING"] = request.query;
+		metaVariable[cgiMeta::QUERY_STRING] = request.query;
 
 	std::map<std::string, std::string>::const_iterator content_length_it =
-		request.headers.find(CONTENT_LENGTH);
+		request.headers.find(header::LOWER_CONTENT_LENGTH);
 	if (content_length_it != metaVariable.end())
-		metaVariable["CONTENT_LENGTH"] = content_length_it->second;
+		metaVariable[cgiMeta::CONTENT_LENGTH] = content_length_it->second;
 
 	std::map<std::string, std::string>::const_iterator content_type_it =
-		request.headers.find(CONTENT_TYPE);
+		request.headers.find(header::LOWER_CONTENT_TYPE);
 	if (content_type_it != metaVariable.end())
-		metaVariable["CONTENT_TYPE"] = content_type_it->second;
+		metaVariable[cgiMeta::CONTENT_TYPE] = content_type_it->second;
 	return (metaVariable);
 }
 } // namespace http

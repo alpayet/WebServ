@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 01:52:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:13:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class ServeStaticResourceController;
 class DeleteStaticResourceController;
 class ExecuteDynamicResourceController;
 class Request;
-class Response;
+class Context;
 
 class Router
 {
@@ -31,7 +31,7 @@ class Router
 		ExecuteDynamicResourceController &executeDynamicResourceController
 	);
 
-	void route(Request const &request, Response &response);
+	void Router::route(Request const &request, Context &constext);
 
   private:
 	Router(Router const &src);

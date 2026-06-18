@@ -6,15 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 23:29:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:14:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
+#include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/mappers/DeleteStaticResourceDtoMapper.hpp"
 #include "infrastructure/http/messages/Request.hpp"
-#include "infrastructure/http/messages/Response.hpp"
 
 namespace http {
 DeleteStaticResourceController::DeleteStaticResourceController(
@@ -24,7 +24,7 @@ DeleteStaticResourceController::DeleteStaticResourceController(
 {}
 
 void DeleteStaticResourceController::operator()(
-	Request const &request, Response &response, RoutePolicy const &routePolicy
+	Request const &request, Context &context, RoutePolicy const &routePolicy
 )
 {
 	app::useCase::DeleteStaticResource::Input const &dto =

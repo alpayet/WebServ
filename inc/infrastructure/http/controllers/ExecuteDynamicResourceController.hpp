@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:02:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:15:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class ExecuteDynamicResource;
 
 namespace http {
 class Request;
-class Response;
+class Context;
 struct RoutePolicy;
 class ILimitsProvider;
 
@@ -35,7 +35,7 @@ class ExecuteDynamicResourceController
 	);
 
 	void ExecuteDynamicResourceController::operator()(
-		Request const &request, Response &response, RoutePolicy const &routePolicy
+		Request const &request, Context &context, RoutePolicy const &routePolicy
 	);
 
   private:

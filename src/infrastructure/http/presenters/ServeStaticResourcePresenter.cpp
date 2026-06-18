@@ -6,11 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 00:10:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/18 16:20:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
+#include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/messages/Response.hpp"
+#include <sstream>
 
 namespace http {
 
@@ -21,7 +24,9 @@ ServeStaticResourcePresenter::getViewModel(void) const
 }
 
 void ServeStaticResourcePresenter::presentContent(
-	app::ResourceStatus resourceStatus, app::IResourceReader *resourceReader
+	app::ResourceStatus const	resourceStatus,
+	std::size_t const			resourceSize,
+	app::IResourceReader const *resourceReader
 )
 {
 	Response::Status responseStatus;
@@ -35,10 +40,22 @@ void ServeStaticResourcePresenter::presentContent(
 		default:
 			break;
 	}
+
+	std::stringstream contentLengthAsString;
+	contentLengthAsString << resourceSize;
+
+	Response::Header header = {
+		.name = header::CONTENT_LENGTH, .value = contentLengthAsString.str()
+	};
+
+	Response response;
+
+	response.status = responseStatus;
+	response.headers.insert(response.headers.end(), header);
 }
 
 void ServeStaticResourcePresenter::presentListing(
-	app::ResourceStatus resourceStatus, std::vector<char> CollectionData
+	app::ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
 )
 {}
 } // namespace http
