@@ -5,6 +5,8 @@
 
 namespace ft {
 std::string intToString(int n);
-}
 
-#endif  // UTILS_HPP
+bool setNonBlocking(int fd);
+} // namespace ft
+
+#endif

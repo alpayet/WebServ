@@ -1,52 +1,47 @@
 #include <csignal>
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
 #include <vector>
 
-#include "server/Server.hpp"
-#include "server/ServerConfig.hpp"
-#include "server/transfer/FakeTransfer.hpp"
-#include "server/transport/tcp/TcpTransport.hpp"
+#include "Server.hpp"
+#include "config/ServerConfig.hpp"
+#include "transport/endpoint/build_endpoints.hpp"
+#include "utils/Logger.hpp"
+
+using namespace webserv;
 
 volatile sig_atomic_t running = 1;
 
-static void sigHandler(int signum) {
-  std::cout << "Server received signal : " << signum << std::endl;
+static void sigHandler(const int signum) {
+  LOG("Signal " << signum << " received");
   (void)signum;
   running = 0;
 }
 
-void initSignals() {
-  if (std::signal(SIGINT, sigHandler) == SIG_ERR) {
-    std::cerr << "sigaction failed for SIGINT" << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
-
-  if (std::signal(SIGTERM, sigHandler) == SIG_ERR) {
-    std::cerr << "sigaction failed for SIGINT/SIGTERM" << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
-
-  if (std::signal(SIGPIPE, SIG_IGN) == SIG_ERR) {
-    std::cerr << "sigaction failed for SIGPIPE" << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
+static void initSignals() {
+  std::signal(SIGINT, sigHandler);
+  std::signal(SIGTERM, sigHandler);
+  std::signal(SIGPIPE, SIG_IGN);
 }
 
 int main() {
   initSignals();
-  std::vector<ServerConfig> configs;
 
-  configs.push_back(ServerConfig("localhost", 3000));
-  configs.push_back(ServerConfig("0.0.0.0", 8000));
-  configs.push_back(ServerConfig("localhost", 3000));
+  std::vector<config::ServerConfig> configs;
+
+  configs.push_back(config::ServerConfig("localhost", 3000));
+  configs.push_back(config::ServerConfig("0.0.0.0", 8000,
+                                         config::ServerConfig::TRANSPORT_TCP,
+                                         config::ServerConfig::APP_TEST));
+  configs.push_back(config::ServerConfig("localhost", 3000));
+
   try {
-    Server server(new TcpTransport(configs),
-                  new FakeTransfer("Hello worldito\n"));
+    const std::vector<transport::IEndpoint *> endpoints =
+        transport::buildEndpoints(configs);
 
+    Server server(endpoints);
     server.run();
-  } catch (std::exception& e) {
+  } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return EXIT_FAILURE;
   }
