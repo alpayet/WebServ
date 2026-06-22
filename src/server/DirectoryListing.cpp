@@ -4,6 +4,7 @@
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
+#include <iterator>
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
@@ -11,184 +12,172 @@
 #include <unistd.h>
 #include <vector>
 
-/**
- * divide into 4 functions
- * fileSystem opendir
- * function to populate vector of fileInfos struct
- * function to get curr directory name -> careful with last "/", can be missing
- * display function
- */
-
 struct fileInfos
 {
 	std::string name;
-	char[80] lastMod;
-	std::size_t size;
+	std::string lastMod;
+	std::string size;
+	std::string uri;
 };
 
-std::vector<fileInfos> getFileInfos(std::string path)
+std::string getHeader(std::string const &path)
 {
-	DIR *dir_ptr = opendir(path.c_str());
+	std::string header;
 
-	if (!dir_ptr)
-	{
-		throw("banana");
-	}
-	std::ostringstream oss;
+	header += "<!DOCTYPE html>\n";
+	header += "<html>\n";
+	header += "<head>\n";
+	header += "<title>Directory listing</title>\n";
+	header += "<style type=\"text/css\">\n";
+	header += "td { padding: 0 15px; }\n";
+	header += "</style>\n";
+	header += "</head>\n";
+	header += "<h1>Index of " + path + "</h1>\n";
+	header += "<table>\n";
+	header += "\t<tr>\n";
+	header += "\t\t<th>Name</th>\n";
+	header += "\t\t<th>Last Modified</th>\n";
+	header += "\t\t<th>Size</th>\n";
+	header += "\t</tr>\n";
 
-	oss << "<!DOCTYPE html>" << std::endl;
-	oss << "<html>" << std::endl;
-	oss << "<head>" << std::endl;
-	oss << "<title>Directory listing</title>" << std::endl;
-	oss << "</head>" << std::endl;
-	oss << "<h1>Index of " << path << "</h1>" << std::endl; // TODO: change that
-	oss << "<table>" << std::endl;
-	oss << "\t<tr>" << std::endl;
-	oss << "\t\t<th>Name</th>" << std::endl;
-	oss << "\t\t<th>Last Modified</th>" << std::endl;
-	oss << "\t\t<th>Size</th>" << std::endl;
-	oss << "\t</tr>" << std::endl;
-
-	struct dirent *dir = readdir(dir_ptr);
-	struct stat	   st;
-	time_t		   t_mod = st.st_mtime;
-	if (stat(dir->d_name, &st) != 0)
-	{
-		throw("banana");
-	}
-	struct tm t_local;
-	localtime_r(&t_mod, &t_local);
-	char t_buf[80];
-	strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-	oss << "\t<tr>" << std::endl;
-	size_t pos = dir_name.find_last_of('/');
-	if (pos == dir_name.size() - 1)
-	{
-		dir_name.erase(dir_name.end() - 1);
-		pos = dir_name.find_last_of('/');
-	}
-	std::string prev_dir = dir_name.substr(0, pos);
-	oss << "\t\t<td><a href=\"" << prev_dir << "\">Previous directory</a></td>" << std::endl;
-	oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
-	oss << "\t\t<td>-</td>" << std::endl;
-	oss << "\t</tr>" << std::endl;
-	dir = readdir(dir_ptr);
-	while (dir != NULL)
-	{
-		if (std::string(dir->d_name) == "." || std::string(dir->d_name) == "..")
-		{
-			dir = readdir(dir_ptr);
-			continue;
-		}
-		bzero(t_buf, 80);
-		oss << "\t<tr>" << std::endl;
-		oss << "\t\t<td><a href=\"" << dir->d_name << "\">" << dir->d_name << "</a></td>"
-			<< std::endl;
-		t_mod = st.st_mtime;
-		localtime_r(&t_mod, &t_local);
-		strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-		oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
-		if (S_ISDIR(st.st_mode))
-			oss << "\t\t<td>-</td>" << std::endl;
-		else
-			oss << "\t\t<td>" << st.st_size << "</td>" << std::endl;
-		oss << "\t</tr>" << std::endl;
-		if (stat(dir->d_name, &st) != 0)
-		{
-			throw("banana");
-		}
-		dir = readdir(dir_ptr);
-	}
-
-	oss << "</table>" << std::endl;
-	oss << "</body>" << std::endl;
-	oss << "</html>" << std::endl;
-	closedir(dir_ptr);
-	dir_ptr = NULL;
-	return oss;
+	return header;
 }
 
-// TODO: no size for directory && add date && rename ".." to "parent directory"
-std::string displayListing(std::string dir_name)
+//! phyPath always pass with trailing "/"
+// TODO: check phyPath contains rootPath before calling
+// ? normally the case
+std::vector<fileInfos>
+getFileInfos(std::string const &phyPath, std::string const &locPath, std::string const &rootPath)
 {
-	DIR *dir_ptr = opendir(dir_name.c_str());
+	std::vector<fileInfos> files;
+	DIR					  *dir_ptr = opendir(phyPath.c_str());
 
-	// TODO: generate GET method
-	// TODO: check before
 	if (!dir_ptr)
 	{
-		throw("banana");
+		throw std::runtime_error("Couldn't open directory");
 	}
-	std::ostringstream oss;
 
-	oss << "<!DOCTYPE html>" << std::endl;
-	oss << "<html>" << std::endl;
-	oss << "<head>" << std::endl;
-	oss << "<title>Directory listing</title>" << std::endl;
-	oss << "</head>" << std::endl;
-	oss << "<h1>Index of " << dir_name << "</h1>" << std::endl;
-	oss << "<table>" << std::endl;
-	oss << "\t<tr>" << std::endl;
-	oss << "\t\t<th>Name</th>" << std::endl;
-	oss << "\t\t<th>Last Modified</th>" << std::endl;
-	oss << "\t\t<th>Size</th>" << std::endl;
-	oss << "\t</tr>" << std::endl;
-
+	struct tm	   t_local;
 	struct dirent *dir = readdir(dir_ptr);
-	struct stat	   st;
-	time_t		   t_mod = st.st_mtime;
-	if (stat(dir->d_name, &st) != 0)
-	{
-		throw("banana");
-	}
-	struct tm t_local;
-	localtime_r(&t_mod, &t_local);
-	char t_buf[80];
-	strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-	oss << "\t<tr>" << std::endl;
-	size_t pos = dir_name.find_last_of('/');
-	if (pos == dir_name.size() - 1)
-	{
-		dir_name.erase(dir_name.end() - 1);
-		pos = dir_name.find_last_of('/');
-	}
-	std::string prev_dir = dir_name.substr(0, pos);
-	oss << "\t\t<td><a href=\"" << prev_dir << "\">Previous directory</a></td>" << std::endl;
-	oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
-	oss << "\t\t<td>-</td>" << std::endl;
-	oss << "\t</tr>" << std::endl;
-	dir = readdir(dir_ptr);
 	while (dir != NULL)
 	{
-		if (std::string(dir->d_name) == "." || std::string(dir->d_name) == "..")
+		fileInfos	file;
+		struct stat st;
+
+		if (std::string(dir->d_name) == ".")
 		{
 			dir = readdir(dir_ptr);
 			continue;
 		}
-		bzero(t_buf, 80);
-		oss << "\t<tr>" << std::endl;
-		oss << "\t\t<td><a href=\"" << dir->d_name << "\">" << dir->d_name << "</a></td>"
-			<< std::endl;
-		t_mod = st.st_mtime;
-		localtime_r(&t_mod, &t_local);
-		strftime(t_buf, sizeof(t_buf), "%c", &t_local);
-		oss << "\t\t<td>" << t_buf << "</td>" << std::endl;
-		if (S_ISDIR(st.st_mode))
-			oss << "\t\t<td>-</td>" << std::endl;
-		else
-			oss << "\t\t<td>" << st.st_size << "</td>" << std::endl;
-		oss << "\t</tr>" << std::endl;
-		if (stat(dir->d_name, &st) != 0)
+
+		std::string tmpPath;
+		if (std::string(dir->d_name) == "..")
 		{
-			throw("banana");
+			if (phyPath != rootPath)
+			{
+				file.name = "Previous directory";
+
+				tmpPath = phyPath;
+				size_t pos = tmpPath.find_last_of('/');
+				if (pos == tmpPath.size() - 1)
+				{
+					tmpPath.erase(tmpPath.end() - 1);
+					pos = tmpPath.find_last_of('/');
+				}
+				tmpPath.erase(pos);
+			}
 		}
+		else
+		{
+			file.name = dir->d_name;
+			tmpPath = phyPath + file.name;
+		}
+		if (!tmpPath.empty())
+		{
+			if (stat(tmpPath.c_str(), &st) != 0)
+			{
+				throw std::runtime_error("stat failed on " + tmpPath);
+			}
+
+			file.uri = tmpPath;
+			file.uri.replace(0, rootPath.size(), locPath);
+		}
+
+		time_t t_mod = st.st_mtime;
+		localtime_r(&t_mod, &t_local);
+		char t_buf[80];
+		bzero(t_buf, 80);
+		strftime(t_buf, sizeof(t_buf), "%c", &t_local);
+		file.lastMod = t_buf;
+
+		if (S_ISDIR(st.st_mode))
+		{
+			file.size = "-";
+			file.uri += "/";
+		}
+		else
+		{
+			std::stringstream ss;
+			ss << st.st_size;
+			file.size = ss.str();
+		}
+
+		files.push_back(file);
+
 		dir = readdir(dir_ptr);
 	}
 
-	oss << "</table>" << std::endl;
-	oss << "</body>" << std::endl;
-	oss << "</html>" << std::endl;
 	closedir(dir_ptr);
 	dir_ptr = NULL;
-	return oss;
+
+	return files;
+}
+
+std::string getListing(std::string uri, std::vector<fileInfos> files)
+{
+	std::string listing;
+
+	listing = getHeader(uri);
+
+	std::vector<fileInfos>::const_iterator ite = files.end();
+	std::vector<fileInfos>::const_iterator it = files.begin();
+	for (; it != ite; ++it)
+	{
+		if (!it->name.empty())
+		{
+			listing += "\t<tr>\n";
+			listing += "\t\t<td><a href=\"" + it->uri + "\">" + it->name + "</a></td>\n";
+			listing += "\t\t<td>" + it->lastMod + "</td>\n";
+			listing += "\t\t<td>" + it->size + "</td>\n";
+			listing += "\t</tr>\n";
+		}
+	}
+
+	listing += "</table>\n";
+	listing += "</body>\n";
+	listing += "</html>\n";
+
+	return listing;
+}
+
+/**
+ * moi je vérifie si id finit par un "/"
+ * si c'est pas le cas
+ * je le rajoute pour que ça fonctionne bien dans notre logique qu'un uri de dossier finisse par "/"
+ * je resolve le physical path
+ * je génère le listing (tout l'html du doctype au </html>)
+ * tu débrouilles avec la string
+ */
+std::string directoryListing(
+	Server const	  &server,
+	std::string const &id,
+	std::string const &matchedRoute,
+	std::string const &rootPath
+)
+{
+	std::string uri = id;
+	if (id[id.size() - 1] != '/')
+		uri += "/";
+
+	std::string phyPath = server.resolvePhysicalPath(id, matchedRoute, rootPath);
 }
