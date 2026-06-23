@@ -64,17 +64,22 @@ http::RoutePolicy Server::match(std::string const &uri) const
 	return route;
 }
 
+// TODO: check
 std::string Server::resolvePhysicalPath(
 	std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
-	std::string path;
-	if (rootPath.empty())
-		path = m_root + matchedRoute.substr(1, matchedRoute.size() - 1);
-	else
-		path = rootPath;
+	// std::string path;
+	// if (rootPath.empty())
+	// 	path = m_root + matchedRoute.substr(1, matchedRoute.size() - 1);
+	// else
+	// 	path = rootPath;
+	// std::string resUri = uri;
+	// resUri.replace(0, matchedRoute.size(), path);
+	// return resUri;
+
 	std::string resUri = uri;
-	resUri.replace(0, matchedRoute.size(), path);
+	resUri.replace(0, matchedRoute.size(), rootPath);
 	return resUri;
 }
 
@@ -127,6 +132,7 @@ app::SystemResourceInfos Server::locate(
 	return sri;
 }
 
+// TODO: check directory before calling
 app::SystemResourceInfos Server::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,
@@ -134,6 +140,8 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 ) const
 {
 	std::string resPath = resolvePhysicalPath("/", matchedRoute, rootPath);
+	if (resPath[resPath.size() - 1] != '/')
+		resPath += "/";
 
 	if (indexesId.empty())
 		return app::SystemResourceInfos();

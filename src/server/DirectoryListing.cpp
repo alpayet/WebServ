@@ -20,14 +20,12 @@ struct fileInfos
 	std::string uri;
 };
 
-//! phyPath always pass with trailing "/"
-// TODO: check phyPath contains rootPath before calling
-// ? normally the case
-std::vector<fileInfos>
-getFileInfos(std::string const &uri, std::string const &matchedRoute, std::string const &rootPath)
+std::vector<fileInfos> getFileInfos(
+	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
+)
 {
-	std::string phyPath = uri;
-	if (uri[uri.size() - 1] != '/')
+	std::string phyPath = resPath;
+	if (resPath[resPath.size() - 1] != '/')
 		phyPath += "/";
 
 	std::vector<fileInfos> files;
@@ -153,26 +151,4 @@ std::string getListing(std::string uri, std::vector<fileInfos> files)
 	listing += "</html>\n";
 
 	return listing;
-}
-
-/**
- * moi je vérifie si id finit par un "/"
- * si c'est pas le cas
- * je le rajoute pour que ça fonctionne bien dans notre logique qu'un uri de dossier finisse par "/"
- * je resolve le physical path
- * je génère le listing (tout l'html du doctype au </html>)
- * tu débrouilles avec la string
- */
-std::string directoryListing(
-	Server const	  &server,
-	std::string const &id,
-	std::string const &matchedRoute,
-	std::string const &rootPath
-)
-{
-	std::string uri = id;
-	if (id[id.size() - 1] != '/')
-		uri += "/";
-
-	std::string phyPath = server.resolvePhysicalPath(id, matchedRoute, rootPath);
 }
