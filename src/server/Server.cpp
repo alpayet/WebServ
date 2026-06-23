@@ -51,7 +51,10 @@ http::RoutePolicy Server::match(std::string const &uri) const
 
 	http::RoutePolicy route;
 	route.matchedRoute = loc.path;
-	route.rootPath = loc.root;
+	if (!loc.root.empty())
+		route.rootPath = loc.root;
+	else
+		route.rootPath = m_root + loc.path.substr(1, loc.path.size() - 1);
 	route.isListingEnabled = loc.autoindex;
 	if (!loc.index.empty())
 		route.indexesId = loc.index;

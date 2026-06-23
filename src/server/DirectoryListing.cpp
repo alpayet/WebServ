@@ -20,35 +20,16 @@ struct fileInfos
 	std::string uri;
 };
 
-std::string getHeader(std::string const &path)
-{
-	std::string header;
-
-	header += "<!DOCTYPE html>\n";
-	header += "<html>\n";
-	header += "<head>\n";
-	header += "<title>Directory listing</title>\n";
-	header += "<style type=\"text/css\">\n";
-	header += "td { padding: 0 15px; }\n";
-	header += "</style>\n";
-	header += "</head>\n";
-	header += "<h1>Index of " + path + "</h1>\n";
-	header += "<table>\n";
-	header += "\t<tr>\n";
-	header += "\t\t<th>Name</th>\n";
-	header += "\t\t<th>Last Modified</th>\n";
-	header += "\t\t<th>Size</th>\n";
-	header += "\t</tr>\n";
-
-	return header;
-}
-
 //! phyPath always pass with trailing "/"
 // TODO: check phyPath contains rootPath before calling
 // ? normally the case
 std::vector<fileInfos>
-getFileInfos(std::string const &phyPath, std::string const &locPath, std::string const &rootPath)
+getFileInfos(std::string const &uri, std::string const &matchedRoute, std::string const &rootPath)
 {
+	std::string phyPath = uri;
+	if (uri[uri.size() - 1] != '/')
+		phyPath += "/";
+
 	std::vector<fileInfos> files;
 	DIR					  *dir_ptr = opendir(phyPath.c_str());
 
@@ -137,7 +118,21 @@ std::string getListing(std::string uri, std::vector<fileInfos> files)
 {
 	std::string listing;
 
-	listing = getHeader(uri);
+	listing += "<!DOCTYPE html>\n";
+	listing += "<html>\n";
+	listing += "<head>\n";
+	listing += "<title>Directory listing</title>\n";
+	listing += "<style type=\"text/css\">\n";
+	listing += "td { padding: 0 15px; }\n";
+	listing += "</style>\n";
+	listing += "</head>\n";
+	listing += "<h1>Index of " + uri + "</h1>\n";
+	listing += "<table>\n";
+	listing += "\t<tr>\n";
+	listing += "\t\t<th>Name</th>\n";
+	listing += "\t\t<th>Last Modified</th>\n";
+	listing += "\t\t<th>Size</th>\n";
+	listing += "\t</tr>\n";
 
 	std::vector<fileInfos>::const_iterator ite = files.end();
 	std::vector<fileInfos>::const_iterator it = files.begin();
