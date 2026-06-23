@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 21:09:41 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 22:42:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/22 22:24:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#ifndef HTTPCONSTANTS_HPP
+#define HTTPCONSTANTS_HPP
 
 namespace http {
 
@@ -39,4 +39,4 @@ static char const QUERY_STRING[] = "QUERY_STRING";
 
 } // namespace http
 
-#endif // CONSTANTS_HPP
+#endif // HTTPCONSTANTS_HPP

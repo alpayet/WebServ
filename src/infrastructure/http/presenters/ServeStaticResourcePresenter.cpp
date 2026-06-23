@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 22:12:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/22 21:34:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
 #include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/messages/HeaderBlockSerializer.hpp"
 #include "infrastructure/http/messages/Response.hpp"
 #include <sstream>
 
@@ -28,9 +29,9 @@ ServeStaticResourcePresenter::getViewModel(void) const
 }
 
 void ServeStaticResourcePresenter::presentContent(
-	app::ResourceStatus const	resourceStatus,
-	std::size_t const			resourceSize,
-	app::IResourceReader const *resourceReader
+	app::ResourceStatus const resourceStatus,
+	std::size_t const		  resourceSize,
+	app::IResourceReader	 *resourceReader
 )
 {
 	Response::Status responseStatus;
@@ -53,7 +54,10 @@ void ServeStaticResourcePresenter::presentContent(
 	response_builder.withProtocol(_httpVersion);
 	response_builder.withStatus(responseStatus);
 	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
-	response_builder.build();
+	Response const &response = response_builder.build();
+
+	_viewModel.rawHeaderBlock = HeaderBlockSerializer::serialize(response);
+	_viewModel.reader = resourceReader;
 }
 
 void ServeStaticResourcePresenter::presentListing(

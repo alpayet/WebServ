@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 21:54:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 03:30:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <string>
 
 namespace http {
+namespace request {
+
 struct Request
 {
 	Request(void) : contentLength(0) {}
@@ -30,6 +32,7 @@ struct Request
 	size_t							   contentLength;
 	BodyFile						   body;
 };
+} // namespace request
 } // namespace http
 
 #endif // HTTPREQUEST_HPP

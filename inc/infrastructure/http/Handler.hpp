@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 17:15:09 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:16:51 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/23 04:07:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,29 @@
 #define HTTPHANDLER_HPP
 
 #include "infrastructure/ITransfertHandler.hpp"
+#include "infrastructure/http/Context.hpp"
 
 namespace http {
+class Parser;
+class Router;
+
 class Handler : public ITransfertHandler
 {
   public:
-	Handler(void);
-	virtual ~Handler(void) {}
+	Handler(Parser &requestParser, Router &router);
 
-	virtual ITransferContext *createClientContext(void);
+	virtual void createContext(unsigned int id);
 
-	virtual void processClient(Client &client);
+	virtual bool push(unsigned int id, std::vector<char> &inputBuf);
+	virtual bool pull(unsigned int id, std::vector<char> &outputBuf);
 
   private:
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
+
+	Parser				  &_requestParser;
+	Router				  &_router;
+	std::map<int, Context> _contexts;
 };
 } // namespace http
 

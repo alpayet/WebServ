@@ -1,35 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   Sender.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/23 05:01:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_HPP
-#define CLIENT_HPP
+#ifndef HTTPRESPONSESENDER_HPP
+#define HTTPRESPONSESENDER_HPP
 
+#include "infrastructure/http/Context.hpp"
 #include <vector>
 
-class ITransferContext;
+namespace http {
+namespace response {
 
-class Client
+class Sender
 {
   public:
-	Client(void);
-	Client(Client const &src);
-	~Client(void);
+	enum State
+	{
+		HeaderBlock,
+		body,
+		resource,
+		complete,
+	};
 
-	Client &operator=(Client const &rhs);
+  public:
+	static State produce(std::vector<char> &outputBuf, Context::Output &context);
 
   private:
-	int				  _socketFd;
-	std::vector<char> _readBuf;
-	ITransferContext *_transfertContext;
+	Sender(Sender const &src);
+	Sender &operator=(Sender const &rhs);
 };
+} // namespace response
+} // namespace http
 
-#endif // CLIENT_HPP
+#endif // HTTPRESPONSESENDER_HPP

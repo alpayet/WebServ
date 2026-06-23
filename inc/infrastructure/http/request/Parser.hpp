@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 22:28:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 04:34:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define HTTPREQUESTPARSER_HPP
 
 #include "ParsingState.hpp"
+#include "infrastructure/http/Context.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -22,12 +23,23 @@ namespace http {
 class IRequestValidationPolicy;
 class IVersionProvider;
 
+namespace request {
 class Parser
 {
   public:
+	enum Step
+	{
+		start,
+		requestLine,
+		header,
+		body,
+		complete
+	};
+
+  public:
 	Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider);
 
-	ParsingState::Step parse(std::vector<char> &readBuf, ParsingState &state);
+	Step parse(Context::Input &context);
 
   private:
 	Parser(Parser const &src);
@@ -47,7 +59,7 @@ class Parser
 		ParsingState					 &state
 	);
 	void parseContentLength(ParsingState &state);
-	void parseBody(std::vector<char> const &readBuf, ParsingState &state);
+	void parseBody(std::vector<char> const &inputBuf, ParsingState &state);
 
 	std::string Parser::extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
@@ -65,12 +77,14 @@ class Parser
 		std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
 	);
 
-	static std::vector<char>::iterator findCRLF(std::vector<char> &readBuf);
+	static std::vector<char>::iterator findCRLF(std::vector<char> &inputBuf);
 
 	void validateRequestLineSize(std::size_t size);
 	void validateHeaderLineSize(std::size_t size);
 	void validateHeaderCount(std::size_t size);
 };
+} // namespace request
+
 } // namespace http
 
 #endif // HTTPREQUESTPARSER_HPP

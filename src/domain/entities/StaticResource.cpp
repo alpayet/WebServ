@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:43:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/22 21:38:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ StaticResource::StaticResource(
 std::string const &StaticResource::getResourcePath(void) const
 {
 	return (_metaData.getResourcePath());
+}
+
+std::size_t domain::StaticResource::getResourceSize(void) const
+{
+	return (_metaData.getResourceSize());
 }
 
 bool StaticResource::isReadable(void) const { return (_metaData.isReadable()); }

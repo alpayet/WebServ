@@ -6,16 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 22:43:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 04:37:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/parsers/Parser.hpp"
+#include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/Constants.hpp"
 #include "infrastructure/http/IVersionProvider.hpp"
+#include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
-#include "infrastructure/http/messages/Methods.hpp"
-#include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
+#include "infrastructure/http/request/IRequestValidationPolicy.hpp"
 #include <algorithm>
 #include <cerrno>
 
@@ -91,52 +91,55 @@ void trim(std::string &str, char const *to_trim)
 } // namespace
 
 namespace http {
+namespace request {
 
 Parser::Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider)
 	: _requestValidationPolicy(requestValidationPolicy), _versionProvider(versionProvider)
 {}
 
-ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state)
+Parser::Step Parser::parse(Context::Input &context)
 {
-	bool can_continue = true;
+	request::ParsingState &state = context.state;
+	std::vector<char>	  &inputBuf = context.inputBuf;
+	bool				   can_continue = true;
 
-	while (can_continue && !readBuf.empty())
+	while (can_continue && !inputBuf.empty())
 	{
 		switch (state.step)
 		{
-			case ParsingState::start:
-				std::vector<char>::iterator it_start = readBuf.begin();
-				std::vector<char>::iterator it_line_end = findCRLF(readBuf);
+			case Parser::start:
+				std::vector<char>::iterator it_start = inputBuf.begin();
+				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 				if (it_start == it_line_end)
 				{
-					readBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
+					inputBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
 					break;
 				}
-				if (*it_start == CR && it_start + 1 != readBuf.end())
-					state.step = ParsingState::requestLine;
-			case ParsingState::requestLine:
-				std::vector<char>::iterator it_start = readBuf.begin();
-				std::vector<char>::iterator it_line_end = findCRLF(readBuf);
+				if (*it_start == CR && it_start + 1 != inputBuf.end())
+					state.step = Parser::requestLine;
+			case Parser::requestLine:
+				std::vector<char>::iterator it_start = inputBuf.begin();
+				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 
 				state.currenLineSize += std::distance(it_start, it_line_end);
 				validateRequestLineSize(state.currenLineSize);
-				if (it_line_end == readBuf.end())
+				if (it_line_end == inputBuf.end())
 				{
 					can_continue = false;
 					break;
 				}
 				parseRequestLine(it_start, it_line_end, state);
-				readBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
+				inputBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
-				state.step = ParsingState::header;
+				state.step = Parser::header;
 				break;
-			case ParsingState::header:
-				std::vector<char>::iterator it_start = readBuf.begin();
-				std::vector<char>::iterator it_line_end = findCRLF(readBuf);
+			case Parser::header:
+				std::vector<char>::iterator it_start = inputBuf.begin();
+				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 
 				state.currenLineSize += std::distance(it_start, it_line_end);
 				validateHeaderLineSize(state.currenLineSize);
-				if (it_line_end == readBuf.end())
+				if (it_line_end == inputBuf.end())
 				{
 					can_continue = false;
 					break;
@@ -147,28 +150,28 @@ ParsingState::Step Parser::parse(std::vector<char> &readBuf, ParsingState &state
 				{
 					if (state.request.contentLength != 0 && expectsBody(state.request.method))
 					{
-						readBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
-						state.step = ParsingState::body;
+						inputBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
+						state.step = Parser::body;
 						break;
 					}
 					else
 					{
-						state.step = ParsingState::complete;
+						state.step = Parser::complete;
 						can_continue = false;
 						break;
 					}
 				}
 				parseRequestLine(it_start, it_line_end, state);
 				parseContentLength(state);
-				readBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
+				inputBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				break;
-			case ParsingState::body:
-				parseBody(readBuf, state);
-				readBuf.clear();
+			case Parser::body:
+				parseBody(inputBuf, state);
+				inputBuf.clear();
 				if (state.bodyBytesRead == state.request.contentLength)
 				{
-					state.step = ParsingState::complete;
+					state.step = Parser::complete;
 					can_continue = false;
 					break;
 				}
@@ -252,12 +255,12 @@ void Parser::parseContentLength(ParsingState &state)
 	state.request.contentLength = static_cast<size_t>(val);
 }
 
-void Parser::parseBody(std::vector<char> const &readBuf, ParsingState &state)
+void Parser::parseBody(std::vector<char> const &inputBuf, ParsingState &state)
 {
-	state.bodyBytesRead += readBuf.size();
+	state.bodyBytesRead += inputBuf.size();
 	if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize())
 		throw Exception(Exception::bodyTooLarge);
-	state.request.body.append(readBuf);
+	state.request.body.append(inputBuf);
 }
 
 std::string Parser::extractMethod(
@@ -333,9 +336,9 @@ bool Parser::hasLineBreak(
 	return ((std::find_first_of(itStart, itEnd, CRLF, CRLF + sizeof(CRLF) - 1) != itEnd));
 }
 
-std::vector<char>::iterator Parser::findCRLF(std::vector<char> &readBuf)
+std::vector<char>::iterator Parser::findCRLF(std::vector<char> &inputBuf)
 {
-	return (std::search(readBuf.begin(), readBuf.end(), CRLF, CRLF + sizeof(CRLF) - 1));
+	return (std::search(inputBuf.begin(), inputBuf.end(), CRLF, CRLF + sizeof(CRLF) - 1));
 }
 
 void Parser::validateRequestLineSize(std::size_t size)
@@ -355,4 +358,5 @@ void Parser::validateHeaderCount(std::size_t count)
 	if (count > _requestValidationPolicy.getMaxHeaderCount())
 		throw Exception(Exception::headerCountTooLarge);
 }
+} // namespace request
 } // namespace http

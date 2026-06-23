@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 21:57:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 04:00:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <vector>
 
 namespace http {
+namespace response {
+
 struct Response
 {
   public:
@@ -51,6 +53,7 @@ class Response::Builder
   private:
 	Response _response;
 };
+} // namespace response
 } // namespace http
 
 #endif // HTTPRESPONSE_HPP

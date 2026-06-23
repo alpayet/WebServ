@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 21:58:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 01:04:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Response::Builder &Response::Builder::withStatus(Response::Status const &status)
 Response::Builder &Response::Builder::withHeader(std::string const &key, std::string const &value)
 {
 	Response::Header header = {.key = key, .value = value};
-	_response.headers.insert(_response.headers.end(), header);
+	_response.headers.push_back(header);
 	return (*this);
 }
 Response::Builder &Response::Builder::withBody(std::vector<char> const &body)

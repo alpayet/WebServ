@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 00:52:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/22 21:38:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,8 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 	serveContent(dtoInput, outputPort, target_meta_data);
 }
 
-void presentContent(
-	app::ResourceStatus const	resourceStatus,
-	std::size_t const			resourceSize,
-	app::IResourceReader const *resourceReader
+void ServeStaticResource::serveContent(
+	Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 )
 {
 	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
@@ -76,7 +74,7 @@ void presentContent(
 
 	IResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getResourcePath());
-	outputPort.presentContent(resourceFound, resource_reader);
+	outputPort.presentContent(resourceFound, static_resource.getResourceSize(), resource_reader);
 }
 
 void ServeStaticResource::generateListing(

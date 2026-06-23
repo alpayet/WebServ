@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ITransferContext.hpp                               :+:      :+:    :+:   */
+/*   Sender.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/22 17:01:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/05 15:27:46 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/23 04:47:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITRANSFERCONTEXT_HPP
-#define ITRANSFERCONTEXT_HPP
+#include "infrastructure/http/response/Sender.hpp"
 
-class ITransferContext
+namespace http {
+namespace response {
+
+Sender::State Sender::produce(std::vector<char> &outputBuf, Context::Output &context)
 {
-  public:
-	ITransferContext(void);
-	ITransferContext(ITransferContext const &src);
-	~ITransferContext(void);
+	switch (context.state)
+	{
+		case HeaderBlock:
 
-	ITransferContext &operator=(ITransferContext const &rhs);
+		case body:
+			/* code */
+		case resource:
+			/* code */
+			break;
 
-  private:
-};
+		default:
+			break;
+	}
+}
 
-#endif // ITRANSFERCONTEXT_HPP
+} // namespace response
+} // namespace http

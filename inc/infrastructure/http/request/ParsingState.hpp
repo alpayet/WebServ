@@ -6,35 +6,32 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 23:33:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:02:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/23 03:32:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPPARSINGSTATE_HPP
-#define HTTPPARSINGSTATE_HPP
+#ifndef HTTPREQUESTPARSINGSTATE_HPP
+#define HTTPREQUESTPARSINGSTATE_HPP
 
-#include "infrastructure/http/messages/Request.hpp"
+#include "Parser.hpp"
+#include "Request.hpp"
 
 namespace http {
+namespace request {
+
 struct ParsingState
 {
-	enum Step
-	{
-		start,
-		requestLine,
-		header,
-		body,
-		complete
-	};
+	ParsingState(void)
+		: step(Parser::start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
+	{}
 
-	ParsingState(void) : step(start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0) {}
-
-	Step		step;
-	Request		request;
-	std::size_t currenLineSize;
-	std::size_t currentHeaderCount;
-	std::size_t bodyBytesRead;
+	Parser::Step step;
+	Request		 request;
+	std::size_t	 currenLineSize;
+	std::size_t	 currentHeaderCount;
+	std::size_t	 bodyBytesRead;
 };
+} // namespace request
 } // namespace http
 
-#endif // HTTPPARSINGSTATE_HPP
+#endif // HTTPREQUESTPARSINGSTATE_HPP
