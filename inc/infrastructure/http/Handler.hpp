@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:07:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/24 04:48:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,31 @@
 #include "infrastructure/http/Context.hpp"
 
 namespace http {
+
+namespace request {
 class Parser;
+} // namespace request
+
 class Router;
 
 class Handler : public ITransfertHandler
 {
   public:
-	Handler(Parser &requestParser, Router &router);
+	Handler(request::Parser &parser, Router &router);
 
 	virtual void createContext(unsigned int id);
 
-	virtual bool push(unsigned int id, std::vector<char> &inputBuf);
-	virtual bool pull(unsigned int id, std::vector<char> &outputBuf);
+	virtual void			  push(unsigned int id, std::vector<char> &inputBuf);
+	virtual std::vector<char> pull(unsigned int id);
+
+	virtual bool isRequestComplete(unsigned int id);
+	virtual bool isResponseComplete(unsigned int id);
 
   private:
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
 
-	Parser				  &_requestParser;
+	request::Parser		  &_parser;
 	Router				  &_router;
 	std::map<int, Context> _contexts;
 };

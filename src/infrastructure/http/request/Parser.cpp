@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:37:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/24 04:26:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ Parser::Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvid
 Parser::Step Parser::parse(Context::Input &context)
 {
 	request::ParsingState &state = context.state;
-	std::vector<char>	  &inputBuf = context.inputBuf;
+	std::vector<char>	  &inputBuf = context.buf;
 	bool				   can_continue = true;
 
 	while (can_continue && !inputBuf.empty())

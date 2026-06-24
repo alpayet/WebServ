@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:34:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/24 05:02:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,22 @@ struct Context
 {
 	struct Input
 	{
+		Input(void) : isRequestComplete(false) {}
+
 		request::ParsingState state;
-		std::vector<char>	  inputBuf;
+		std::vector<char>	  buf;
+		bool				  isRequestComplete;
 	};
 	struct Output
 	{
-
-		Output(void) : reader(NULL) {}
+		Output(void) : reader(NULL), isResponseComplete(false) {}
 		~Output(void) { delete reader; }
 
 		response::Sender::State state;
 		std::vector<char>		rawHeaderBlock;
 		std::vector<char>		rawbody;
 		app::IResourceReader   *reader;
+		bool					isResponseComplete;
 	};
 
 	Input  input;
