@@ -6,24 +6,26 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:16:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:45:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 23:44:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
 #include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/StatusReason.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include <iterator>
 #include <sstream>
 
 namespace http {
 namespace response {
-std::vector<char> HeaderBlockSerializer::serialize(Response const &response)
+void HeaderBlockSerializer::serialize(
+	std::vector<char> &outputBuf, Response const &response, std::string const &httpVersion
+)
 {
 	std::string headerBlock;
 
-	// TODO: injecter le protocol
-	//  headerBlock += response.protocol;
+	headerBlock += httpVersion;
 	headerBlock += SP;
 
 	std::stringstream ss;
@@ -31,7 +33,7 @@ std::vector<char> HeaderBlockSerializer::serialize(Response const &response)
 	headerBlock += ss.str();
 	headerBlock += SP;
 
-	// headerBlock += response.status.reason;
+	headerBlock += getReasonPhrase(response.statusCode);
 	headerBlock += CRLF;
 
 	for (std::vector<Response::Header>::const_iterator i = response.headers.begin();
@@ -43,7 +45,8 @@ std::vector<char> HeaderBlockSerializer::serialize(Response const &response)
 		headerBlock += CRLF;
 	}
 	headerBlock += CRLF;
-	return (std::vector<char>(headerBlock.begin(), headerBlock.end()));
+
+	outputBuf.insert(outputBuf.end(), headerBlock.begin(), headerBlock.end());
 }
 } // namespace response
 } // namespace http

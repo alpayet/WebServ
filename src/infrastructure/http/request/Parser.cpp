@@ -6,13 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 20:02:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 21:32:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/Constants.hpp"
-#include "infrastructure/http/IVersionProvider.hpp"
+#include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/request/IRequestValidationPolicy.hpp"
@@ -93,8 +93,10 @@ void trim(std::string &str, char const *to_trim)
 namespace http {
 namespace request {
 
-Parser::Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider)
-	: _requestValidationPolicy(requestValidationPolicy), _versionProvider(versionProvider)
+Parser::Parser(
+	IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
+)
+	: _requestValidationPolicy(requestValidationPolicy), _httpVersionProvider(httpVersionProvider)
 {}
 
 Parser::Step Parser::parse(Context::Input &context)
@@ -321,7 +323,7 @@ std::string Parser::extractProtocol(
 
 	std::string protocol(it_protocol_start, it_protocol_end);
 
-	if (protocol != _versionProvider.getHttpVersion())
+	if (protocol != _httpVersionProvider.getHttpVersion())
 		throw Exception(Exception::versionInvalid);
 	it = it_protocol_end;
 	return (protocol);

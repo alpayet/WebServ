@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:50:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:14:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 	};
 
   public:
+	ServeStaticResourcePresenter(void) {};
 	virtual ~ServeStaticResourcePresenter(void) {}
 
 	ViewModel const &getViewModel(void) const;

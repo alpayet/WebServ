@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:51:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:11:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ struct RoutePolicy;
 class ServeStaticResourceController
 {
   public:
-	ServeStaticResourceController(
-		app::useCase::ServeStaticResource &useCase, IVersionProvider &versionProvider
-	);
+	ServeStaticResourceController(app::useCase::ServeStaticResource &useCase);
 
 	void
 	ServeStaticResourceController::operator()(Context &context, RoutePolicy const &routePolicy);

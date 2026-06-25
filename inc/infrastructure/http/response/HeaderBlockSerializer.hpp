@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:13:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:45:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 23:37:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADERBLOCKSERIALIZER_HPP
 #define HEADERBLOCKSERIALIZER_HPP
 
+#include <string>
 #include <vector>
 
 namespace http {
@@ -23,7 +24,9 @@ namespace response {
 class HeaderBlockSerializer
 {
   public:
-	static std::vector<char> serialize(Response const &response);
+	static void serialize(
+		std::vector<char> &outputBuf, Response const &response, std::string const &httpVersion
+	);
 
   private:
 	HeaderBlockSerializer(HeaderBlockSerializer const &src);

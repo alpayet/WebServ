@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IVersionProvider.hpp                               :+:      :+:    :+:   */
+/*   StatusReason.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/18 19:54:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 19:59:10 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/25 21:41:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/25 22:01:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IHTTPVERSIONPROVIDER_HPP
-#define IHTTPVERSIONPROVIDER_HPP
+#ifndef HTTPSTATUSREASON_HPP
+#define HTTPSTATUSREASON_HPP
 
 #include <string>
 
-// TODO: faire herité la config de cette interface
-
 namespace http {
-class IVersionProvider
-{
-  public:
-	~IVersionProvider(void) {}
 
-	virtual std::string getHttpVersion(void) const = 0;
-};
+static char const REASON_200[] = "OK";
+static char const NO_REASON[] = "";
+
+char const *getReasonPhrase(unsigned short statusCode);
 } // namespace http
 
-#endif // IHTTPVERSIONPROVIDER_HPP
+#endif // HTTPSTATUSREASON_HPP
