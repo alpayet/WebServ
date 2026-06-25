@@ -24,12 +24,8 @@ std::vector<fileInfos> getFileInfos(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
 )
 {
-	std::string phyPath = resPath;
-	if (resPath[resPath.size() - 1] != '/')
-		phyPath += "/";
-
 	std::vector<fileInfos> files;
-	DIR					  *dir_ptr = opendir(phyPath.c_str());
+	DIR					  *dir_ptr = opendir(resPath.c_str());
 
 	if (!dir_ptr)
 	{
@@ -52,11 +48,11 @@ std::vector<fileInfos> getFileInfos(
 		std::string tmpPath;
 		if (std::string(dir->d_name) == "..")
 		{
-			if (phyPath != rootPath)
+			if (resPath != rootPath)
 			{
 				file.name = "Previous directory";
 
-				tmpPath = phyPath;
+				tmpPath = resPath;
 				size_t pos = tmpPath.find_last_of('/');
 				if (pos == tmpPath.size() - 1)
 				{
@@ -69,7 +65,7 @@ std::vector<fileInfos> getFileInfos(
 		else
 		{
 			file.name = dir->d_name;
-			tmpPath = phyPath + file.name;
+			tmpPath = resPath + file.name;
 		}
 		if (!tmpPath.empty())
 		{
@@ -112,7 +108,7 @@ std::vector<fileInfos> getFileInfos(
 	return files;
 }
 
-std::string getListing(std::string uri, std::vector<fileInfos> files)
+std::string getListing(const std::string& uri, const std::vector<fileInfos>& files)
 {
 	std::string listing;
 
