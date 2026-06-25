@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:13:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 22:16:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 19:45:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 #include <vector>
 
 namespace http {
+
 struct Response;
 
+namespace response {
 class HeaderBlockSerializer
 {
   public:
@@ -27,6 +29,7 @@ class HeaderBlockSerializer
 	HeaderBlockSerializer(HeaderBlockSerializer const &src);
 	HeaderBlockSerializer &operator=(HeaderBlockSerializer const &rhs);
 };
+} // namespace response
 } // namespace http
 
 #endif // HEADERBLOCKSERIALIZER_HPP

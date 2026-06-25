@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:47:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 19:53:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 namespace http {
 namespace response {
+
+Sender::Sender(http::IVersionProvider &versionProvider) : _versionProvider(versionProvider) {}
 
 Sender::State Sender::produce(std::vector<char> &outputBuf, Context::Output &context)
 {

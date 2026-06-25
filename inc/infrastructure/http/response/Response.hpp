@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:00:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:04:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,18 @@
 #include <vector>
 
 namespace http {
-namespace response {
-
 struct Response
 {
   public:
 	class Builder;
 
-	struct Status
-	{
-		unsigned short statusCode;
-		std::string	   reason;
-	};
 	struct Header
 	{
 		std::string key;
 		std::string value;
 	};
 
-	std::string			protocol;
-	Status				status;
+	unsigned short		statusCode;
 	std::vector<Header> headers;
 	std::vector<char>	body;
 };
@@ -44,16 +36,15 @@ struct Response
 class Response::Builder
 {
   public:
-	Builder		   &withProtocol(std::string const &protocol);
-	Builder		   &withStatus(Response::Status const &status);
-	Builder		   &withHeader(std::string const &key, std::string const &value);
-	Builder		   &withBody(std::vector<char> const &body);
-	Response const &build(void) const;
+	Builder	 &withStatusCode(unsigned short const statusCode);
+	Builder	 &withHeader(std::string const &key, std::string const &value);
+	Builder	 &withBody(std::vector<char> const &body);
+	Response &build(void);
 
   private:
 	Response _response;
 };
-} // namespace response
+
 } // namespace http
 
 #endif // HTTPRESPONSE_HPP

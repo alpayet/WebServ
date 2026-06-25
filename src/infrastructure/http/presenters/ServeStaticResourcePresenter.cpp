@@ -6,21 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:34:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 19:53:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
 #include "infrastructure/http/Constants.hpp"
-#include "infrastructure/http/messages/HeaderBlockSerializer.hpp"
-#include "infrastructure/http/messages/Response.hpp"
+#include "infrastructure/http/response/Response.hpp"
 #include <sstream>
 
 namespace http {
-
-ServeStaticResourcePresenter::ServeStaticResourcePresenter(std::string const &httpVersion)
-	: _httpVersion(httpVersion)
-{}
 
 ServeStaticResourcePresenter::ViewModel const &
 ServeStaticResourcePresenter::getViewModel(void) const
@@ -34,13 +29,12 @@ void ServeStaticResourcePresenter::presentContent(
 	app::IResourceReader	 *resourceReader
 )
 {
-	Response::Status responseStatus;
+	unsigned short statusCode;
 
 	switch (resourceStatus)
 	{
 		case app::resourceFound:
-			responseStatus.statusCode = 200;
-			responseStatus.reason = "OK";
+			statusCode = 200;
 			break;
 		default:
 			break;
@@ -51,12 +45,10 @@ void ServeStaticResourcePresenter::presentContent(
 
 	Response::Builder response_builder;
 
-	response_builder.withProtocol(_httpVersion);
-	response_builder.withStatus(responseStatus);
+	response_builder.withStatusCode(statusCode);
 	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
-	Response const &response = response_builder.build();
 
-	_viewModel.rawHeaderBlock = HeaderBlockSerializer::serialize(response);
+	_viewModel.response = response_builder.build();
 	_viewModel.reader = resourceReader;
 }
 

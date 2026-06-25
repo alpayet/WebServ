@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:40:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 19:50:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "application/ResourceStatus.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
+#include "infrastructure/http/response/Response.hpp"
 #include <string>
 #include <vector>
 
@@ -25,12 +26,11 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
   public:
 	struct ViewModel
 	{
-		std::vector<char>	  rawHeaderBlock;
+		Response			  response;
 		app::IResourceReader *reader;
 	};
 
   public:
-	ServeStaticResourcePresenter(std::string const &httpVersion);
 	virtual ~ServeStaticResourcePresenter(void) {}
 
 	ViewModel const &getViewModel(void) const;
@@ -48,8 +48,7 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 	ServeStaticResourcePresenter(ServeStaticResourcePresenter const &src);
 	ServeStaticResourcePresenter &operator=(ServeStaticResourcePresenter const &rhs);
 
-	ViewModel	_viewModel;
-	std::string _httpVersion;
+	ViewModel _viewModel;
 };
 } // namespace http
 

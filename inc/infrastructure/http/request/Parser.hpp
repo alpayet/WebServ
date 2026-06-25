@@ -6,15 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 04:34:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:00:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPREQUESTPARSER_HPP
 #define HTTPREQUESTPARSER_HPP
 
-#include "ParsingState.hpp"
 #include "infrastructure/http/Context.hpp"
+#include "infrastructure/http/request/Request.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -36,6 +36,17 @@ class Parser
 		complete
 	};
 
+	struct State
+	{
+		State(void) : step(start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0) {}
+
+		Step		step;
+		Request		request;
+		std::size_t currenLineSize;
+		std::size_t currentHeaderCount;
+		std::size_t bodyBytesRead;
+	};
+
   public:
 	Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvider &versionProvider);
 
@@ -51,15 +62,15 @@ class Parser
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,
 		std::vector<char>::const_iterator itLineEnd,
-		ParsingState					 &state
+		State							 &state
 	);
 	void parseHeaderLine(
 		std::vector<char>::const_iterator itStart,
 		std::vector<char>::const_iterator itLineEnd,
-		ParsingState					 &state
+		State							 &state
 	);
-	void parseContentLength(ParsingState &state);
-	void parseBody(std::vector<char> const &inputBuf, ParsingState &state);
+	void parseContentLength(State &state);
+	void parseBody(std::vector<char> const &inputBuf, State &state);
 
 	std::string Parser::extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
@@ -67,7 +78,7 @@ class Parser
 	void Parser::extractTargetandQuery(
 		std::vector<char>::const_iterator &it,
 		std::vector<char>::const_iterator  itLineEnd,
-		ParsingState					  &state
+		State							  &state
 	);
 	std::string Parser::extractProtocol(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

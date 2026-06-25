@@ -6,21 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 01:04:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:04:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/messages/Response.hpp"
+#include "infrastructure/http/response/Response.hpp"
 
 namespace http {
-Response::Builder &Response::Builder::withProtocol(std::string const &protocol)
-{
-	_response.protocol = protocol;
-}
 
-Response::Builder &Response::Builder::withStatus(Response::Status const &status)
+Response::Builder &Response::Builder::withStatusCode(unsigned short const statusCode)
 {
-	_response.status = status;
+	_response.statusCode = statusCode;
 	return (*this);
 }
 Response::Builder &Response::Builder::withHeader(std::string const &key, std::string const &value)
@@ -35,6 +31,6 @@ Response::Builder &Response::Builder::withBody(std::vector<char> const &body)
 	return (*this);
 }
 
-Response const &Response::Builder::build(void) const { return (_response); }
+Response &Response::Builder::build(void) { return (_response); }
 
 } // namespace http

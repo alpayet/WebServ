@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/24 04:26:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 20:02:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ Parser::Parser(IRequestValidationPolicy &requestValidationPolicy, IVersionProvid
 
 Parser::Step Parser::parse(Context::Input &context)
 {
-	request::ParsingState &state = context.state;
-	std::vector<char>	  &inputBuf = context.buf;
-	bool				   can_continue = true;
+	Parser::State	  &state = context.state;
+	std::vector<char> &inputBuf = context.buf;
+	bool			   can_continue = true;
 
 	while (can_continue && !inputBuf.empty())
 	{
@@ -185,7 +185,7 @@ Parser::Step Parser::parse(Context::Input &context)
 void Parser::parseRequestLine(
 	std::vector<char>::const_iterator itStart,
 	std::vector<char>::const_iterator itLineEnd,
-	ParsingState					 &state
+	State							 &state
 )
 {
 	if (hasLineBreak(itStart, itLineEnd))
@@ -204,7 +204,7 @@ void Parser::parseRequestLine(
 void Parser::parseHeaderLine(
 	std::vector<char>::const_iterator itStart,
 	std::vector<char>::const_iterator itLineEnd,
-	ParsingState					 &state
+	State							 &state
 )
 {
 	if (hasLineBreak(itStart, itLineEnd))
@@ -228,7 +228,7 @@ void Parser::parseHeaderLine(
 	state.request.headers[key] = value;
 }
 
-void Parser::parseContentLength(ParsingState &state)
+void Parser::parseContentLength(State &state)
 {
 	std::map<std::string, std::string>::const_iterator it =
 		state.request.headers.find(header::LOWER_CONTENT_LENGTH);
@@ -255,7 +255,7 @@ void Parser::parseContentLength(ParsingState &state)
 	state.request.contentLength = static_cast<size_t>(val);
 }
 
-void Parser::parseBody(std::vector<char> const &inputBuf, ParsingState &state)
+void Parser::parseBody(std::vector<char> const &inputBuf, State &state)
 {
 	state.bodyBytesRead += inputBuf.size();
 	if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize())
@@ -281,9 +281,7 @@ std::string Parser::extractMethod(
 }
 
 void Parser::extractTargetandQuery(
-	std::vector<char>::const_iterator &it,
-	std::vector<char>::const_iterator  itLineEnd,
-	ParsingState					  &state
+	std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd, State &state
 )
 {
 	std::vector<char>::const_iterator it_target_start =

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 05:01:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/25 19:51:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #include <vector>
 
 namespace http {
-namespace response {
 
+class IVersionProvider;
+
+namespace response {
 class Sender
 {
   public:
@@ -31,11 +33,15 @@ class Sender
 	};
 
   public:
+	Sender(IVersionProvider &versionProvider);
+
 	static State produce(std::vector<char> &outputBuf, Context::Output &context);
 
   private:
 	Sender(Sender const &src);
 	Sender &operator=(Sender const &rhs);
+
+	IVersionProvider &_versionProvider;
 };
 } // namespace response
 } // namespace http
