@@ -79,7 +79,7 @@ std::vector<fileInfos> getFileInfos(
 			}
 
 			file.uri = tmpPath;
-			file.uri.replace(0, rootPath.size(), locPath);
+			file.uri.replace(0, rootPath.size(), matchedRoute);
 		}
 
 		time_t t_mod = st.st_mtime;
