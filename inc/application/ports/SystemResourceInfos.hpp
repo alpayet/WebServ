@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 19:48:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 00:18:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:50:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 namespace app {
 struct SystemResourceInfos
 {
+	// TODO: check si / la fin dans le cas dun dossier (a voir)
 	std::string resourcePath;
 	// TODO: utiliser methodes de archi/storage/file_system
 	domain::ResourceType		type;

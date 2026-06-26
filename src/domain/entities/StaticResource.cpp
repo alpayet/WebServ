@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:38:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:57:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ StaticResource::StaticResource(
 )
 	: _id(id), _metaData(metaData)
 {
+	if (_metaData.isCollection() && *id.rbegin() != '/')
+		_id += '/';
 	if (_metaData.getResourcePath().find(rootPath) != 0)
 		throw Exception(Exception::pathTraversalDetected);
 }

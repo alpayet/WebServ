@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 21:32:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:41:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ class Parser
 
 	IRequestValidationPolicy &_requestValidationPolicy;
 	IHttpVersionProvider	 &_httpVersionProvider;
+
+	static std::size_t const DEFAULT_MAX_REQUEST_LINE_SIZE = 8192;
+	static std::size_t const DEFAULT_MAX_HEADER_LINE_SIZE = 8192;
+	static std::size_t const DEFAULT_MAX_HEADER_COUNT = 100;
+	static std::size_t const DEFAULT_MAX_BODY_SIZE = 1048576;
+
+	std::size_t _maxRequestLineSize;
+	std::size_t _maxHeaderLineSize;
+	std::size_t _maxHeaderCount;
+	std::size_t _maxBodySize;
 
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,

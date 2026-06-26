@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 04:18:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:29:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 
 namespace fileSystem {
-char const TempWriter::_tmpDirectory[] = "/tmp/";
+char const TempWriter::TMP_DIRECTORY[] = "/tmp/";
 
 TempWriter::TempWriter(std::string const &tempFileName)
 	: _tempFile(), _tempFileName(tempFileName), _tempFilePath(), _exists(false)
@@ -49,7 +49,7 @@ void TempWriter::writeChunk(std::vector<char> const &data)
 
 std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
 {
-	std::string unique_path((_tmpDirectory + fileName + "XXXXXX").c_str());
+	std::string unique_path((TMP_DIRECTORY + fileName + "XXXXXX").c_str());
 
 	int fd = mkstemp(&unique_path[0]);
 

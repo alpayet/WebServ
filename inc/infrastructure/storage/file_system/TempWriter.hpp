@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 04:16:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:29:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class TempWriter
 	std::string	  _tempFilePath;
 	bool		  _exists;
 
-	static char const _tmpDirectory[];
+	static char const TMP_DIRECTORY[];
 
 	static std::string generateUniqueTempFile(std::string const &fileName);
 };

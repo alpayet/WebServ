@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 21:32:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:40:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,15 @@ Parser::Parser(
 	IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
 )
 	: _requestValidationPolicy(requestValidationPolicy), _httpVersionProvider(httpVersionProvider)
-{}
-
+{
+	_maxRequestLineSize =
+		std::min(_requestValidationPolicy.getMaxRequestLineSize(), DEFAULT_MAX_HEADER_LINE_SIZE);
+	_maxHeaderLineSize =
+		std::min(_requestValidationPolicy.getMaxHeaderLineSize(), DEFAULT_MAX_HEADER_LINE_SIZE);
+	_maxHeaderCount =
+		std::min(_requestValidationPolicy.getMaxHeaderCount(), DEFAULT_MAX_HEADER_COUNT);
+	_maxBodySize = std::min(_requestValidationPolicy.getMaxBodySize(), DEFAULT_MAX_BODY_SIZE);
+}
 Parser::Step Parser::parse(Context::Input &context)
 {
 	Parser::State	  &state = context.state;
@@ -252,7 +259,7 @@ void Parser::parseContentLength(State &state)
 
 	if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
 		throw Exception(Exception::contentLengthInvalid);
-	if (val > _requestValidationPolicy.getMaxBodySize())
+	if (val > _maxBodySize)
 		throw Exception(Exception::bodyTooLarge);
 	state.request.contentLength = static_cast<size_t>(val);
 }
@@ -260,7 +267,7 @@ void Parser::parseContentLength(State &state)
 void Parser::parseBody(std::vector<char> const &inputBuf, State &state)
 {
 	state.bodyBytesRead += inputBuf.size();
-	if (state.bodyBytesRead > _requestValidationPolicy.getMaxBodySize())
+	if (state.bodyBytesRead > _maxBodySize)
 		throw Exception(Exception::bodyTooLarge);
 	state.request.body.append(inputBuf);
 }
@@ -343,19 +350,19 @@ std::vector<char>::iterator Parser::findCRLF(std::vector<char> &inputBuf)
 
 void Parser::validateRequestLineSize(std::size_t size)
 {
-	if (size > _requestValidationPolicy.getMaxRequestLineSize())
+	if (size > _maxRequestLineSize)
 		throw Exception(Exception::requestLineTooLarge);
 }
 
 void Parser::validateHeaderLineSize(std::size_t size)
 {
-	if (size > _requestValidationPolicy.getMaxHeaderLineSize())
+	if (size > _maxHeaderLineSize)
 		throw Exception(Exception::requestLineTooLarge);
 }
 
 void Parser::validateHeaderCount(std::size_t count)
 {
-	if (count > _requestValidationPolicy.getMaxHeaderCount())
+	if (count > _maxHeaderCount)
 		throw Exception(Exception::headerCountTooLarge);
 }
 } // namespace request

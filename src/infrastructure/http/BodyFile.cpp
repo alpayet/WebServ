@@ -6,16 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:02:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:32:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/messages/BodyFile.hpp"
 
 namespace http {
-char const BodyFile::_nameTemplate[] = "webserv_body";
+char const BodyFile::NAME_TEMPLATE[] = "webserv_body";
 
-BodyFile::BodyFile(void) : _writer(_nameTemplate) {}
+BodyFile::BodyFile(void) : _writer(NAME_TEMPLATE) {}
 
 void BodyFile::append(std::vector<char> const &data) { _writer.writeChunk(data); }
 

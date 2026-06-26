@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 03:43:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 02:32:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class BodyFile
   private:
 	fileSystem::TempWriter _writer;
 
-	static char const _nameTemplate[];
+	static char const NAME_TEMPLATE[];
 };
 } // namespace request
 } // namespace http

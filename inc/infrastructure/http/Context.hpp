@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 22:32:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 01:51:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ struct Context
 	};
 	struct Output
 	{
-		Output(void) : reader(NULL), isResponseComplete(false) {}
+		Output(void) : state(response::Sender::HeaderBlock), reader(NULL), isResponseComplete(false)
+		{}
 		~Output(void) { delete reader; }
 
 		std::vector<char>		buf;
