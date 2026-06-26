@@ -1,0 +1,23 @@
+@startuml serverDiag
++class Server
+{
+	- listens : list<int>
+	- serv_names : list<string>
+	- locations : list<s_location>
+	- root : string
+	- index : string
+}
+
+-struct s_location
+{
+	- path : string
+	- root : string
+	- index : string
+}
+
++class Error
+{
+	- {static} errors : map<int, string>
+	+ void print(errNb : int)
+}
+@enduml

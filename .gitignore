@@ -1,0 +1,8 @@
+.build/
+*.out
+*.log
+main.c
+subject.md
+webserv
+obj/
+.obj/

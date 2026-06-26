@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ILimitsProvider.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 03:13:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:15:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/15 17:22:32 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <string>
 
 namespace http {
-// TODO: faire herité la config de cette interface
 class ILimitsProvider
 {
   public:

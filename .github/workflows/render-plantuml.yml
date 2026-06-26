@@ -1,0 +1,36 @@
+name: Render PlantUML diagrams
+
+on:
+  push:
+    branches:
+      - "feat/config"
+    paths:
+      - "diagrams/**/*.puml"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install PlantUML
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz default-jre
+          curl -L https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar -o plantuml.jar
+
+      - name: Render diagrams
+        run: |
+          find diagrams -name "*.puml" | while read file; do
+            java -jar plantuml.jar -tsvg -o "$(dirname "$file")" "$file"
+          done
+
+      - name: Commit generated SVG
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add diagrams/*.svg
+          git commit -m "Auto-render PlantUML diagrams" || exit 0
+          git push
