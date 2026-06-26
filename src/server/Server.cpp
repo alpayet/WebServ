@@ -157,7 +157,7 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 	return setSRI(resPath + indexesId[0]);
 }
 
-std::string Server::getSupportedHttpVersion(void) const { return ("1.0"); }
+std::string Server::getHttpVersion(void) const { return ("HTTP/1.0"); }
 
 std::size_t Server::getMaxRequestLineSize(void) const
 {

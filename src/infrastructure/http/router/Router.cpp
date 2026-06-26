@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 03:19:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 04:26:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
-#include "infrastructure/http/messages/Methods.hpp"
+#include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/request/Request.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
@@ -36,9 +36,9 @@ Router::Router(
 
 void Router::route(Context &context)
 {
-	RoutePolicy const &route_policy = _routeRegistry.match(context.state.request.target);
+	RoutePolicy const &route_policy = _routeRegistry.match(context.input.state.request.target);
 	std::vector<std::string> const &allowed_methods = route_policy.allowedMethods;
-	std::string const			   &method = context.state.request.method;
+	std::string const			   &method = context.input.state.request.method;
 
 	if (std::find(allowed_methods.begin(), allowed_methods.end(), method) == allowed_methods.end())
 		throw Exception(Exception::methodNotAllowed);

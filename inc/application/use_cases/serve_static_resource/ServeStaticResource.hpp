@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:34:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 04:01:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class ServeStaticResource
 	{
 		Input(
 			std::string const			   &id,
+			std::string const			   &matchedRoute,
 			std::string const			   &rootPath,
 			bool const						isListingEnabled,
 			std::vector<std::string> const &indexesId
@@ -42,6 +43,7 @@ class ServeStaticResource
 			: id(id), rootPath(rootPath), isListingEnabled(isListingEnabled), indexesId(indexesId)
 		{}
 		std::string				 id;
+		std::string				 matchedRoute;
 		std::string				 rootPath;
 		bool					 isListingEnabled;
 		std::vector<std::string> indexesId;

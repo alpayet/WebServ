@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 03:41:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 04:02:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ ServeStaticResource::ServeStaticResource(
 
 void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
-	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	SystemResourceInfos target_infos =
+		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
 
@@ -42,8 +43,9 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 
 	if (target_meta_data.isCollection())
 	{
-		SystemResourceInfos index_infos =
-			_resourceLocator.locateDefaultIndex(dtoInput.indexesId, dtoInput.rootPath);
+		SystemResourceInfos index_infos = _resourceLocator.locateDefaultIndex(
+			dtoInput.indexesId, dtoInput.matchedRoute, dtoInput.rootPath
+		);
 
 		if (!index_infos.exists)
 			generateListing(dtoInput, outputPort, target_meta_data);

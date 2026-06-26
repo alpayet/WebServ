@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include "application/ports/IResourceLocator.hpp"
+#include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/request/IRequestValidationPolicy.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
@@ -27,7 +28,8 @@ struct Location
 class Server : public app::IResourceLocator,
 			   public http::IRequestValidationPolicy,
 			   public http::ILimitsProvider,
-			   public http::RoutePolicy
+			   public http::RoutePolicy,
+			   public http::IHttpVersionProvider
 {
   public:
 	/** CTOR */
@@ -71,7 +73,7 @@ class Server : public app::IResourceLocator,
 		std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 	) const;
 	Location				 findLocationFromUri(std::string const &uri) const;
-	virtual std::string		 getSupportedHttpVersion(void) const;
+	virtual std::string		 getHttpVersion(void) const;
 	virtual std::size_t		 getMaxRequestLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderCount(void) const;

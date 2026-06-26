@@ -6,13 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:32:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 04:25:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/messages/BodyFile.hpp"
+#include "infrastructure/http/request/BodyFile.hpp"
 
 namespace http {
+namespace request {
+
 char const BodyFile::NAME_TEMPLATE[] = "webserv_body";
 
 BodyFile::BodyFile(void) : _writer(NAME_TEMPLATE) {}
@@ -23,4 +25,5 @@ std::string const &BodyFile::getPath(void) const { return (_writer.getTempFilePa
 
 bool BodyFile::exists(void) const { return (_writer.exists()); }
 
+} // namespace request
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 19:54:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 22:09:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 04:52:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class IHttpVersionProvider
   public:
 	~IHttpVersionProvider(void) {}
 
-	virtual std::string getHttpVersion(void) = 0;
+	virtual std::string getHttpVersion(void) const = 0;
 };
 } // namespace http
 
