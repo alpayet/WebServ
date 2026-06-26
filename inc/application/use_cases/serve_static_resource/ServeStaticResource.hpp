@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:01:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 23:27:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ class ServeStaticResource
 
   public:
 	ServeStaticResource(
-		IResourceLocator	   &resourceLocator,
-		IStaticResourceStorage &staticResourceStorage,
-		ICollectionExplorer	   &collectionExplorer
+		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		// ICollectionExplorer	   &collectionExplorer
 	);
 
 	void execute(Input const &dtoInput, IOutputPort &outputPort);
@@ -76,16 +75,16 @@ class ServeStaticResource
 	ServeStaticResource(ServeStaticResource const &src);
 	ServeStaticResource &operator=(ServeStaticResource const &rhs);
 
-	void ServeStaticResource::serveContent(
+	void serveContent(
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
-	void ServeStaticResource::generateListing(
+	void generateListing(
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 
 	IResourceLocator	   &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
-	ICollectionExplorer	   &_collectionExplorer;
+	// ICollectionExplorer	   &_collectionExplorer;
 };
 } // namespace useCase
 } // namespace app

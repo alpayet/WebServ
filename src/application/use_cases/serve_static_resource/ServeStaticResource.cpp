@@ -6,13 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:02:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 22:33:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "application/Exception.hpp"
-#include "application/ports/ICollectionExplorer.hpp"
+// #include "application/ports/ICollectionExplorer.hpp"
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
 #include "application/ports/SystemResourceInfos.hpp"
@@ -21,12 +21,11 @@
 namespace app {
 namespace useCase {
 ServeStaticResource::ServeStaticResource(
-	IResourceLocator	   &resourceLocator,
-	IStaticResourceStorage &staticResourceStorage,
-	ICollectionExplorer	   &collectionExplorer
+	IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+	// ICollectionExplorer	   &collectionExplorer
 )
-	: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage),
-	  _collectionExplorer(collectionExplorer)
+	: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage)
+//   _collectionExplorer(collectionExplorer)
 {}
 
 void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
@@ -83,19 +82,19 @@ void ServeStaticResource::generateListing(
 	Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 )
 {
-	if (!dtoInput.isListingEnabled)
-		throw Exception(Exception::listingDisabled);
+	// if (!dtoInput.isListingEnabled)
+	// 	throw Exception(Exception::listingDisabled);
 
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
+	// domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
 
-	if (!static_resource.isReadable() || !static_resource.isExecutable())
-		throw Exception(Exception::accessDenied);
+	// if (!static_resource.isReadable() || !static_resource.isExecutable())
+	// 	throw Exception(Exception::accessDenied);
 
-	// TODO: voir pour la gestion du listing si contenue d ulisting dans fichier ou direct en ram
-	std::vector<char> collection_data =
-		_collectionExplorer.listingCollection(static_resource.getResourcePath());
+	// // TODO: voir pour la gestion du listing si contenue d ulisting dans fichier ou direct en ram
+	// std::vector<char> collection_data =
+	// 	_collectionExplorer.listingCollection(static_resource.getResourcePath());
 
-	outputPort.presentListing(resourceFound, collection_data);
+	// outputPort.presentListing(resourceFound, collection_data);
 }
 } // namespace useCase
 } // namespace app

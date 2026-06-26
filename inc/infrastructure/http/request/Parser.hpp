@@ -6,14 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:41:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 23:46:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPREQUESTPARSER_HPP
 #define HTTPREQUESTPARSER_HPP
 
-#include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/request/Request.hpp"
 #include <map>
 #include <string>
@@ -52,11 +51,16 @@ class Parser
 		IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
 	);
 
-	Step parse(Context::Input &context);
+	Step parse(std::vector<char> &inputBuf, State &state);
 
   private:
 	Parser(Parser const &src);
 	Parser &operator=(Parser const &rhs);
+
+	std::size_t _maxRequestLineSize;
+	std::size_t _maxHeaderLineSize;
+	std::size_t _maxHeaderCount;
+	std::size_t _maxBodySize;
 
 	IRequestValidationPolicy &_requestValidationPolicy;
 	IHttpVersionProvider	 &_httpVersionProvider;
@@ -65,11 +69,6 @@ class Parser
 	static std::size_t const DEFAULT_MAX_HEADER_LINE_SIZE = 8192;
 	static std::size_t const DEFAULT_MAX_HEADER_COUNT = 100;
 	static std::size_t const DEFAULT_MAX_BODY_SIZE = 1048576;
-
-	std::size_t _maxRequestLineSize;
-	std::size_t _maxHeaderLineSize;
-	std::size_t _maxHeaderCount;
-	std::size_t _maxBodySize;
 
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,
@@ -84,15 +83,15 @@ class Parser
 	void parseContentLength(State &state);
 	void parseBody(std::vector<char> const &inputBuf, State &state);
 
-	std::string Parser::extractMethod(
+	std::string extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 	);
-	void Parser::extractTargetandQuery(
+	void extractTargetandQuery(
 		std::vector<char>::const_iterator &it,
 		std::vector<char>::const_iterator  itLineEnd,
 		State							  &state
 	);
-	std::string Parser::extractProtocol(
+	std::string extractProtocol(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 	);
 

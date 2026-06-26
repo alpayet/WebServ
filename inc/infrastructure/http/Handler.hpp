@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/24 04:48:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 23:14:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ class Router;
 class Handler : public ITransfertHandler
 {
   public:
-	Handler(request::Parser &parser, Router &router);
+	Handler(request::Parser &parser, Router &router, response::Sender &sender);
 
 	virtual void createContext(unsigned int id);
 
-	virtual void			  push(unsigned int id, std::vector<char> &inputBuf);
-	virtual std::vector<char> pull(unsigned int id);
+	virtual void push(unsigned int id, std::vector<char> const &inputBuf);
+
+	virtual std::vector<char> const &pull(unsigned int id);
 
 	virtual bool isRequestComplete(unsigned int id);
 	virtual bool isResponseComplete(unsigned int id);
@@ -41,9 +42,11 @@ class Handler : public ITransfertHandler
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
 
-	request::Parser		  &_parser;
-	Router				  &_router;
 	std::map<int, Context> _contexts;
+
+	request::Parser	 &_parser;
+	Router			 &_router;
+	response::Sender &_sender;
 };
 } // namespace http
 

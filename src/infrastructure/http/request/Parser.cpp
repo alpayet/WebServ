@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:40:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 23:49:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,9 @@ Parser::Parser(
 		std::min(_requestValidationPolicy.getMaxHeaderCount(), DEFAULT_MAX_HEADER_COUNT);
 	_maxBodySize = std::min(_requestValidationPolicy.getMaxBodySize(), DEFAULT_MAX_BODY_SIZE);
 }
-Parser::Step Parser::parse(Context::Input &context)
+Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 {
-	Parser::State	  &state = context.state;
-	std::vector<char> &inputBuf = context.buf;
-	bool			   can_continue = true;
+	bool can_continue = true;
 
 	while (can_continue && !inputBuf.empty())
 	{

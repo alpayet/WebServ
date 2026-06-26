@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 23:49:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/26 21:41:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ Sender::State Sender::produce(Context::Output &context)
 			break;
 		case body:
 			context.buf.clear();
-			/* code */
+			context.state = complete;
+			break;
 		case resource:
 			context.buf.clear();
+			context.state = complete;
+			break;
 		default:
 			break;
 	}

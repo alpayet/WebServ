@@ -12,6 +12,7 @@
 
 #include "application/ports/SystemResourceInfos.hpp"
 #include "config/Semantic.hpp"
+#include "infrastructure/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
 
 Location Server::findLocationFromUri(std::string const &uri) const
