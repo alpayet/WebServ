@@ -114,7 +114,7 @@ app::SystemResourceInfos setSRI(std::string const &path)
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
 
-	sri.contentLength = fileSystem::Storage::getSize(sri.resourcePath);
+	sri.resourceSize = fileSystem::Storage::getSize(sri.resourcePath);
 
 	sri.canBeDeleted = fileSystem::Storage::isDeletable(sri.resourcePath);
 

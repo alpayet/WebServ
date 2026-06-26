@@ -3,7 +3,7 @@
 
 #include "application/ports/IResourceLocator.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
-#include "infrastructure/http/parsers/IRequestValidationPolicy.hpp"
+#include "infrastructure/http/request/IRequestValidationPolicy.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
 #include <map>
 #include <string>

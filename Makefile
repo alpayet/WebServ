@@ -10,9 +10,9 @@ INCS_DIR := inc/
 OBJS_DIR := .build/
 
 SRCS := $(addprefix $(SRCS_DIR),main.cpp)
-SRCS += $(addprefix $(CONF_DIR), Config.cpp Tokenizer.cpp Parser.cpp Semantic.cpp) 
-SRCS += $(addprefix $(SERV_DIR), Server.cpp) 
-SRCS += $(addprefix $(STOR_DIR), Storage.cpp Reader.cpp Exception.cpp) 
+SRCS += $(addprefix $(CONF_DIR), Config.cpp Tokenizer.cpp Parser.cpp Semantic.cpp)
+SRCS += $(addprefix $(SERV_DIR), Server.cpp)
+SRCS += $(addprefix $(STOR_DIR), Storage.cpp Reader.cpp fdReader.cpp Exception.cpp)
 INCS := $(INCS_DIR)
 OBJS := $(addprefix $(OBJS_DIR), $(SRCS:%.cpp=%.o))
 DEPS := $(OBJS:.o=.d)
