@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ResourcePermissions.hpp                            :+:      :+:    :+:   */
+/*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 16:38:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 07:06:03 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/27 05:31:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESOURCEPERMISSIONS_HPP
-#define RESOURCEPERMISSIONS_HPP
+#include "infrastructure/http/request/Request.hpp"
 
-namespace domain {
-enum ResourcePermissions
+namespace http {
+Request::Request() : contentLength(0) {}
+
+void Request::reset(void)
 {
-	none = 0,
-	readable = 1 << 0,
-	writable = 1 << 1,
-	executable = 1 << 2
-};
-} // namespace domain
+	headers.clear();
+	method.clear();
+	target.clear();
+	protocol.clear();
+	query.clear();
+	contentLength = 0;
+	body.reset();
+}
 
-#endif // RESOURCEPERMISSIONS_HPP
+} // namespace http

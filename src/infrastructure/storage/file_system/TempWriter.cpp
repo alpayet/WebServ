@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:29:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 08:40:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/storage/file_system/TempWriter.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include <cstdlib>
+#include <iostream>
 #include <unistd.h>
 
 namespace fileSystem {
@@ -29,7 +30,7 @@ TempWriter::~TempWriter(void)
 		std::remove(_tempFilePath.c_str());
 }
 
-std::string TempWriter::getTempFilePath(void) const { return (_tempFilePath); }
+std::string const &TempWriter::getTempFilePath(void) const { return (_tempFilePath); }
 
 bool TempWriter::exists(void) const { return (_exists); }
 
@@ -58,5 +59,15 @@ std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
 	if (close(fd) < 0)
 		throw Exception(Exception::internalErrorFileOpenFailed);
 	return (unique_path);
+}
+
+void TempWriter::reset(void)
+{
+	if (_tempFile.is_open())
+	{
+		_tempFile.close();
+		_tempFile.clear();
+		_tempFile.open(_tempFileName.c_str(), std::ios::binary);
+	}
 }
 } // namespace fileSystem

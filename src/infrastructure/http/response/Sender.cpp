@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 21:41:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:30:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,35 @@ Sender::Sender(IHttpVersionProvider &httpVersionProvider)
 	: _httpVersionProvider(httpVersionProvider)
 {}
 
-Sender::State Sender::produce(Context::Output &context)
+Sender::State Sender::produce(
+	std::vector<char>	 &outputBuf,
+	Response const		 &response,
+	app::IResourceReader *reader,
+	State				  state
+)
 {
-	switch (context.state)
+	switch (state)
 	{
 		case HeaderBlock:
-			context.buf.clear();
+			outputBuf.clear();
 			HeaderBlockSerializer::serialize(
-				context.buf, context.response, _httpVersionProvider.getHttpVersion()
+				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
 
-			context.state = (context.reader) ? resource : body;
+			state = (reader) ? resource : body;
 			break;
 		case body:
-			context.buf.clear();
-			context.state = complete;
+			outputBuf.clear();
+			state = complete;
 			break;
 		case resource:
-			context.buf.clear();
-			context.state = complete;
+			outputBuf.clear();
+			state = complete;
 			break;
 		default:
 			break;
 	}
+	return (state);
 }
 
 } // namespace response

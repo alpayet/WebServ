@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:16:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:53:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 08:02:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void HeaderBlockSerializer::serialize(
 	{
 		headerBlock += i->key;
 		headerBlock += COLON;
+		headerBlock += SP;
 		headerBlock += i->value;
 		headerBlock += CRLF;
 	}

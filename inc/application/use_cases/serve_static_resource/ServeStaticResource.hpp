@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 23:27:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 07:01:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ class ServeStaticResource
 			bool const						isListingEnabled,
 			std::vector<std::string> const &indexesId
 		)
-			: id(id), rootPath(rootPath), isListingEnabled(isListingEnabled), indexesId(indexesId)
+			: id(id), matchedRoute(matchedRoute), rootPath(rootPath),
+			  isListingEnabled(isListingEnabled), indexesId(indexesId)
 		{}
 		std::string				 id;
 		std::string				 matchedRoute;

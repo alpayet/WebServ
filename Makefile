@@ -59,12 +59,15 @@ SRC_FILES = \
 	infrastructure/storage/file_system/fdReader.cpp \
 	infrastructure/storage/file_system/Exception.cpp \
 	infrastructure/http/StatusReason.cpp \
+	infrastructure/http/Context.cpp \
 	infrastructure/http/Methods.cpp \
 	infrastructure/http/Handler.cpp \
 	infrastructure/http/router/Router.cpp \
+	infrastructure/http/response/Response.cpp \
 	infrastructure/http/response/Sender.cpp \
 	infrastructure/http/response/ResponseBuilder.cpp \
 	infrastructure/http/response/HeaderBlockSerializer.cpp \
+	infrastructure/http/request/Request.cpp \
 	infrastructure/http/request/Parser.cpp \
 	infrastructure/http/request/BodyFile.cpp \
 	infrastructure/http/presenters/ServeStaticResourcePresenter.cpp \
@@ -95,7 +98,7 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 NAME = webserv
 
 CC = c++
-CFLAGS = -Wall -Wextra -Weffc++ -MMD -MP -std=c++98
+CFLAGS = -Wall -Wextra -MMD -MP -std=c++98
 IFLAGS = -I $(INC_DIR)
 MAKE = @make --no-print-directory -j
 

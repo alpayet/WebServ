@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:55:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 05:27:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@
 
 namespace http {
 
-struct Request
+class Request
 {
-	Request(void) : contentLength(0) {}
+  public:
+	Request(void);
 
 	std::map<std::string, std::string> headers;
 	std::string						   method;
@@ -30,6 +31,12 @@ struct Request
 	std::string						   query;
 	size_t							   contentLength;
 	request::BodyFile				   body;
+
+	void reset(void);
+
+  private:
+	Request(Request const &src);
+	Request &operator=(Request const &rhs);
 };
 } // namespace http
 

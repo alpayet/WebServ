@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 20:04:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:00:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,22 @@
 #include <vector>
 
 namespace http {
-struct Response
+class Response
 {
   public:
 	class Builder;
-
 	struct Header
 	{
 		std::string key;
 		std::string value;
 	};
 
+  public:
 	unsigned short		statusCode;
 	std::vector<Header> headers;
 	std::vector<char>	body;
+
+	void reset(void);
 };
 
 class Response::Builder

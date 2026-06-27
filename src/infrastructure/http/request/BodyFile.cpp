@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:25:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 05:31:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void BodyFile::append(std::vector<char> const &data) { _writer.writeChunk(data);
 std::string const &BodyFile::getPath(void) const { return (_writer.getTempFilePath()); }
 
 bool BodyFile::exists(void) const { return (_writer.exists()); }
+
+void BodyFile::reset(void)
+{
+	_writer.reset();
+}
 
 } // namespace request
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 01:51:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:28:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,54 @@ class IResourceReader;
 } // namespace app
 
 namespace http {
-struct Context
+class Context
 {
-	struct Input
+  public:
+	class Input
 	{
-		Input(void) : isRequestComplete(false) {}
+	  public:
+		Input(void);
 
 		std::vector<char>	   buf;
 		request::Parser::State state;
 		bool				   isRequestComplete;
+
+		void reset(void);
+
+	  private:
+		Input(Input const &src);
+		Input &operator=(Input const &rhs);
 	};
-	struct Output
+	class Output
 	{
-		Output(void) : state(response::Sender::HeaderBlock), reader(NULL), isResponseComplete(false)
-		{}
-		~Output(void) { delete reader; }
+	  public:
+		Output(void);
+		~Output(void);
 
 		std::vector<char>		buf;
 		response::Sender::State state;
 		Response				response;
 		app::IResourceReader   *reader;
 		bool					isResponseComplete;
+
+		void reset(void);
+
+	  private:
+		Output(Output const &src);
+		Output &operator=(Output const &rhs);
 	};
+
+  public:
+	Context(void) {}
 
 	Input  input;
 	Output output;
+
+	void reset(void);
+
+  private:
+	Context(Context const &src);
+	Context &operator=(Context const &rhs);
 };
 } // namespace http
 

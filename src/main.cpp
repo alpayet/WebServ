@@ -49,8 +49,7 @@ int main(int argc, char **argv)
 		std::vector<Server>::iterator ite = server_configs.end();
 		for (std::vector<Server>::iterator it = server_configs.begin(); it != ite; ++it)
 		{
-			Server server_config = *it;
-
+			Server				  server_config = *it;
 			http::request::Parser parser(server_config, server_config);
 
 			fileSystem::Storage				  storage;
@@ -65,18 +64,15 @@ int main(int argc, char **argv)
 			http::Handler	   handler(parser, router, sender);
 			ITransfertHandler &tranfer = handler;
 
-			tranfer.createContext(0);
 			std::string const		requete_test("GET /app/index.html HTTP/1.0\r\n\r\n");
-			std::vector<char> const input_buf =
-				std::vector<char>(requete_test.begin(), requete_test.end());
+			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
+			tranfer.prepareContext(0);
 
 			tranfer.push(0, input_buf);
 			std::vector<char> const &output_buf = tranfer.pull(0);
 
 			std::string const result(output_buf.begin(), output_buf.end());
-			std::cout << result;
-
-			std::cout << *it << std::endl;
+			std::cout << result << std::endl;
 		}
 	}
 	catch (ConfigException const &e)

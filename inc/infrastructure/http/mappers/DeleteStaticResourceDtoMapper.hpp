@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 03:26:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 05:24:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 
 namespace http {
-struct Request;
+class Request;
 class RoutePolicy;
 
 class DeleteStaticResourceDtoMapper

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:29:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:58:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@ class TempWriter
 	TempWriter(std::string const &tempFileName);
 	~TempWriter(void);
 
-	std::string getTempFilePath(void) const;
-	bool		exists(void) const;
+	std::string const &getTempFilePath(void) const;
+
+	bool exists(void) const;
 
 	void writeChunk(std::vector<char> const &data);
+
+	void reset(void);
 
   private:
 	TempWriter(TempWriter const &src);

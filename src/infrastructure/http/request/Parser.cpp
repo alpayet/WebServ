@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 23:49:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 08:20:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 #include <cerrno>
 
 namespace {
+bool is_invalid_target_char(unsigned char c);
+bool is_invalid_key_char(unsigned char c);
+bool is_invalid_value_char(unsigned char c);
+
 bool is_valid_target_syntax(
 	std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end
 )
@@ -69,7 +73,7 @@ bool is_invalid_value_char(unsigned char c)
 	return (!(std::isprint(c) || c == http::HT || c >= 128));
 }
 
-bool is_notWHITE_SPACES(char c) { return (c != http::SP && c != http::HT); }
+bool is_not_white_spaces(char c) { return (c != http::SP && c != http::HT); }
 
 char to_lower_safe(unsigned char c) { return (static_cast<char>(std::tolower(c))); }
 
@@ -93,13 +97,19 @@ void trim(std::string &str, char const *to_trim)
 namespace http {
 namespace request {
 
+std::size_t const Parser::DEFAULT_MAX_REQUEST_LINE_SIZE;
+std::size_t const Parser::DEFAULT_MAX_HEADER_LINE_SIZE;
+std::size_t const Parser::DEFAULT_MAX_HEADER_COUNT;
+std::size_t const Parser::DEFAULT_MAX_BODY_SIZE;
+
 Parser::Parser(
 	IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
 )
 	: _requestValidationPolicy(requestValidationPolicy), _httpVersionProvider(httpVersionProvider)
 {
 	_maxRequestLineSize =
-		std::min(_requestValidationPolicy.getMaxRequestLineSize(), DEFAULT_MAX_HEADER_LINE_SIZE);
+		std::min(_requestValidationPolicy.getMaxRequestLineSize(), DEFAULT_MAX_REQUEST_LINE_SIZE);
+
 	_maxHeaderLineSize =
 		std::min(_requestValidationPolicy.getMaxHeaderLineSize(), DEFAULT_MAX_HEADER_LINE_SIZE);
 	_maxHeaderCount =
@@ -115,6 +125,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 		switch (state.step)
 		{
 			case Parser::start:
+			{
 				std::vector<char>::iterator it_start = inputBuf.begin();
 				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 				if (it_start == it_line_end)
@@ -122,9 +133,16 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					inputBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
 					break;
 				}
-				if (*it_start == CR && it_start + 1 != inputBuf.end())
-					state.step = Parser::requestLine;
+				if (*it_start == CR && it_start + 1 == inputBuf.end())
+				{
+					can_continue = false;
+					break;
+				}
+				state.step = Parser::requestLine;
+				break;
+			}
 			case Parser::requestLine:
+			{
 				std::vector<char>::iterator it_start = inputBuf.begin();
 				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 
@@ -140,7 +158,9 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				state.currenLineSize = 0;
 				state.step = Parser::header;
 				break;
+			}
 			case Parser::header:
+			{
 				std::vector<char>::iterator it_start = inputBuf.begin();
 				std::vector<char>::iterator it_line_end = findCRLF(inputBuf);
 
@@ -168,12 +188,14 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 						break;
 					}
 				}
-				parseRequestLine(it_start, it_line_end, state);
+				parseHeaderLine(it_start, it_line_end, state);
 				parseContentLength(state);
 				inputBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				break;
+			}
 			case Parser::body:
+			{
 				parseBody(inputBuf, state);
 				inputBuf.clear();
 				if (state.bodyBytesRead == state.request.contentLength)
@@ -182,6 +204,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					can_continue = false;
 					break;
 				}
+			}
 			default:
 				break;
 		}
@@ -204,7 +227,7 @@ void Parser::parseRequestLine(
 	extractTargetandQuery(it, itLineEnd, state);
 	state.request.protocol = extractProtocol(it, itLineEnd);
 
-	if (std::find_if(it, itLineEnd, is_notWHITE_SPACES) != itLineEnd)
+	if (std::find_if(it, itLineEnd, is_not_white_spaces) != itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 }
 
@@ -292,7 +315,7 @@ void Parser::extractTargetandQuery(
 )
 {
 	std::vector<char>::const_iterator it_target_start =
-		std::find_if(it, itLineEnd, is_notWHITE_SPACES);
+		std::find_if(it, itLineEnd, is_not_white_spaces);
 	if (it_target_start == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
@@ -307,8 +330,13 @@ void Parser::extractTargetandQuery(
 
 	std::vector<char>::const_iterator it_query = std::find(it_target_start, it_target_end, '?');
 
-	state.request.target = std::string(it_target_start, it_query);
-	state.request.query = std::string(it_query + 1, it_target_end);
+	if (it_query != it_target_end)
+	{
+		state.request.target = std::string(it_target_start, it_query);
+		state.request.query = std::string(it_query + 1, it_target_end);
+	}
+	else
+		state.request.target = std::string(it_target_start, it_target_end);
 
 	it = it_target_end;
 }
@@ -318,7 +346,7 @@ std::string Parser::extractProtocol(
 )
 {
 	std::vector<char>::const_iterator it_protocol_start =
-		std::find_if(it, itLineEnd, is_notWHITE_SPACES);
+		std::find_if(it, itLineEnd, is_not_white_spaces);
 	if (it_protocol_start == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
@@ -363,5 +391,18 @@ void Parser::validateHeaderCount(std::size_t count)
 	if (count > _maxHeaderCount)
 		throw Exception(Exception::headerCountTooLarge);
 }
+
+Parser::State::State(void) : step(start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
+{}
+
+void Parser::State::reset(void)
+{
+	step = start;
+	request.reset();
+	currenLineSize = 0;
+	currentHeaderCount = 0;
+	bodyBytesRead = 0;
+}
+
 } // namespace request
 } // namespace http

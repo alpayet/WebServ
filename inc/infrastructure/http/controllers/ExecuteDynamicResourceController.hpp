@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 16:15:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 03:57:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ class ExecuteDynamicResourceController
 		app::useCase::ExecuteDynamicResource &useCase, ILimitsProvider &limitsProvider
 	);
 
-	void ExecuteDynamicResourceController::operator()(
-		Request const &request, Context &context, RoutePolicy const &routePolicy
-	);
+	void operator()(Request const &request, Context &context, RoutePolicy const &routePolicy);
 
   private:
 	ExecuteDynamicResourceController(ExecuteDynamicResourceController const &src);

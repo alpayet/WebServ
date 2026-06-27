@@ -6,19 +6,23 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 22:51:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:29:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPRESPONSESENDER_HPP
 #define HTTPRESPONSESENDER_HPP
 
-#include "infrastructure/http/Context.hpp"
 #include <vector>
+
+namespace app {
+class IResourceReader;
+} // namespace app
 
 namespace http {
 
 class IHttpVersionProvider;
+class Response;
 
 namespace response {
 class Sender
@@ -35,7 +39,12 @@ class Sender
   public:
 	Sender(IHttpVersionProvider &httpVersionProvider);
 
-	State produce(Context::Output &context);
+	State produce(
+		std::vector<char>	 &outputBuf,
+		Response const		 &response,
+		app::IResourceReader *reader,
+		State				  state
+	);
 
   private:
 	Sender(Sender const &src);

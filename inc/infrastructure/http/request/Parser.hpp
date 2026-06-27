@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 23:46:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 05:25:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,22 @@ class Parser
 		complete
 	};
 
-	struct State
+	class State
 	{
-		State(void) : step(start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0) {}
+	  public:
+		State(void);
 
 		Step		step;
 		Request		request;
 		std::size_t currenLineSize;
 		std::size_t currentHeaderCount;
 		std::size_t bodyBytesRead;
+
+		void reset(void);
+
+	  private:
+		State(State const &src);
+		State &operator=(State const &rhs);
 	};
 
   public:

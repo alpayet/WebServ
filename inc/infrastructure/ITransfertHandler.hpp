@@ -6,19 +6,21 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 23:14:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 06:12:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITRANSFERTHANDLER_HPP
 #define ITRANSFERTHANDLER_HPP
 
+#include <vector>
+
 class ITransfertHandler
 {
   public:
 	virtual ~ITransfertHandler() {}
 
-	virtual void createContext(unsigned int id) = 0;
+	virtual void prepareContext(unsigned int id) = 0;
 
 	virtual void push(unsigned int id, std::vector<char> const &inputBuf) = 0;
 
