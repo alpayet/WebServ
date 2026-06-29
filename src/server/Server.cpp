@@ -140,6 +140,8 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 ) const
 {
 	std::string resPath = resolvePhysicalPath("/", matchedRoute, rootPath);
+	if (resPath[resPath.size() - 1] != '/')
+		resPath += "/";
 
 	if (indexesId.empty())
 		return app::SystemResourceInfos();
