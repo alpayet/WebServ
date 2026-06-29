@@ -3,14 +3,11 @@
 # Description
 The goal is to make an HTTP server.
 
-![Class diagram of the parsing](diagrams/parsing.svg)
-
-
-![Class diagram of the server](diagrams/server.svg)
 
 # Instructions
 To launch the program, use the command line
 `./webserv <configuration file>`
+
 Configuration file ressemble the server block of the nginx file:
 ```
 server {
@@ -31,31 +28,38 @@ server {
 	location /lalala/ {
 		autoindex on;
 	}
+
+	location /cgi-bin/ {
+		cgi test.py;
+	}
 	
 	error_page 500 /500.html;
 	error_page 404 /404.html;
 }
 ```
-Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
 
+Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
+Also, every location and root has to be a directory, whereas index can't have any directory.
 
 `server`: defines the start of a server setup
 
+`root` (outside location block): path for the server, the location blocks without a root directive will append there path to that route 
+
 `location`: starts of the location block for a specific path
+
+`root` (in location block): use as an alias to replace the path of the location block (the one the user will enter but end up internally where defined by the root directive)
 
 `listen`: defines the port used
 
 `interface`: ip address
 
-`root`:  
+`index`: goes with the root, it's the default page if you access a specific directory declare with the root
 
-`index`:
+`cgi`: common gateway interface, this is used to launch script
 
-`cgi`:
+`error_page`: define where to find the error page file for a specific http error code
 
-`error_page`: 
-
-`client_max_body_size`: 
+`client_max_body_size`: cap the size of the response
 
 `limit_except`: turn all methods to false, then the mentionned ones are the one allowed
 
