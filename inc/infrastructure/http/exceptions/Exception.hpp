@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Exception.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 16:30:01 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/29 21:06:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ class Exception : public std::exception
 		headerCountTooLarge,
 		bodyTooLarge,
 		bodyFileOpenFailed,
-		bodyFileWriteFailed
+		bodyFileWriteFailed,
+		toHttpCodeFailed
 	};
 
   public:

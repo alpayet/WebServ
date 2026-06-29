@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 03:53:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 00:09:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/storage/file_system/Storage.hpp"
-#include "infrastructure/storage/file_system/Exception.hpp"
+#include "application/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
 #include <cerrno>
 #include <sys/stat.h>
@@ -26,14 +26,14 @@ void Storage::remove(std::string const &resourcePath)
 	switch (errno)
 	{
 		case ENOENT:
-			throw Exception(Exception::fileNotFound);
+			throw app::Exception(app::Exception::notFound);
 			break;
 		case EACCES:
 		case EPERM:
-			throw Exception(Exception::permissionDenied);
+			throw app::Exception(app::Exception::accessDenied);
 			break;
 		default:
-			throw Exception(Exception::fileRemoveFailed);
+			throw app::Exception(app::Exception::deleteFailed);
 			break;
 	}
 }

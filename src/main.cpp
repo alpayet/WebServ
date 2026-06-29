@@ -7,9 +7,11 @@
 #include "config/Semantic.hpp"
 #include "config/Tokenizer.hpp"
 
+#include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "infrastructure/ITransfertHandler.hpp"
 #include "infrastructure/http/Handler.hpp"
+#include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Sender.hpp"
@@ -49,22 +51,30 @@ int main(int argc, char **argv)
 		std::vector<Server>::iterator ite = server_configs.end();
 		for (std::vector<Server>::iterator it = server_configs.begin(); it != ite; ++it)
 		{
-			Server				  server_config = *it;
-			http::request::Parser parser(server_config, server_config);
+			Server				server_config = *it;
+			fileSystem::Storage storage;
 
-			fileSystem::Storage				  storage;
 			app::useCase::ServeStaticResource serveStaticResource_use_case(server_config, storage);
 			http::ServeStaticResourceController serveStaticResource_controller(
 				serveStaticResource_use_case
 			);
-			http::Router router(server_config, serveStaticResource_controller);
+			app::useCase::DeleteStaticResource deleteStaticResource_use_case(
+				server_config, storage
+			);
+			http::DeleteStaticResourceController deleteStaticResource_controller(
+				deleteStaticResource_use_case
+			);
 
+			http::request::Parser parser(server_config, server_config);
+			http::Router		  router(
+				server_config, serveStaticResource_controller, deleteStaticResource_controller
+			);
 			http::response::Sender sender(server_config);
 
 			http::Handler	   handler(parser, router, sender);
 			ITransfertHandler &tranfer = handler;
 
-			std::string const		requete_test("GET /app/index.html HTTP/1.0\r\n\r\n");
+			std::string const		requete_test("DELETE /app/caca HTTP/1.0\r\n\r\n");
 			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
 			tranfer.prepareContext(0);
 

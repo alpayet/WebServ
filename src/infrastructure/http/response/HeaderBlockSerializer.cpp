@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:16:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 02:56:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 21:14:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
-#include "infrastructure/http/StatusReason.hpp"
+#include "infrastructure/http/statusReason.hpp"
 #include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include <iterator>

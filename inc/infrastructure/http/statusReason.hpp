@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Methods.hpp                                        :+:      :+:    :+:   */
+/*   statusReason.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 03:58:45 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/25 21:41:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/30 00:00:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPMETHODS_HPP
-#define HTTPMETHODS_HPP
+#ifndef HTTPSTATUSREASON_HPP
+#define HTTPSTATUSREASON_HPP
 
 #include <string>
 
 namespace http {
-static char const GET[] = "GET";
-static char const POST[] = "POST";
-static char const DELETE[] = "DELETE";
-static char const HEAD[] = "HEAD";
-static char const PUT[] = "PUT";
-static char const LINK[] = "LINK";
-static char const UNLINK[] = "UNLINK";
-
-bool isMethodSupported(std::string const &method);
-bool expectsBody(std::string const &method);
+char const *getReasonPhrase(unsigned short statusCode);
 } // namespace http
 
-#endif // HTTPMETHODS_HPP
+#endif // HTTPSTATUSREASON_HPP

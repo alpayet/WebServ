@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   StatusReason.hpp                                   :+:      :+:    :+:   */
+/*   success_lookup.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/25 21:44:04 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 22:01:43 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/29 20:37:55 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/29 21:04:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/StatusReason.hpp"
+#ifndef SUCCESSLOOKUP_HPP
+#define SUCCESSLOOKUP_HPP
+
+#include "application/ResourceStatus.hpp"
+#include <map>
 
 namespace http {
-char const *getReasonPhrase(unsigned short statusCode)
-{
-	switch (statusCode)
-	{
-		case 200:
-			return (REASON_200);
-		default:
-			return (NO_REASON);
-	}
-}
+extern std::map<app::ResourceStatus, unsigned short> const SUCCESS_LOOKUP;
+
+unsigned short toHttpCode(app::ResourceStatus const status);
 } // namespace http
+
+#endif // SUCCESSLOOKUP_HPP

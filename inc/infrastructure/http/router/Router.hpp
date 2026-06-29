@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 03:58:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 00:23:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ class Router
 {
   public:
 	Router(
-		IRouteRegistry &routeRegistry, ServeStaticResourceController &serveStaticResourceController
-		// // DeleteStaticResourceController	 &deleteStaticResourceController,
+		IRouteRegistry				   &routeRegistry,
+		ServeStaticResourceController  &serveStaticResourceController,
+		DeleteStaticResourceController &deleteStaticResourceController
 		// ExecuteDynamicResourceController &executeDynamicResourceController
 	);
 
@@ -37,8 +38,8 @@ class Router
 
 	IRouteRegistry &_routeRegistry;
 
-	ServeStaticResourceController &_serveStaticResourceController;
-	// DeleteStaticResourceController	 &_deleteStaticResourceController;
+	ServeStaticResourceController  &_serveStaticResourceController;
+	DeleteStaticResourceController &_deleteStaticResourceController;
 	// ExecuteDynamicResourceController &_executeDynamicResourceController;
 };
 } // namespace http

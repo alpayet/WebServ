@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 03:19:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 19:55:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/mappers/DeleteStaticResourceDtoMapper.hpp"
+#include "infrastructure/http/presenters/DeleteStaticResourcePresenter.hpp"
 #include "infrastructure/http/request/Request.hpp"
 
 namespace http {
@@ -23,13 +24,17 @@ DeleteStaticResourceController::DeleteStaticResourceController(
 	: _useCase(useCase)
 {}
 
-void DeleteStaticResourceController::operator()(
-	Request const &request, Context &context, RoutePolicy const &routePolicy
-)
+void DeleteStaticResourceController::operator()(Context &context, RoutePolicy const &routePolicy)
 {
 	app::useCase::DeleteStaticResource::Input const &dto =
-		DeleteStaticResourceDtoMapper::toDto(request, routePolicy);
+		DeleteStaticResourceDtoMapper::toDto(context.input.state.request, routePolicy);
 
-	_useCase.execute(dto);
+	DeleteStaticResourcePresenter presenter;
+
+	_useCase.execute(dto, presenter);
+
+	DeleteStaticResourcePresenter::ViewModel const &viewModel = presenter.getViewModel();
+
+	context.output.response = viewModel.response;
 }
 } // namespace http

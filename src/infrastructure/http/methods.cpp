@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Methods.cpp                                        :+:      :+:    :+:   */
+/*   methods.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 21:30:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 20:27:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/Methods.hpp"
+#include "infrastructure/http/methods.hpp"
 #include <set>
 
 namespace http {
+
+char const GET[] = "GET";
+char const POST[] = "POST";
+char const DELETE[] = "DELETE";
+char const HEAD[] = "HEAD";
+char const PUT[] = "PUT";
+char const LINK[] = "LINK";
+char const UNLINK[] = "UNLINK";
+
 bool isMethodSupported(std::string const &method)
 {
 	static char const *supported_methods[] = {

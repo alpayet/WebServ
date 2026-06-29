@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 02:56:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 21:09:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
 #include "infrastructure/http/constants.hpp"
+#include "infrastructure/http/presenters/success_lookup.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include <sstream>
 
@@ -24,28 +25,17 @@ ServeStaticResourcePresenter::getViewModel(void) const
 }
 
 void ServeStaticResourcePresenter::presentContent(
-	app::ResourceStatus const resourceStatus,
+	app::ResourceStatus const status,
 	std::size_t const		  resourceSize,
 	app::IResourceReader	 *resourceReader
 )
 {
-	unsigned short statusCode;
-
-	switch (resourceStatus)
-	{
-		case app::resourceFound:
-			statusCode = 200;
-			break;
-		default:
-			break;
-	}
-
 	std::stringstream contentLengthAsString;
 	contentLengthAsString << resourceSize;
 
 	Response::Builder response_builder;
 
-	response_builder.withStatusCode(statusCode);
+	response_builder.withStatusCode(toHttpCode(status));
 	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
 
 	_viewModel.response = response_builder.build();
@@ -53,7 +43,7 @@ void ServeStaticResourcePresenter::presentContent(
 }
 
 void ServeStaticResourcePresenter::presentListing(
-	app::ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
+	app::ResourceStatus const status, std::vector<char> const &CollectionData
 )
 {}
 } // namespace http

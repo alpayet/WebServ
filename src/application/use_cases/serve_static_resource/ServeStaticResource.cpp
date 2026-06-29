@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 01:18:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 19:39:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void ServeStaticResource::serveContent(
 
 	IResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getResourcePath());
-	outputPort.presentContent(resourceFound, static_resource.getResourceSize(), resource_reader);
+	outputPort.presentContent(found, static_resource.getResourceSize(), resource_reader);
 }
 
 void ServeStaticResource::generateListing(

@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IExecuteDynamicResource.hpp                        :+:      :+:    :+:   */
+/*   fileInfos.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/14 22:51:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 22:51:45 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/30 01:29:19 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/30 01:33:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IEXECUTEDYNAMICRESOURCE_HPP
-#define IEXECUTEDYNAMICRESOURCE_HPP
+#ifndef FILEINFOS_HPP
+#define FILEINFOS_HPP
 
-class IExecuteDynamicResource
+#include <string>
+#include <vector>
+
+namespace fileSystem {
+struct FileInfos
 {
-  public:
-	IExecuteDynamicResource(void);
-	IExecuteDynamicResource(IExecuteDynamicResource const &src);
-	~IExecuteDynamicResource(void);
-
-	IExecuteDynamicResource &operator=(IExecuteDynamicResource const &rhs);
-
-  private:
+	std::string name;
+	std::string lastMod;
+	std::string size;
+	std::string uri;
 };
 
-#endif // IEXECUTEDYNAMICRESOURCE_HPP
+std::vector<FileInfos> getFileInfos(
+	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
+);
+} // namespace fileSystem
+
+#endif // FILEINFOS_HPP

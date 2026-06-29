@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 07:01:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 21:08:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,12 @@ class ServeStaticResource
 		virtual ~IOutputPort() {}
 
 		virtual void presentContent(
-			ResourceStatus const resourceStatus,
+			ResourceStatus const status,
 			std::size_t const	 resourceSize,
 			IResourceReader		*resourceReader
 		) = 0;
-		virtual void presentListing(
-			ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
-		) = 0;
+		virtual void
+		presentListing(ResourceStatus const status, std::vector<char> const &CollectionData) = 0;
 	};
 
   public:

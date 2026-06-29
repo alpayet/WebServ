@@ -1,17 +1,26 @@
-//? access, stat, open, opendir, readdir, closedir
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fileInfos.cpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/30 01:34:28 by alpayet          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "server/Server.hpp"
+#include "infrastructure/storage/file_system/FileInfos.hpp"
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
 #include <iterator>
 #include <sstream>
-#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <vector>
 
+namespace fileSystem {
 std::vector<FileInfos> getFileInfos(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
 )
@@ -99,44 +108,4 @@ std::vector<FileInfos> getFileInfos(
 
 	return files;
 }
-
-std::string getListing(std::string const &uri, std::vector<FileInfos> const &files)
-{
-	std::string listing;
-
-	listing += "<!DOCTYPE html>\n";
-	listing += "<html>\n";
-	listing += "<head>\n";
-	listing += "<title>Directory listing</title>\n";
-	listing += "<style type=\"text/css\">\n";
-	listing += "td { padding: 0 15px; }\n";
-	listing += "</style>\n";
-	listing += "</head>\n";
-	listing += "<h1>Index of " + uri + "</h1>\n";
-	listing += "<table>\n";
-	listing += "\t<tr>\n";
-	listing += "\t\t<th>Name</th>\n";
-	listing += "\t\t<th>Last Modified</th>\n";
-	listing += "\t\t<th>Size</th>\n";
-	listing += "\t</tr>\n";
-
-	std::vector<FileInfos>::const_iterator ite = files.end();
-	std::vector<FileInfos>::const_iterator it = files.begin();
-	for (; it != ite; ++it)
-	{
-		if (!it->name.empty())
-		{
-			listing += "\t<tr>\n";
-			listing += "\t\t<td><a href=\"" + it->uri + "\">" + it->name + "</a></td>\n";
-			listing += "\t\t<td>" + it->lastMod + "</td>\n";
-			listing += "\t\t<td>" + it->size + "</td>\n";
-			listing += "\t</tr>\n";
-		}
-	}
-
-	listing += "</table>\n";
-	listing += "</body>\n";
-	listing += "</html>\n";
-
-	return listing;
-}
+} // namespace fileSystem

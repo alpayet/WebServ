@@ -57,31 +57,43 @@ SRC_FILES = \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/Reader.cpp \
 	infrastructure/storage/file_system/Exception.cpp \
-	infrastructure/http/StatusReason.cpp \
-	infrastructure/http/Context.cpp \
-	infrastructure/http/Methods.cpp \
+	infrastructure/storage/file_system/constants.cpp \
+	infrastructure/http/statusReason.cpp \
+	infrastructure/http/methods.cpp \
 	infrastructure/http/Handler.cpp \
+	infrastructure/http/Context.cpp \
+	infrastructure/http/constants.cpp \
 	infrastructure/http/router/Router.cpp \
-	infrastructure/http/response/Response.cpp \
 	infrastructure/http/response/Sender.cpp \
 	infrastructure/http/response/ResponseBuilder.cpp \
+	infrastructure/http/response/Response.cpp \
 	infrastructure/http/response/HeaderBlockSerializer.cpp \
 	infrastructure/http/request/Request.cpp \
 	infrastructure/http/request/Parser.cpp \
 	infrastructure/http/request/BodyFile.cpp \
+	infrastructure/http/presenters/success_lookup.cpp \
 	infrastructure/http/presenters/ServeStaticResourcePresenter.cpp \
+	infrastructure/http/presenters/DeleteStaticResourcePresenter.cpp \
 	infrastructure/http/mappers/ServeStaticResourceDtoMapper.cpp \
+	infrastructure/http/mappers/DeleteStaticResourceDtoMapper.cpp \
 	infrastructure/http/exceptions/Exception.cpp \
 	infrastructure/http/controllers/ServeStaticResourceController.cpp \
+	infrastructure/http/controllers/DeleteStaticResourceController.cpp \
 	domain/Exception.cpp \
 	domain/value_objects/ResourceMetaData.cpp \
 	domain/entities/StaticResource.cpp \
+	domain/entities/DynamicResource.cpp \
 	config/Tokenizer.cpp \
 	config/Semantic.cpp \
 	config/Parser.cpp \
 	config/Config.cpp \
 	application/Exception.cpp \
-	application/use_cases/serve_static_resource/ServeStaticResource.cpp
+	application/use_cases/serve_static_resource/ServeStaticResource.cpp \
+	application/use_cases/delete_static_resource/DeleteStaticResource.cpp \
+# 	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \
+	infrastructure/http/presenters/ExecuteDynamicResourcePresenter.cpp \
+	infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \
+	infrastructure/http/controllers/ExecuteDynamicResourceController.cpp
 
 #directories
 SRC_DIR = src/

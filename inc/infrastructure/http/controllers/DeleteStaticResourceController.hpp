@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 03:57:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 19:52:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ class DeleteStaticResource;
 } // namespace app
 
 namespace http {
-class Request;
 class Context;
 struct RoutePolicy;
 
@@ -29,7 +28,7 @@ class DeleteStaticResourceController
   public:
 	DeleteStaticResourceController(app::useCase::DeleteStaticResource &useCase);
 
-	void operator()(Request const &request, Context &context, RoutePolicy const &routePolicy);
+	void operator()(Context &context, RoutePolicy const &routePolicy);
 
   private:
 	DeleteStaticResourceController(DeleteStaticResourceController const &src);

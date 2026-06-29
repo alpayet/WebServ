@@ -6,17 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 22:34:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 00:23:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/http/Context.hpp"
-// #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
+#include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
 // #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
-#include "infrastructure/http/Methods.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/methods.hpp"
 #include "infrastructure/http/request/Request.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
@@ -24,12 +24,13 @@
 
 namespace http {
 Router::Router(
-	IRouteRegistry &routeRegistry, ServeStaticResourceController &serveStaticResourceController
-	// DeleteStaticResourceController	 &deleteStaticResourceController,
+	IRouteRegistry				   &routeRegistry,
+	ServeStaticResourceController  &serveStaticResourceController,
+	DeleteStaticResourceController &deleteStaticResourceController
 	// ExecuteDynamicResourceController &executeDynamicResourceController
 )
-	: _routeRegistry(routeRegistry), _serveStaticResourceController(serveStaticResourceController)
-//   _deleteStaticResourceController(deleteStaticResourceController),
+	: _routeRegistry(routeRegistry), _serveStaticResourceController(serveStaticResourceController),
+	  _deleteStaticResourceController(deleteStaticResourceController)
 //   _executeDynamicResourceController(executeDynamicResourceController)
 {}
 
@@ -44,7 +45,7 @@ void Router::route(Context &context)
 
 	if (method == GET)
 		_serveStaticResourceController(context, route_policy);
-	// if (method == DELETE)
-	// 	_deleteStaticResourceController(request, response, route_policy);
+	if (method == DELETE)
+		_deleteStaticResourceController(context, route_policy);
 }
 } // namespace http

@@ -1,22 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constants.hpp                                      :+:      :+:    :+:   */
+/*   constants.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/29 02:56:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 20:24:45 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/29 20:23:45 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/29 20:24:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILESYSTEMCONSTANTS_HPP
-#define FILESYSTEMCONSTANTS_HPP
-
-#include <cstdlib>
+#include "infrastructure/storage/file_system/constants.hpp"
 
 namespace fileSystem {
-extern std::size_t const CHUNCK_SIZE;
+std::size_t const CHUNCK_SIZE = 4096;
 } // namespace fileSystem
-
-#endif // FILESYSTEMCONSTANTS_HPP

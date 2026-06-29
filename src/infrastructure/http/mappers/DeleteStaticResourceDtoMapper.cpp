@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 03:19:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 19:47:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ namespace http {
 app::useCase::DeleteStaticResource::Input
 DeleteStaticResourceDtoMapper::toDto(Request const &request, RoutePolicy const &routePolicy)
 {
-	return (app::useCase::DeleteStaticResource::Input(request.target, routePolicy.rootPath));
+	return (app::useCase::DeleteStaticResource::Input(
+		request.target, routePolicy.matchedRoute, routePolicy.rootPath
+	));
 }
 } // namespace http
