@@ -6,14 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 03:39:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 03:53:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/storage/file_system/Storage.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
-#include "infrastructure/storage/file_system/fdReader.hpp"
 #include <cerrno>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -34,7 +33,7 @@ void Storage::remove(std::string const &resourcePath)
 			throw Exception(Exception::permissionDenied);
 			break;
 		default:
-			throw Exception(Exception::internalErrorFileUnlinkFailed);
+			throw Exception(Exception::fileRemoveFailed);
 			break;
 	}
 }
@@ -43,8 +42,6 @@ app::IResourceReader *Storage::createReader(std::string const &resourcePath)
 {
 	return (new Reader(resourcePath));
 }
-
-app::IResourceReader *Storage::createReader(int const fd) { return (new fdReader(fd)); }
 
 bool Storage::exists(std::string const &path) { return access(path.c_str(), F_OK) == 0; }
 

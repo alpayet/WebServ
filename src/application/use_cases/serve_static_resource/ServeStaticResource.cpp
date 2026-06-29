@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 22:33:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 01:18:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void ServeStaticResource::serveContent(
 	Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 )
 {
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
+	domain::StaticResource static_resource(dtoInput.id, metaData);
 
 	if (!static_resource.isReadable())
 		throw Exception(Exception::accessDenied);

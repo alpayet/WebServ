@@ -6,68 +6,68 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 08:40:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 03:48:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/storage/file_system/TempWriter.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include <cstdlib>
+#include <cstring>
+#include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
 
 namespace fileSystem {
 char const TempWriter::TMP_DIRECTORY[] = "/tmp/";
 
-TempWriter::TempWriter(std::string const &tempFileName)
-	: _tempFile(), _tempFileName(tempFileName), _tempFilePath(), _exists(false)
+TempWriter::TempWriter(std::string const &nameTemplate)
+	: _fd(-1), _nameTemplate(nameTemplate), _tempFilePath()
 {}
 
 TempWriter::~TempWriter(void)
 {
-	// TODO: faire un log derreur masi ne pas throw
-	if (_exists)
-		std::remove(_tempFilePath.c_str());
+	if (_fd >= 0 && (std::remove(_tempFilePath.c_str()) < 0 || close(_fd) < 0))
+		std::cerr << "Error : " << std::strerror(errno) << '\n';
 }
 
 std::string const &TempWriter::getTempFilePath(void) const { return (_tempFilePath); }
 
-bool TempWriter::exists(void) const { return (_exists); }
+bool TempWriter::exists(void) const { return (_fd >= 0); }
 
-void TempWriter::writeChunk(std::vector<char> const &data)
+std::size_t TempWriter::write(std::vector<char> const &buf)
 {
-	if (!_tempFile.is_open())
-	{
-		_tempFilePath = generateUniqueTempFile(_tempFileName);
-		_tempFile.open(_tempFileName.c_str(), std::ios::binary);
-		if (!_tempFile.is_open())
-			throw Exception(Exception::internalErrorFileOpenFailed);
-		_exists = true;
-	}
-	else if (!_tempFile.write(&data[0], data.size()))
-		throw Exception(Exception::internalErrorFileWriteFailed);
+	if (_fd < 0)
+		generateUniqueTempFile();
+
+	ssize_t bytes_writen = ::write(_fd, &buf[0], buf.size());
+	if (bytes_writen < 0)
+		throw Exception(Exception::fileWriteFailed);
+
+	return (bytes_writen);
 }
 
-std::string TempWriter::generateUniqueTempFile(std::string const &fileName)
+void TempWriter::generateUniqueTempFile(void)
 {
-	std::string unique_path((TMP_DIRECTORY + fileName + "XXXXXX").c_str());
+	_tempFilePath += TMP_DIRECTORY;
+	_tempFilePath += _nameTemplate;
+	_tempFilePath += "XXXXXX";
 
-	int fd = mkstemp(&unique_path[0]);
-
+	int fd = mkostemp(&_tempFilePath[0], O_CLOEXEC);
 	if (fd < 0)
-		throw Exception(Exception::internalErrorFileOpenFailed);
-	if (close(fd) < 0)
-		throw Exception(Exception::internalErrorFileOpenFailed);
-	return (unique_path);
+		throw Exception(Exception::fileOpenFailed);
+
+	_fd = fd;
 }
 
 void TempWriter::reset(void)
 {
-	if (_tempFile.is_open())
+	if (_fd >= 0)
 	{
-		_tempFile.close();
-		_tempFile.clear();
-		_tempFile.open(_tempFileName.c_str(), std::ios::binary);
+		if (ftruncate(_fd, 0) < 0)
+			throw Exception(Exception::fileTruncateFailed);
+		if (::lseek(_fd, 0, SEEK_SET) < 0)
+			throw Exception(Exception::fileLseekFailed);
 	}
 }
 } // namespace fileSystem

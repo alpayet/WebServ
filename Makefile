@@ -56,7 +56,6 @@ SRC_FILES = \
 	infrastructure/storage/file_system/TempWriter.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/Reader.cpp \
-	infrastructure/storage/file_system/fdReader.cpp \
 	infrastructure/storage/file_system/Exception.cpp \
 	infrastructure/http/StatusReason.cpp \
 	infrastructure/http/Context.cpp \

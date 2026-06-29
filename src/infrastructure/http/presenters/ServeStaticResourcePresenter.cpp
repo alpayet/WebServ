@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:53:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 02:56:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
-#include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include <sstream>
 

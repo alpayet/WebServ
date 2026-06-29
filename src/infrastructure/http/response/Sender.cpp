@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 06:30:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 04:34:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/Sender.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
-
 namespace http {
 namespace response {
 
@@ -25,7 +25,7 @@ Sender::State Sender::produce(
 	std::vector<char>	 &outputBuf,
 	Response const		 &response,
 	app::IResourceReader *reader,
-	State				  state
+	State				 &state
 )
 {
 	switch (state)
@@ -35,7 +35,6 @@ Sender::State Sender::produce(
 			HeaderBlockSerializer::serialize(
 				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
-
 			state = (reader) ? resource : body;
 			break;
 		case body:
@@ -44,7 +43,8 @@ Sender::State Sender::produce(
 			break;
 		case resource:
 			outputBuf.clear();
-			state = complete;
+			if (reader->readChunck(outputBuf) == 0)
+				state = complete;
 			break;
 		default:
 			break;

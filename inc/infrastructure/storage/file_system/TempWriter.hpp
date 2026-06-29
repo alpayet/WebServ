@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 06:58:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 01:54:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ class TempWriter
 
 	std::string const &getTempFilePath(void) const;
 
-	bool exists(void) const;
+	std::size_t write(std::vector<char> const &buf);
 
-	void writeChunk(std::vector<char> const &data);
+	bool exists(void) const;
 
 	void reset(void);
 
@@ -36,14 +36,13 @@ class TempWriter
 	TempWriter(TempWriter const &src);
 	TempWriter &operator=(TempWriter const &rhs);
 
-	std::ofstream _tempFile;
-	std::string	  _tempFileName;
-	std::string	  _tempFilePath;
-	bool		  _exists;
+	int			_fd;
+	std::string _nameTemplate;
+	std::string _tempFilePath;
 
 	static char const TMP_DIRECTORY[];
 
-	static std::string generateUniqueTempFile(std::string const &fileName);
+	void generateUniqueTempFile(void);
 };
 } // namespace fileSystem
 

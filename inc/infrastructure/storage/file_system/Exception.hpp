@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 03:42:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:17:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/29 03:34:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		internalErrorFileOpenFailed,
-		internalErrorFileUnlinkFailed,
-		internalErrorFileWriteFailed,
+		fileOpenFailed,
+		fileCloseFailed,
+		fileRemoveFailed,
+		fileWriteFailed,
+		fileReadFailed,
+		fileTruncateFailed,
+		fileLseekFailed,
 		fileNotFound,
 		permissionDenied
 	};

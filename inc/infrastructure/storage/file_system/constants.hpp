@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdReader.hpp                                       :+:      :+:    :+:   */
+/*   constants.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 04:30:12 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/29 02:56:21 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/29 03:00:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILESYSTEMFDREADER_HPP
-#define FILESYSTEMFDREADER_HPP
+#ifndef FILESYSTEMCONSTANTS_HPP
+#define FILESYSTEMCONSTANTS_HPP
 
-#include "application/ports/IResourceReader.hpp"
-#include <string>
-#include <vector>
+#include <cstdlib>
 
 namespace fileSystem {
-class fdReader : public app::IResourceReader
-{
-  public:
-	fdReader(int const fd);
-
-	virtual std::vector<char> readChunk(void);
-
-  private:
-	fdReader(fdReader const &src);
-	fdReader &operator=(fdReader const &rhs);
-
-	int _fd;
-};
+static std::size_t const CHUNCK_SIZE = 4096;
 } // namespace fileSystem
 
-#endif // FILESYSTEMFDREADER_HPP
+#endif // FILESYSTEMCONSTANTS_HPP

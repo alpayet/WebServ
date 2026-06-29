@@ -69,10 +69,17 @@ int main(int argc, char **argv)
 			tranfer.prepareContext(0);
 
 			tranfer.push(0, input_buf);
-			std::vector<char> const &output_buf = tranfer.pull(0);
 
-			std::string const result(output_buf.begin(), output_buf.end());
-			std::cout << result << std::endl;
+			while (!tranfer.isResponseComplete(0))
+			{
+				std::vector<char> const &output_buf = tranfer.pull(0);
+				if (tranfer.isResponseComplete(0))
+					break;
+
+				std::string const result(output_buf.begin(), output_buf.end());
+				std::cout << result;
+			}
+			std::cout << "finish!" << std::endl;
 		}
 	}
 	catch (ConfigException const &e)
