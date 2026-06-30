@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   success_lookup.cpp                                 :+:      :+:    :+:   */
+/*   successLookup.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 00:51:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:18:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/presenters/success_lookup.hpp"
+#include "infrastructure/http/presenters/successLookup.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include <cstdlib>
 

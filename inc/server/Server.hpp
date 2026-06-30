@@ -83,10 +83,10 @@ class Server : public app::IResourceLocator,
 	TransportProtocol		 getTransportProtocol(void) const;
 	ApplicativeProtocol		 getApplicativeProtocol(void) const;
 
-	virtual app::SystemResourceInfos locate(
+	virtual app::SystemResourceInfo locate(
 		std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 	) const;
-	virtual app::SystemResourceInfos locateDefaultIndex(
+	virtual app::SystemResourceInfo locateDefaultIndex(
 		std::vector<std::string> const &indexesId,
 		std::string const			   &matchedRoute,
 		std::string const			   &rootPath

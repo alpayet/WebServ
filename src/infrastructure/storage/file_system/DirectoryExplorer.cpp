@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fileInfos.cpp                                      :+:      :+:    :+:   */
+/*   DirectoryExplorer.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 01:34:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:12:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/storage/file_system/FileInfos.hpp"
+#include "application/ports/ICollectionExplorer.hpp"
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
@@ -21,12 +21,12 @@
 #include <unistd.h>
 
 namespace fileSystem {
-std::vector<FileInfos> getFileInfos(
+std::vector<app::CollectionEntry> listCollection(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
 )
 {
-	std::vector<FileInfos> files;
-	DIR					  *dir_ptr = opendir(resPath.c_str());
+	std::vector<app::CollectionEntry> files;
+	DIR								 *dir_ptr = opendir(resPath.c_str());
 
 	if (!dir_ptr)
 	{
@@ -37,8 +37,8 @@ std::vector<FileInfos> getFileInfos(
 	struct dirent *dir = readdir(dir_ptr);
 	while (dir != NULL)
 	{
-		FileInfos	file;
-		struct stat st;
+		app::CollectionEntry file;
+		struct stat			 st;
 
 		if (std::string(dir->d_name) == ".")
 		{
@@ -75,8 +75,8 @@ std::vector<FileInfos> getFileInfos(
 				throw std::runtime_error("stat failed on " + tmpPath);
 			}
 
-			file.uri = tmpPath;
-			file.uri.replace(0, rootPath.size(), matchedRoute);
+			file.id = tmpPath;
+			file.id.replace(0, rootPath.size(), matchedRoute);
 		}
 
 		time_t t_mod = st.st_mtime;
@@ -89,7 +89,7 @@ std::vector<FileInfos> getFileInfos(
 		if (S_ISDIR(st.st_mode))
 		{
 			file.size = "-";
-			file.uri += "/";
+			file.id += "/";
 		}
 		else
 		{

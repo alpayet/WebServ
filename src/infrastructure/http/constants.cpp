@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:20:55 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 00:49:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:24:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char const LF = '\n';
 char const CRLF[3] = {CR, LF, '\0'};
 
 namespace header {
-char const CONTENT_LENGTH[] = "content-Length";
+char const CONTENT_LENGTH[] = "Content-Length";
 char const LOWER_CONTENT_LENGTH[] = "content-length";
-char const CONTENT_TYPE[] = "content-Type";
+char const CONTENT_TYPE[] = "Content-Type";
 char const LOWER_CONTENT_TYPE[] = "content-type";
 } // namespace header
 

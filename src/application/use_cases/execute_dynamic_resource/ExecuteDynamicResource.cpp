@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 00:18:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 16:39:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ ExecuteDynamicResource::ExecuteDynamicResource(
 
 void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
-	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	SystemResourceInfo target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
 

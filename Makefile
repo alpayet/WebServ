@@ -71,7 +71,7 @@ SRC_FILES = \
 	infrastructure/http/request/Request.cpp \
 	infrastructure/http/request/Parser.cpp \
 	infrastructure/http/request/BodyFile.cpp \
-	infrastructure/http/presenters/success_lookup.cpp \
+	infrastructure/http/presenters/successLookup.cpp \
 	infrastructure/http/presenters/ServeStaticResourcePresenter.cpp \
 	infrastructure/http/presenters/DeleteStaticResourcePresenter.cpp \
 	infrastructure/http/mappers/ServeStaticResourceDtoMapper.cpp \

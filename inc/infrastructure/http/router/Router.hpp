@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 00:23:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:16:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTROUTER_HPP
+#ifndef HTTPROUTER_HPP
 #define HTTPROUTER_HPP
 
 namespace http {

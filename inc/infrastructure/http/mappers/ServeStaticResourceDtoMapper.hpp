@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 05:24:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:20:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace http {
 class Request;
-class RoutePolicy;
+struct RoutePolicy;
 
 class ServeStaticResourceDtoMapper
 {

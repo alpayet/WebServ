@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 03:48:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 16:00:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ std::size_t TempWriter::write(std::vector<char> const &buf)
 	if (_fd < 0)
 		generateUniqueTempFile();
 
-	ssize_t bytes_writen = ::write(_fd, &buf[0], buf.size());
-	if (bytes_writen < 0)
+	ssize_t bytes_written = ::write(_fd, &buf[0], buf.size());
+	if (bytes_written < 0)
 		throw Exception(Exception::fileWriteFailed);
 
-	return (bytes_writen);
+	return (bytes_written);
 }
 
 void TempWriter::generateUniqueTempFile(void)

@@ -1,6 +1,9 @@
 
 #include "server/Server.hpp"
 
+#include <cerrno>
+#include <climits>
+#include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -10,7 +13,7 @@
 #include <unistd.h>
 #include <vector>
 
-#include "application/ports/SystemResourceInfos.hpp"
+#include "application/Exception.hpp"
 #include "config/Semantic.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
@@ -81,12 +84,22 @@ std::string Server::resolvePhysicalPath(
 
 	std::string resUri = uri;
 	resUri.replace(0, matchedRoute.size(), rootPath);
+
+	char resPath[PATH_MAX];
+	if (!realpath(resUri.c_str(), resPath))
+	{
+		if (errno == EIO || errno == ENOMEM)
+			throw std::runtime_error("realpath");
+	}
+	resUri = resPath;
+	if (resUri.find(rootPath) != 0)
+		throw app::Exception(app::Exception::traversalPath);
 	return resUri;
 }
 
-app::SystemResourceInfos setSRI(std::string const &path)
+app::SystemResourceInfo setSRI(std::string const &path)
 {
-	app::SystemResourceInfos sri;
+	app::SystemResourceInfo sri;
 
 	sri.resourcePath = path;
 
@@ -123,18 +136,18 @@ app::SystemResourceInfos setSRI(std::string const &path)
 }
 
 // get
-app::SystemResourceInfos Server::locate(
+app::SystemResourceInfo Server::locate(
 	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
-	app::SystemResourceInfos sri;
+	app::SystemResourceInfo sri;
 
 	sri = setSRI(resolvePhysicalPath(id, matchedRoute, rootPath));
 	return sri;
 }
 
 // TODO: check directory before calling
-app::SystemResourceInfos Server::locateDefaultIndex(
+app::SystemResourceInfo Server::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,
 	std::string const			   &rootPath
@@ -143,7 +156,7 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 	std::string resPath = resolvePhysicalPath("/", matchedRoute, rootPath);
 
 	if (indexesId.empty())
-		return app::SystemResourceInfos();
+		return app::SystemResourceInfo();
 
 	std::vector<std::string>::const_iterator ite = indexesId.end();
 	std::vector<std::string>::const_iterator it = indexesId.begin();

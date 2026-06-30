@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 19:39:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:01:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // #include "application/ports/ICollectionExplorer.hpp"
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
-#include "application/ports/SystemResourceInfos.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace app {
@@ -30,7 +29,7 @@ ServeStaticResource::ServeStaticResource(
 
 void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
-	SystemResourceInfos target_infos =
+	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
@@ -42,7 +41,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 
 	if (target_meta_data.isCollection())
 	{
-		SystemResourceInfos index_infos = _resourceLocator.locateDefaultIndex(
+		SystemResourceInfo index_infos = _resourceLocator.locateDefaultIndex(
 			dtoInput.indexesId, dtoInput.matchedRoute, dtoInput.rootPath
 		);
 
@@ -92,7 +91,7 @@ void ServeStaticResource::generateListing(
 
 	// // TODO: voir pour la gestion du listing si contenue d ulisting dans fichier ou direct en ram
 	// std::vector<char> collection_data =
-	// 	_collectionExplorer.listingCollection(static_resource.getResourcePath());
+	// 	_collectionExplorer.listCollection(static_resource.getResourcePath());
 
 	// outputPort.presentListing(resourceFound, collection_data);
 }

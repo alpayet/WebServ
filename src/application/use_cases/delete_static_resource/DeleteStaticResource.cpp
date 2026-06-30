@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 19:46:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:20:19 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "application/ResourceStatus.hpp"
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
-#include "application/ports/SystemResourceInfos.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace app {
@@ -28,7 +27,7 @@ DeleteStaticResource::DeleteStaticResource(
 
 void DeleteStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
-	SystemResourceInfos target_infos =
+	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);

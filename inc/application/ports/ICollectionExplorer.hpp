@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 22:47:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 22:49:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:00:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,20 @@
 
 // TODO: faire implemeter
 namespace app {
+struct CollectionEntry
+{
+	std::string name;
+	std::string lastMod;
+	std::string size;
+	std::string id;
+};
+
 class ICollectionExplorer
 {
   public:
 	virtual ~ICollectionExplorer(void) {}
 
-	virtual std::vector<char> listingCollection(std::string const &resourcePath) = 0;
+	virtual std::vector<CollectionEntry> listCollection(std::string const &resourcePath) = 0;
 };
 } // namespace app
 
