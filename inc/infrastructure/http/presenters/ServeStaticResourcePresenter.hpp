@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 21:11:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 19:34:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
   public:
 	struct ViewModel
 	{
+		ViewModel(void) : reader(NULL) {}
+
 		Response			  response;
 		app::IResourceReader *reader;
 	};
@@ -41,8 +43,11 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 		std::size_t const		  resourceSize,
 		app::IResourceReader	 *resourceReader
 	);
-	virtual void
-	presentListing(app::ResourceStatus const status, std::vector<char> const &CollectionData);
+	virtual void presentListing(
+		app::ResourceStatus const				 status,
+		std::string const						&id,
+		std::vector<app::CollectionEntry> const &collectionData
+	);
 
   private:
 	ServeStaticResourcePresenter(ServeStaticResourcePresenter const &src);

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 21:08:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 18:46:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class IResourceLocator;
 class IResourceReader;
 class IStaticResourceStorage;
 class ICollectionExplorer;
+struct CollectionEntry;
 
 namespace useCase {
 class ServeStaticResource
@@ -59,14 +60,18 @@ class ServeStaticResource
 			std::size_t const	 resourceSize,
 			IResourceReader		*resourceReader
 		) = 0;
-		virtual void
-		presentListing(ResourceStatus const status, std::vector<char> const &CollectionData) = 0;
+		virtual void presentListing(
+			ResourceStatus const				status,
+			std::string const				   &id,
+			std::vector<CollectionEntry> const &collectionData
+		) = 0;
 	};
 
   public:
 	ServeStaticResource(
-		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
-		// ICollectionExplorer	   &collectionExplorer
+		IResourceLocator	   &resourceLocator,
+		IStaticResourceStorage &staticResourceStorage,
+		ICollectionExplorer	   &collectionExplorer
 	);
 
 	void execute(Input const &dtoInput, IOutputPort &outputPort);
@@ -84,7 +89,7 @@ class ServeStaticResource
 
 	IResourceLocator	   &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
-	// ICollectionExplorer	   &_collectionExplorer;
+	ICollectionExplorer	   &_collectionExplorer;
 };
 } // namespace useCase
 } // namespace app

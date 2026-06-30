@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 04:34:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 21:41:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "application/ports/IResourceReader.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
+#include "infrastructure/http/response/Response.hpp"
+
 namespace http {
 namespace response {
 
@@ -39,11 +41,12 @@ Sender::State Sender::produce(
 			break;
 		case body:
 			outputBuf.clear();
+			outputBuf = response.body;
 			state = complete;
 			break;
 		case resource:
 			outputBuf.clear();
-			if (reader->readChunck(outputBuf) == 0)
+			if (reader->readChunk(outputBuf) == 0)
 				state = complete;
 			break;
 		default:

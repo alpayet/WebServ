@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FileInfos.hpp                                      :+:      :+:    :+:   */
+/*   DirectoryExplorer.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:29:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:09:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 19:08:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@
 
 namespace fileSystem {
 
-class DirectoryExplorer
+class DirectoryExplorer : public app::ICollectionExplorer
 {
   public:
 	virtual ~DirectoryExplorer(void) {}
-	virtual std::vector<app::CollectionEntry> listCollection(std::string const &resourcePath);
+
+	virtual std::vector<app::CollectionEntry> listCollection(
+		std::string const &resourcePath,
+		std::string const &matchedRoute,
+		std::string const &rootPath
+	);
 };
 } // namespace fileSystem
 

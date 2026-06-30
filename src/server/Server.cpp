@@ -91,7 +91,13 @@ std::string Server::resolvePhysicalPath(
 		if (errno == EIO || errno == ENOMEM)
 			throw std::runtime_error("realpath");
 	}
-	resUri = resPath;
+	if (resUri[resUri.size() - 1] == '/')
+	{
+		resUri = resPath;
+		resUri += "/";
+	}
+	else
+		resUri = resPath;
 	if (resUri.find(rootPath) != 0)
 		throw app::Exception(app::Exception::traversalPath);
 	return resUri;
@@ -154,7 +160,7 @@ app::SystemResourceInfo Server::locateDefaultIndex(
 ) const
 {
 	std::string resPath = resolvePhysicalPath("/", matchedRoute, rootPath);
-	if (resPath.back() != '/')
+	if (resPath[resPath.size() - 1] != '/')
 		resPath += "/";
 
 	if (indexesId.empty())

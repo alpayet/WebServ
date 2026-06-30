@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   DirectoryExplorer.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:39:10 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/30 19:10:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "application/ports/ICollectionExplorer.hpp"
+#include "infrastructure/storage/file_system/DirectoryExplorer.hpp"
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
@@ -21,12 +21,12 @@
 #include <unistd.h>
 
 namespace fileSystem {
-std::vector<app::CollectionEntry> listCollection(
+std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
 )
 {
 	std::string path = resPath;
-	if (resPath.back() != '/')
+	if (path[path.size() - 1] != '/')
 		path += "/";
 
 	std::vector<app::CollectionEntry> files;

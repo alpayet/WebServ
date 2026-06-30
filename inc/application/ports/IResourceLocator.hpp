@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:18:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 18:30:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,12 @@
 #define IRESOURCELOCATOR_HPP
 
 #include "domain/enums/ResourcePermissions.hpp"
+#include "application/ports/SystemResourceInfo.hpp"
 #include "domain/enums/ResourceType.hpp"
 #include <string>
 #include <vector>
 
 namespace app {
-struct SystemResourceInfo
-{
-	std::string					resourcePath;
-	domain::ResourceType		type;
-	domain::ResourcePermissions permissions;
-	std::size_t					resourceSize;
-	bool						canBeDeleted;
-	bool						exists;
-
-	SystemResourceInfo() : resourceSize(0), canBeDeleted(false), exists(false) {};
-};
-
 class IResourceLocator
 {
   public:

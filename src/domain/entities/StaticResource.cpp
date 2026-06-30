@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 01:15:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 18:40:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ namespace domain {
 StaticResource::StaticResource(std::string const &id, ResourceMetaData const &metaData)
 	: _id(id), _metaData(metaData)
 {}
+
+std::string const &StaticResource::StaticResource::getId(void) const { return (_id); }
 
 std::string const &StaticResource::getResourcePath(void) const
 {

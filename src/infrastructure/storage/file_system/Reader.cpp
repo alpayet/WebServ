@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 04:35:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 19:28:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ Reader::~Reader(void)
 		std::cerr << "Error : " << std::strerror(errno) << '\n';
 }
 
-std::size_t Reader::readChunck(std::vector<char> &buf)
+std::size_t Reader::readChunk(std::vector<char> &buf)
 {
 	if (_fd < 0)
 		_fd = openFile(_path);

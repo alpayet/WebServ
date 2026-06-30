@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ICollectionExplorer.hpp                            :+:      :+:    :+:   */
+/*   SystemResourceInfo.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/16 22:47:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:06:01 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/30 18:29:10 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/30 18:30:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ICOLLECTIONEXPLORER_HPP
-#define ICOLLECTIONEXPLORER_HPP
+#ifndef SYSTEMRESOURCEINFO_HPP
+#define SYSTEMRESOURCEINFO_HPP
 
-#include "application/ports/CollectionEntry.hpp"
+#include "domain/enums/ResourcePermissions.hpp"
+#include "domain/enums/ResourceType.hpp"
 #include <string>
-#include <vector>
 
-// TODO: faire implemeter
 namespace app {
-
-class ICollectionExplorer
+struct SystemResourceInfo
 {
-  public:
-	virtual ~ICollectionExplorer(void) {}
+	std::string					resourcePath;
+	domain::ResourceType		type;
+	domain::ResourcePermissions permissions;
+	std::size_t					resourceSize;
+	bool						canBeDeleted;
+	bool						exists;
 
-	virtual std::vector<CollectionEntry> listCollection(
-		std::string const &resourcePath,
-		std::string const &matchedRoute,
-		std::string const &rootPath
-	) = 0;
+	SystemResourceInfo() : resourceSize(0), canBeDeleted(false), exists(false) {};
 };
 } // namespace app
 
-#endif // ICOLLECTIONEXPLORER_HPP
+#endif // SYSTEMRESOURCEINFO_HPP

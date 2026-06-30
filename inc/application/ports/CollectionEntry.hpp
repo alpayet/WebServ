@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceReader.hpp                                :+:      :+:    :+:   */
+/*   CollectionEntry.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:28:27 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/30 18:31:02 by alpayet           #+#    #+#             */
+/*   Updated: 2026/06/30 18:31:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCEREADER_HPP
-#define IRESOURCEREADER_HPP
+#ifndef COLLECTIONENTRY_HPP
+# define COLLECTIONENTRY_HPP
 
-#include <vector>
+#include <string>
 
 namespace app {
-class IResourceReader
+struct CollectionEntry
 {
-  public:
-	virtual ~IResourceReader(void) {}
-
-	virtual std::size_t readChunk(std::vector<char> &buf) = 0;
+	std::string name;
+	std::string lastMod;
+	std::string size;
+	std::string id;
 };
-} // namespace app
+}
 
-#endif // IRESOURCEREADER_HPP
+#endif // COLLECTIONENTRY_HPP

@@ -16,6 +16,7 @@
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Sender.hpp"
 #include "infrastructure/http/router/Router.hpp"
+#include "infrastructure/storage/file_system/DirectoryExplorer.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
 
 #include <sstream>
@@ -51,10 +52,13 @@ int main(int argc, char **argv)
 		std::vector<Server>::iterator ite = server_configs.end();
 		for (std::vector<Server>::iterator it = server_configs.begin(); it != ite; ++it)
 		{
-			Server				server_config = *it;
-			fileSystem::Storage storage;
+			Server						  server_config = *it;
+			fileSystem::Storage			  storage;
+			fileSystem::DirectoryExplorer directory_explorer;
 
-			app::useCase::ServeStaticResource serveStaticResource_use_case(server_config, storage);
+			app::useCase::ServeStaticResource serveStaticResource_use_case(
+				server_config, storage, directory_explorer
+			);
 			http::ServeStaticResourceController serveStaticResource_controller(
 				serveStaticResource_use_case
 			);
@@ -83,8 +87,6 @@ int main(int argc, char **argv)
 			while (!tranfer.isResponseComplete(0))
 			{
 				std::vector<char> const &output_buf = tranfer.pull(0);
-				if (tranfer.isResponseComplete(0))
-					break;
 
 				std::string const result(output_buf.begin(), output_buf.end());
 				std::cout << result;

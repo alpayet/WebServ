@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:22:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 01:33:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 18:36:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/listingHtml.hpp"
 
 namespace http {
-std::string getListing(std::string const &uri, std::vector<fileInfos> const &files)
+std::string getListing(std::string const &uri, std::vector<app::CollectionEntry> const &files)
 {
 	std::string listing;
 
@@ -33,14 +33,14 @@ std::string getListing(std::string const &uri, std::vector<fileInfos> const &fil
 	listing += "\t\t<th>Size</th>\n";
 	listing += "\t</tr>\n";
 
-	std::vector<FileInfos>::const_iterator ite = files.end();
-	std::vector<FileInfos>::const_iterator it = files.begin();
+	std::vector<app::CollectionEntry>::const_iterator ite = files.end();
+	std::vector<app::CollectionEntry>::const_iterator it = files.begin();
 	for (; it != ite; ++it)
 	{
 		if (!it->name.empty())
 		{
 			listing += "\t<tr>\n";
-			listing += "\t\t<td><a href=\"" + it->uri + "\">" + it->name + "</a></td>\n";
+			listing += "\t\t<td><a href=\"" + it->id + "\">" + it->name + "</a></td>\n";
 			listing += "\t\t<td>" + it->lastMod + "</td>\n";
 			listing += "\t\t<td>" + it->size + "</td>\n";
 			listing += "\t</tr>\n";
