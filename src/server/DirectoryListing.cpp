@@ -1,6 +1,6 @@
 //? access, stat, open, opendir, readdir, closedir
 
-#include "server/Server.hpp"
+#include "server/ServerConfig.hpp"
 #include <cstring>
 #include <dirent.h>
 #include <fcntl.h>

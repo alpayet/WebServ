@@ -25,7 +25,7 @@ struct Location
 	Location() : met_get(true), met_post(true), met_del(true), autoindex(false), ret(0) {};
 };
 
-class Server : public app::IResourceLocator,
+class ServerConfig : public app::IResourceLocator,
 			   public http::IRequestValidationPolicy,
 			   public http::ILimitsProvider,
 			   public http::RoutePolicy,
@@ -33,10 +33,10 @@ class Server : public app::IResourceLocator,
 {
   public:
 	/** CTOR */
-	Server()
+	ServerConfig()
 		: m_port(8080), m_interface("0.0.0.0"), m_max_body(1000000), m_transport(TRANSPORT_TCP),
 		  m_applicative_protocol(APP_HTTP) {};
-	~Server() {};
+	~ServerConfig() {};
 
 	enum TransportProtocol
 	{
@@ -107,6 +107,6 @@ class Server : public app::IResourceLocator,
 };
 
 std::ostream &operator<<(std::ostream &os, Location const &l);
-std::ostream &operator<<(std::ostream &os, Server const &s);
+std::ostream &operator<<(std::ostream &os, ServerConfig const &s);
 
 #endif

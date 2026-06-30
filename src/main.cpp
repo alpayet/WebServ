@@ -36,8 +36,8 @@ int main(int argc, char** argv)
 	{
 		fileCheck(argc, argv[1]);
 		Config	conf(argv[1]);
-		std::vector<Server>::const_iterator	ite = conf.getServers().end();
-		for (std::vector<Server>::const_iterator it = conf.getServers().begin() ; it != ite ; ++it)
+		std::vector<ServerConfig>::const_iterator	ite = conf.getServerConfigs().end();
+		for (std::vector<ServerConfig>::const_iterator it = conf.getServerConfigs().begin() ; it != ite ; ++it)
 		{
 			std::cout << *it << std::endl;
 		}

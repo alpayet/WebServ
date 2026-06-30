@@ -39,11 +39,11 @@ Config::Config(char* filename)
 		checkDupLoc(conf.servers[i]);
 	}
 
-	std::vector<p_Server>::const_iterator ite = conf.servers.end();
-	for (std::vector<p_Server>::const_iterator it = conf.servers.begin() ; it != ite ; ++it)
+	std::vector<p_ServerConfig>::const_iterator ite = conf.servers.end();
+	for (std::vector<p_ServerConfig>::const_iterator it = conf.servers.begin() ; it != ite ; ++it)
 	{
-		Server serv;
-		initServer(serv, *it);
+		ServerConfig serv;
+		initServerConfig(serv, *it);
 		initLocation(serv, *it);
 		this->m_servers.push_back(serv);
 	}

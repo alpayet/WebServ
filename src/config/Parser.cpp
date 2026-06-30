@@ -90,7 +90,7 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 	return direc;
 }
 
-p_Location Parser::parseLocation(p_Server &serv)
+p_Location Parser::parseLocation(p_ServerConfig &serv)
 {
 	++m_it;
 	if (m_it->type != str_type)
@@ -118,13 +118,13 @@ p_Location Parser::parseLocation(p_Server &serv)
 	return loc;
 }
 
-p_Server Parser::parseServer()
+p_ServerConfig Parser::parseServerConfig()
 {
 	++m_it;
 	expect('{');
 	++m_it;
 
-	p_Server serv;
+	p_ServerConfig serv;
 
 	while (m_it != m_ite && m_it->type != char_rbracket)
 	{
@@ -153,7 +153,7 @@ void Parser::parseConfig()
 	{
 		if (m_it->type == res_word && m_it->data == "server")
 		{
-			parseServer();
+			parseServerConfig();
 		}
 		else
 		{
@@ -172,8 +172,8 @@ void Parser::parse(p_Config &config)
 
 std::ostream &operator<<(std::ostream &os, const p_Config &c)
 {
-	std::vector<p_Server>::const_iterator s_ite = c.servers.end();
-	for (std::vector<p_Server>::const_iterator s_it = c.servers.begin(); s_it != s_ite; ++s_it)
+	std::vector<p_ServerConfig>::const_iterator s_ite = c.servers.end();
+	for (std::vector<p_ServerConfig>::const_iterator s_it = c.servers.begin(); s_it != s_ite; ++s_it)
 	{
 		os << "***SERVER***" << std::endl;
 		std::vector<p_Location>::const_iterator l_ite = s_it->locations.end();

@@ -4,7 +4,7 @@
 #include <sstream>
 #include <vector>
 
-void initLocation(Server &s, p_Server ps)
+void initLocation(ServerConfig &s, p_ServerConfig ps)
 {
 	if (ps.locations.empty())
 		return;
@@ -103,7 +103,7 @@ void initLocation(Server &s, p_Server ps)
 	}
 }
 
-void initServer(Server &s, p_Server ps)
+void initServerConfig(ServerConfig &s, p_ServerConfig ps)
 {
 	if (ps.directives.empty())
 	{
@@ -196,7 +196,7 @@ void initServer(Server &s, p_Server ps)
 	}
 }
 
-void checkDupLoc(p_Server s)
+void checkDupLoc(p_ServerConfig s)
 {
 	size_t nb_locs = s.locations.size();
 	if (nb_locs == 0)

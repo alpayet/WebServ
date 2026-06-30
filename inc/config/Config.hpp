@@ -4,7 +4,7 @@
 # include <vector>
 # include <string>
 # include <exception>
-# include "server/Server.hpp"
+# include "config/ServerConfig.hpp"
 
 class ConfigException : public std::exception
 {
@@ -20,9 +20,9 @@ class Config
 {
 	public:
 		Config(char* filename);
-		const std::vector<Server>&	getServers() const { return m_servers; };
+		const std::vector<ServerConfig>&	getServerConfigs() const { return m_servers; };
 	private:
-		std::vector<Server> m_servers;
+		std::vector<ServerConfig> m_servers;
 };
 
 #endif

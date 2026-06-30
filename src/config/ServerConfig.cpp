@@ -1,5 +1,5 @@
 
-#include "server/Server.hpp"
+#include "config/ServerConfig.hpp"
 
 #include <iostream>
 #include <iterator>
@@ -14,7 +14,7 @@
 #include "config/Semantic.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
 
-Location Server::findLocationFromUri(std::string const &uri) const
+Location ServerConfig::findLocationFromUri(std::string const &uri) const
 {
 	std::size_t pos = 0;
 	std::string dir_path = uri;
@@ -33,7 +33,7 @@ Location Server::findLocationFromUri(std::string const &uri) const
 	throw("no corresponding location block");
 }
 
-std::vector<std::string> Server::getAllowedMethods(Location const &loc) const
+std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
 {
 	std::vector<std::string> methods;
 	if (loc.met_get)
@@ -45,7 +45,7 @@ std::vector<std::string> Server::getAllowedMethods(Location const &loc) const
 	return (methods);
 }
 
-http::RoutePolicy Server::match(std::string const &uri) const
+http::RoutePolicy ServerConfig::match(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
 
@@ -65,7 +65,7 @@ http::RoutePolicy Server::match(std::string const &uri) const
 }
 
 // TODO: check
-std::string Server::resolvePhysicalPath(
+std::string ServerConfig::resolvePhysicalPath(
 	std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
@@ -122,7 +122,7 @@ app::SystemResourceInfos setSRI(std::string const &path)
 }
 
 // get
-app::SystemResourceInfos Server::locate(
+app::SystemResourceInfos ServerConfig::locate(
 	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
@@ -133,7 +133,7 @@ app::SystemResourceInfos Server::locate(
 }
 
 // TODO: check directory before calling
-app::SystemResourceInfos Server::locateDefaultIndex(
+app::SystemResourceInfos ServerConfig::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,
 	std::string const			   &rootPath
@@ -159,34 +159,34 @@ app::SystemResourceInfos Server::locateDefaultIndex(
 	return setSRI(resPath + indexesId[0]);
 }
 
-std::string Server::getHttpVersion(void) const { return ("HTTP/1.0"); }
+std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.0"); }
 
-std::size_t Server::getMaxRequestLineSize(void) const
+std::size_t ServerConfig::getMaxRequestLineSize(void) const
 {
 	return std::numeric_limits<std::size_t>::max();
 }
 
-std::size_t Server::getMaxHeaderLineSize(void) const
+std::size_t ServerConfig::getMaxHeaderLineSize(void) const
 {
 	return std::numeric_limits<std::size_t>::max();
 }
 
-std::size_t Server::getMaxHeaderCount(void) const
+std::size_t ServerConfig::getMaxHeaderCount(void) const
 {
 	return std::numeric_limits<std::size_t>::max();
 }
 
-std::size_t Server::getMaxBodySize(void) const { return (m_max_body); }
+std::size_t ServerConfig::getMaxBodySize(void) const { return (m_max_body); }
 
-std::size_t Server::getMaxBodySize(std::string const &uri) const
+std::size_t ServerConfig::getMaxBodySize(std::string const &uri) const
 {
 	static_cast<void>(uri);
 	return (m_max_body);
 }
 
-Server::TransportProtocol Server::getTransportProtocol(void) const { return m_transport; }
+ServerConfig::TransportProtocol ServerConfig::getTransportProtocol(void) const { return m_transport; }
 
-Server::ApplicativeProtocol Server::getApplicativeProtocol(void) const
+ServerConfig::ApplicativeProtocol ServerConfig::getApplicativeProtocol(void) const
 {
 	return m_applicative_protocol;
 }
@@ -218,7 +218,7 @@ std::ostream &operator<<(std::ostream &os, Location const &l)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, Server const &s)
+std::ostream &operator<<(std::ostream &os, ServerConfig const &s)
 {
 	os << "***SERVER***" << std::endl;
 

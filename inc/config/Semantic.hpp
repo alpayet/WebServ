@@ -19,9 +19,9 @@ class SemanticException : public ConfigException
 
 #include "config/Parser.hpp"
 void	checkOverlap(p_Config c);
-void	checkDupLoc(p_Server s);
-void	initServer(Server& s, p_Server ps);
-void	initLocation(Server& s, p_Server ps);
+void	checkDupLoc(p_ServerConfig s);
+void	initServerConfig(ServerConfig& s, p_ServerConfig ps);
+void	initLocation(ServerConfig& s, p_ServerConfig ps);
 
 
 #endif
