@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DirectoryExplorer.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:12:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 17:39:10 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ std::vector<app::CollectionEntry> listCollection(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
 )
 {
+	std::string path = resPath;
+	if (resPath.back() != '/')
+		path += "/";
+
 	std::vector<app::CollectionEntry> files;
-	DIR								 *dir_ptr = opendir(resPath.c_str());
+	DIR								 *dir_ptr = opendir(path.c_str());
 
 	if (!dir_ptr)
 	{
@@ -49,11 +53,11 @@ std::vector<app::CollectionEntry> listCollection(
 		std::string tmpPath;
 		if (std::string(dir->d_name) == "..")
 		{
-			if (resPath != rootPath)
+			if (path != rootPath)
 			{
 				file.name = "Previous directory";
 
-				tmpPath = resPath;
+				tmpPath = path;
 				size_t pos = tmpPath.find_last_of('/');
 				if (pos == tmpPath.size() - 1)
 				{
@@ -66,7 +70,7 @@ std::vector<app::CollectionEntry> listCollection(
 		else
 		{
 			file.name = dir->d_name;
-			tmpPath = resPath + file.name;
+			tmpPath = path + file.name;
 		}
 		if (!tmpPath.empty())
 		{
