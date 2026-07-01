@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   successLookup.cpp                                  :+:      :+:    :+:   */
+/*   generateDefaultBody.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 22:34:00 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/01 23:07:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/presenters/successLookup.hpp"
-#include "infrastructure/http/exceptions/Exception.hpp"
-#include <cstdlib>
+#ifndef HTTPGENERATEDEFAULTBODY_HPP
+#define HTTPGENERATEDEFAULTBODY_HPP
 
 namespace http {
-unsigned short toStatusCode(app::ResourceStatus const status)
-{
-	switch (status)
-	{
-		case app::found:
-			return (200);
-		case app::deleted:
-			return (204);
-		default:
-			return (500);
-	}
-}
+char const *generateDefaultBody(unsigned short const statusCode);
 } // namespace http
+
+#endif // HTTPGENERATEDEFAULTBODY_HPP

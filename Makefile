@@ -79,6 +79,8 @@ SRC_FILES = \
 	infrastructure/http/mappers/ServeStaticResourceDtoMapper.cpp \
 	infrastructure/http/mappers/DeleteStaticResourceDtoMapper.cpp \
 	infrastructure/http/exceptions/Exception.cpp \
+	infrastructure/http/exceptions/errorLookup.cpp \
+	infrastructure/http/exceptions/generateDefaultBody.cpp \
 	infrastructure/http/controllers/ServeStaticResourceController.cpp \
 	infrastructure/http/controllers/DeleteStaticResourceController.cpp \
 	domain/Exception.cpp \

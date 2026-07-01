@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 18:04:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 03:56:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 21:42:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,42 +25,4 @@ Exception::ErrorCode Exception::getErrorCode(void) const { return (_internalCode
 
 char const *Exception::what(void) const throw() { return (_message.c_str()); }
 
-unsigned short Exception::toHttpStatusCode() const
-{
-	switch (_internalCode)
-	{
-		case Exception::invalidLineBreak:
-			return (400);
-		case Exception::requestLineMalformed:
-			return (400);
-		case Exception::headerLineMalformed:
-			return (400);
-		case Exception::methodInvalid:
-			return (400);
-		case Exception::methodNotAllowed:
-			return (405);
-		case Exception::targetInvalid:
-			return (400);
-		case Exception::versionInvalid:
-			return (400);
-		case Exception::headerKeyInvalid:
-			return (400);
-		case Exception::headerValueInvalid:
-			return (400);
-		case Exception::contentLengthInvalid:
-			return (400);
-		case Exception::contentLengthRequired:
-			return (411);
-		case Exception::requestLineTooLarge:
-			return (414);
-		case Exception::headerLineTooLarge:
-			return (431);
-		case Exception::headerCountTooLarge:
-			return (431);
-		case Exception::bodyTooLarge:
-			return (413);
-		default:
-			return (500);
-	}
-}
 } // namespace http

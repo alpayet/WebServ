@@ -6,11 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 20:21:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 00:14:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "infrastructure/http/constants.hpp"
+#include "infrastructure/http/exceptions/errorLookup.hpp"
+#include "infrastructure/http/exceptions/generateDefaultBody.hpp"
 #include "infrastructure/http/response/Response.hpp"
+#include <cstring>
 
 namespace http {
 
@@ -28,6 +32,18 @@ Response::Builder &Response::Builder::withHeader(std::string const &key, std::st
 Response::Builder &Response::Builder::withBody(std::vector<char> const &body)
 {
 	_response.body = body;
+	return (*this);
+}
+
+Response::Builder &Response::Builder::withBody(std::string const &body)
+{
+	_response.body = std::vector<char>(body.begin(), body.end());
+	return (*this);
+}
+
+Response::Builder &Response::Builder::withBody(char const *body)
+{
+	_response.body = std::vector<char>(body, body + std::strlen(body));
 	return (*this);
 }
 

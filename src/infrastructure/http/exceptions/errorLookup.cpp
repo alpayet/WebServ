@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 04:27:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 00:22:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/exceptions/errorLookup.hpp"
 
 namespace http {
-unsigned short toHttpStatusCode(Exception::ErrorCode const errorCode)
+unsigned short toStatusCode(Exception::ErrorCode const errorCode)
 {
 	switch (errorCode)
 	{
@@ -30,7 +30,7 @@ unsigned short toHttpStatusCode(Exception::ErrorCode const errorCode)
 		case Exception::targetInvalid:
 			return (400);
 		case Exception::versionInvalid:
-			return (400);
+			return (505);
 		case Exception::headerKeyInvalid:
 			return (400);
 		case Exception::headerValueInvalid:
@@ -52,7 +52,13 @@ unsigned short toHttpStatusCode(Exception::ErrorCode const errorCode)
 	}
 }
 
-unsigned short toHttpStatusCode(app::Exception::ErrorCode errorCode)
+unsigned short toStatusCode(fileSystem::Exception::ErrorCode const errorCode)
+{
+	(void)errorCode;
+	return (500);
+}
+
+unsigned short toStatusCode(app::Exception::ErrorCode errorCode)
 {
 	switch (errorCode)
 	{
@@ -71,7 +77,7 @@ unsigned short toHttpStatusCode(app::Exception::ErrorCode errorCode)
 	}
 }
 
-unsigned short toHttpStatusCode(domain::Exception::ErrorCode const errorCode)
+unsigned short toStatusCode(domain::Exception::ErrorCode const errorCode)
 {
 	switch (errorCode)
 	{
@@ -83,7 +89,5 @@ unsigned short toHttpStatusCode(domain::Exception::ErrorCode const errorCode)
 			return (500);
 	}
 }
-
-unsigned short toHttpStatusCode(fileSystem::Exception::ErrorCode const errorCode) { return (500); }
 
 } // namespace http

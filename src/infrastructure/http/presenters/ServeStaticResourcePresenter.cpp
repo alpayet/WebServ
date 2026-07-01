@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 03:38:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 00:08:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ void ServeStaticResourcePresenter::presentStaticContent(
 	app::IResourceReader	 *resourceReader
 )
 {
-	std::stringstream contentLengthAsString;
-	contentLengthAsString << resourceSize;
+	std::stringstream content_length_ss;
+	content_length_ss << resourceSize;
 
-	Response::Builder response_builder;
+	Response::Builder builder;
 
-	response_builder.withStatusCode(toHttpStatusCode(status));
-	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
+	builder.withStatusCode(toStatusCode(status));
+	builder.withHeader(header::CONTENT_LENGTH, content_length_ss.str());
 
-	_viewModel.response = response_builder.build();
+	_viewModel.response = builder.build();
 	_viewModel.reader = resourceReader;
 }
 
@@ -51,16 +51,16 @@ void ServeStaticResourcePresenter::presentListing(
 {
 	std::string const &listing_html = getListing(id, collectionData);
 
-	std::stringstream contentLengthAsString;
-	contentLengthAsString << listing_html.size();
+	std::stringstream content_length_ss;
+	content_length_ss << listing_html.size();
 
-	Response::Builder response_builder;
+	Response::Builder builder;
 
-	response_builder.withStatusCode(toHttpStatusCode(status));
-	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
-	response_builder.withBody(std::vector<char>(listing_html.begin(), listing_html.end()));
+	builder.withStatusCode(toStatusCode(status));
+	builder.withHeader(header::CONTENT_LENGTH, content_length_ss.str());
+	builder.withBody(listing_html);
 
-	_viewModel.response = response_builder.build();
+	_viewModel.response = builder.build();
 	_viewModel.reader = NULL;
 }
 } // namespace http
