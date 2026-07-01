@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:46:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 01:46:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ class ResourceMetaData;
 
 namespace app {
 class IResourceLocator;
-class IResourceReader;
 class IStaticResourceStorage;
+class IResourceReader;
 class ICollectionExplorer;
 struct CollectionEntry;
 
@@ -55,7 +55,7 @@ class ServeStaticResource
 	  public:
 		virtual ~IOutputPort() {}
 
-		virtual void presentContent(
+		virtual void presentStaticContent(
 			ResourceStatus const status,
 			std::size_t const	 resourceSize,
 			IResourceReader		*resourceReader

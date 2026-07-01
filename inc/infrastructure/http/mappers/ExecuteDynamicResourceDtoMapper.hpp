@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 05:24:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 02:19:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class RoutePolicy;
 class ExecuteDynamicResourceDtoMapper
 {
   public:
-	static app::useCase::ExecuteDynamicResource::Input ExecuteDynamicResourceDtoMapper::toDto(
+	static app::useCase::ExecuteDynamicResource::Input toDto(
 		Request const							 &request,
 		RoutePolicy const						 &routePolicy,
 		std::string const						 &bodyPath,

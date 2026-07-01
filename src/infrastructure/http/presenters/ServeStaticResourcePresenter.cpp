@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 20:23:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 03:38:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ ServeStaticResourcePresenter::getViewModel(void) const
 	return (_viewModel);
 }
 
-void ServeStaticResourcePresenter::presentContent(
+void ServeStaticResourcePresenter::presentStaticContent(
 	app::ResourceStatus const status,
 	std::size_t const		  resourceSize,
 	app::IResourceReader	 *resourceReader
@@ -36,7 +36,7 @@ void ServeStaticResourcePresenter::presentContent(
 
 	Response::Builder response_builder;
 
-	response_builder.withStatusCode(toHttpCode(status));
+	response_builder.withStatusCode(toHttpStatusCode(status));
 	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
 
 	_viewModel.response = response_builder.build();
@@ -56,7 +56,7 @@ void ServeStaticResourcePresenter::presentListing(
 
 	Response::Builder response_builder;
 
-	response_builder.withStatusCode(toHttpCode(status));
+	response_builder.withStatusCode(toHttpStatusCode(status));
 	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
 	response_builder.withBody(std::vector<char>(listing_html.begin(), listing_html.end()));
 

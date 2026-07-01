@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 19:55:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 01:58:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void DeleteStaticResourceController::operator()(Context &context, RoutePolicy co
 	_useCase.execute(dto, presenter);
 
 	DeleteStaticResourcePresenter::ViewModel const &viewModel = presenter.getViewModel();
-
 	context.output.response = viewModel.response;
 }
 } // namespace http

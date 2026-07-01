@@ -6,15 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 21:12:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 03:41:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
-#include "infrastructure/http/methods.hpp"
 #include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/methods.hpp"
 #include "infrastructure/http/request/IRequestValidationPolicy.hpp"
 #include <algorithm>
 #include <cerrno>
@@ -383,7 +383,7 @@ void Parser::validateRequestLineSize(std::size_t size)
 void Parser::validateHeaderLineSize(std::size_t size)
 {
 	if (size > _maxHeaderLineSize)
-		throw Exception(Exception::requestLineTooLarge);
+		throw Exception(Exception::headerLineTooLarge);
 }
 
 void Parser::validateHeaderCount(std::size_t count)

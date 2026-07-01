@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "config/Config.hpp"
@@ -8,18 +9,19 @@
 #include "config/Tokenizer.hpp"
 
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
+#include "cgi/Cgi.hpp"
 #include "infrastructure/ITransfertHandler.hpp"
 #include "infrastructure/http/Handler.hpp"
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
+#include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Sender.hpp"
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/storage/file_system/DirectoryExplorer.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
-
-#include <sstream>
 
 void fileCheck(int argc, char *argv)
 {
@@ -52,10 +54,10 @@ int main(int argc, char **argv)
 		std::vector<Server>::iterator ite = server_configs.end();
 		for (std::vector<Server>::iterator it = server_configs.begin(); it != ite; ++it)
 		{
-			Server						  server_config = *it;
-			fileSystem::Storage			  storage;
-			fileSystem::DirectoryExplorer directory_explorer;
+			Server				server_config = *it;
+			fileSystem::Storage storage;
 
+			fileSystem::DirectoryExplorer	  directory_explorer;
 			app::useCase::ServeStaticResource serveStaticResource_use_case(
 				server_config, storage, directory_explorer
 			);
@@ -67,6 +69,13 @@ int main(int argc, char **argv)
 			);
 			http::DeleteStaticResourceController deleteStaticResource_controller(
 				deleteStaticResource_use_case
+			);
+			Cgi									 cgi;
+			app::useCase::ExecuteDynamicResource executeDynamicResource_use_case(
+				server_config, cgi
+			);
+			http::ExecuteDynamicResourceController executeDynamicResource_controller(
+				executeDynamicResource_use_case, server_config
 			);
 
 			http::request::Parser parser(server_config, server_config);

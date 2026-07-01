@@ -6,23 +6,45 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 21:45:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 01:48:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTEDYNAMICRESOURCEPRESENTER_HPP
 #define EXECUTEDYNAMICRESOURCEPRESENTER_HPP
 
-class ExecuteDynamicResourcePresenter
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
+#include "infrastructure/http/response/Response.hpp"
+#include <string>
+#include <vector>
+
+namespace http {
+
+class ExecuteDynamicResourcePresenter : public app::useCase::ExecuteDynamicResource::IOutputPort
 {
   public:
-	ExecuteDynamicResourcePresenter(void);
-	ExecuteDynamicResourcePresenter(ExecuteDynamicResourcePresenter const &src);
-	~ExecuteDynamicResourcePresenter(void);
+	struct ViewModel
+	{
+		ViewModel(void) : reader(NULL) {}
 
-	ExecuteDynamicResourcePresenter &operator=(ExecuteDynamicResourcePresenter const &rhs);
+		Response			  response;
+		app::IResourceReader *reader;
+	};
+
+  public:
+	ExecuteDynamicResourcePresenter(void) {}
+	virtual ~ExecuteDynamicResourcePresenter(void) {}
+
+	ViewModel const &getViewModel(void) const;
+
+	virtual void presentDynamicContent(app::IResourceReader *resourceReader);
 
   private:
+	ExecuteDynamicResourcePresenter(ExecuteDynamicResourcePresenter const &src);
+	ExecuteDynamicResourcePresenter &operator=(ExecuteDynamicResourcePresenter const &rhs);
+
+	ViewModel _viewModel;
 };
+} // namespace http
 
 #endif // EXECUTEDYNAMICRESOURCEPRESENTER_HPP

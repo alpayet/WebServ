@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Exception.cpp                                      :+:      :+:    :+:   */
+/*   errorLookup.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/05 18:04:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 03:56:56 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/01 04:27:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/exceptions/errorLookup.hpp"
 
 namespace http {
-Exception::Exception(std::string const &message, ErrorCode const internalCode) throw()
-	: _message(message), _internalCode(internalCode)
-{}
-
-Exception::Exception(ErrorCode const internalCode) throw()
-	: _message("httpException"), _internalCode(internalCode)
-{}
-
-Exception::ErrorCode Exception::getErrorCode(void) const { return (_internalCode); }
-
-char const *Exception::what(void) const throw() { return (_message.c_str()); }
-
-unsigned short Exception::toHttpStatusCode() const
+unsigned short toHttpStatusCode(Exception::ErrorCode const errorCode)
 {
-	switch (_internalCode)
+	switch (errorCode)
 	{
 		case Exception::invalidLineBreak:
 			return (400);
@@ -63,4 +51,39 @@ unsigned short Exception::toHttpStatusCode() const
 			return (500);
 	}
 }
+
+unsigned short toHttpStatusCode(app::Exception::ErrorCode errorCode)
+{
+	switch (errorCode)
+	{
+		case app::Exception::accessDenied:
+			return (403);
+		case app::Exception::notFound:
+			return (404);
+		case app::Exception::listingDisabled:
+			return (403);
+		case app::Exception::deleteFailed:
+			return (500);
+		case app::Exception::pathTraversalDetected:
+			return (400);
+		default:
+			return (500);
+	}
+}
+
+unsigned short toHttpStatusCode(domain::Exception::ErrorCode const errorCode)
+{
+	switch (errorCode)
+	{
+		case domain::Exception::pathMissing:
+			return (404);
+		case domain::Exception::typeUnsupported:
+			return (501);
+		default:
+			return (500);
+	}
+}
+
+unsigned short toHttpStatusCode(fileSystem::Exception::ErrorCode const errorCode) { return (500); }
+
 } // namespace http

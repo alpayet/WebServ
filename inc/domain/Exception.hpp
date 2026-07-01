@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/14 15:20:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 03:51:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		pathTraversalDetected,
 		pathMissing,
-		typeUnsupported,
+		typeUnsupported
 	};
 
   public:

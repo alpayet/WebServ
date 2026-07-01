@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 15:53:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 04:06:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Exception : public std::exception
 		notFound,
 		listingDisabled,
 		deleteFailed,
-		traversalPath,
+		pathTraversalDetected,
 	};
 
   public:

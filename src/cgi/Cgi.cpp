@@ -52,7 +52,7 @@ bool hasSheBang(std::string const &filename)
 #include <map>
 #include <utility>
 
-std::map<std::string, std::pair<std::string, std::string>> interpreters = {
+std::map<std::string, std::pair<std::string, std::string> > interpreters = {
 	{".py", {"/bin/python3", "python3"}},
 	{".sh", {"/bin/bash", "bash"}},
 	{".php", {"/bin/php", "php"}}
@@ -161,7 +161,7 @@ void Cgi::execute(
 	close(fds[1]);
 }
 
-//? dto will have
+// TODO::? dto will have
 /**
  * request_method
  * query_string

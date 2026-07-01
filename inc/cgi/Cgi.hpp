@@ -6,13 +6,12 @@
 class Cgi : public app::IDynamicResourceExecutor
 {
   public:
-	virtual void execute(
+	virtual app::IResourceReader *execute(
 		std::string const						 &resourcePath,
 		std::string const						 &bodyPath,
 		std::map<std::string, std::string> const &metaVariables
-	);
-
-  private:
+	)
+	{}
 };
 
 #endif

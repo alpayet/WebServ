@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 00:23:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 02:14:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
-// #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
+#include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/methods.hpp"

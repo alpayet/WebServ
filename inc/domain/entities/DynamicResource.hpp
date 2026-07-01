@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:40:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 04:13:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ namespace domain {
 class DynamicResource
 {
   public:
-	DynamicResource(
-		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
-	);
+	DynamicResource(std::string const &id, ResourceMetaData const &metaData);
 
 	std::string const &getResourcePath(void) const;
 

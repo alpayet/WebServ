@@ -91,8 +91,8 @@ SRC_FILES = \
 	config/Config.cpp \
 	application/Exception.cpp \
 	application/use_cases/serve_static_resource/ServeStaticResource.cpp \
-	application/use_cases/delete_static_resource/DeleteStaticResource.cpp
-# 	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \
+	application/use_cases/delete_static_resource/DeleteStaticResource.cpp \
+	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \
 	infrastructure/http/presenters/ExecuteDynamicResourcePresenter.cpp \
 	infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \
 	infrastructure/http/controllers/ExecuteDynamicResourceController.cpp
@@ -111,7 +111,7 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 NAME = webserv
 
 CC = c++
-CFLAGS = -Wall -Wextra -MMD -MP -std=c++98 -g3
+CFLAGS = -Wall -Wextra -MMD -MP -std=c++98
 IFLAGS = -I $(INC_DIR)
 MAKE = @make --no-print-directory -j
 

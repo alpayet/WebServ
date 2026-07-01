@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:18:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 03:38:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,16 @@
 #include <cstdlib>
 
 namespace http {
-static std::pair<app::ResourceStatus, unsigned short> const LOOKUP_DATA[] = {
-	std::make_pair(app::found, 200), std::make_pair(app::deleted, 204)
-};
-
-static std::size_t const LOOKUP_DATA_SIZE = sizeof(LOOKUP_DATA) / sizeof(LOOKUP_DATA[0]);
-
-std::map<app::ResourceStatus, unsigned short> const
-	SUCCESS_LOOKUP(LOOKUP_DATA, LOOKUP_DATA + LOOKUP_DATA_SIZE);
-
-unsigned short toHttpCode(app::ResourceStatus const status)
+unsigned short toHttpStatusCode(app::ResourceStatus const status)
 {
-	std::map<app::ResourceStatus, unsigned short>::const_iterator it = SUCCESS_LOOKUP.find(status);
-
-	if (it == SUCCESS_LOOKUP.end())
-		throw Exception(Exception::toHttpCodeFailed);
-	return (it->second);
+	switch (status)
+	{
+		case app::found:
+			return (200);
+		case app::deleted:
+			return (204);
+		default:
+			return (500);
+	}
 }
 } // namespace http

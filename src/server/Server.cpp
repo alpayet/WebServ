@@ -99,7 +99,7 @@ std::string Server::resolvePhysicalPath(
 	else
 		resUri = resPath;
 	if (resUri.find(rootPath) != 0)
-		throw app::Exception(app::Exception::traversalPath);
+		throw app::Exception(app::Exception::pathTraversalDetected);
 	return resUri;
 }
 
