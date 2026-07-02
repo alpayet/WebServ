@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:14:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 02:34:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/Handler.hpp"
 #include "application/Exception.hpp"
 #include "domain/Exception.hpp"
+#include "infrastructure/http/IErrorPagesProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/exceptions/ReturnException.hpp"
 #include "infrastructure/http/request/Parser.hpp"
@@ -22,8 +23,13 @@
 #include "infrastructure/storage/file_system/Exception.hpp"
 
 namespace http {
-Handler::Handler(request::Parser &parser, Router &router, response::Sender &sender)
-	: _parser(parser), _router(router), _sender(sender)
+Handler::Handler(
+	request::Parser		&parser,
+	Router				&router,
+	response::Sender	&sender,
+	IErrorPagesProvider &errorPagesProvider
+)
+	: _parser(parser), _router(router), _sender(sender), _errorPagesProvider(errorPagesProvider)
 {}
 
 // TODO : check pour linsertion

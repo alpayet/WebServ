@@ -2,6 +2,7 @@
 #define SERVER_HPP
 
 #include "application/ports/IResourceLocator.hpp"
+#include "infrastructure/http/IErrorPagesProvider.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/request/IRequestValidationPolicy.hpp"
@@ -29,7 +30,8 @@ class Server : public app::IResourceLocator,
 			   public http::IRequestValidationPolicy,
 			   public http::ILimitsProvider,
 			   public http::IRouteRegistry,
-			   public http::IHttpVersionProvider
+			   public http::IHttpVersionProvider,
+			   public http::IErrorPagesProvider
 {
   public:
 	/** CTOR */
@@ -51,13 +53,13 @@ class Server : public app::IResourceLocator,
 	};
 
 	/** GETTERS */
-	unsigned short					  getPort() const { return m_port; };
-	std::string const				 &getInterface() const { return m_interface; };
-	std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
-	std::vector<Location> const		 &getLocations() const { return m_locations; };
-	int								  getClientMaxBody() const { return m_max_body; };
-	std::string const				 &getRoot() const { return m_root; };
-	std::vector<std::string> const	 &getIndex() const { return m_index; };
+	unsigned short							  getPort() const { return m_port; };
+	std::string const						 &getInterface() const { return m_interface; };
+	virtual std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
+	std::vector<Location> const				 &getLocations() const { return m_locations; };
+	int										  getClientMaxBody() const { return m_max_body; };
+	std::string const						 &getRoot() const { return m_root; };
+	std::vector<std::string> const			 &getIndex() const { return m_index; };
 
 	/** SETTERS */
 	void setPort(int port) { m_port = port; };

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 06:27:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 02:34:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@
 
 namespace http {
 
-namespace request {
-class Parser;
-} // namespace request
-
 class Router;
+class IErrorPagesProvider;
 
 class Handler : public ITransfertHandler
 {
   public:
-	Handler(request::Parser &parser, Router &router, response::Sender &sender);
+	Handler(
+		request::Parser		&parser,
+		Router				&router,
+		response::Sender	&sender,
+		IErrorPagesProvider &errorPagesProvider
+	);
 
 	virtual void prepareContext(unsigned int id);
 
@@ -42,12 +44,13 @@ class Handler : public ITransfertHandler
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
 
-// TODO : a voir pour mettre cette limite de max de connections dans la config ou pas
+	// TODO : a voir pour mettre cette limite de max de connections dans la config ou pas
 	Context _contexts[1024];
 
-	request::Parser	 &_parser;
-	Router			 &_router;
-	response::Sender &_sender;
+	request::Parser		&_parser;
+	Router				&_router;
+	response::Sender	&_sender;
+	IErrorPagesProvider &_errorPagesProvider;
 };
 } // namespace http
 

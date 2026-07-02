@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 			);
 			http::response::Sender sender(server_config);
 
-			http::Handler	   handler(parser, router, sender);
+			http::Handler	   handler(parser, router, sender, server_config);
 			ITransfertHandler &tranfer = handler;
 
 			std::string const		requete_test("GET /app/caca HTTP/1.0\r\n\r\n");
