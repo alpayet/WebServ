@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:38:33 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:13:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 02:10:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Exception::Exception(ErrorCode const internalCode) throw()
 	: _message("domainException"), _internalCode(internalCode)
 {}
 
-Exception::ErrorCode Exception::getErrorCode(void) const { return (_internalCode); }
+Exception::ErrorCode Exception::getErrorCode(void) const throw() { return (_internalCode); }
 
 char const *Exception::what(void) const throw() { return (_message.c_str()); }
 

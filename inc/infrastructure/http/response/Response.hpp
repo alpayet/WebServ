@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 00:15:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 02:21:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ class Response
 	std::vector<char>	body;
 
 	void reset(void);
+
+	template <typename ExceptionErrorCode>
+	static Response buildError(ExceptionErrorCode const errorCode);
+
+	static Response buildFixed(unsigned short const statusCode);
 };
 
 class Response::Builder
@@ -48,10 +53,6 @@ class Response::Builder
 	Builder	 &withBody(std::string const &body);
 	Builder	 &withBody(char const *body);
 	Response &build(void);
-
-	template <typename ExceptionErrorCode> Response &buildError(ExceptionErrorCode const errorCode);
-
-	// Response &buildFixed(unsigned short const statusCode);
 
   private:
 	Response _response;

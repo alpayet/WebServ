@@ -65,6 +65,8 @@ http::RoutePolicy Server::match(std::string const &uri) const
 	else
 		route.indexesId = m_index;
 	route.allowedMethods = getAllowedMethods(loc);
+	route.hasReturn = loc.ret != 0;
+	route.returnCode = loc.ret;
 	return route;
 }
 

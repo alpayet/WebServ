@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 02:14:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 02:13:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/exceptions/ReturnException.hpp"
 #include "infrastructure/http/methods.hpp"
 #include "infrastructure/http/request/Request.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
@@ -40,6 +41,8 @@ void Router::route(Context &context)
 	std::vector<std::string> const &allowed_methods = route_policy.allowedMethods;
 	std::string const			   &method = context.input.state.request.method;
 
+	if (route_policy.hasReturn)
+		throw ReturnException(route_policy.returnCode);
 	if (std::find(allowed_methods.begin(), allowed_methods.end(), method) == allowed_methods.end())
 		throw Exception(Exception::methodNotAllowed);
 

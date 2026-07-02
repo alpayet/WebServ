@@ -1,44 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Exception.hpp                                      :+:      :+:    :+:   */
+/*   ReturnException.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:11:20 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/02 02:03:39 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/02 02:17:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOMAINEXCEPTION_HPP
-#define DOMAINEXCEPTION_HPP
+#ifndef RETURNEXCEPTION_HPP
+#define RETURNEXCEPTION_HPP
 
 #include <exception>
 #include <string>
 
-namespace domain {
-class Exception : public std::exception
+namespace http {
+class ReturnException : public std::exception
 {
   public:
-	enum ErrorCode
-	{
-		pathMissing,
-		typeUnsupported
-	};
+	ReturnException(std::string const &message, int const statusCode) throw();
+	ReturnException(int const statusCode) throw();
 
-  public:
-	Exception(std::string const &message, ErrorCode const internalCode) throw();
-	Exception(ErrorCode const internalCode) throw();
-	virtual ~Exception(void) throw() {}
-
-	ErrorCode getErrorCode(void) const throw();
+	virtual ~ReturnException(void) throw() {}
 
 	virtual char const *what(void) const throw();
 
-  private:
-	std::string _message;
-	ErrorCode	_internalCode;
-};
-} // namespace domain
+	unsigned short getStatusCode(void) const throw();
 
-#endif // DOMAINEXCEPTION_HPP
+  private:
+	std::string	   _message;
+	unsigned short _statusCode;
+};
+} // namespace http
+
+#endif // RETURNEXCEPTION_HPP

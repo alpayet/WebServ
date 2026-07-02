@@ -6,15 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 00:23:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/02 00:51:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/exceptions/generateDefaultBody.hpp"
 
 // TODO: a voir pour le nom du serveur a mettre dnas un define ou pas
+
+// TODO: int ou unsigned short pour statusCode
 namespace http {
-char const *generateDefaultBody(unsigned short statusCode)
+char const *generateDefaultBody(unsigned short const statusCode)
 {
 	switch (statusCode)
 	{
