@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:28:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 22:41:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,29 @@ Reader::~Reader(void)
 		std::cerr << "Error : " << std::strerror(errno) << '\n';
 }
 
+std::size_t Reader::read(std::vector<char> &buf, std::size_t const size)
+{
+	if (size >= CHUNCK_SIZE)
+		return (readChunk(buf));
+	return (readSize(buf, size));
+}
+
+std::size_t Reader::readSize(std::vector<char> &buf, std::size_t const size)
+{
+	if (_fd < 0)
+		_fd = openFile(_path);
+
+	buf.resize(size);
+
+	ssize_t bytes_read = ::read(_fd, &buf[0], size);
+	if (bytes_read < 0)
+		throw Exception(Exception::fileReadFailed);
+
+	buf.resize(bytes_read);
+
+	return (bytes_read);
+}
+
 std::size_t Reader::readChunk(std::vector<char> &buf)
 {
 	if (_fd < 0)
@@ -36,7 +59,7 @@ std::size_t Reader::readChunk(std::vector<char> &buf)
 
 	buf.resize(CHUNCK_SIZE);
 
-	ssize_t bytes_read = read(_fd, &buf[0], CHUNCK_SIZE);
+	ssize_t bytes_read = ::read(_fd, &buf[0], CHUNCK_SIZE);
 	if (bytes_read < 0)
 		throw Exception(Exception::fileReadFailed);
 

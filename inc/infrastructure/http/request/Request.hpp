@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 05:27:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 20:24:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class Request
 	std::string						   target;
 	std::string						   protocol;
 	std::string						   query;
-	size_t							   contentLength;
+	std::size_t						   contentLength;
 	request::BodyFile				   body;
 
 	void reset(void);

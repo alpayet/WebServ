@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:28:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 22:39:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class IResourceReader
   public:
 	virtual ~IResourceReader(void) {}
 
-	virtual std::size_t readChunk(std::vector<char> &buf) = 0;
+	virtual std::size_t read(std::vector<char> &buf, std::size_t const size) = 0;
 };
 } // namespace app
 

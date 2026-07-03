@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 02:09:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 23:07:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,9 +274,9 @@ void Parser::parseContentLength(State &state)
 	if (content_length.empty())
 		throw Exception(Exception::contentLengthInvalid);
 
-	char *endptr;
+	char *endptr = NULL;
 	errno = 0;
-	unsigned long val = std::strtoul(content_length.c_str(), &endptr, 10);
+	unsigned long long val = std::strtoull(content_length.c_str(), &endptr, 10);
 
 	if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
 		throw Exception(Exception::contentLengthInvalid);
@@ -287,10 +287,16 @@ void Parser::parseContentLength(State &state)
 
 void Parser::parseBody(std::vector<char> const &inputBuf, State &state)
 {
-	state.bodyBytesRead += inputBuf.size();
-	if (state.bodyBytesRead > _maxBodySize)
+	if (state.bodyBytesRead + inputBuf.size() > _maxBodySize)
 		throw Exception(Exception::bodyTooLarge);
-	state.request.body.append(inputBuf);
+
+	if (state.bodyBytesRead + inputBuf.size() > state.request.contentLength)
+	{
+		state.request.body.append(inputBuf, state.request.contentLength - state.bodyBytesRead);
+		state.bodyBytesRead = state.request.contentLength;
+	}
+	else
+		state.bodyBytesRead += state.request.body.append(inputBuf);
 }
 
 std::string Parser::extractMethod(

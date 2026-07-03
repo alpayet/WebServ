@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:05:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 05:23:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 20:21:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void Context::Input::reset(void)
 	isRequestComplete = false;
 }
 
-Context::Output::Output(void)
-	: buf(), state(response::Sender::HeaderBlock), response(), reader(NULL),
-	  isResponseComplete(false)
+Context::Output::Output(void) : buf(), state(), response(), reader(NULL), isResponseComplete(false)
 {}
 
 Context::Output::~Output(void) { delete reader; }
@@ -40,7 +38,7 @@ Context::Output::~Output(void) { delete reader; }
 void Context::Output::reset(void)
 {
 	buf.clear();
-	state = response::Sender::HeaderBlock;
+	state.reset();
 	response.reset();
 	delete reader;
 	reader = NULL;

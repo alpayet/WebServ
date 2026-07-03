@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 04:13:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 22:56:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace response {
 class Sender
 {
   public:
-	enum State
+	enum Step
 	{
 		HeaderBlock,
 		body,
@@ -36,10 +36,25 @@ class Sender
 		complete,
 	};
 
+	class State
+	{
+	  public:
+		State(void);
+
+		Step		step;
+		std::size_t totalBytesRead;
+
+		void reset(void);
+
+	  private:
+		State(State const &src);
+		State &operator=(State const &rhs);
+	};
+
   public:
 	Sender(IHttpVersionProvider &httpVersionProvider);
 
-	State produce(
+	Step produce(
 		std::vector<char>	 &outputBuf,
 		Response const		 &response,
 		app::IResourceReader *reader,

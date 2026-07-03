@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 06:26:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 23:29:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,14 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 		unsigned short	 statusCode = toStatusCode(e.getErrorCode());
 
 		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
+
+		_contexts[id].input.isRequestComplete = true;
+	}
+	catch (...)
+	{
+		Context::Output &context_output = _contexts[id].output;
+
+		prepareDirectResponse(500, context_output.response, &context_output.reader);
 
 		_contexts[id].input.isRequestComplete = true;
 	}

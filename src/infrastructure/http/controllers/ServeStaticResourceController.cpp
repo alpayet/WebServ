@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 04:07:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 23:20:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void ServeStaticResourceController::operator()(Context &context, RoutePolicy con
 
 	ServeStaticResourcePresenter::ViewModel const &viewModel = presenter.getViewModel();
 	context.output.response = viewModel.response;
+	context.output.reader = viewModel.reader;
 }
 } // namespace http

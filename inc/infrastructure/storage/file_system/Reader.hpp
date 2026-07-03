@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:28:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 22:40:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Reader : public app::IResourceReader
 	Reader(int const fd);
 	~Reader(void);
 
-	virtual std::size_t readChunk(std::vector<char> &buf);
+	virtual std::size_t read(std::vector<char> &buf, std::size_t const size);
 
   private:
 	Reader(Reader const &src);
@@ -36,6 +36,9 @@ class Reader : public app::IResourceReader
 	std::string _path;
 
 	static int openFile(std::string const &path);
+
+	std::size_t readSize(std::vector<char> &buf, std::size_t const size);
+	std::size_t readChunk(std::vector<char> &buf);
 };
 } // namespace fileSystem
 

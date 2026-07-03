@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 00:08:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 23:31:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "infrastructure/http/presenters/listingHtml.hpp"
 #include "infrastructure/http/presenters/successLookup.hpp"
 #include "infrastructure/http/response/Response.hpp"
-#include <sstream>
 
 namespace http {
 
@@ -31,13 +30,10 @@ void ServeStaticResourcePresenter::presentStaticContent(
 	app::IResourceReader	 *resourceReader
 )
 {
-	std::stringstream content_length_ss;
-	content_length_ss << resourceSize;
-
 	Response::Builder builder;
 
 	builder.withStatusCode(toStatusCode(status));
-	builder.withHeader(header::CONTENT_LENGTH, content_length_ss.str());
+	builder.withContentLength(resourceSize);
 
 	_viewModel.response = builder.build();
 	_viewModel.reader = resourceReader;
@@ -51,13 +47,10 @@ void ServeStaticResourcePresenter::presentListing(
 {
 	std::string const &listing_html = getListing(id, collectionData);
 
-	std::stringstream content_length_ss;
-	content_length_ss << listing_html.size();
-
 	Response::Builder builder;
 
 	builder.withStatusCode(toStatusCode(status));
-	builder.withHeader(header::CONTENT_LENGTH, content_length_ss.str());
+	builder.withContentLength(listing_html.size());
 	builder.withBody(listing_html);
 
 	_viewModel.response = builder.build();

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 05:35:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 20:58:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include "infrastructure/http/exceptions/errorLookup.hpp"
 #include "infrastructure/http/exceptions/generateDefaultBody.hpp"
 #include "infrastructure/http/response/Response.hpp"
+#include <cstdlib>
 #include <cstring>
+#include <sstream>
 
 namespace http {
 
@@ -23,12 +25,40 @@ Response::Builder &Response::Builder::withStatusCode(unsigned short const status
 	_response.statusCode = statusCode;
 	return (*this);
 }
+
+Response::Builder &Response::Builder::withContentLength(std::size_t const contentLength)
+{
+	withHeader(header::CONTENT_LENGTH, contentLength);
+	_response.contentLength = contentLength;
+	return (*this);
+}
+
+Response::Builder &Response::Builder::withContentLength(std::string const &contentLength)
+{
+	char		 *endptr = NULL;
+	unsigned long val = std::strtoull(contentLength.c_str(), &endptr, 10);
+
+	withContentLength(static_cast<size_t>(val));
+	return (*this);
+}
+
 Response::Builder &Response::Builder::withHeader(std::string const &key, std::string const &value)
 {
 	Response::Header header = {.key = key, .value = value};
 	_response.headers.push_back(header);
 	return (*this);
 }
+
+Response::Builder &Response::Builder::withHeader(std::string const &key, std::size_t const value)
+{
+	std::stringstream value_ss;
+	value_ss << value;
+
+	Response::Header header = {key, .value = value_ss.str()};
+	_response.headers.push_back(header);
+	return (*this);
+}
+
 Response::Builder &Response::Builder::withBody(std::vector<char> const &body)
 {
 	_response.body = body;

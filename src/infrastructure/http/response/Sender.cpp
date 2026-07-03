@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 21:41:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 23:31:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,60 @@
 namespace http {
 namespace response {
 
+Sender::State::State(void) : step(HeaderBlock), totalBytesRead(0) {}
+
 Sender::Sender(IHttpVersionProvider &httpVersionProvider)
 	: _httpVersionProvider(httpVersionProvider)
 {}
 
-Sender::State Sender::produce(
+void Sender::State::reset(void)
+{
+	step = HeaderBlock;
+	totalBytesRead = 0;
+}
+
+Sender::Step Sender::produce(
 	std::vector<char>	 &outputBuf,
 	Response const		 &response,
 	app::IResourceReader *reader,
 	State				 &state
 )
 {
-	switch (state)
+	switch (state.step)
 	{
 		case HeaderBlock:
 			outputBuf.clear();
 			HeaderBlockSerializer::serialize(
 				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
-			state = (reader) ? resource : body;
+			state.step = (reader) ? resource : body;
 			break;
 		case body:
 			outputBuf.clear();
 			outputBuf = response.body;
-			state = complete;
+			state.step = complete;
 			break;
 		case resource:
+		{
 			outputBuf.clear();
-			if (reader->readChunk(outputBuf) == 0)
-				state = complete;
+			size_t const bytes_read =
+				reader->read(outputBuf, response.contentLength - state.totalBytesRead);
+
+			if (bytes_read == 0 && state.totalBytesRead < response.contentLength)
+			{
+				// TODO: a vori avec luca si il catch les throw et deconnecte le client
+				// throw ;
+			}
+			if (state.totalBytesRead + bytes_read == response.contentLength)
+				state.step = complete;
+
+			state.totalBytesRead += bytes_read;
 			break;
+		}
 		default:
 			break;
 	}
-	return (state);
+	return (state.step);
 }
 
 } // namespace response

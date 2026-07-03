@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 16:00:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 22:26:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ std::string const &TempWriter::getTempFilePath(void) const { return (_tempFilePa
 
 bool TempWriter::exists(void) const { return (_fd >= 0); }
 
-std::size_t TempWriter::write(std::vector<char> const &buf)
+std::size_t TempWriter::write(std::vector<char> const &buf, std::size_t const size)
 {
 	if (_fd < 0)
 		generateUniqueTempFile();
 
-	ssize_t bytes_written = ::write(_fd, &buf[0], buf.size());
+	ssize_t bytes_written = ::write(_fd, &buf[0], size);
 	if (bytes_written < 0)
 		throw Exception(Exception::fileWriteFailed);
 
