@@ -114,7 +114,7 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 NAME = webserv
 
 CC = c++
-CFLAGS = -Wall -Wextra -MMD -MP -std=c++98
+CFLAGS = -Wall -Wextra -MMD -MP -std=c++98 -g3
 IFLAGS = -I $(INC_DIR)
 MAKE = @make --no-print-directory -j
 

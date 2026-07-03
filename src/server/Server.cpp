@@ -105,6 +105,14 @@ std::string Server::resolvePhysicalPath(
 	return resUri;
 }
 
+std::string Server::resolvePhysicalPath(std::string const &uri) const
+{
+	std::string resUri = uri;
+	resUri.replace(0, 1, m_root);
+
+	return resUri;
+}
+
 app::SystemResourceInfo setSRI(std::string const &path)
 {
 	app::SystemResourceInfo sri;
@@ -179,6 +187,14 @@ app::SystemResourceInfo Server::locateDefaultIndex(
 		}
 	}
 	return setSRI(resPath + indexesId[0]);
+}
+
+app::SystemResourceInfo Server::locateErrorPage(std::string const &uri) const
+{
+	app::SystemResourceInfo sri;
+
+	sri = setSRI(resolvePhysicalPath(uri));
+	return sri;
 }
 
 std::string Server::getHttpVersion(void) const { return ("HTTP/1.0"); }

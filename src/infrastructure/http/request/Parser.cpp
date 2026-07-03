@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 03:41:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 02:09:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,7 +392,8 @@ void Parser::validateHeaderCount(std::size_t count)
 		throw Exception(Exception::headerCountTooLarge);
 }
 
-Parser::State::State(void) : step(start), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
+Parser::State::State(void)
+	: step(start), request(), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
 {}
 
 void Parser::State::reset(void)

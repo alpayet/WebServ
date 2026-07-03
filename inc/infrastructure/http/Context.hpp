@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 06:28:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 05:21:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/Sender.hpp"
 #include <vector>
-
-namespace app {
-class IResourceReader;
-} // namespace app
 
 namespace http {
 class Context

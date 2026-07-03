@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:34:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 06:09:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace http {
 
 class Router;
 class IErrorPagesProvider;
+class IErrorPageLocator;
 
 class Handler : public ITransfertHandler
 {
@@ -51,6 +52,10 @@ class Handler : public ITransfertHandler
 	Router				&_router;
 	response::Sender	&_sender;
 	IErrorPagesProvider &_errorPagesProvider;
+
+	void prepareDirectResponse(
+		unsigned short const statusCode, Response &response, app::IResourceReader **reader
+	);
 };
 } // namespace http
 

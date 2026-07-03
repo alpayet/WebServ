@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:21:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/03 06:06:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@
 #include <string>
 #include <vector>
 
+namespace app {
+struct SystemResourceInfo;
+} // namespace app
+
 namespace http {
+
+class IErrorPagesProvider;
+
 class Response
 {
   public:
@@ -32,16 +39,19 @@ class Response
 	};
 
   public:
+	Response(void);
+
 	unsigned short		statusCode;
 	std::vector<Header> headers;
 	std::vector<char>	body;
 
 	void reset(void);
 
-	template <typename ExceptionErrorCode>
-	static Response buildError(ExceptionErrorCode const errorCode);
+	static Response buildErrorPage(
+		unsigned short const StatusErrorCode, app::SystemResourceInfo const &errorPageInfo
+	);
 
-	static Response buildFixed(unsigned short const statusCode);
+	static Response buildDefault(unsigned short const statusCode);
 };
 
 class Response::Builder
@@ -58,7 +68,5 @@ class Response::Builder
 	Response _response;
 };
 } // namespace http
-
-#include "Response.tpp"
 
 #endif // HTTPRESPONSE_HPP

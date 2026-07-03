@@ -2,9 +2,9 @@
 #define SERVER_HPP
 
 #include "application/ports/IResourceLocator.hpp"
-#include "infrastructure/http/IErrorPagesProvider.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
+#include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
 #include "infrastructure/http/request/IRequestValidationPolicy.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
 #include <map>
@@ -74,6 +74,7 @@ class Server : public app::IResourceLocator,
 	std::string resolvePhysicalPath(
 		std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 	) const;
+	std::string				 resolvePhysicalPath(std::string const &uri) const;
 	Location				 findLocationFromUri(std::string const &uri) const;
 	virtual std::string		 getHttpVersion(void) const;
 	virtual std::size_t		 getMaxRequestLineSize(void) const;
@@ -93,6 +94,7 @@ class Server : public app::IResourceLocator,
 		std::string const			   &matchedRoute,
 		std::string const			   &rootPath
 	) const;
+	virtual app::SystemResourceInfo locateErrorPage(std::string const &uri) const;
 
 	virtual http::RoutePolicy match(std::string const &uri) const;
 
