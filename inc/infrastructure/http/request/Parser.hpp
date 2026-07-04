@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 05:25:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 03:02:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,15 @@ class Parser
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,
 		std::vector<char>::const_iterator itLineEnd,
-		State							 &state
+		Request::StartLine				 &startLine
 	);
 	void parseHeaderLine(
-		std::vector<char>::const_iterator itStart,
-		std::vector<char>::const_iterator itLineEnd,
-		State							 &state
+		std::vector<char>::const_iterator	itStart,
+		std::vector<char>::const_iterator	itLineEnd,
+		std::map<std::string, std::string> &headers
 	);
-	void parseContentLength(State &state);
-	void parseBody(std::vector<char> const &inputBuf, State &state);
+	void parseContentLength(Request &request);
+	void parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
 
 	std::string extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
@@ -96,7 +96,8 @@ class Parser
 	void extractTargetandQuery(
 		std::vector<char>::const_iterator &it,
 		std::vector<char>::const_iterator  itLineEnd,
-		State							  &state
+		std::string						  &target,
+		std::string						  &query
 	);
 	std::string extractProtocol(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

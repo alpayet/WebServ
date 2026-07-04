@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceReader.hpp                                :+:      :+:    :+:   */
+/*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 02:16:23 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/04 04:36:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCEREADER_HPP
-#define IRESOURCEREADER_HPP
+#include "cgi/Parser.hpp"
 
-#include <vector>
+namespace cgi {
+Parser::State::State(void) : step(header), response() {}
 
-namespace app {
-class IResourceReader
+void Parser::State::reset(void)
 {
-  public:
-	virtual ~IResourceReader(void) {}
+	step = header;
+	response.reset();
+}
 
-	virtual std::size_t read(std::vector<char> &buf, std::size_t const size) = 0;
-	virtual std::size_t readChunk(std::vector<char> &buf) = 0;
-};
-} // namespace app
+Parser::Step cgi::Parser::parse(std::vector<char> &inputBuf, cgi::Parser::State &state)
+{
+	switch (state.step)
+	{
+		case header:
+			/* code */
+			break;
+		case body:
+			/* code */
+			break;
 
-#endif // IRESOURCEREADER_HPP
+		default:
+			break;
+	}
+}
+} // namespace cgi

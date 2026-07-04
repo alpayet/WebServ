@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 23:07:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 03:04:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					can_continue = false;
 					break;
 				}
-				parseRequestLine(it_start, it_line_end, state);
+				parseRequestLine(it_start, it_line_end, state.request.startLine);
 				inputBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				state.step = Parser::header;
@@ -175,7 +175,8 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				validateHeaderCount(state.currentHeaderCount);
 				if (it_start == it_line_end)
 				{
-					if (state.request.contentLength != 0 && expectsBody(state.request.method))
+					if (state.request.contentLength != 0 &&
+						expectsBody(state.request.startLine.method))
 					{
 						inputBuf.erase(it_start, it_start + sizeof(CRLF) - 1);
 						state.step = Parser::body;
@@ -188,15 +189,15 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 						break;
 					}
 				}
-				parseHeaderLine(it_start, it_line_end, state);
-				parseContentLength(state);
+				parseHeaderLine(it_start, it_line_end, state.request.headers);
+				parseContentLength(state.request);
 				inputBuf.erase(it_start, it_line_end + sizeof(CRLF) - 1);
 				state.currenLineSize = 0;
 				break;
 			}
 			case Parser::body:
 			{
-				parseBody(inputBuf, state);
+				parseBody(inputBuf, state.request, state.bodyBytesRead);
 				inputBuf.clear();
 				if (state.bodyBytesRead == state.request.contentLength)
 				{
@@ -215,7 +216,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 void Parser::parseRequestLine(
 	std::vector<char>::const_iterator itStart,
 	std::vector<char>::const_iterator itLineEnd,
-	State							 &state
+	Request::StartLine				 &startLine
 )
 {
 	if (hasLineBreak(itStart, itLineEnd))
@@ -223,18 +224,18 @@ void Parser::parseRequestLine(
 
 	std::vector<char>::const_iterator it = itStart;
 
-	state.request.method = extractMethod(it, itLineEnd);
-	extractTargetandQuery(it, itLineEnd, state);
-	state.request.protocol = extractProtocol(it, itLineEnd);
+	startLine.method = extractMethod(it, itLineEnd);
+	extractTargetandQuery(it, itLineEnd, startLine.target, startLine.query);
+	startLine.protocol = extractProtocol(it, itLineEnd);
 
 	if (std::find_if(it, itLineEnd, is_not_white_spaces) != itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 }
 
 void Parser::parseHeaderLine(
-	std::vector<char>::const_iterator itStart,
-	std::vector<char>::const_iterator itLineEnd,
-	State							 &state
+	std::vector<char>::const_iterator	itStart,
+	std::vector<char>::const_iterator	itLineEnd,
+	std::map<std::string, std::string> &headers
 )
 {
 	if (hasLineBreak(itStart, itLineEnd))
@@ -255,17 +256,17 @@ void Parser::parseHeaderLine(
 	std::string value(it_colon + 1, itLineEnd);
 	trim(value, WHITE_SPACES);
 
-	state.request.headers[key] = value;
+	headers[key] = value;
 }
 
-void Parser::parseContentLength(State &state)
+void Parser::parseContentLength(Request &request)
 {
 	std::map<std::string, std::string>::const_iterator it =
-		state.request.headers.find(header::LOWER_CONTENT_LENGTH);
+		request.headers.find(header::LOWER_CONTENT_LENGTH);
 
-	if (it == state.request.headers.end())
+	if (it == request.headers.end())
 	{
-		if (expectsBody(state.request.method))
+		if (expectsBody(request.startLine.method))
 			throw Exception(Exception::contentLengthRequired);
 		return;
 	}
@@ -282,21 +283,23 @@ void Parser::parseContentLength(State &state)
 		throw Exception(Exception::contentLengthInvalid);
 	if (val > _maxBodySize)
 		throw Exception(Exception::bodyTooLarge);
-	state.request.contentLength = static_cast<size_t>(val);
+	request.contentLength = static_cast<size_t>(val);
 }
 
-void Parser::parseBody(std::vector<char> const &inputBuf, State &state)
+void Parser::parseBody(
+	std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead
+)
 {
-	if (state.bodyBytesRead + inputBuf.size() > _maxBodySize)
+	if (bodyBytesRead + inputBuf.size() > _maxBodySize)
 		throw Exception(Exception::bodyTooLarge);
 
-	if (state.bodyBytesRead + inputBuf.size() > state.request.contentLength)
+	if (bodyBytesRead + inputBuf.size() > request.contentLength)
 	{
-		state.request.body.append(inputBuf, state.request.contentLength - state.bodyBytesRead);
-		state.bodyBytesRead = state.request.contentLength;
+		request.body.append(inputBuf, request.contentLength - bodyBytesRead);
+		bodyBytesRead = request.contentLength;
 	}
 	else
-		state.bodyBytesRead += state.request.body.append(inputBuf);
+		bodyBytesRead += request.body.append(inputBuf);
 }
 
 std::string Parser::extractMethod(
@@ -317,7 +320,10 @@ std::string Parser::extractMethod(
 }
 
 void Parser::extractTargetandQuery(
-	std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd, State &state
+	std::vector<char>::const_iterator &it,
+	std::vector<char>::const_iterator  itLineEnd,
+	std::string						  &target,
+	std::string						  &query
 )
 {
 	std::vector<char>::const_iterator it_target_start =
@@ -338,11 +344,11 @@ void Parser::extractTargetandQuery(
 
 	if (it_query != it_target_end)
 	{
-		state.request.target = std::string(it_target_start, it_query);
-		state.request.query = std::string(it_query + 1, it_target_end);
+		target = std::string(it_target_start, it_query);
+		query = std::string(it_query + 1, it_target_end);
 	}
 	else
-		state.request.target = std::string(it_target_start, it_target_end);
+		target = std::string(it_target_start, it_target_end);
 
 	it = it_target_end;
 }

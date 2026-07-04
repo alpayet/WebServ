@@ -1,52 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 02:44:51 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/04 04:44:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPREQUEST_HPP
-#define HTTPREQUEST_HPP
+#ifndef CGIRESPONSE_HPP
+#define CGIRESPONSE_HPP
 
-#include "BodyFile.hpp"
 #include <map>
 #include <string>
 
-namespace http {
-
-class Request
+namespace cgi {
+class Response
 {
   public:
-	class StartLine
+	class StatusLine
 	{
 	  public:
-		std::string method;
-		std::string target;
-		std::string query;
-		std::string protocol;
+		StatusLine(void);
+
+		unsigned short statusCode;
+		std::string	   reason;
+		bool		   exists;
+
+		static unsigned short const DEFAULT_STATUS_CODE;
+		static char const			REASON[];
 
 		void reset(void);
 	};
 
   public:
-	Request(void);
+	Response(void);
 
-	StartLine						   startLine;
+	StatusLine						   statusLine;
 	std::map<std::string, std::string> headers;
 	std::size_t						   contentLength;
-	request::BodyFile				   body;
 
 	void reset(void);
 
   private:
-	Request(Request const &src);
-	Request &operator=(Request const &rhs);
+	Response(Response const &src);
+	Response &operator=(Response const &rhs);
 };
-} // namespace http
+} // namespace cgi
 
-#endif // HTTPREQUEST_HPP
+#endif // CGIRESPONSE_HPP

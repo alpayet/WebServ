@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 21:02:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 02:10:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace http {
 
-Response::Response(void) : statusCode(0), headers(), contentLength(0), body() {}
+Response::Response(void) : statusCode(200), headers(), contentLength(0), body() {}
 
 Response Response::buildErrorPage(
 	unsigned short const StatusErrorCode, app::SystemResourceInfo const &errorPageInfo

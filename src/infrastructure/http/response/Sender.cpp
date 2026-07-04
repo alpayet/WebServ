@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 23:31:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 04:32:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 namespace http {
 namespace response {
 
-Sender::State::State(void) : step(HeaderBlock), totalBytesRead(0) {}
+Sender::State::State(void) : step(HeaderBlock), totalBytesRead(0), cgiBuf() {}
 
 Sender::Sender(IHttpVersionProvider &httpVersionProvider)
 	: _httpVersionProvider(httpVersionProvider)
@@ -29,6 +29,7 @@ void Sender::State::reset(void)
 {
 	step = HeaderBlock;
 	totalBytesRead = 0;
+	cgiBuf.clear();
 }
 
 Sender::Step Sender::produce(
@@ -69,6 +70,7 @@ Sender::Step Sender::produce(
 			state.totalBytesRead += bytes_read;
 			break;
 		}
+		case cgi:
 		default:
 			break;
 	}

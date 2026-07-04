@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 23:20:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 03:11:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy 
 	std::string bodyPath;
 	if (request.body.exists())
 		bodyPath = request.body.getPath();
-	if (request.contentLength > _limitsProvider.getMaxBodySize(request.target))
+	if (request.contentLength > _limitsProvider.getMaxBodySize(request.startLine.target))
 		throw Exception(Exception::bodyTooLarge);
 	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
 
@@ -56,9 +56,9 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 {
 	std::map<std::string, std::string> metaVariable;
 
-	metaVariable[cgiMeta::REQUEST_METHOD] = request.method;
-	if (!request.query.empty())
-		metaVariable[cgiMeta::QUERY_STRING] = request.query;
+	metaVariable[cgiMeta::REQUEST_METHOD] = request.startLine.method;
+	if (!request.startLine.query.empty())
+		metaVariable[cgiMeta::QUERY_STRING] = request.startLine.query;
 
 	std::map<std::string, std::string>::const_iterator content_length_it =
 		request.headers.find(header::LOWER_CONTENT_LENGTH);

@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IResourceReader.hpp                                :+:      :+:    :+:   */
+/*   constants.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 02:16:23 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/04 03:45:16 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/04 03:45:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IRESOURCEREADER_HPP
-#define IRESOURCEREADER_HPP
-
-#include <vector>
-
-namespace app {
-class IResourceReader
-{
-  public:
-	virtual ~IResourceReader(void) {}
-
-	virtual std::size_t read(std::vector<char> &buf, std::size_t const size) = 0;
-	virtual std::size_t readChunk(std::vector<char> &buf) = 0;
-};
-} // namespace app
-
-#endif // IRESOURCEREADER_HPP
+namespace cgi {
+extern char const CONTENT_LENGTH[];
+extern char const CONTENT_TYPE[];
+extern char const REQUEST_METHOD[];
+extern char const QUERY_STRING[];
+} // namespace cgi

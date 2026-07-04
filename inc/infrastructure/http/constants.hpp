@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 21:09:41 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 00:49:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 03:46:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ extern char const LOWER_CONTENT_LENGTH[];
 extern char const CONTENT_TYPE[];
 extern char const LOWER_CONTENT_TYPE[];
 } // namespace header
-
-namespace cgiMeta {
-extern char const CONTENT_LENGTH[];
-extern char const CONTENT_TYPE[];
-extern char const REQUEST_METHOD[];
-extern char const QUERY_STRING[];
-} // namespace cgiMeta
 
 } // namespace http
 

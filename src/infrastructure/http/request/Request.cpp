@@ -6,22 +6,27 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 02:10:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 02:47:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/Request.hpp"
 
 namespace http {
-Request::Request() : headers(), method(), target(), protocol(), query(), contentLength(0), body() {}
+
+void Request::StartLine::reset(void)
+{
+	method.clear();
+	target.clear();
+	query.clear();
+	protocol.clear();
+}
+Request::Request() : headers(), contentLength(0), body() {}
 
 void Request::reset(void)
 {
+	startLine.reset();
 	headers.clear();
-	method.clear();
-	target.clear();
-	protocol.clear();
-	query.clear();
 	contentLength = 0;
 	body.reset();
 }
