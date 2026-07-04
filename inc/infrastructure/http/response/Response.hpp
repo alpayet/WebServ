@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 20:38:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:30:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ class Response
 
 	void reset(void);
 
-	static Response buildErrorPage(
-		unsigned short const StatusErrorCode, app::SystemResourceInfo const &errorPageInfo
-	);
+	static Response
+	buildErrorPage(unsigned short StatusErrorCode, app::SystemResourceInfo const &errorPageInfo);
 
-	static Response buildDefault(unsigned short const statusCode);
+	static Response buildDefault(unsigned short statusCode);
 };
 
 class Response::Builder

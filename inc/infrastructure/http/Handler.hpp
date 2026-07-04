@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 06:09:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:29:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ class Handler : public ITransfertHandler
 
 	virtual void prepareContext(unsigned int id);
 
-	virtual void push(unsigned int id, std::vector<char> const &inputBuf);
+	virtual ProcessingStatus pushRequest(unsigned int id, std::vector<char> const &inputBuf);
+	virtual ProcessingStatus pushStream(unsigned int id, std::vector<char> const &streamBuf);
 
 	virtual std::vector<char> const &pull(unsigned int id);
 
-	virtual bool isRequestComplete(unsigned int id);
 	virtual bool isResponseComplete(unsigned int id);
 
   private:
@@ -54,7 +54,7 @@ class Handler : public ITransfertHandler
 	IErrorPagesProvider &_errorPagesProvider;
 
 	void prepareDirectResponse(
-		unsigned short const statusCode, Response &response, app::IResourceReader **reader
+		unsigned short statusCode, Response &response, app::IResourceReader **reader
 	);
 };
 } // namespace http

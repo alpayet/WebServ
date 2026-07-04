@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 00:51:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:33:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // TODO: int ou unsigned short pour statusCode
 namespace http {
-char const *generateDefaultBody(unsigned short const statusCode)
+char const *generateDefaultBody(unsigned short statusCode)
 {
 	switch (statusCode)
 	{

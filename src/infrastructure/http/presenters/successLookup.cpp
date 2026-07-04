@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 22:34:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:31:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <cstdlib>
 
 namespace http {
-unsigned short toStatusCode(app::ResourceStatus const status)
+unsigned short toStatusCode(app::ResourceStatus status)
 {
 	switch (status)
 	{

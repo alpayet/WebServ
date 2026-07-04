@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 00:41:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:31:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,10 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 	ViewModel const &getViewModel(void) const;
 
 	virtual void presentStaticContent(
-		app::ResourceStatus const status,
-		std::size_t const		  resourceSize,
-		app::IResourceReader	 *resourceReader
+		app::ResourceStatus status, std::size_t resourceSize, app::IResourceReader *resourceReader
 	);
 	virtual void presentListing(
-		app::ResourceStatus const				 status,
+		app::ResourceStatus						 status,
 		std::string const						&id,
 		std::vector<app::CollectionEntry> const &collectionData
 	);

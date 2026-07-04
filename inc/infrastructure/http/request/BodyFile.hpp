@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 17:29:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 22:27:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:31:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class BodyFile
 	BodyFile(void);
 
 	std::size_t append(std::vector<char> const &data);
-	std::size_t append(std::vector<char> const &data, std::size_t const size);
+	std::size_t append(std::vector<char> const &data, std::size_t size);
 
 	std::string const &getPath(void) const;
 	bool			   exists(void) const;

@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 20:16:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:59:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPCONTEXT_HPP
 #define HTTPCONTEXT_HPP
 
+#include "cgi/Parser.hpp"
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/Sender.hpp"
@@ -29,13 +30,26 @@ class Context
 
 		std::vector<char>	   buf;
 		request::Parser::State state;
-		bool				   isRequestComplete;
 
 		void reset(void);
 
 	  private:
 		Input(Input const &src);
 		Input &operator=(Input const &rhs);
+	};
+	class Stream
+	{
+	  public:
+		Stream(void);
+
+		std::vector<char>  buf;
+		cgi::Parser::State state;
+
+		void reset(void);
+
+	  private:
+		Stream(Stream const &src);
+		Stream &operator=(Stream const &rhs);
 	};
 	class Output
 	{
@@ -60,6 +74,7 @@ class Context
 	Context(void) {}
 
 	Input  input;
+	Stream stream;
 	Output output;
 
 	void reset(void);

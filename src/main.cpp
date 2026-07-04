@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
 			tranfer.prepareContext(0);
 
-			tranfer.push(0, input_buf);
+			tranfer.pushRequest(0, input_buf);
 
 			while (!tranfer.isResponseComplete(0))
 			{

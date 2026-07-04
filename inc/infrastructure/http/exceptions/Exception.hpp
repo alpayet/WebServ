@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:09:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:33:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ class Exception : public std::exception
 	};
 
   public:
-	Exception(std::string const &message, ErrorCode const internalCode) throw();
-	Exception(ErrorCode const internalCode) throw();
+	Exception(std::string const &message, ErrorCode internalCode) throw();
+	Exception(ErrorCode internalCode) throw();
 
 	virtual ~Exception(void) throw() {}
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 04:32:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 23:17:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ Handler::Handler(
 
 void Handler::prepareContext(unsigned int id) { _contexts[id].reset(); }
 
-void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
+ITransfertHandler::ProcessingStatus
+Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf)
 {
 	try
 	{
@@ -49,8 +50,9 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 		if (_parser.parse(context_input.buf, context_input.state) == request::Parser::complete)
 		{
 			_router.route(_contexts[id]);
-			context_input.isRequestComplete = true;
+			return (ITransfertHandler::complete);
 		}
+		return (ITransfertHandler::needMoreData);
 	}
 	catch (http::ReturnException const &e)
 	{
@@ -58,7 +60,7 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(e.getStatusCode(), context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
 	catch (http::Exception const &e)
 	{
@@ -67,7 +69,7 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
 	catch (fileSystem::Exception const &e)
 	{
@@ -76,7 +78,7 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
 	catch (app::Exception const &e)
 	{
@@ -85,7 +87,7 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
 	catch (domain::Exception const &e)
 	{
@@ -94,7 +96,7 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
 	catch (...)
 	{
@@ -102,8 +104,22 @@ void Handler::push(unsigned int id, std::vector<char> const &inputBuf)
 
 		prepareDirectResponse(500, context_output.response, &context_output.reader);
 
-		_contexts[id].input.isRequestComplete = true;
+		return (ITransfertHandler::complete);
 	}
+}
+
+ITransfertHandler::ProcessingStatus
+Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf)
+{
+	Context::Stream &context_stream = _contexts[id].stream;
+
+	context_stream.buf.insert(context_stream.buf.end(), streamBuf.begin(), streamBuf.end());
+
+	if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
+	{
+		// TODO: a finir
+	}
+	return (ITransfertHandler::needMoreData);
 }
 
 std::vector<char> const &Handler::pull(unsigned int id)
@@ -119,15 +135,13 @@ std::vector<char> const &Handler::pull(unsigned int id)
 	return (context_output.buf);
 }
 
-bool Handler::isRequestComplete(unsigned int id) { return (_contexts[id].input.isRequestComplete); }
-
 bool Handler::isResponseComplete(unsigned int id)
 {
 	return (_contexts[id].output.isResponseComplete);
 }
 
 void Handler::prepareDirectResponse(
-	unsigned short const statusCode, Response &response, app::IResourceReader **reader
+	unsigned short statusCode, Response &response, app::IResourceReader **reader
 )
 {
 	std::map<int, std::string> const &error_pages = _errorPagesProvider.getErrPages();

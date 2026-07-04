@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 21:12:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:32:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class DeleteStaticResourcePresenter : public app::useCase::DeleteStaticResource:
 
 	ViewModel const &getViewModel(void) const;
 
-	virtual void presentDeletedResource(app::ResourceStatus const status);
+	virtual void presentDeletedResource(app::ResourceStatus status);
 
   private:
 	DeleteStaticResourcePresenter(DeleteStaticResourcePresenter const &src);

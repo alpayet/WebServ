@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 02:10:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:30:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace http {
 Response::Response(void) : statusCode(200), headers(), contentLength(0), body() {}
 
 Response Response::buildErrorPage(
-	unsigned short const StatusErrorCode, app::SystemResourceInfo const &errorPageInfo
+	unsigned short StatusErrorCode, app::SystemResourceInfo const &errorPageInfo
 )
 {
 	Response::Builder builder;
@@ -32,7 +32,7 @@ Response Response::buildErrorPage(
 	return (builder.build());
 }
 
-Response Response::buildDefault(unsigned short const statusCode)
+Response Response::buildDefault(unsigned short statusCode)
 {
 	char const		 *default_body = generateDefaultBody(statusCode);
 	Response::Builder builder;

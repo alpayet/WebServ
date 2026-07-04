@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 00:22:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:33:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/exceptions/errorLookup.hpp"
 
 namespace http {
-unsigned short toStatusCode(Exception::ErrorCode const errorCode)
+unsigned short toStatusCode(Exception::ErrorCode errorCode)
 {
 	switch (errorCode)
 	{
@@ -52,7 +52,7 @@ unsigned short toStatusCode(Exception::ErrorCode const errorCode)
 	}
 }
 
-unsigned short toStatusCode(fileSystem::Exception::ErrorCode const errorCode)
+unsigned short toStatusCode(fileSystem::Exception::ErrorCode errorCode)
 {
 	(void)errorCode;
 	return (500);
@@ -77,7 +77,7 @@ unsigned short toStatusCode(app::Exception::ErrorCode errorCode)
 	}
 }
 
-unsigned short toStatusCode(domain::Exception::ErrorCode const errorCode)
+unsigned short toStatusCode(domain::Exception::ErrorCode errorCode)
 {
 	switch (errorCode)
 	{

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 02:03:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/02 02:17:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:32:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ namespace http {
 class ReturnException : public std::exception
 {
   public:
-	ReturnException(std::string const &message, int const statusCode) throw();
-	ReturnException(int const statusCode) throw();
+	ReturnException(std::string const &message, int statusCode) throw();
+	ReturnException(int statusCode) throw();
 
 	virtual ~ReturnException(void) throw() {}
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 08:00:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:35:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 namespace domain {
 ResourceMetaData::ResourceMetaData(
-	std::string const		 &resourcePath,
-	ResourceType const		  type,
-	ResourcePermissions const permissions,
-	std::size_t const		  resourceSize,
-	bool const				  canBeDeleted
+	std::string const  &resourcePath,
+	ResourceType		type,
+	ResourcePermissions permissions,
+	std::size_t			resourceSize,
+	bool				canBeDeleted
 )
 	: _permissions(permissions), _resourceSize(resourceSize), _canBeDeleted(canBeDeleted)
 {

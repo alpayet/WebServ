@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:57:56 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 22:34:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:32:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ DeleteStaticResourcePresenter::getViewModel(void) const
 	return (_viewModel);
 }
 
-void DeleteStaticResourcePresenter::presentDeletedResource(app::ResourceStatus const status)
+void DeleteStaticResourcePresenter::presentDeletedResource(app::ResourceStatus status)
 {
 	Response::Builder response_builder;
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 23:31:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:32:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ ServeStaticResourcePresenter::getViewModel(void) const
 }
 
 void ServeStaticResourcePresenter::presentStaticContent(
-	app::ResourceStatus const status,
-	std::size_t const		  resourceSize,
-	app::IResourceReader	 *resourceReader
+	app::ResourceStatus status, std::size_t resourceSize, app::IResourceReader *resourceReader
 )
 {
 	Response::Builder builder;
@@ -40,7 +38,7 @@ void ServeStaticResourcePresenter::presentStaticContent(
 }
 
 void ServeStaticResourcePresenter::presentListing(
-	app::ResourceStatus const				 status,
+	app::ResourceStatus						 status,
 	std::string const						&id,
 	std::vector<app::CollectionEntry> const &collectionData
 )

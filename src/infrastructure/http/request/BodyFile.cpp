@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 23:51:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 22:27:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:31:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ std::size_t BodyFile::append(std::vector<char> const &data)
 	return (_writer.write(data, data.size()));
 }
 
-std::size_t BodyFile::append(std::vector<char> const &data, std::size_t const size)
+std::size_t BodyFile::append(std::vector<char> const &data, std::size_t size)
 {
 	return (_writer.write(data, size));
 }

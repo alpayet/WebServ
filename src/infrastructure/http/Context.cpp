@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:05:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 20:21:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:59:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 #include "application/ports/IResourceReader.hpp"
 
 namespace http {
-
-void Context::reset(void)
-{
-	input.reset();
-	output.reset();
-}
-
-Context::Input::Input(void) : buf(), state(), isRequestComplete(false) {}
+Context::Input::Input(void) : buf(), state() {}
 
 void Context::Input::reset(void)
 {
 	buf.clear();
 	state.reset();
-	isRequestComplete = false;
+}
+
+Context::Stream::Stream(void) : buf(), state() {}
+
+void Context::Stream::reset(void)
+{
+	buf.clear();
+	state.reset();
 }
 
 Context::Output::Output(void) : buf(), state(), response(), reader(NULL), isResponseComplete(false)
@@ -43,6 +43,13 @@ void Context::Output::reset(void)
 	delete reader;
 	reader = NULL;
 	isResponseComplete = false;
+}
+
+void Context::reset(void)
+{
+	input.reset();
+	stream.reset();
+	output.reset();
 }
 
 } // namespace http
