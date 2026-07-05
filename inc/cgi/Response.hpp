@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 04:44:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/05 01:48:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ namespace cgi {
 class Response
 {
   public:
+	enum Type
+	{
+		document,
+		localRedir,
+		clientRedir,
+		clientRedirDoc
+	};
+
 	class StatusLine
 	{
 	  public:
@@ -40,7 +48,9 @@ class Response
 
 	StatusLine						   statusLine;
 	std::map<std::string, std::string> headers;
+	std::string						   location;
 	std::size_t						   contentLength;
+	Type							   type;
 
 	void reset(void);
 

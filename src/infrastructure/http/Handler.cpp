@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 23:17:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/05 06:26:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,19 @@ Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf)
 	}
 	catch (http::Exception const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
-		unsigned short	 statusCode = toStatusCode(e.getErrorCode());
-
-		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
-
-		return (ITransfertHandler::complete);
+		return (handleError(id, e));
 	}
 	catch (fileSystem::Exception const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
-		unsigned short	 statusCode = toStatusCode(e.getErrorCode());
-
-		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
-
-		return (ITransfertHandler::complete);
+		return (handleError(id, e));
 	}
 	catch (app::Exception const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
-		unsigned short	 statusCode = toStatusCode(e.getErrorCode());
-
-		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
-
-		return (ITransfertHandler::complete);
+		return (handleError(id, e));
 	}
 	catch (domain::Exception const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
-		unsigned short	 statusCode = toStatusCode(e.getErrorCode());
-
-		prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
-
-		return (ITransfertHandler::complete);
+		return (handleError(id, e));
 	}
 	catch (...)
 	{
@@ -117,7 +97,16 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf)
 
 	if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
 	{
-		// TODO: a finir
+		// TODO a fini
+		if (context_stream.state.response.type == cgi::Response::localRedir)
+		{
+			context_stream.reset();
+			_contexts[id].output.reset();
+			_contexts[id].input.state.request.startLine.target =
+				context_stream.state.response.location;
+			_router.route(_contexts[id]);
+		}
+		return (ITransfertHandler::complete);
 	}
 	return (ITransfertHandler::needMoreData);
 }
@@ -131,6 +120,7 @@ std::vector<char> const &Handler::pull(unsigned int id)
 			context_output.buf, context_output.response, context_output.reader, context_output.state
 		) == response::Sender::complete)
 		context_output.isResponseComplete = true;
+	// TODO: ne pas oubleir de reset le contexte ici
 
 	return (context_output.buf);
 }
@@ -139,6 +129,8 @@ bool Handler::isResponseComplete(unsigned int id)
 {
 	return (_contexts[id].output.isResponseComplete);
 }
+
+void Handler::reset(unsigned int id) { _contexts[id].reset(); }
 
 void Handler::prepareDirectResponse(
 	unsigned short statusCode, Response &response, app::IResourceReader **reader

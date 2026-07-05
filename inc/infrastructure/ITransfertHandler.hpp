@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:19:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/05 06:15:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ class ITransfertHandler
 	enum ProcessingStatus
 	{
 		needMoreData,
-		complete,
-		monitorStream
+		complete
 	};
 
   public:
@@ -35,9 +34,9 @@ class ITransfertHandler
 
 	virtual std::vector<char> const &pull(unsigned int id) = 0;
 
-	virtual int getStreamFd(unsigned int id);
-
 	virtual bool isResponseComplete(unsigned int id) = 0;
+
+	virtual void reset(unsigned int id) = 0;
 };
 
 #endif // ITRANSFERTHANDLER_HPP

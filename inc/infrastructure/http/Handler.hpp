@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:29:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/05 06:12:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ class Handler : public ITransfertHandler
 
 	virtual bool isResponseComplete(unsigned int id);
 
+	virtual void reset(unsigned int id);
+
   private:
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
@@ -56,7 +58,12 @@ class Handler : public ITransfertHandler
 	void prepareDirectResponse(
 		unsigned short statusCode, Response &response, app::IResourceReader **reader
 	);
+
+	template <typename ExceptionType>
+	ITransfertHandler::ProcessingStatus handleError(int id, ExceptionType const &e);
 };
 } // namespace http
+
+#include "Handler.tpp"
 
 #endif // HTTPHANDLER_HPP
