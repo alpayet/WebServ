@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 01:48:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 00:39:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class Response
 		bool		   exists;
 
 		static unsigned short const DEFAULT_STATUS_CODE;
-		static char const			REASON[];
+		static char const			DEFAULT_REASON[];
 
 		void reset(void);
 	};

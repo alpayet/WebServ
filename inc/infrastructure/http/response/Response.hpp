@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:30:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 00:51:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ class Response
 {
   public:
 	class Builder;
+
+	class StatusLine
+	{
+	  public:
+		StatusLine(void);
+
+		unsigned short statusCode;
+		std::string	   reason;
+
+		void reset(void);
+
+		static unsigned short const DEFAULT_STATUS_CODE;
+		static char const			DEFAULT_REASON[];
+	};
 	struct Header
 	{
 		std::string key;
@@ -41,7 +55,7 @@ class Response
   public:
 	Response(void);
 
-	unsigned short		statusCode;
+	StatusLine			statusLine;
 	std::vector<Header> headers;
 	std::size_t			contentLength;
 	std::vector<char>	body;
@@ -57,11 +71,13 @@ class Response
 class Response::Builder
 {
   public:
-	Builder	 &withStatusCode(unsigned short const statusCode);
-	Builder	 &withContentLength(std::size_t const contentLength);
+	Builder	 &withStatusCode(unsigned short statusCode);
+	Builder	 &withStatusReason(std::string const &reason);
+	Builder	 &withStatusLine(unsigned short statusCode);
+	Builder	 &withContentLength(std::size_t contentLength);
 	Builder	 &withContentLength(std::string const &contentLength);
 	Builder	 &withHeader(std::string const &key, std::string const &value);
-	Builder	 &withHeader(std::string const &key, std::size_t const value);
+	Builder	 &withHeader(std::string const &key, std::size_t value);
 	Builder	 &withBody(std::vector<char> const &body);
 	Builder	 &withBody(std::string const &body);
 	Builder	 &withBody(char const *body);

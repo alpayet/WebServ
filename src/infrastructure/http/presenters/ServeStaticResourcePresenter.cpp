@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:32:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 00:50:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void ServeStaticResourcePresenter::presentStaticContent(
 {
 	Response::Builder builder;
 
-	builder.withStatusCode(toStatusCode(status));
+	builder.withStatusLine(toStatusCode(status));
 	builder.withContentLength(resourceSize);
 
 	_viewModel.response = builder.build();
@@ -47,7 +47,7 @@ void ServeStaticResourcePresenter::presentListing(
 
 	Response::Builder builder;
 
-	builder.withStatusCode(toStatusCode(status));
+	builder.withStatusLine(toStatusCode(status));
 	builder.withContentLength(listing_html.size());
 	builder.withBody(listing_html);
 

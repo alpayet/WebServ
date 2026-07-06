@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 06:10:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 01:46:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ class Context
 
 		std::vector<char>  buf;
 		cgi::Parser::State state;
+		int				   localRedirDepth;
+
+		static int const MAX_LOCAL_REDIR_DEPTH = 10;
 
 		void reset(void);
 

@@ -6,27 +6,40 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/03 20:58:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 01:41:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/exceptions/errorLookup.hpp"
-#include "infrastructure/http/exceptions/generateDefaultBody.hpp"
 #include "infrastructure/http/response/Response.hpp"
+#include "infrastructure/http/response/generateDefaultBody.hpp"
+#include "infrastructure/http/response/statusReason.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 
 namespace http {
 
-Response::Builder &Response::Builder::withStatusCode(unsigned short const statusCode)
+Response::Builder &Response::Builder::withStatusCode(unsigned short statusCode)
 {
-	_response.statusCode = statusCode;
+	_response.statusLine.statusCode = statusCode;
 	return (*this);
 }
 
-Response::Builder &Response::Builder::withContentLength(std::size_t const contentLength)
+Response::Builder &Response::Builder::withStatusReason(std::string const &reason)
+{
+	_response.statusLine.reason = reason;
+	return (*this);
+}
+Response::Builder &Response::Builder::withStatusLine(unsigned short statusCode)
+{
+	withStatusCode(statusCode);
+	withStatusReason(getStatusReason(statusCode));
+	return (*this);
+}
+
+Response::Builder &Response::Builder::withContentLength(std::size_t contentLength)
 {
 	withHeader(header::CONTENT_LENGTH, contentLength);
 	_response.contentLength = contentLength;
@@ -49,7 +62,7 @@ Response::Builder &Response::Builder::withHeader(std::string const &key, std::st
 	return (*this);
 }
 
-Response::Builder &Response::Builder::withHeader(std::string const &key, std::size_t const value)
+Response::Builder &Response::Builder::withHeader(std::string const &key, std::size_t value)
 {
 	std::stringstream value_ss;
 	value_ss << value;

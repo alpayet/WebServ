@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:33:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 02:01:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ unsigned short toStatusCode(Exception::ErrorCode errorCode)
 			return (431);
 		case Exception::bodyTooLarge:
 			return (413);
+		case Exception::maxLocalRedirDepthExceeded:
+			return (500);
+		case Exception::timeOut:
+			return (408);
 		default:
 			return (500);
 	}
@@ -56,6 +60,17 @@ unsigned short toStatusCode(fileSystem::Exception::ErrorCode errorCode)
 {
 	(void)errorCode;
 	return (500);
+}
+
+unsigned short toStatusCode(cgi::Exception::ErrorCode errorCode)
+{
+	switch (errorCode)
+	{
+		case cgi::Exception::timeOut:
+			return (504);
+		default:
+			return (500);
+	}
 }
 
 unsigned short toStatusCode(app::Exception::ErrorCode errorCode)

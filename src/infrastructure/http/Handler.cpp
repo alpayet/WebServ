@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 06:26:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 02:06:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/Handler.hpp"
 #include "application/Exception.hpp"
+#include "cgi/Exception.hpp"
 #include "domain/Exception.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
@@ -39,10 +40,13 @@ Handler::Handler(
 void Handler::prepareContext(unsigned int id) { _contexts[id].reset(); }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf)
+Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus status)
 {
 	try
 	{
+		if (status == timeOut)
+			throw Exception(Exception::timeOut);
+
 		Context::Input &context_input = _contexts[id].input;
 
 		context_input.buf.insert(context_input.buf.end(), inputBuf.begin(), inputBuf.end());
@@ -89,26 +93,71 @@ Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf)
 }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf)
+Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus status)
 {
-	Context::Stream &context_stream = _contexts[id].stream;
-
-	context_stream.buf.insert(context_stream.buf.end(), streamBuf.begin(), streamBuf.end());
-
-	if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
+	try
 	{
-		// TODO a fini
-		if (context_stream.state.response.type == cgi::Response::localRedir)
+		if (status == timeOut)
+			throw cgi::Exception(cgi::Exception::timeOut);
+
+		Context::Stream &context_stream = _contexts[id].stream;
+
+		context_stream.buf.insert(context_stream.buf.end(), streamBuf.begin(), streamBuf.end());
+
+		if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
 		{
-			context_stream.reset();
-			_contexts[id].output.reset();
-			_contexts[id].input.state.request.startLine.target =
-				context_stream.state.response.location;
-			_router.route(_contexts[id]);
+			// TODO a fini
+			if (context_stream.state.response.type == cgi::Response::localRedir)
+			{
+				if (++context_stream.localRedirDepth > Context::Stream::MAX_LOCAL_REDIR_DEPTH)
+					throw Exception(Exception::maxLocalRedirDepthExceeded);
+
+				context_stream.reset();
+				_contexts[id].output.reset();
+				_contexts[id].input.state.request.startLine.target =
+					context_stream.state.response.location;
+				_router.route(_contexts[id]);
+			}
+			return (ITransfertHandler::complete);
 		}
+		return (ITransfertHandler::needMoreData);
+	}
+	catch (http::ReturnException const &e)
+	{
+		Context::Output &context_output = _contexts[id].output;
+
+		prepareDirectResponse(e.getStatusCode(), context_output.response, &context_output.reader);
+
 		return (ITransfertHandler::complete);
 	}
-	return (ITransfertHandler::needMoreData);
+	catch (http::Exception const &e)
+	{
+		return (handleError(id, e));
+	}
+	catch (fileSystem::Exception const &e)
+	{
+		return (handleError(id, e));
+	}
+	catch (cgi::Exception const &e)
+	{
+		return (handleError(id, e));
+	}
+	catch (app::Exception const &e)
+	{
+		return (handleError(id, e));
+	}
+	catch (domain::Exception const &e)
+	{
+		return (handleError(id, e));
+	}
+	catch (...)
+	{
+		Context::Output &context_output = _contexts[id].output;
+
+		prepareDirectResponse(500, context_output.response, &context_output.reader);
+
+		return (ITransfertHandler::complete);
+	}
 }
 
 std::vector<char> const &Handler::pull(unsigned int id)
@@ -120,7 +169,7 @@ std::vector<char> const &Handler::pull(unsigned int id)
 			context_output.buf, context_output.response, context_output.reader, context_output.state
 		) == response::Sender::complete)
 		context_output.isResponseComplete = true;
-	// TODO: ne pas oubleir de reset le contexte ici
+	// TODO: ne pas oubleir de reset le contexte ici / a voir avec luca si il reset
 
 	return (context_output.buf);
 }

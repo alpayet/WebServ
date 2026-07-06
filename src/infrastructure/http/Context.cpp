@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:05:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 06:11:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 01:45:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void Context::Input::reset(void)
 	state.reset();
 }
 
-Context::Stream::Stream(void) : buf(), state() {}
+Context::Stream::Stream(void) : buf(), state(), localRedirDepth(0) {}
 
 void Context::Stream::reset(void)
 {
 	buf.clear();
 	state.reset();
+	localRedirDepth = 0;
 }
 
 Context::Output::Output(void) : buf(), state(), response(), reader(NULL), isResponseComplete(false)

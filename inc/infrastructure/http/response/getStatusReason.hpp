@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   generateDefaultBody.hpp                            :+:      :+:    :+:   */
+/*   statusReason.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:33:15 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/25 21:41:14 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/06 01:41:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPGENERATEDEFAULTBODY_HPP
-#define HTTPGENERATEDEFAULTBODY_HPP
+#ifndef HTTPSTATUSREASON_HPP
+#define HTTPSTATUSREASON_HPP
+
+#include <string>
 
 namespace http {
-char const *generateDefaultBody(unsigned short statusCode);
+char const *getStatusReason(unsigned short statusCode);
 } // namespace http
 
-#endif // HTTPGENERATEDEFAULTBODY_HPP
+#endif // HTTPSTATUSREASON_HPP

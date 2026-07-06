@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 06:12:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 00:12:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ class Handler : public ITransfertHandler
 
 	virtual void prepareContext(unsigned int id);
 
-	virtual ProcessingStatus pushRequest(unsigned int id, std::vector<char> const &inputBuf);
-	virtual ProcessingStatus pushStream(unsigned int id, std::vector<char> const &streamBuf);
+	virtual ProcessingStatus
+	pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus status);
+	virtual ProcessingStatus
+	pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus status);
 
 	virtual std::vector<char> const &pull(unsigned int id);
 
