@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 06:09:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 21:49:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@
 #include <string>
 #include <vector>
 
+namespace parse {
+class IValidationPolicy;
+} // namespace parse
+
 namespace http {
-class IRequestValidationPolicy;
 class IHttpVersionProvider;
 
 namespace request {
@@ -54,9 +57,7 @@ class Parser
 	};
 
   public:
-	Parser(
-		IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
-	);
+	Parser(parse::IValidationPolicy &validationPolicy, IHttpVersionProvider &httpVersionProvider);
 
 	Step parse(std::vector<char> &inputBuf, State &state);
 
@@ -69,13 +70,8 @@ class Parser
 	std::size_t _maxHeaderCount;
 	std::size_t _maxBodySize;
 
-	IRequestValidationPolicy &_requestValidationPolicy;
+	parse::IValidationPolicy &_validationPolicy;
 	IHttpVersionProvider	 &_httpVersionProvider;
-
-	static std::size_t const DEFAULT_MAX_REQUEST_LINE_SIZE = 8192;
-	static std::size_t const DEFAULT_MAX_HEADER_LINE_SIZE = 8192;
-	static std::size_t const DEFAULT_MAX_HEADER_COUNT = 100;
-	static std::size_t const DEFAULT_MAX_BODY_SIZE = 1048576;
 
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,
@@ -107,6 +103,7 @@ class Parser
 	void validateRequestLineSize(std::size_t size);
 	void validateHeaderLineSize(std::size_t size);
 	void validateHeaderCount(std::size_t size);
+	void validateBodySize(std::size_t size);
 };
 } // namespace request
 

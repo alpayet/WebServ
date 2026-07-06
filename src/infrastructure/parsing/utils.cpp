@@ -6,16 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 04:11:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 06:16:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 23:29:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/parsing/utils.hpp"
 #include "infrastructure/parsing/constants.hpp"
 #include <algorithm>
+#include <cerrno>
 
 namespace parse {
-Result parse_header_line(
+ParseHeaderLine::Result parse_header_line(
 	std::vector<char>::const_iterator it_start,
 	std::vector<char>::const_iterator it_line_end,
 	std::string						 &out_key,
@@ -23,26 +24,54 @@ Result parse_header_line(
 )
 {
 	if (has_line_break(it_start, it_line_end))
-		return (lineBreakinvalid);
+		return (ParseHeaderLine::lineBreakInvalid);
 
 	std::vector<char>::const_iterator it_colon;
 	it_colon = std::find(it_start, it_line_end, COLON);
 	if (it_colon == it_line_end)
-		return (malformed);
+		return (ParseHeaderLine::malformed);
 
 	if (!is_valid_key_syntax(it_start, it_colon))
-		return (keyInvalid);
+		return (ParseHeaderLine::keyInvalid);
 
 	out_key.assign(it_start, it_colon);
 
 	std::transform(out_key.begin(), out_key.end(), out_key.begin(), to_lower_safe);
 
 	if (!is_valid_value_syntax(it_colon + 1, it_line_end))
-		return (valueInvalid);
+		return (ParseHeaderLine::valueInvalid);
 
 	out_value.assign(it_colon + 1, it_line_end);
 	trim(out_value, WHITE_SPACES);
-	return (success);
+	return (ParseHeaderLine::success);
+}
+
+ParseContentLength::Result parse_content_length(
+	std::map<std::string, std::string> const &headers,
+	std::size_t								  max_body_size,
+	std::size_t								 &out_content_length
+)
+{
+	std::map<std::string, std::string>::const_iterator it =
+		headers.find(header::LOWER_CONTENT_LENGTH);
+
+	if (it == headers.end())
+		return (ParseContentLength::contentLengthMissing);
+
+	std::string content_length = it->second;
+	if (content_length.empty())
+		return (ParseContentLength::contentLengthInvalid);
+
+	char *endptr = NULL;
+	errno = 0;
+	unsigned long long val = std::strtoull(content_length.c_str(), &endptr, 10);
+
+	if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
+		return (ParseContentLength::contentLengthInvalid);
+	if (val > max_body_size)
+		return (ParseContentLength::bodyTooLarge);
+	out_content_length = static_cast<size_t>(val);
+	return (ParseContentLength::success);
 }
 
 std::vector<char>::const_iterator find_white_spaces(

@@ -6,16 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 06:20:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 23:50:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
-#include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/methods.hpp"
-#include "infrastructure/http/request/IRequestValidationPolicy.hpp"
+#include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/parsing/constants.hpp"
 #include "infrastructure/parsing/utils.hpp"
 #include <algorithm>
@@ -41,24 +40,34 @@ bool is_valid_target_syntax(
 namespace http {
 namespace request {
 
-std::size_t const Parser::DEFAULT_MAX_REQUEST_LINE_SIZE;
-std::size_t const Parser::DEFAULT_MAX_HEADER_LINE_SIZE;
-std::size_t const Parser::DEFAULT_MAX_HEADER_COUNT;
-std::size_t const Parser::DEFAULT_MAX_BODY_SIZE;
+Parser::State::State(void)
+	: step(start), request(), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
+{}
+
+void Parser::State::reset(void)
+{
+	step = start;
+	request.reset();
+	currenLineSize = 0;
+	currentHeaderCount = 0;
+	bodyBytesRead = 0;
+}
 
 Parser::Parser(
-	IRequestValidationPolicy &requestValidationPolicy, IHttpVersionProvider &httpVersionProvider
+	parse::IValidationPolicy &validationPolicy, IHttpVersionProvider &httpVersionProvider
 )
-	: _requestValidationPolicy(requestValidationPolicy), _httpVersionProvider(httpVersionProvider)
+	: _validationPolicy(validationPolicy), _httpVersionProvider(httpVersionProvider)
 {
 	_maxRequestLineSize =
-		std::min(_requestValidationPolicy.getMaxRequestLineSize(), DEFAULT_MAX_REQUEST_LINE_SIZE);
+		std::min(_validationPolicy.getMaxRequestLineSize(), parse::DEFAULT_MAX_REQUEST_LINE_SIZE);
 
 	_maxHeaderLineSize =
-		std::min(_requestValidationPolicy.getMaxHeaderLineSize(), DEFAULT_MAX_HEADER_LINE_SIZE);
+		std::min(_validationPolicy.getMaxHeaderLineSize(), parse::DEFAULT_MAX_HEADER_LINE_SIZE);
+
 	_maxHeaderCount =
-		std::min(_requestValidationPolicy.getMaxHeaderCount(), DEFAULT_MAX_HEADER_COUNT);
-	_maxBodySize = std::min(_requestValidationPolicy.getMaxBodySize(), DEFAULT_MAX_BODY_SIZE);
+		std::min(_validationPolicy.getMaxHeaderCount(), parse::DEFAULT_MAX_HEADER_COUNT);
+
+	_maxBodySize = std::min(_validationPolicy.getMaxBodySize(), parse::DEFAULT_MAX_BODY_SIZE);
 }
 
 Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
@@ -126,17 +135,14 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				{
 					if (state.request.contentLength != 0 &&
 						expects_body(state.request.startLine.method))
-					{
-						parse::consume_line(inputBuf);
 						state.step = Parser::body;
-						break;
-					}
 					else
 					{
 						state.step = Parser::complete;
 						can_continue = false;
-						break;
 					}
+					parse::consume_line(inputBuf);
+					break;
 				}
 				parseHeaderLine(it_start, it_line_end, state.request.headers);
 				parseContentLength(state.request);
@@ -191,61 +197,52 @@ void Parser::parseHeaderLine(
 	std::string key;
 	std::string value;
 
-	parse::Result res = parse::parse_header_line(itStart, itLineEnd, key, value);
-
-	if (res == parse::lineBreakinvalid)
-		throw Exception(Exception::lineBreakInvalid);
-	if (res == parse::malformed)
-		throw Exception(Exception::headerLineMalformed);
-	if (res == parse::keyInvalid)
-		throw Exception(Exception::headerKeyInvalid);
-	if (res == parse::valueInvalid)
-		throw Exception(Exception::headerValueInvalid);
-
+	switch (parse::parse_header_line(itStart, itLineEnd, key, value))
+	{
+		case parse::ParseHeaderLine::lineBreakInvalid:
+			throw Exception(Exception::lineBreakInvalid);
+		case parse::ParseHeaderLine::malformed:
+			throw Exception(Exception::headerLineMalformed);
+		case parse::ParseHeaderLine::keyInvalid:
+			throw Exception(Exception::headerKeyInvalid);
+		case parse::ParseHeaderLine::valueInvalid:
+			throw Exception(Exception::headerValueInvalid);
+		default:
+			break;
+	}
 	headers[key] = value;
 }
 
 void Parser::parseContentLength(Request &request)
 {
-	std::map<std::string, std::string>::const_iterator it =
-		request.headers.find(header::LOWER_CONTENT_LENGTH);
-
-	if (it == request.headers.end())
+	switch (parse::parse_content_length(request.headers, _maxBodySize, request.contentLength))
 	{
-		if (expects_body(request.startLine.method))
-			throw Exception(Exception::contentLengthRequired);
-		return;
+		case parse::ParseContentLength::contentLengthMissing:
+			if (expects_body(request.startLine.method))
+				throw Exception(Exception::contentLengthRequired);
+			break;
+		case parse::ParseContentLength::contentLengthInvalid:
+			throw Exception(Exception::contentLengthInvalid);
+		case parse::ParseContentLength::bodyTooLarge:
+			throw Exception(Exception::bodyTooLarge);
+		default:
+			break;
 	}
-
-	std::string content_length = it->second;
-	if (content_length.empty())
-		throw Exception(Exception::contentLengthInvalid);
-
-	char *endptr = NULL;
-	errno = 0;
-	unsigned long long val = std::strtoull(content_length.c_str(), &endptr, 10);
-
-	if (errno == ERANGE || *endptr != '\0' || content_length[0] == '-')
-		throw Exception(Exception::contentLengthInvalid);
-	if (val > _maxBodySize)
-		throw Exception(Exception::bodyTooLarge);
-	request.contentLength = static_cast<size_t>(val);
 }
 
 void Parser::parseBody(
 	std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead
 )
 {
-	if (bodyBytesRead + inputBuf.size() > _maxBodySize)
-		throw Exception(Exception::bodyTooLarge);
+	validateBodySize(bodyBytesRead + inputBuf.size());
 
 	if (bodyBytesRead + inputBuf.size() > request.contentLength)
 	{
-		request.body.append(inputBuf, request.contentLength - bodyBytesRead);
+		request.body.write(inputBuf, request.contentLength - bodyBytesRead);
 		bodyBytesRead = request.contentLength;
 	}
 	else
-		bodyBytesRead += request.body.append(inputBuf);
+		bodyBytesRead += request.body.write(inputBuf);
 }
 
 std::string Parser::extractMethod(
@@ -335,17 +332,10 @@ void Parser::validateHeaderCount(std::size_t count)
 		throw Exception(Exception::headerCountTooLarge);
 }
 
-Parser::State::State(void)
-	: step(start), request(), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
-{}
-
-void Parser::State::reset(void)
+void Parser::validateBodySize(std::size_t size)
 {
-	step = start;
-	request.reset();
-	currenLineSize = 0;
-	currentHeaderCount = 0;
-	bodyBytesRead = 0;
+	if (size > _maxBodySize)
+		throw Exception(Exception::bodyTooLarge);
 }
 
 } // namespace request

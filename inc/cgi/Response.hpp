@@ -6,15 +6,17 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:39:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 00:30:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CGIRESPONSE_HPP
 #define CGIRESPONSE_HPP
 
+#include "infrastructure/storage/file_system/TempWriter.hpp"
 #include <map>
 #include <string>
+#include <vector>
 
 namespace cgi {
 class Response
@@ -43,14 +45,36 @@ class Response
 		void reset(void);
 	};
 
+	class Location
+	{
+	  public:
+		enum Type
+		{
+			local,
+			client
+		};
+
+	  public:
+		Location(void);
+
+		std::string uri;
+		Type		type;
+		bool		exists;
+
+		void reset(void);
+	};
+
   public:
 	Response(void);
 
 	StatusLine						   statusLine;
 	std::map<std::string, std::string> headers;
-	std::string						   location;
-	std::size_t						   contentLength;
+	Location						   location;
+	ssize_t							   contentLength;
+	fileSystem::TempWriter			   body;
 	Type							   type;
+
+	static char const BODY_NAME_TEMPLATE[];
 
 	void reset(void);
 

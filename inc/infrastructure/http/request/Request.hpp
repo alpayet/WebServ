@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 02:44:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 23:14:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPREQUEST_HPP
 #define HTTPREQUEST_HPP
 
-#include "BodyFile.hpp"
+#include "infrastructure/storage/file_system/TempWriter.hpp"
 #include <map>
 #include <string>
 
@@ -39,7 +39,9 @@ class Request
 	StartLine						   startLine;
 	std::map<std::string, std::string> headers;
 	std::size_t						   contentLength;
-	request::BodyFile				   body;
+	fileSystem::TempWriter			   body;
+
+	static char const BODY_NAME_TEMPLATE[];
 
 	void reset(void);
 

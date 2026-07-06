@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:24:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 23:20:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ namespace fileSystem {
 char const TempWriter::TMP_DIRECTORY[] = "/tmp/";
 
 TempWriter::TempWriter(std::string const &nameTemplate)
-	: _fd(-1), _nameTemplate(nameTemplate), _tempFilePath()
+	: _fd(-1), _nameTemplate(nameTemplate), _path()
 {}
 
 TempWriter::~TempWriter(void)
 {
-	if (_fd >= 0 && (std::remove(_tempFilePath.c_str()) < 0 || close(_fd) < 0))
+	if (_fd >= 0 && (std::remove(_path.c_str()) < 0 || close(_fd) < 0))
 		std::cerr << "Error : " << std::strerror(errno) << '\n';
 }
 
-std::string const &TempWriter::getTempFilePath(void) const { return (_tempFilePath); }
+std::string const &TempWriter::getPath(void) const { return (_path); }
 
 bool TempWriter::exists(void) const { return (_fd >= 0); }
 
@@ -47,13 +47,25 @@ std::size_t TempWriter::write(std::vector<char> const &buf, std::size_t size)
 	return (bytes_written);
 }
 
+std::size_t TempWriter::write(std::vector<char> const &buf)
+{
+	if (_fd < 0)
+		generateUniqueTempFile();
+
+	ssize_t bytes_written = ::write(_fd, &buf[0], buf.size());
+	if (bytes_written < 0)
+		throw Exception(Exception::fileWriteFailed);
+
+	return (bytes_written);
+}
+
 void TempWriter::generateUniqueTempFile(void)
 {
-	_tempFilePath += TMP_DIRECTORY;
-	_tempFilePath += _nameTemplate;
-	_tempFilePath += "XXXXXX";
+	_path += TMP_DIRECTORY;
+	_path += _nameTemplate;
+	_path += "XXXXXX";
 
-	int fd = mkostemp(&_tempFilePath[0], O_CLOEXEC);
+	int fd = mkostemp(&_path[0], O_CLOEXEC);
 	if (fd < 0)
 		throw Exception(Exception::fileOpenFailed);
 

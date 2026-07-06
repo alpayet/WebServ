@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 03:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 06:17:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 23:29:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,40 @@
 
 namespace parse {
 
-enum Result
+struct ParseHeaderLine
 {
-	success,
-	lineBreakinvalid,
-	malformed,
-	keyInvalid,
-	valueInvalid
+	enum Result
+	{
+		success,
+		lineBreakInvalid,
+		malformed,
+		keyInvalid,
+		valueInvalid
+	};
 };
 
-Result parse_header_line(
+struct ParseContentLength
+{
+	enum Result
+	{
+		success,
+		contentLengthMissing,
+		contentLengthInvalid,
+		bodyTooLarge
+	};
+};
+
+ParseHeaderLine::Result parse_header_line(
 	std::vector<char>::const_iterator it_start,
 	std::vector<char>::const_iterator it_line_end,
 	std::string						 &out_key,
 	std::string						 &out_value
+);
+
+ParseContentLength::Result parse_content_length(
+	std::map<std::string, std::string> const &headers,
+	std::size_t								  max_body_size,
+	std::size_t								 &out_content_length
 );
 
 std::vector<char>::const_iterator find_white_spaces(
