@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 02:06:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 06:21:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
 #include "infrastructure/http/exceptions/ReturnException.hpp"
-#include "infrastructure/http/exceptions/errorLookup.hpp"
+#include "infrastructure/http/exceptions/error_lookup.hpp"
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/Sender.hpp"

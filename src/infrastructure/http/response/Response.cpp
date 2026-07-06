@@ -6,15 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:40:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:11:02 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/Response.hpp"
 #include "application/ports/SystemResourceInfo.hpp"
 #include "infrastructure/http/constants.hpp"
-#include "infrastructure/http/response/generateDefaultBody.hpp"
-#include "infrastructure/http/response/statusReason.hpp"
+#include "infrastructure/http/response/get_default_body.hpp"
+#include "infrastructure/http/response/get_status_reason.hpp"
 #include <cstring>
 #include <sstream>
 
@@ -46,7 +46,7 @@ Response Response::buildErrorPage(
 
 Response Response::buildDefault(unsigned short statusCode)
 {
-	char const		 *default_body = getDefaultBody(statusCode);
+	char const		 *default_body = get_default_body(statusCode);
 	Response::Builder builder;
 
 	builder.withStatusLine(statusCode);

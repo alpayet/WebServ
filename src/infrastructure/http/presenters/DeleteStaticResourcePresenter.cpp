@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:57:56 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:50:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:08:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void DeleteStaticResourcePresenter::presentDeletedResource(app::ResourceStatus s
 {
 	Response::Builder response_builder;
 
-	response_builder.withStatusLine(toStatusCode(status));
+	response_builder.withStatusLine(to_status_code(status));
 
 	_viewModel.response = response_builder.build();
 }

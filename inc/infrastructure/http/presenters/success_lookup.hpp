@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:37:55 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:31:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:08:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <map>
 
 namespace http {
-unsigned short toStatusCode(app::ResourceStatus status);
+unsigned short to_status_code(app::ResourceStatus status);
 } // namespace http
 
 #endif // SUCCESSLOOKUP_HPP

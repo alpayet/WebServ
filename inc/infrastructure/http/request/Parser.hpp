@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 03:02:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 06:09:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ class Parser
 		std::vector<char>::const_iterator itLineEnd,
 		Request::StartLine				 &startLine
 	);
-	void parseHeaderLine(
+	void Parser::parseHeaderLine(
 		std::vector<char>::const_iterator	itStart,
 		std::vector<char>::const_iterator	itLineEnd,
 		std::map<std::string, std::string> &headers
 	);
+
 	void parseContentLength(Request &request);
 	void parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
 
@@ -102,12 +103,6 @@ class Parser
 	std::string extractProtocol(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd
 	);
-
-	static bool hasLineBreak(
-		std::vector<char>::const_iterator itStart, std::vector<char>::const_iterator itEnd
-	);
-
-	static std::vector<char>::iterator findCRLF(std::vector<char> &inputBuf);
 
 	void validateRequestLineSize(std::size_t size);
 	void validateHeaderLineSize(std::size_t size);

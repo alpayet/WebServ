@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   methods.hpp                                        :+:      :+:    :+:   */
+/*   get_default_body.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 05:03:16 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/06 05:29:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPMETHODS_HPP
-#define HTTPMETHODS_HPP
-
-#include <string>
+#ifndef HTTPGENERATEDEFAULTBODY_HPP
+#define HTTPGENERATEDEFAULTBODY_HPP
 
 namespace http {
-extern char const GET[];
-extern char const POST[];
-extern char const DELETE[];
-extern char const HEAD[];
-extern char const PUT[];
-extern char const LINK[];
-extern char const UNLINK[];
-
-bool is_method_supported(std::string const &method);
-bool expects_body(std::string const &method);
+char const *get_default_body(unsigned short status_code);
 } // namespace http
 
-#endif // HTTPMETHODS_HPP
+#endif // HTTPGENERATEDEFAULTBODY_HPP

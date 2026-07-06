@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getDefaultBody.cpp                                 :+:      :+:    :+:   */
+/*   get_default_body.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:00:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:42:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:28:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/response/getDefaultBody.hpp"
+#include "infrastructure/http/response/get_default_body.hpp"
 
 namespace http {
-char const *getDefaultBody(unsigned short statusCode)
+char const *get_default_body(unsigned short status_code)
 {
-	switch (statusCode)
+	switch (status_code)
 	{
 		case 100:
 		case 101:

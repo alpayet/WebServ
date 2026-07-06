@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:50:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:08:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void ServeStaticResourcePresenter::presentStaticContent(
 {
 	Response::Builder builder;
 
-	builder.withStatusLine(toStatusCode(status));
+	builder.withStatusLine(to_status_code(status));
 	builder.withContentLength(resourceSize);
 
 	_viewModel.response = builder.build();
@@ -43,11 +43,11 @@ void ServeStaticResourcePresenter::presentListing(
 	std::vector<app::CollectionEntry> const &collectionData
 )
 {
-	std::string const &listing_html = getListing(id, collectionData);
+	std::string const &listing_html = get_listing_html(id, collectionData);
 
 	Response::Builder builder;
 
-	builder.withStatusLine(toStatusCode(status));
+	builder.withStatusLine(to_status_code(status));
 	builder.withContentLength(listing_html.size());
 	builder.withBody(listing_html);
 

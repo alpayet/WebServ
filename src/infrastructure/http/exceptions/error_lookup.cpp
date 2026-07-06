@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errorLookup.cpp                                    :+:      :+:    :+:   */
+/*   error_lookup.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 02:01:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:29:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/exceptions/errorLookup.hpp"
+#include "infrastructure/http/exceptions/error_lookup.hpp"
 
 namespace http {
-unsigned short toStatusCode(Exception::ErrorCode errorCode)
+unsigned short to_status_code(Exception::ErrorCode error_code)
 {
-	switch (errorCode)
+	switch (error_code)
 	{
-		case Exception::invalidLineBreak:
+		case Exception::lineBreakInvalid:
 			return (400);
 		case Exception::requestLineMalformed:
 			return (400);
@@ -56,15 +56,15 @@ unsigned short toStatusCode(Exception::ErrorCode errorCode)
 	}
 }
 
-unsigned short toStatusCode(fileSystem::Exception::ErrorCode errorCode)
+unsigned short to_status_code(fileSystem::Exception::ErrorCode error_code)
 {
-	(void)errorCode;
+	(void)error_code;
 	return (500);
 }
 
-unsigned short toStatusCode(cgi::Exception::ErrorCode errorCode)
+unsigned short to_status_code(cgi::Exception::ErrorCode error_code)
 {
-	switch (errorCode)
+	switch (error_code)
 	{
 		case cgi::Exception::timeOut:
 			return (504);
@@ -73,9 +73,9 @@ unsigned short toStatusCode(cgi::Exception::ErrorCode errorCode)
 	}
 }
 
-unsigned short toStatusCode(app::Exception::ErrorCode errorCode)
+unsigned short to_status_code(app::Exception::ErrorCode error_code)
 {
-	switch (errorCode)
+	switch (error_code)
 	{
 		case app::Exception::accessDenied:
 			return (403);
@@ -92,9 +92,9 @@ unsigned short toStatusCode(app::Exception::ErrorCode errorCode)
 	}
 }
 
-unsigned short toStatusCode(domain::Exception::ErrorCode errorCode)
+unsigned short to_status_code(domain::Exception::ErrorCode error_code)
 {
-	switch (errorCode)
+	switch (error_code)
 	{
 		case domain::Exception::pathMissing:
 			return (404);

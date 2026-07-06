@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   listingHtml.cpp                                    :+:      :+:    :+:   */
+/*   get_listing_html.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:22:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:36:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:28:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/presenters/listingHtml.hpp"
+#include "infrastructure/http/presenters/get_listing_html.hpp"
 
 namespace http {
-std::string getListing(std::string const &uri, std::vector<app::CollectionEntry> const &files)
+std::string get_listing_html(std::string const &uri, std::vector<app::CollectionEntry> const &files)
 {
 	std::string listing;
 

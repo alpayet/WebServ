@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   methods.hpp                                        :+:      :+:    :+:   */
+/*   success_lookup.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 05:03:16 by alpayet          ###   ########.fr       */
+/*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/06 05:28:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPMETHODS_HPP
-#define HTTPMETHODS_HPP
-
-#include <string>
+#include "infrastructure/http/presenters/success_lookup.hpp"
+#include "infrastructure/http/exceptions/Exception.hpp"
+#include <cstdlib>
 
 namespace http {
-extern char const GET[];
-extern char const POST[];
-extern char const DELETE[];
-extern char const HEAD[];
-extern char const PUT[];
-extern char const LINK[];
-extern char const UNLINK[];
-
-bool is_method_supported(std::string const &method);
-bool expects_body(std::string const &method);
+unsigned short to_status_code(app::ResourceStatus status)
+{
+	switch (status)
+	{
+		case app::found:
+			return (200);
+		case app::deleted:
+			return (204);
+		default:
+			return (500);
+	}
+}
 } // namespace http
-
-#endif // HTTPMETHODS_HPP

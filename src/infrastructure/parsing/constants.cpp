@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   successLookup.cpp                                  :+:      :+:    :+:   */
+/*   constants.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:31:22 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/06 04:30:13 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/06 04:30:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/presenters/successLookup.hpp"
-#include "infrastructure/http/exceptions/Exception.hpp"
-#include <cstdlib>
+#include "infrastructure/parsing/constants.hpp"
 
-namespace http {
-unsigned short toStatusCode(app::ResourceStatus status)
-{
-	switch (status)
-	{
-		case app::found:
-			return (200);
-		case app::deleted:
-			return (204);
-		default:
-			return (500);
-	}
-}
-} // namespace http
+namespace parse {
+
+char const COLON = ':';
+char const SP = ' ';
+char const HT = '\t';
+char const WHITE_SPACES[3] = {SP, HT, '\0'};
+char const CR = '\r';
+char const LF = '\n';
+char const CRLF[3] = {CR, LF, '\0'};
+
+} // namespace parse

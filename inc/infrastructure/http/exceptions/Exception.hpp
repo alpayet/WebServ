@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:58:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 04:26:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		invalidLineBreak,
+		lineBreakInvalid,
 		requestLineMalformed,
 		headerLineMalformed,
 		methodInvalid,

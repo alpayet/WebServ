@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/29 20:27:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:03:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char const PUT[] = "PUT";
 char const LINK[] = "LINK";
 char const UNLINK[] = "UNLINK";
 
-bool isMethodSupported(std::string const &method)
+bool is_method_supported(std::string const &method)
 {
 	static char const *supported_methods[] = {
 		GET, POST, DELETE, HEAD, PUT, LINK, UNLINK,
@@ -35,7 +35,7 @@ bool isMethodSupported(std::string const &method)
 	return (supported.find(method) != supported.end());
 }
 
-bool expectsBody(std::string const &method)
+bool expects_body(std::string const &method)
 {
 	static char const *expects_body_methods[] = {
 		POST,

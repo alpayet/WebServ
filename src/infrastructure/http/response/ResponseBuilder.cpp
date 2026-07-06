@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:41:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:06:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Response::Builder &Response::Builder::withStatusReason(std::string const &reason
 Response::Builder &Response::Builder::withStatusLine(unsigned short statusCode)
 {
 	withStatusCode(statusCode);
-	withStatusReason(getStatusReason(statusCode));
+	withStatusReason(get_status_reason(statusCode));
 	return (*this);
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errorLookup.hpp                                    :+:      :+:    :+:   */
+/*   error_lookup.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:59:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:29:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 #include "infrastructure/storage/file_system/Exception.hpp"
 
 namespace http {
-unsigned short toStatusCode(Exception::ErrorCode errorCode);
-unsigned short toStatusCode(fileSystem::Exception::ErrorCode errorCode);
-unsigned short toStatusCode(cgi::Exception::ErrorCode errorCode);
-unsigned short toStatusCode(app::Exception::ErrorCode errorCode);
-unsigned short toStatusCode(domain::Exception::ErrorCode errorCode);
+unsigned short to_status_code(Exception::ErrorCode error_code);
+unsigned short to_status_code(fileSystem::Exception::ErrorCode error_code);
+unsigned short to_status_code(cgi::Exception::ErrorCode error_code);
+unsigned short to_status_code(app::Exception::ErrorCode error_code);
+unsigned short to_status_code(domain::Exception::ErrorCode error_code);
 } // namespace http
 
 #endif // HTTPERRORLOOKUP_HPP

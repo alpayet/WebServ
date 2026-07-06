@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   statusReason.hpp                                   :+:      :+:    :+:   */
+/*   constants.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/25 21:41:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:41:30 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/06 04:29:24 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/06 04:30:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPSTATUSREASON_HPP
-#define HTTPSTATUSREASON_HPP
+#ifndef PARSINGCONSTANTS_HPP
+#define PARSINGCONSTANTS_HPP
 
-#include <string>
+namespace parse {
+extern char const COLON;
+extern char const SP;
+extern char const HT;
+extern char const WHITE_SPACES[3];
+extern char const CR;
+extern char const LF;
+extern char const CRLF[3];
+} // namespace parse
 
-namespace http {
-char const *getStatusReason(unsigned short statusCode);
-} // namespace http
-
-#endif // HTTPSTATUSREASON_HPP
+#endif // PARSINGCONSTANTS_HPP

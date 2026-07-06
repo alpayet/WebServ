@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getStatusReason.cpp                                :+:      :+:    :+:   */
+/*   get_status_reason.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/25 21:44:04 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:42:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/06 05:28:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/response/getStatusReason.hpp"
+#include "infrastructure/http/response/get_status_reason.hpp"
 
 namespace http {
-char const *getStatusReason(unsigned short statusCode)
+char const *get_status_reason(unsigned short status_code)
 {
-	switch (statusCode)
+	switch (status_code)
 	{
 		case 100:
 			return "Continue";
