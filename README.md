@@ -43,6 +43,8 @@ Also, every location and root has to be a directory, whereas index can't have an
 
 `server`: defines the start of a server setup
 
+`hostname`: name of to identify the server, must be unique in configuration file
+
 `root` (outside location block): path for the server, the location blocks without a root directive will append there path to that route 
 
 `location`: starts of the location block for a specific path
