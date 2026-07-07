@@ -224,7 +224,6 @@ std::ostream &operator<<(std::ostream &os, ServerConfig const &s)
 
 	os << "\tHostname: " << s.getHostname() << std::endl;
 	os << "\tPort: " << s.getPort() << std::endl;
-	os << "\tInterface: " << s.getInterface() << std::endl;
 	os << "\tRoot: " << s.getRoot() << std::endl;
 	{
 		std::vector<std::string>::const_iterator ite = s.getIndex().end();

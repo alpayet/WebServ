@@ -128,27 +128,6 @@ void initServerConfig(ServerConfig &s, p_ServerConfig ps)
 		{
 			s.setHostname(it->values[0]);
 		}
-		else if (it->name == "interface")
-		{
-			std::istringstream iss(it->values[0]);
-			int				   nb;
-			char			   del;
-			for (int i = 0; i < 3; ++i)
-			{
-				iss >> nb;
-				iss >> del;
-				if (nb < 0 || nb > 255 || del != '.')
-				{
-					throw SemanticException("Interface IP wrongly formatted");
-				}
-			}
-			iss >> nb;
-			if (nb < 0 || nb > 255 || !iss.eof())
-			{
-				throw SemanticException("Interface IP wrongly formatted = ");
-			}
-			s.setInterface(it->values[0]);
-		}
 		else if (it->name == "error_page")
 		{
 			std::istringstream iss(it->values[0]);
@@ -204,12 +183,89 @@ void initServerConfig(ServerConfig &s, p_ServerConfig ps)
 	}
 }
 
+void checkDupLoc(p_ServerConfig s)
+{
+	size_t nb_locs = s.locations.size();
+	if (nb_locs == 0)
+		return;
+	std::string path1, path2;
+
+	for (size_t i = 0; i < nb_locs - 1; ++i)
+	{
+		path1 = s.locations[i].path;
+		for (size_t j = i + 1; j < nb_locs; ++j)
+		{
+			path2 = s.locations[j].path;
+			if (path1 == path2)
+			{
+				throw SemanticException("Multiple location blocks with the same path");
+			}
+		}
+	}
+}
+
+void checkOverlap(p_Config c)
+{
+	size_t nb_servers = c.servers.size();
+	if (nb_servers < 2)
+		return;
+	std::string port1 = "8080", port2 = "8080";
+	std::string ip1 = "0.0.0.0", ip2 = "0.0.0.0";
+
+	for (size_t i = 0; i < nb_servers - 1; ++i)
+	{
+		std::vector<p_Directive>::const_iterator d_ite = c.servers[i].directives.end();
+		for (std::vector<p_Directive>::const_iterator d_it = c.servers[i].directives.begin();
+			 d_it != d_ite; *d_it++)
+		{
+			if (d_it->name == "listen")
+			{
+				port1 = d_it->values[0];
+			}
+			if (d_it->name == "interface")
+			{
+				ip1 = d_it->values[0];
+			}
+		}
+		for (size_t j = i + 1; j < nb_servers; ++j)
+		{
+			std::vector<p_Directive>::const_iterator d_ite2 = c.servers[j].directives.end();
+			for (std::vector<p_Directive>::const_iterator d_it2 = c.servers[j].directives.begin();
+				 d_it2 != d_ite2; *d_it2++)
+			{
+				if (d_it2->name == "listen")
+				{
+					port2 = d_it2->values[0];
+				}
+				if (d_it2->name == "interface")
+				{
+					ip2 = d_it2->values[0];
+				}
+			}
+			if (port1 == port2)
+			{
+				if (ip1 == ip2)
+				{
+					throw SemanticException("Same couple interface:port for different servers");
+				}
+				if (ip1 == "0.0.0.0" || ip2 == "0.0.0.0")
+				{
+					throw SemanticException(
+						"Overlapping of IP addresses with same port for different servers"
+					);
+				}
+			}
+		}
+	}
+}
+
 void checkDupHostname(p_Config c)
 {
 	size_t nb_servers = c.servers.size();
 	if (nb_servers < 2)
 		return;
-	std::string cmp;
+	std::string port1 = "8080", port2 = "8080";
+	std::string host1, host2;
 
 	for (size_t i = 0; i < nb_servers - 1; ++i)
 	{
@@ -219,7 +275,11 @@ void checkDupHostname(p_Config c)
 		{
 			if (d_it->name == "hostname")
 			{
-				cmp = d_it->values[0];
+				host1 = d_it->values[0];
+			}
+			if (d_it->name == "listen")
+			{
+				port1 = d_it->values[0];
 			}
 		}
 		for (size_t j = i + 1; j < nb_servers; ++j)
@@ -230,8 +290,18 @@ void checkDupHostname(p_Config c)
 			{
 				if (d_it2->name == "hostname")
 				{
-					if (cmp == d_it2->values[0])
-						throw SemanticException("Same hostname for different servers");
+					host2 = d_it2->values[0];
+				}
+				if (d_it2->name == "listen")
+				{
+					port2 = d_it2->values[0];
+				}
+			}
+			if (port1 == port2)
+			{
+				if (host1 == host2)
+				{
+					throw SemanticException("Same couple hostname:port for different servers");
 				}
 			}
 		}

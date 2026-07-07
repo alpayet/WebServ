@@ -34,7 +34,7 @@ class ServerConfig : public app::IResourceLocator,
   public:
 	/** CTOR */
 	ServerConfig()
-		: m_port(8080), m_interface("0.0.0.0"), m_max_body(1000000), m_transport(TRANSPORT_TCP),
+		: m_port(8080), m_max_body(1000000), m_transport(TRANSPORT_TCP),
 		  m_applicative_protocol(APP_HTTP) {};
 	~ServerConfig() {};
 
@@ -52,7 +52,6 @@ class ServerConfig : public app::IResourceLocator,
 
 	/** GETTERS */
 	unsigned short					  getPort() const { return m_port; };
-	std::string const				 &getInterface() const { return m_interface; };
 	std::string const				 &getHostname() const { return m_hostname; };
 	std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
 	std::vector<Location> const		 &getLocations() const { return m_locations; };
@@ -62,7 +61,6 @@ class ServerConfig : public app::IResourceLocator,
 
 	/** SETTERS */
 	void setPort(int port) { m_port = port; };
-	void setInterface(std::string const &interface) { m_interface = interface; };
 	void setHostname(std::string const &hostname) { m_hostname = hostname; };
 	void addErrPage(int err_nb, std::string const &err_path) { m_error_pages[err_nb] = err_path; };
 	void addLocation(Location const &location) { m_locations.push_back(location); };
@@ -98,7 +96,6 @@ class ServerConfig : public app::IResourceLocator,
 
   private:
 	unsigned short			   m_port;
-	std::string				   m_interface;
 	std::string				   m_hostname;
 	std::map<int, std::string> m_error_pages;
 	std::vector<Location>	   m_locations;

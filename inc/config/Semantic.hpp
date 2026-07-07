@@ -18,6 +18,7 @@ class SemanticException : public ConfigException
 };
 
 #include "config/Parser.hpp"
+void 	checkDupLoc(p_ServerConfig s);
 void 	checkDupHostname(p_Config c);
 void	initServerConfig(ServerConfig& s, p_ServerConfig ps);
 void	initLocation(ServerConfig& s, p_ServerConfig ps);

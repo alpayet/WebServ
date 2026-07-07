@@ -15,7 +15,7 @@ annotation Keywords
 	server
 	location
 	listen
-	interface
+	hostname
 	root
 	index
 	cgi

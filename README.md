@@ -12,7 +12,7 @@ Configuration file ressemble the server block of the nginx file:
 ```
 server {
 	listen 8081;
-	interface 10.15.2.1;
+	hostname 10.15.2.1;
 
 	root /var/www/html/
 	
@@ -52,8 +52,6 @@ Also, every location and root has to be a directory, whereas index can't have an
 `root` (in location block): use as an alias to replace the path of the location block (the one the user will enter but end up internally where defined by the root directive)
 
 `listen`: defines the port used
-
-`interface`: ip address
 
 `index`: goes with the root, it's the default page if you access a specific directory declare with the root
 
