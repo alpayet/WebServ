@@ -124,6 +124,10 @@ void initServerConfig(ServerConfig &s, p_ServerConfig ps)
 			}
 			s.setPort(port);
 		}
+		else if (it->name == "hostname")
+		{
+			s.setHostname(it->values[0]);
+		}
 		else if (it->name == "interface")
 		{
 			std::istringstream iss(it->values[0]);
@@ -194,36 +198,18 @@ void initServerConfig(ServerConfig &s, p_ServerConfig ps)
 	{
 		throw SemanticException("A server must have a root");
 	}
-}
-
-void checkDupLoc(p_ServerConfig s)
-{
-	size_t nb_locs = s.locations.size();
-	if (nb_locs == 0)
-		return;
-	std::string path1, path2;
-
-	for (size_t i = 0; i < nb_locs - 1; ++i)
+	if (s.getHostname().empty())
 	{
-		path1 = s.locations[i].path;
-		for (size_t j = i + 1; j < nb_locs; ++j)
-		{
-			path2 = s.locations[j].path;
-			if (path1 == path2)
-			{
-				throw SemanticException("Multiple location blocks with the same path");
-			}
-		}
+		throw SemanticException("A server must have an hostname");
 	}
 }
 
-void checkOverlap(p_Config c)
+void checkDupHostname(p_Config c)
 {
 	size_t nb_servers = c.servers.size();
 	if (nb_servers < 2)
 		return;
-	std::string port1 = "8080", port2 = "8080";
-	std::string ip1 = "0.0.0.0", ip2 = "0.0.0.0";
+	std::string cmp;
 
 	for (size_t i = 0; i < nb_servers - 1; ++i)
 	{
@@ -231,13 +217,9 @@ void checkOverlap(p_Config c)
 		for (std::vector<p_Directive>::const_iterator d_it = c.servers[i].directives.begin();
 			 d_it != d_ite; *d_it++)
 		{
-			if (d_it->name == "listen")
+			if (d_it->name == "hostname")
 			{
-				port1 = d_it->values[0];
-			}
-			if (d_it->name == "interface")
-			{
-				ip1 = d_it->values[0];
+				cmp = d_it->values[0];
 			}
 		}
 		for (size_t j = i + 1; j < nb_servers; ++j)
@@ -246,26 +228,10 @@ void checkOverlap(p_Config c)
 			for (std::vector<p_Directive>::const_iterator d_it2 = c.servers[j].directives.begin();
 				 d_it2 != d_ite2; *d_it2++)
 			{
-				if (d_it2->name == "listen")
+				if (d_it2->name == "hostname")
 				{
-					port2 = d_it2->values[0];
-				}
-				if (d_it2->name == "interface")
-				{
-					ip2 = d_it2->values[0];
-				}
-			}
-			if (port1 == port2)
-			{
-				if (ip1 == ip2)
-				{
-					throw SemanticException("Same couple interface:port for different servers");
-				}
-				if (ip1 == "0.0.0.0" || ip2 == "0.0.0.0")
-				{
-					throw SemanticException(
-						"Overlapping of IP addresses with same port for different servers"
-					);
+					if (cmp == d_it2->values[0])
+						throw SemanticException("Same hostname for different servers");
 				}
 			}
 		}

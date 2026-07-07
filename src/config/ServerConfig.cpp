@@ -222,6 +222,7 @@ std::ostream &operator<<(std::ostream &os, ServerConfig const &s)
 {
 	os << "***SERVER***" << std::endl;
 
+	os << "\tHostname: " << s.getHostname() << std::endl;
 	os << "\tPort: " << s.getPort() << std::endl;
 	os << "\tInterface: " << s.getInterface() << std::endl;
 	os << "\tRoot: " << s.getRoot() << std::endl;

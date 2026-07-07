@@ -43,6 +43,7 @@ struct Keyword
 };
 
 static Keyword const keywords[] = {{"server", str_type, 0, 0, multi, inserv},
+								   {"hostname", str_type, 1, 1, uniq, inserv},
 								   {"root", str_type, 1, 1, uniq, both},
 								   {"index", str_type, 1, 9, uniq, both},
 								   {"error_page", str_type, 2, 2, multi, inserv},
