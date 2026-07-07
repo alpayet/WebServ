@@ -204,61 +204,6 @@ void checkDupLoc(p_ServerConfig s)
 	}
 }
 
-void checkOverlap(p_Config c)
-{
-	size_t nb_servers = c.servers.size();
-	if (nb_servers < 2)
-		return;
-	std::string port1 = "8080", port2 = "8080";
-	std::string ip1 = "0.0.0.0", ip2 = "0.0.0.0";
-
-	for (size_t i = 0; i < nb_servers - 1; ++i)
-	{
-		std::vector<p_Directive>::const_iterator d_ite = c.servers[i].directives.end();
-		for (std::vector<p_Directive>::const_iterator d_it = c.servers[i].directives.begin();
-			 d_it != d_ite; *d_it++)
-		{
-			if (d_it->name == "listen")
-			{
-				port1 = d_it->values[0];
-			}
-			if (d_it->name == "interface")
-			{
-				ip1 = d_it->values[0];
-			}
-		}
-		for (size_t j = i + 1; j < nb_servers; ++j)
-		{
-			std::vector<p_Directive>::const_iterator d_ite2 = c.servers[j].directives.end();
-			for (std::vector<p_Directive>::const_iterator d_it2 = c.servers[j].directives.begin();
-				 d_it2 != d_ite2; *d_it2++)
-			{
-				if (d_it2->name == "listen")
-				{
-					port2 = d_it2->values[0];
-				}
-				if (d_it2->name == "interface")
-				{
-					ip2 = d_it2->values[0];
-				}
-			}
-			if (port1 == port2)
-			{
-				if (ip1 == ip2)
-				{
-					throw SemanticException("Same couple interface:port for different servers");
-				}
-				if (ip1 == "0.0.0.0" || ip2 == "0.0.0.0")
-				{
-					throw SemanticException(
-						"Overlapping of IP addresses with same port for different servers"
-					);
-				}
-			}
-		}
-	}
-}
-
 void checkDupHostname(p_Config c)
 {
 	size_t nb_servers = c.servers.size();
