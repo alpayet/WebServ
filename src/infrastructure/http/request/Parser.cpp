@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 23:50:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 16:35:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,13 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					parse::consume_line(inputBuf);
 					break;
 				}
+
 				if (*it_start == parse::CR && it_start + 1 == inputBuf.end())
 				{
 					can_continue = false;
 					break;
 				}
+
 				state.step = Parser::requestLine;
 				break;
 			}
@@ -104,14 +106,17 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				std::vector<char>::const_iterator it_start = inputBuf.begin();
 				std::vector<char>::const_iterator it_line_end = parse::find_line_end(inputBuf);
 
-				state.currenLineSize += std::distance(it_start, it_line_end);
+				state.currenLineSize = std::distance(it_start, it_line_end);
 				validateRequestLineSize(state.currenLineSize);
+
 				if (it_line_end == inputBuf.end())
 				{
 					can_continue = false;
 					break;
 				}
+
 				parseRequestLine(it_start, it_line_end, state.request.startLine);
+
 				parse::consume_line(inputBuf);
 				state.currenLineSize = 0;
 				state.step = Parser::header;
@@ -122,15 +127,18 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				std::vector<char>::const_iterator it_start = inputBuf.begin();
 				std::vector<char>::const_iterator it_line_end = parse::find_line_end(inputBuf);
 
-				state.currenLineSize += std::distance(it_start, it_line_end);
+				state.currenLineSize = std::distance(it_start, it_line_end);
 				validateHeaderLineSize(state.currenLineSize);
+
 				if (it_line_end == inputBuf.end())
 				{
 					can_continue = false;
 					break;
 				}
+
 				++state.currentHeaderCount;
 				validateHeaderCount(state.currentHeaderCount);
+
 				if (it_start == it_line_end)
 				{
 					if (state.request.contentLength != 0 &&
@@ -144,17 +152,18 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					parse::consume_line(inputBuf);
 					break;
 				}
+
 				parseHeaderLine(it_start, it_line_end, state.request.headers);
 				parseContentLength(state.request);
 
 				parse::consume_line(inputBuf);
-				state.currenLineSize = 0;
 				break;
 			}
 			case Parser::body:
 			{
 				parseBody(inputBuf, state.request, state.bodyBytesRead);
 				inputBuf.clear();
+
 				if (state.bodyBytesRead == state.request.contentLength)
 				{
 					state.step = Parser::complete;

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 00:20:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 14:24:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 namespace cgi {
 unsigned short const Response::StatusLine::DEFAULT_STATUS_CODE = 200;
 char const			 Response::StatusLine::DEFAULT_REASON[] = "OK";
+unsigned short const Response::StatusLine::DEFAULT_REDIR_STATUS_CODE = 302;
+char const			 Response::StatusLine::DEFAULT_REDIR_REASON[] = "Found";
 char const			 Response::BODY_NAME_TEMPLATE[] = "cgi_response_body";
 
 Response::StatusLine::StatusLine(void)
@@ -28,13 +30,9 @@ void Response::StatusLine::reset(void)
 	exists = false;
 }
 
-Response::Location::Location(void) : uri(), exists(false) {}
+Response::Location::Location(void) : uri() {}
 
-void Response::Location::reset(void)
-{
-	uri.clear();
-	exists = false;
-}
+void Response::Location::reset(void) { uri.clear(); }
 
 Response::Response(void) : statusLine(), headers(), contentLength(-1), body(BODY_NAME_TEMPLATE) {}
 

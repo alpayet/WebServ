@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 00:39:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 16:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,39 +57,36 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
 				std::vector<char>::const_iterator it_start = inputBuf.begin();
 				std::vector<char>::const_iterator it_line_end = parse::find_line_end(inputBuf);
 
-				state.currenLineSize += std::distance(it_start, it_line_end);
+				state.currenLineSize = std::distance(it_start, it_line_end);
 				validateHeaderLineSize(state.currenLineSize);
+
 				if (it_line_end == inputBuf.end())
 				{
 					can_continue = false;
 					break;
 				}
+
 				++state.currentHeaderCount;
 				validateHeaderCount(state.currentHeaderCount);
+
 				if (it_start == it_line_end)
 				{
-					if (state.response.contentLength != 0 &&
-						expects_body(state.response.startLine.method))
-						state.step = Parser::body;
-					else
-					{
-						state.step = Parser::complete;
-						can_continue = false;
-					}
+					classifyResponse(state.response, state.step);
 					parse::consume_line(inputBuf);
 					break;
 				}
+
 				parseHeaderLine(it_start, it_line_end, state.response.headers);
 				parseContentLength(state.response);
 
 				parse::consume_line(inputBuf);
-				state.currenLineSize = 0;
 				break;
 			}
 			case Parser::body:
 			{
 				parseBody(inputBuf, state.response, state.bodyBytesRead);
 				inputBuf.clear();
+
 				if (state.bodyBytesRead == state.response.contentLength)
 				{
 					state.step = Parser::complete;
@@ -106,7 +103,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
 
 void classifyResponse(Response &response, Parser::Step &step)
 {
-	if (response.location.exists)
+	if (!response.location.uri.empty())
 	{
 		switch (response.location.type)
 		{
@@ -116,27 +113,33 @@ void classifyResponse(Response &response, Parser::Step &step)
 				response.type = Response::localRedir;
 				step = Parser::complete;
 				break;
-
 			case Response::Location::client:
 				if (response.headers.find(parse::header::LOWER_CONTENT_TYPE) !=
 					response.headers.end())
 				{
-					if (response.statusLine.size() != 1)
-						throw Exception(Exception::localRedirResponseMalformed);
 					response.type = Response::clientRedirDoc;
+					step = Parser::body;
 				}
-				if (response.statusLine.exists)
-					throw Exception(Exception::clientRedirResponseMalformed);
-				response.statusLine.statusCode = 302;
-				response.statusLine.reason = "Found";
-				step = Parser::complete;
-				break;
+				else
+				{
+					response.type = Response::clientRedir;
+					step = Parser::complete;
+				}
 
+				response.statusLine.statusCode = Response::StatusLine::DEFAULT_REDIR_STATUS_CODE;
+				response.statusLine.reason = Response::StatusLine::DEFAULT_REDIR_REASON;
+				break;
 			default:
 				break;
 		}
 	}
-	response.type = Response::localRedir;
+	else
+	{
+		if (response.headers.find(parse::header::LOWER_CONTENT_TYPE) == response.headers.end())
+			throw Exception(Exception::documentResponseMalformed);
+		response.type = Response::document;
+		step = Parser::body;
+	}
 }
 
 void parseHeaderLine(

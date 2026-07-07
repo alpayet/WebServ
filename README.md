@@ -18,12 +18,12 @@ server {
 	interface 10.15.2.1;
 
 	root /var/www/html/
-	
+
 	location / {
 		root /var/www/html/example;
 		index index.html index.htm;
 	}
-	
+
 	location /banana/ {
 		return 404;
 	}
@@ -31,7 +31,7 @@ server {
 	location /lalala/ {
 		autoindex on;
 	}
-	
+
 	error_page 500 /500.html;
 	error_page 404 /404.html;
 }
@@ -47,15 +47,15 @@ Some differences exist between the two files such as no redefinition of values, 
 
 `interface`: ip address
 
-`root`:  
+`root`:
 
 `index`:
 
 `cgi`:
 
-`error_page`: 
+`error_page`:
 
-`client_max_body_size`: 
+`client_max_body_size`:
 
 `limit_except`: turn all methods to false, then the mentionned ones are the one allowed
 
@@ -69,6 +69,8 @@ Some differences exist between the two files such as no redefinition of values, 
 [Mozilla developer doc on HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)
 
 [RFC on HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
+
+[RFC on CGI](https://datatracker.ietf.org/doc/html/rfc3875)
 
 [Code(quoi); article on network programmation](https://www.codequoi.com/programmation-reseau-via-socket-en-c/)
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:52:58 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 00:36:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 16:14:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
+		documentResponseMalformed,
 		localRedirResponseMalformed,
 		clientRedirResponseMalformed,
+		clientRedirDocResponseMalformed,
 		lineBreakInvalid,
 		headerLineMalformed,
 		headerKeyInvalid,

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 00:30:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/07 14:23:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ class Response
 
 		static unsigned short const DEFAULT_STATUS_CODE;
 		static char const			DEFAULT_REASON[];
+		static unsigned short const DEFAULT_REDIR_STATUS_CODE;
+		static char const			DEFAULT_REDIR_REASON[];
 
 		void reset(void);
 	};
@@ -59,7 +61,6 @@ class Response
 
 		std::string uri;
 		Type		type;
-		bool		exists;
 
 		void reset(void);
 	};
