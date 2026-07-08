@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 05:16:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:14:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ Response::Response(void)
 unsigned short	   Response::getStatusCode(void) const { return (_status.getStatusCode()); }
 std::string const &Response::getStatusReason(void) const { return (_status.getReason()); }
 std::size_t		   Response::getHeadersSize(void) const { return (_headers.size()); }
-std::map<std::string, std::string> const &Response::getHeaders(void) { return (_headers); }
+std::map<std::string, std::string> const &Response::getHeaders(void) const { return (_headers); }
 std::string const						 &Response::getHeader(std::string const &key) const
 {
 	std::map<std::string, std::string>::const_iterator itValue = _headers.find(key);
@@ -80,11 +80,13 @@ bool Response::hasHeader(std::string const &key) const
 	return (_headers.find(key) != _headers.end());
 }
 std::string const		&Response::getLocationUri(void) const { return (_location.uri); }
+std::string const		&Response::getLocationQuery(void) const { return (_location.query); }
 Response::Location::Type Response::getLocationType(void) const { return (_location.type); }
 bool					 Response::hasLocation(void) const { return (!_location.uri.empty()); }
 std::size_t				 Response::getContentLength(void) const { return (_contentLength); }
 bool					 Response::hasContentLength(void) const { return (_hasContentLength); }
 Response::Type			 Response::getType(void) const { return (_type); }
+int						 Response::getBodyFd(void) const { return (_body.getFd()); }
 
 void Response::setStatus(unsigned short statusCode, std::string const &reason)
 {

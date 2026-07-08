@@ -6,17 +6,22 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 03:40:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:28:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_LINE_READER_HPP
 #define PARSE_LINE_READER_HPP
 
+#include "infrastructure/parsing/constants.hpp"
+#include <algorithm>
 #include <vector>
 
 namespace parse {
-template <typename InputIterator> bool has_line_break(InputIterator it_start, InputIterator it_end);
+template <typename InputIterator> bool has_line_break(InputIterator it_start, InputIterator it_end)
+{
+	return ((std::find_first_of(it_start, it_end, CRLF, CRLF + sizeof(CRLF) - 1) != it_end));
+}
 
 std::vector<char>::const_iterator find_line_end(std::vector<char> &buf);
 

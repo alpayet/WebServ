@@ -6,18 +6,20 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:29:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:40:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/Handler.hpp"
 #include "application/Exception.hpp"
 #include "cgi/Exception.hpp"
+#include "cgi/Parser.hpp"
 #include "domain/Exception.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
 #include "infrastructure/http/exceptions/ReturnException.hpp"
 #include "infrastructure/http/exceptions/error_lookup.hpp"
+#include "infrastructure/http/mappers/CgiResponseMapper.hpp"
 #include "infrastructure/http/request/Parser.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/Sender.hpp"
@@ -28,11 +30,13 @@
 namespace http {
 Handler::Handler(
 	request::Parser		&parser,
+	cgi::Parser			&cgiParser,
 	Router				&router,
 	response::Sender	&sender,
 	IErrorPagesProvider &errorPagesProvider
 )
-	: _parser(parser), _router(router), _sender(sender), _errorPagesProvider(errorPagesProvider)
+	: _requestParser(parser), _cgiParser(cgiParser), _router(router), _sender(sender),
+	  _errorPagesProvider(errorPagesProvider)
 {}
 
 // TODO : check pour linsertion
@@ -40,18 +44,19 @@ Handler::Handler(
 void Handler::prepareContext(unsigned int id) { _contexts[id].reset(); }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus status)
+Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus::Type status)
 {
 	try
 	{
-		if (status == timeOut)
+		if (status == RequestStatus::timeOut)
 			throw Exception(Exception::timeOut);
 
 		Context::Input &context_input = _contexts[id].input;
 
 		context_input.buf.insert(context_input.buf.end(), inputBuf.begin(), inputBuf.end());
 
-		if (_parser.parse(context_input.buf, context_input.state) == request::Parser::complete)
+		if (_requestParser.parse(context_input.buf, context_input.state) ==
+			request::Parser::complete)
 		{
 			_router.route(_contexts[id]);
 			return (ITransfertHandler::complete);
@@ -93,32 +98,21 @@ Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, Request
 }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus status)
+Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus::Type status)
 {
 	try
 	{
-		if (status == timeOut)
+		if (status == StreamStatus::timeOut)
 			throw cgi::Exception(cgi::Exception::timeOut);
 
 		Context::Stream &context_stream = _contexts[id].stream;
 
 		context_stream.buf.insert(context_stream.buf.end(), streamBuf.begin(), streamBuf.end());
 
-		if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
+		if (_cgiParser.parse(context_stream.buf, status, context_stream.state) ==
+			cgi::Parser::complete)
 		{
-			// TODO a fini
-			if (context_stream.state.response.getType() == cgi::Response::localRedir)
-			{
-				if (++context_stream.localRedirDepth > Context::Stream::MAX_LOCAL_REDIR_DEPTH)
-					throw Exception(Exception::maxLocalRedirDepthExceeded);
-
-				context_stream.reset();
-				_contexts[id].output.reset();
-				_contexts[id].input.state.request.setTarget(
-					context_stream.state.response.getLocationUri()
-				);
-				_router.route(_contexts[id]);
-			}
+			dispatchCgiResponse(_contexts[id]);
 			return (ITransfertHandler::complete);
 		}
 		return (ITransfertHandler::needMoreData);
@@ -181,6 +175,46 @@ bool Handler::isResponseComplete(unsigned int id)
 }
 
 void Handler::reset(unsigned int id) { _contexts[id].reset(); }
+
+void Handler::dispatchCgiResponse(Context &context)
+{
+	Context::Input	&context_input = context.input;
+	Context::Stream &context_stream = context.stream;
+	Context::Output &context_output = context.output;
+
+	switch (context_stream.state.response.getType())
+	{
+		case cgi::Response::localRedir:
+			if (++context_stream.localRedirDepth > Context::Stream::MAX_LOCAL_REDIR_DEPTH)
+				throw Exception(Exception::maxLocalRedirDepthExceeded);
+
+			context_input.state.request.setTarget(context_stream.state.response.getLocationUri());
+			context_input.state.request.setQuery(context_stream.state.response.getLocationQuery());
+
+			context_stream.reset();
+			context_output.reset();
+
+			_router.route(context);
+			break;
+		case cgi::Response::clientRedir:
+			context_output.response =
+				CgiResponseMapper::toHttpResponse(context_stream.state.response);
+			break;
+
+		case cgi::Response::document:
+		case cgi::Response::clientRedirDoc:
+			context_output.response =
+				CgiResponseMapper::toHttpResponse(context_stream.state.response);
+
+			delete (context.output.reader);
+			context_output.reader =
+				new fileSystem::Reader(context_stream.state.response.getBodyFd());
+			break;
+
+		default:
+			break;
+	}
+}
 
 void Handler::prepareDirectResponse(
 	unsigned short statusCode, Response &response, app::IResourceReader **reader

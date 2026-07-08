@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:16:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 01:15:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:48:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
-#include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/get_status_reason.hpp"
+#include "infrastructure/parsing/constants.hpp"
 #include <iterator>
 #include <sstream>
 
@@ -26,26 +26,26 @@ void HeaderBlockSerializer::serialize(
 	std::string headerBlock;
 
 	headerBlock += httpVersion;
-	headerBlock += SP;
+	headerBlock += parse::SP;
 
 	std::stringstream ss;
-	ss << response._statusLine.statusCode;
+	ss << response.getStatusCode();
 	headerBlock += ss.str();
-	headerBlock += SP;
+	headerBlock += parse::SP;
 
-	headerBlock += response._statusLine.reason;
-	headerBlock += CRLF;
+	headerBlock += response.getStatusReason();
+	headerBlock += parse::CRLF;
 
-	for (std::vector<Response::Header>::const_iterator i = response._headers.begin();
-		 i != response._headers.end(); ++i)
+	for (std::vector<Response::Header>::const_iterator i = response.getHeaders().begin();
+		 i != response.getHeaders().end(); ++i)
 	{
 		headerBlock += i->key;
-		headerBlock += COLON;
-		headerBlock += SP;
+		headerBlock += parse::COLON;
+		headerBlock += parse::SP;
 		headerBlock += i->value;
-		headerBlock += CRLF;
+		headerBlock += parse::CRLF;
 	}
-	headerBlock += CRLF;
+	headerBlock += parse::CRLF;
 
 	outputBuf.insert(outputBuf.end(), headerBlock.begin(), headerBlock.end());
 }

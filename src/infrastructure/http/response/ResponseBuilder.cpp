@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 00:57:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:14:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ Response::Builder &Response::Builder::withContentLength(std::string const &conte
 	return (*this);
 }
 
+Response::Builder &Response::Builder::withHeaders(std::map<std::string, std::string> const &headers)
+{
+	for (std::map<std::string, std::string>::const_iterator i = headers.begin(); i != headers.end();
+		 ++i)
+		withHeader(i->first, i->second);
+	return (*this);
+}
+
 Response::Builder &Response::Builder::withHeader(std::string const &key, std::string const &value)
 {
 	Response::Header header = {.key = key, .value = value};
@@ -67,7 +75,7 @@ Response::Builder &Response::Builder::withHeader(std::string const &key, std::si
 	std::stringstream value_ss;
 	value_ss << value;
 
-	Response::Header header = {key, .value = value_ss.str()};
+	Response::Header header = {.key = key, .value = value_ss.str()};
 	_response._headers.push_back(header);
 	return (*this);
 }

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 23:20:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:13:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ TempWriter::~TempWriter(void)
 }
 
 std::string const &TempWriter::getPath(void) const { return (_path); }
+int				   TempWriter::getFd(void) const { return (_fd); }
 
 bool TempWriter::exists(void) const { return (_fd >= 0); }
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 05:16:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:11:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,17 @@ class Response
 	unsigned short							  getStatusCode(void) const;
 	std::string const						 &getStatusReason(void) const;
 	std::size_t								  getHeadersSize(void) const;
-	std::map<std::string, std::string> const &getHeaders(void);
+	std::map<std::string, std::string> const &getHeaders(void) const;
 	std::string const						 &getHeader(std::string const &key) const;
 	bool									  hasHeader(std::string const &key) const;
 	std::string const						 &getLocationUri(void) const;
+	std::string const						 &getLocationQuery(void) const;
 	Location::Type							  getLocationType(void) const;
 	bool									  hasLocation(void) const;
 	std::size_t								  getContentLength(void) const;
 	bool									  hasContentLength(void) const;
 	Type									  getType(void) const;
+	int										  getBodyFd(void) const;
 
 	void setStatus(unsigned short statusCode, std::string const &reason);
 	void setDefaultRedirStatus();

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:38:23 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:36:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,15 @@ class Request
 	std::string const						 &getMethod(void) const;
 	std::string const						 &getTarget(void) const;
 	std::string const						 &getQuery(void) const;
+	bool									  hasQuery(void) const;
 	std::string const						 &getProtocol(void) const;
-	std::map<std::string, std::string> const &getHeaders(void);
+	std::map<std::string, std::string> const &getHeaders(void) const;
 	std::string const						 &getHeader(std::string const &key) const;
+	bool									  hasHeader(std::string const &key) const;
 	std::size_t								  getContentLength(void) const;
 	bool									  hasContentLength(void) const;
+	std::string const						 &getBodyPath(void) const;
+	bool									  hasBody(void) const;
 
 	void
 	setStartLine(std::string const &method, std::string const &target, std::string const &protocol);
@@ -53,6 +57,7 @@ class Request
 		std::string const &protocol
 	);
 	void setTarget(std::string const &target);
+	void setQuery(std::string const &query);
 	void setHeader(std::string const &key, std::string const &value);
 	void setContentLength(std::size_t contentLength);
 

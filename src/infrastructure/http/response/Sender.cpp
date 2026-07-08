@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:25:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 21:56:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,12 @@ Sender::Step Sender::produce(
 			HeaderBlockSerializer::serialize(
 				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
-			state.step = (reader) ? resource : body;
+			if (reader)
+				state.step = resource;
+			else if (response.hasBody())
+				state.step = body;
+			else
+				state.step = complete;
 			break;
 		case body:
 			outputBuf.clear();

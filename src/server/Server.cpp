@@ -16,7 +16,7 @@
 #include "application/Exception.hpp"
 #include "config/Semantic.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
-#include "infrastructure/storage/file_system/Storage.hpp"
+#include "infrastructure/storage/file_system/fileSystem.hpp"
 
 Location Server::findLocationFromUri(std::string const &uri) const
 {
@@ -119,34 +119,34 @@ app::SystemResourceInfo setSRI(std::string const &path)
 
 	sri.resourcePath = path;
 
-	if (!fileSystem::Storage::exists(sri.resourcePath))
+	if (!fileSystem::exists(sri.resourcePath))
 	{
 		sri.exists = false;
 		return sri;
 	}
 	sri.exists = true;
 
-	if (fileSystem::Storage::isRegularFile(sri.resourcePath))
+	if (fileSystem::isRegularFile(sri.resourcePath))
 		sri.type = domain::leaf;
-	else if (fileSystem::Storage::isDirectory(sri.resourcePath))
+	else if (fileSystem::isDirectory(sri.resourcePath))
 		sri.type = domain::collection;
 	else
 		sri.type = domain::unknown;
 
 	sri.permissions = domain::none;
-	if (fileSystem::Storage::isReadable(sri.resourcePath))
+	if (fileSystem::isReadable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::readable);
-	if (fileSystem::Storage::isWritable(sri.resourcePath))
+	if (fileSystem::isWritable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::writable);
-	if (fileSystem::Storage::isExecutable(sri.resourcePath))
+	if (fileSystem::isExecutable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
 
-	sri.resourceSize = fileSystem::Storage::getSize(sri.resourcePath);
+	sri.resourceSize = fileSystem::getSize(sri.resourcePath);
 
-	sri.canBeDeleted = fileSystem::Storage::isDeletable(sri.resourcePath);
+	sri.canBeDeleted = fileSystem::isDeletable(sri.resourcePath);
 
 	return sri;
 }
@@ -180,8 +180,7 @@ app::SystemResourceInfo Server::locateDefaultIndex(
 	std::vector<std::string>::const_iterator it = indexesId.begin();
 	for (; it != ite; ++it)
 	{
-		if (fileSystem::Storage::exists(resPath + *it) &&
-			fileSystem::Storage::isRegularFile(resPath + *it))
+		if (fileSystem::exists(resPath + *it) && fileSystem::isRegularFile(resPath + *it))
 		{
 			return setSRI(resPath + *it);
 		}

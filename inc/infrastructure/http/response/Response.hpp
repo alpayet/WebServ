@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:36:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:46:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "domain/Exception.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
+#include <map>
 #include <string>
 #include <vector>
 
@@ -59,9 +60,10 @@ class Response
 
 	unsigned short			   getStatusCode(void) const;
 	std::string const		  &getStatusReason(void) const;
-	std::vector<Header> const &getHeaders(void);
+	std::vector<Header> const &getHeaders(void) const;
 	std::size_t				   getContentLength(void) const;
 	std::vector<char> const	  &getBody(void) const;
+	bool					   hasBody(void) const;
 
 	void reset(void);
 
@@ -84,6 +86,7 @@ class Response::Builder
 	Builder	 &withStatusLine(unsigned short statusCode);
 	Builder	 &withContentLength(std::size_t contentLength);
 	Builder	 &withContentLength(std::string const &contentLength);
+	Builder	 &withHeaders(std::map<std::string, std::string> const &headers);
 	Builder	 &withHeader(std::string const &key, std::string const &value);
 	Builder	 &withHeader(std::string const &key, std::size_t value);
 	Builder	 &withBody(std::vector<char> const &body);

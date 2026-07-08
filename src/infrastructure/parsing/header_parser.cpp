@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 03:46:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:22:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,26 +73,6 @@ ParseContentLength::Result parse_content_length(
 		return (ParseContentLength::bodyTooLarge);
 	out_content_length = static_cast<size_t>(val);
 	return (ParseContentLength::success);
-}
-
-template <typename InputIterator>
-bool is_valid_key_syntax(InputIterator it_start, InputIterator it_end)
-{
-	if (it_start == it_end)
-		return (false);
-	if (std::find_if(it_start, it_end, is_invalid_key_char) != it_end)
-		return (false);
-	return (true);
-}
-
-template <typename InputIterator>
-bool is_valid_value_syntax(InputIterator it_start, InputIterator it_end)
-{
-	if (it_start == it_end)
-		return (false);
-	if (std::find_if(it_start, it_end, is_invalid_value_char) != it_end)
-		return (false);
-	return (true);
 }
 
 bool is_invalid_key_char(unsigned char c)

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 05:08:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:44:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
 #include "infrastructure/http/constants.hpp"
-#include "infrastructure/http/presenters/listingHtml.hpp"
-#include "infrastructure/http/presenters/successLookup.hpp"
+#include "infrastructure/http/presenters/get_listing_html.hpp"
+#include "infrastructure/http/presenters/success_lookup.hpp"
 #include "infrastructure/http/response/Response.hpp"
 
 namespace http {

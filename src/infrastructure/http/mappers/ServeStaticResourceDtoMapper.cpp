@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 22:36:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:19:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ app::useCase::ServeStaticResource::Input
 ServeStaticResourceDtoMapper::toDto(Request const &request, RoutePolicy const &routePolicy)
 {
 	return (app::useCase::ServeStaticResource::Input(
-		request._startLine.target, routePolicy.matchedRoute, routePolicy.rootPath,
+		request.getTarget(), routePolicy.matchedRoute, routePolicy.rootPath,
 		routePolicy.isListingEnabled, routePolicy.indexesId
 	));
 }

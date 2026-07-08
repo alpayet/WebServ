@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:38:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:37:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ Request::Request()
 std::string const &Request::getMethod(void) const { return (_startLine.method); }
 std::string const &Request::getTarget(void) const { return (_startLine.target); }
 std::string const &Request::getQuery(void) const { return (_startLine.query); }
+bool			   Request::hasQuery(void) const { return (!_startLine.query.empty()); }
 std::string const &Request::getProtocol(void) const { return (_startLine.protocol); }
-std::map<std::string, std::string> const &Request::getHeaders(void) { return (_headers); }
+std::map<std::string, std::string> const &Request::getHeaders(void) const { return (_headers); }
 std::string const						 &Request::getHeader(std::string const &key) const
 {
 	std::map<std::string, std::string>::const_iterator itValue = _headers.find(key);
@@ -41,8 +42,14 @@ std::string const						 &Request::getHeader(std::string const &key) const
 	}
 	return (itValue->second);
 }
-std::size_t Request::getContentLength(void) const { return (_contentLength); }
-bool		Request::hasContentLength(void) const { return (_hasContentLength); }
+bool Request::hasHeader(std::string const &key) const
+{
+	return (_headers.find(key) != _headers.end());
+}
+std::size_t		   Request::getContentLength(void) const { return (_contentLength); }
+bool			   Request::hasContentLength(void) const { return (_hasContentLength); }
+std::string const &Request::getBodyPath(void) const { return (_body.getPath()); }
+bool			   Request::hasBody(void) const { return (_body.exists()); }
 
 void Request::setStartLine(
 	std::string const &method, std::string const &target, std::string const &protocol
@@ -67,6 +74,8 @@ void Request::setStartLine(
 }
 
 void Request::setTarget(std::string const &target) { _startLine.target = target; }
+
+void Request::setQuery(std::string const &query) { _startLine.query = query; }
 
 void Request::setHeader(std::string const &key, std::string const &value) { _headers[key] = value; }
 

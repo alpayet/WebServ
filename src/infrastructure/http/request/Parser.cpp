@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 06:45:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 18:56:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,8 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 			}
 			case Parser::body:
 			{
-				std::size_t current_body_bytes_read =
-					parseBody(inputBuf, state.request, state.bodyBytesRead);
-				inputBuf.erase(inputBuf.begin(), inputBuf.begin() + current_body_bytes_read);
+				parseBody(inputBuf, state.request, state.bodyBytesRead);
+				inputBuf.clear();
 
 				if (state.bodyBytesRead == state.request.getContentLength())
 				{
@@ -229,8 +228,9 @@ void Parser::parseContentLength(Request &request)
 	request.setContentLength(content_length);
 }
 
-std::size_t
-Parser::parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead)
+void Parser::parseBody(
+	std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead
+)
 {
 	validateBodySize(bodyBytesRead + inputBuf.size());
 
@@ -238,10 +238,9 @@ Parser::parseBody(std::vector<char> const &inputBuf, Request &request, std::size
 	{
 		request.appendBody(inputBuf, request.getContentLength() - bodyBytesRead);
 		bodyBytesRead = request.getContentLength();
-		return (request.getContentLength() - bodyBytesRead);
 	}
-	bodyBytesRead += request.appendBody(inputBuf);
-	return (inputBuf.size());
+	else
+		bodyBytesRead += request.appendBody(inputBuf);
 }
 
 std::string Parser::extractMethod(
@@ -282,7 +281,8 @@ void Parser::extractTargetandQuery(
 	if (!parse::is_valid_uri_syntax(it_target_start, it_target_end))
 		throw Exception(Exception::targetInvalid);
 
-	std::vector<char>::const_iterator it_query = std::find(it_target_start, it_target_end, '?');
+	std::vector<char>::const_iterator it_query =
+		std::find(it_target_start, it_target_end, parse::QUERY_DELIMITER);
 
 	if (it_query != it_target_end)
 	{

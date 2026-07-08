@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 03:40:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:28:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_HEADER_PARSER_HPP
 #define PARSE_HEADER_PARSER_HPP
 
+#include <algorithm>
 #include <map>
 #include <string>
 #include <vector>
@@ -54,13 +55,29 @@ ParseContentLength::Result parse_content_length(
 	std::size_t								 &out_content_length
 );
 
-template <typename InputIterator>
-bool is_valid_key_syntax(InputIterator it_start, InputIterator it_end);
-template <typename InputIterator>
-bool is_valid_value_syntax(InputIterator it_start, InputIterator it_end);
-
 bool is_invalid_key_char(unsigned char c);
 bool is_invalid_value_char(unsigned char c);
+
+template <typename InputIterator>
+bool is_valid_key_syntax(InputIterator it_start, InputIterator it_end)
+{
+	if (it_start == it_end)
+		return (false);
+	if (std::find_if(it_start, it_end, is_invalid_key_char) != it_end)
+		return (false);
+	return (true);
+}
+
+template <typename InputIterator>
+bool is_valid_value_syntax(InputIterator it_start, InputIterator it_end)
+{
+	if (it_start == it_end)
+		return (false);
+	if (std::find_if(it_start, it_end, is_invalid_value_char) != it_end)
+		return (false);
+	return (true);
+}
+
 } // namespace parse
 
 #endif // PARSE_HEADER_PARSER_HPP

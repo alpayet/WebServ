@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 05:37:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:07:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ class Parser
 		std::vector<char>::const_iterator itLineEnd,
 		Request							 &request
 	);
-	void Parser::parseHeaderLine(
+	void parseHeaderLine(
 		std::vector<char>::const_iterator itStart,
 		std::vector<char>::const_iterator itLineEnd,
 		Request							 &request
@@ -85,8 +85,7 @@ class Parser
 
 	void parseContentLength(Request &request);
 
-	std::size_t
-	parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
+	void parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
 
 	std::string extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

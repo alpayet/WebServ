@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 23:20:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:13:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class TempWriter
 	~TempWriter(void);
 
 	std::string const &getPath(void) const;
+	int				   getFd(void) const;
 
 	std::size_t write(std::vector<char> const &buf, std::size_t size);
 	std::size_t write(std::vector<char> const &buf);

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:20:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:43:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ Router::Router(
 
 void Router::route(Context &context)
 {
-	Request::StartLine const &start_line = context.input.state.request._startLine;
-	std::string const		 &method = start_line.method;
+	Request const	  &request = context.input.state.request;
+	std::string const &method = request.getMethod();
 
-	RoutePolicy const			   &route_policy = _routeRegistry.match(start_line.target);
+	RoutePolicy const			   &route_policy = _routeRegistry.match(request.getTarget());
 	std::vector<std::string> const &allowed_methods = route_policy.allowedMethods;
 
 	if (route_policy.hasReturn)

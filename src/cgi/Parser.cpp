@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 06:52:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 21:22:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "infrastructure/parsing/header_parser.hpp"
 #include "infrastructure/parsing/line_reader.hpp"
 #include "infrastructure/parsing/utils.hpp"
+#include <algorithm>
 
 namespace cgi {
 Parser::State::State(void)
@@ -201,8 +202,10 @@ void Parser::parseStatus(Response &response)
 	if (val < 100 || val > 599)
 		throw Exception(Exception::statusCodeInvalid);
 
-	std::string reason(it_status_code_end + 1, status.end());
-	parse::trim(reason, parse::WHITE_SPACES);
+	std::string::const_iterator it_reason_start =
+		std::find_if(it_status_code_end, status.end(), parse::is_not_white_spaces);
+
+	std::string reason(it_reason_start, status.end());
 
 	response.setStatus(static_cast<unsigned short>(val), reason);
 }
@@ -218,7 +221,7 @@ void Parser::parseLocation(Response &response)
 		throw Exception(Exception::locationInvalid);
 
 	std::string		  uri, query;
-	std::size_t const query_pos = location.find('?');
+	std::size_t const query_pos = location.find(parse::QUERY_DELIMITER);
 
 	if (query_pos != std::string::npos)
 	{

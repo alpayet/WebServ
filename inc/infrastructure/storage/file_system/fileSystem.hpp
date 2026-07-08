@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/05 03:21:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 03:21:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:11:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <string>
 
-namespace fileSytem {
+namespace fileSystem {
 bool		exists(std::string const &path);
 bool		isRegularFile(std::string const &path);
 bool		isDirectory(std::string const &path);
@@ -24,6 +24,6 @@ bool		isWritable(std::string const &path);
 bool		isExecutable(std::string const &path);
 std::size_t getSize(std::string const &path);
 bool		isDeletable(std::string const &path);
-} // namespace fileSytem
+} // namespace fileSystem
 
 #endif // FILESYSTEM_HPP

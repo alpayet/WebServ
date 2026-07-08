@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:46 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 03:46:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:24:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include <algorithm>
 
 namespace parse {
-template <typename InputIterator> bool has_line_break(InputIterator it_start, InputIterator it_end)
-{
-	return ((std::find_first_of(it_start, it_end, CRLF, CRLF + sizeof(CRLF) - 1) != it_end));
-}
-
 std::vector<char>::const_iterator find_line_end(std::vector<char> &buf)
 {
 	std::vector<char>::const_iterator it = std::find(buf.begin(), buf.end(), LF);

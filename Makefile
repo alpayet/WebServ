@@ -56,10 +56,14 @@ SRC_FILES = \
 	infrastructure/storage/file_system/TempWriter.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/Reader.cpp \
+	infrastructure/storage/file_system/fileSystem.cpp \
 	infrastructure/storage/file_system/Exception.cpp \
-	infrastructure/storage/file_system/constants.cpp \
 	infrastructure/storage/file_system/DirectoryExplorer.cpp \
-	infrastructure/http/statusReason.cpp \
+	infrastructure/storage/file_system/constants.cpp \
+	infrastructure/parsing/utils.cpp \
+	infrastructure/parsing/line_reader.cpp \
+	infrastructure/parsing/header_parser.cpp \
+	infrastructure/parsing/constants.cpp \
 	infrastructure/http/methods.cpp \
 	infrastructure/http/Handler.cpp \
 	infrastructure/http/Context.cpp \
@@ -69,21 +73,33 @@ SRC_FILES = \
 	infrastructure/http/response/ResponseBuilder.cpp \
 	infrastructure/http/response/Response.cpp \
 	infrastructure/http/response/HeaderBlockSerializer.cpp \
+	infrastructure/http/response/get_status_reason.cpp \
+	infrastructure/http/response/get_default_body.cpp \
 	infrastructure/http/request/Request.cpp \
 	infrastructure/http/request/Parser.cpp \
-	infrastructure/http/request/BodyFile.cpp \
-	infrastructure/http/presenters/successLookup.cpp \
+	infrastructure/http/presenters/success_lookup.cpp \
 	infrastructure/http/presenters/ServeStaticResourcePresenter.cpp \
+	infrastructure/http/presenters/get_listing_html.cpp \
+	infrastructure/http/presenters/ExecuteDynamicResourcePresenter.cpp \
 	infrastructure/http/presenters/DeleteStaticResourcePresenter.cpp \
-	infrastructure/http/presenters/listingHtml.cpp \
 	infrastructure/http/mappers/ServeStaticResourceDtoMapper.cpp \
+	infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \
 	infrastructure/http/mappers/DeleteStaticResourceDtoMapper.cpp \
-	infrastructure/http/exceptions/Exception.cpp \
+	infrastructure/http/mappers/CgiResponseMapper.cpp \
 	infrastructure/http/exceptions/ReturnException.cpp \
-	infrastructure/http/exceptions/errorLookup.cpp \
-	infrastructure/http/exceptions/generateDefaultBody.cpp \
+	infrastructure/http/exceptions/Exception.cpp \
+	infrastructure/http/exceptions/error_lookup.cpp \
 	infrastructure/http/controllers/ServeStaticResourceController.cpp \
+	infrastructure/http/controllers/ExecuteDynamicResourceController.cpp \
 	infrastructure/http/controllers/DeleteStaticResourceController.cpp \
+	cgi/Response.cpp \
+	cgi/Parser.cpp \
+	cgi/Exception.cpp \
+	cgi/constants.cpp \
+	application/Exception.cpp \
+	application/use_cases/serve_static_resource/ServeStaticResource.cpp \
+	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \
+	application/use_cases/delete_static_resource/DeleteStaticResource.cpp \
 	domain/Exception.cpp \
 	domain/value_objects/ResourceMetaData.cpp \
 	domain/entities/StaticResource.cpp \
@@ -91,14 +107,7 @@ SRC_FILES = \
 	config/Tokenizer.cpp \
 	config/Semantic.cpp \
 	config/Parser.cpp \
-	config/Config.cpp \
-	application/Exception.cpp \
-	application/use_cases/serve_static_resource/ServeStaticResource.cpp \
-	application/use_cases/delete_static_resource/DeleteStaticResource.cpp \
-	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \
-	infrastructure/http/presenters/ExecuteDynamicResourcePresenter.cpp \
-	infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \
-	infrastructure/http/controllers/ExecuteDynamicResourceController.cpp
+	config/Config.cpp
 
 #directories
 SRC_DIR = src/

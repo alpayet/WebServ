@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:12:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 22:38:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ class Handler : public ITransfertHandler
 {
   public:
 	Handler(
-		request::Parser		&parser,
+		request::Parser		&requestParser,
+		cgi::Parser			&cgiParser,
 		Router				&router,
 		response::Sender	&sender,
 		IErrorPagesProvider &errorPagesProvider
@@ -35,9 +36,9 @@ class Handler : public ITransfertHandler
 	virtual void prepareContext(unsigned int id);
 
 	virtual ProcessingStatus
-	pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus status);
+	pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus::Type status);
 	virtual ProcessingStatus
-	pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus status);
+	pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus::Type status);
 
 	virtual std::vector<char> const &pull(unsigned int id);
 
@@ -52,10 +53,13 @@ class Handler : public ITransfertHandler
 	// TODO : a voir pour mettre cette limite de max de connections dans la config ou pas
 	Context _contexts[1024];
 
-	request::Parser		&_parser;
+	request::Parser		&_requestParser;
+	cgi::Parser			&_cgiParser;
 	Router				&_router;
 	response::Sender	&_sender;
 	IErrorPagesProvider &_errorPagesProvider;
+
+	void dispatchCgiResponse(Context &context);
 
 	void prepareDirectResponse(
 		unsigned short statusCode, Response &response, app::IResourceReader **reader

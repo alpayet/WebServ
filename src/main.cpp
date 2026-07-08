@@ -12,6 +12,7 @@
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "cgi/Cgi.hpp"
+#include "cgi/Parser.hpp"
 #include "infrastructure/ITransfertHandler.hpp"
 #include "infrastructure/http/Handler.hpp"
 #include "infrastructure/http/controllers/DeleteStaticResourceController.hpp"
@@ -78,21 +79,28 @@ int main(int argc, char **argv)
 				executeDynamicResource_use_case, server_config
 			);
 
-			http::request::Parser parser(server_config, server_config);
+			http::request::Parser requestParser(server_config, server_config);
+			cgi::Parser			  cgiParser(server_config);
 			http::Router		  router(
 				server_config, serveStaticResource_controller, deleteStaticResource_controller
 			);
 			http::response::Sender sender(server_config);
 
-			http::Handler	   handler(parser, router, sender, server_config);
+			http::Handler	   handler(requestParser, cgiParser, router, sender, server_config);
 			ITransfertHandler &tranfer = handler;
 
 			std::string const		requete_test("GET /app/ HTTP/1.0\r\n\r\n");
 			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
+
+			std::string const		cgi_response_test("Status: 200 OK\r\n\
+Content-Type: text/html\r\nContent-Length: 11\r\n\r\nHello World");
+			std::vector<char> const cgi_input_buf(
+				cgi_response_test.begin(), cgi_response_test.end()
+			);
 			tranfer.prepareContext(0);
 
-			tranfer.pushRequest(0, input_buf);
-
+			// tranfer.pushRequest(0, input_buf, ITransfertHandler::RequestStatus::normal);
+			tranfer.pushStream(0, cgi_input_buf, ITransfertHandler::StreamStatus::normal);
 			while (!tranfer.isResponseComplete(0))
 			{
 				std::vector<char> const &output_buf = tranfer.pull(0);

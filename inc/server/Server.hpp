@@ -5,7 +5,7 @@
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
-#include "infrastructure/http/request/IRequestValidationPolicy.hpp"
+#include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
 #include <map>
 #include <string>
@@ -27,7 +27,7 @@ struct Location
 };
 
 class Server : public app::IResourceLocator,
-			   public http::IValidationPolicy,
+			   public parse::IValidationPolicy,
 			   public http::ILimitsProvider,
 			   public http::IRouteRegistry,
 			   public http::IHttpVersionProvider,
