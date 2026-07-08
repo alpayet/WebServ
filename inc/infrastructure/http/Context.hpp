@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 01:46:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:24:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ namespace http {
 class Context
 {
   public:
-	class Input
+	struct Input
 	{
-	  public:
 		Input(void);
 
 		std::vector<char>	   buf;
@@ -37,9 +36,9 @@ class Context
 		Input(Input const &src);
 		Input &operator=(Input const &rhs);
 	};
-	class Stream
+
+	struct Stream
 	{
-	  public:
 		Stream(void);
 
 		std::vector<char>  buf;
@@ -54,9 +53,9 @@ class Context
 		Stream(Stream const &src);
 		Stream &operator=(Stream const &rhs);
 	};
-	class Output
+
+	struct Output
 	{
-	  public:
 		Output(void);
 		~Output(void);
 

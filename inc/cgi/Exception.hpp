@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:52:58 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 16:14:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 06:51:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ class Exception : public std::exception
 		localRedirResponseMalformed,
 		clientRedirResponseMalformed,
 		clientRedirDocResponseMalformed,
+		statusCodeInvalid,
+		statusReasonInvalid,
+		locationInvalid,
 		lineBreakInvalid,
 		headerLineMalformed,
 		headerKeyInvalid,
@@ -34,7 +37,9 @@ class Exception : public std::exception
 		headerLineTooLarge,
 		headerCountTooLarge,
 		bodyTooLarge,
-		timeOut
+		bodySizeMismatch,
+		timeOut,
+		prematureEof
 	};
 
   public:

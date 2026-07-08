@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 21:49:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 05:37:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ class Parser
 		complete
 	};
 
-	class State
+	struct State
 	{
-	  public:
 		State(void);
 
 		Step		step;
@@ -76,16 +75,18 @@ class Parser
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,
 		std::vector<char>::const_iterator itLineEnd,
-		Request::StartLine				 &startLine
+		Request							 &request
 	);
 	void Parser::parseHeaderLine(
-		std::vector<char>::const_iterator	itStart,
-		std::vector<char>::const_iterator	itLineEnd,
-		std::map<std::string, std::string> &headers
+		std::vector<char>::const_iterator itStart,
+		std::vector<char>::const_iterator itLineEnd,
+		Request							 &request
 	);
 
 	void parseContentLength(Request &request);
-	void parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
+
+	std::size_t
+	parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead);
 
 	std::string extractMethod(
 		std::vector<char>::const_iterator &it, std::vector<char>::const_iterator itLineEnd

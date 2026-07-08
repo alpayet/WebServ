@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 05:11:02 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 01:17:47 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,13 @@ void Response::StatusLine::reset(void)
 	reason = DEFAULT_REASON;
 }
 
-Response::Response(void) : statusLine(), headers(), contentLength(0), body() {}
+Response::Response(void) : _statusLine(), _headers(), _contentLength(0), _body() {}
+
+unsigned short	   Response::getStatusCode(void) const { return (_statusLine.statusCode); }
+std::string const &Response::getStatusReason(void) const { return (_statusLine.reason); }
+std::vector<Response::Header> const &Response::getHeaders(void) { return (_headers); }
+std::size_t				 Response::getContentLength(void) const { return (_contentLength); }
+std::vector<char> const &Response::getBody(void) const { return (_body); }
 
 Response Response::buildErrorPage(
 	unsigned short StatusErrorCode, app::SystemResourceInfo const &errorPageInfo
@@ -57,9 +63,9 @@ Response Response::buildDefault(unsigned short statusCode)
 
 void Response::reset(void)
 {
-	statusLine.reset();
-	headers.clear();
-	contentLength = 0;
-	body.clear();
+	_statusLine.reset();
+	_headers.clear();
+	_contentLength = 0;
+	_body.clear();
 }
 } // namespace http

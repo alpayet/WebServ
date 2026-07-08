@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 23:14:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:38:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ namespace http {
 
 class Request
 {
-  public:
-	class StartLine
+  private:
+	struct StartLine
 	{
-	  public:
 		std::string method;
 		std::string target;
 		std::string query;
@@ -36,18 +35,43 @@ class Request
   public:
 	Request(void);
 
-	StartLine						   startLine;
-	std::map<std::string, std::string> headers;
-	std::size_t						   contentLength;
-	fileSystem::TempWriter			   body;
+	std::string const						 &getMethod(void) const;
+	std::string const						 &getTarget(void) const;
+	std::string const						 &getQuery(void) const;
+	std::string const						 &getProtocol(void) const;
+	std::map<std::string, std::string> const &getHeaders(void);
+	std::string const						 &getHeader(std::string const &key) const;
+	std::size_t								  getContentLength(void) const;
+	bool									  hasContentLength(void) const;
 
-	static char const BODY_NAME_TEMPLATE[];
+	void
+	setStartLine(std::string const &method, std::string const &target, std::string const &protocol);
+	void setStartLine(
+		std::string const &method,
+		std::string const &target,
+		std::string const &query,
+		std::string const &protocol
+	);
+	void setTarget(std::string const &target);
+	void setHeader(std::string const &key, std::string const &value);
+	void setContentLength(std::size_t contentLength);
+
+	std::size_t appendBody(std::vector<char> const &buf);
+	std::size_t appendBody(std::vector<char> const &buf, std::size_t size);
 
 	void reset(void);
 
   private:
 	Request(Request const &src);
 	Request &operator=(Request const &rhs);
+
+	StartLine						   _startLine;
+	std::map<std::string, std::string> _headers;
+	bool							   _hasContentLength;
+	std::size_t						   _contentLength;
+	fileSystem::TempWriter			   _body;
+
+	static char const BODY_NAME_TEMPLATE[];
 };
 } // namespace http
 

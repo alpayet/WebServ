@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 16:36:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 06:52:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "cgi/Exception.hpp"
 #include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/parsing/header_parser.hpp"
+#include "infrastructure/parsing/line_reader.hpp"
 #include "infrastructure/parsing/utils.hpp"
 
 namespace cgi {
@@ -44,11 +46,11 @@ Parser::Parser(parse::IValidationPolicy &validationPolicy) : _validationPolicy(v
 	_maxBodySize = std::min(_validationPolicy.getMaxBodySize(), parse::DEFAULT_MAX_BODY_SIZE);
 }
 
-Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
+Parser::Step Parser::parse(std::vector<char> &inputBuf, bool isCgiEof, Parser::State &state)
 {
 	bool can_continue = true;
 
-	while (can_continue && !inputBuf.empty())
+	while (can_continue && (!inputBuf.empty() || isCgiEof))
 	{
 		switch (state.step)
 		{
@@ -62,6 +64,8 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
 
 				if (it_line_end == inputBuf.end())
 				{
+					if (isCgiEof)
+						throw Exception(Exception::prematureEof);
 					can_continue = false;
 					break;
 				}
@@ -71,14 +75,24 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
 
 				if (it_start == it_line_end)
 				{
-					classifyResponse(state.response, state.step);
+					parseContentLength(state.response);
+					parseStatus(state.response);
+					parseLocation(state.response);
+					classifyResponse(state.response);
 					parse::consume_line(inputBuf);
+
+					if (state.response.getType() == Response::localRedir ||
+						state.response.getType() == Response::clientRedir)
+					{
+						state.step = Parser::complete;
+						can_continue = false;
+					}
+					else
+						state.step = Parser::body;
 					break;
 				}
 
-				parseHeaderLine(it_start, it_line_end, state.response.headers);
-				parseContentLength(state.response);
-
+				parseHeaderLine(it_start, it_line_end, state.response);
 				parse::consume_line(inputBuf);
 				break;
 			}
@@ -87,47 +101,45 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, Parser::State &state)
 				parseBody(inputBuf, state.response, state.bodyBytesRead);
 				inputBuf.clear();
 
-				if (state.bodyBytesRead == state.response.contentLength)
+				if (isCgiEof && state.response.hasContentLength() &&
+					state.bodyBytesRead < state.response.getContentLength())
+					throw Exception(Exception::prematureEof);
+
+				if (isCgiEof || (state.response.hasContentLength() &&
+								 state.bodyBytesRead == state.response.getContentLength()))
 				{
+					state.response.setContentLength(state.bodyBytesRead);
 					state.step = Parser::complete;
 					can_continue = false;
-					break;
 				}
+				break;
 			}
 			default:
+				can_continue = false;
 				break;
 		}
 	}
 	return (state.step);
 }
 
-void classifyResponse(Response &response, Parser::Step &step)
+void Parser::classifyResponse(Response &response)
 {
-	if (!response.location.uri.empty())
+	if (response.hasLocation())
 	{
-		switch (response.location.type)
+		switch (response.getLocationType())
 		{
 			case Response::Location::local:
-				if (response.headers.size() != 1)
+				if (response.getHeadersSize() != 1)
 					throw Exception(Exception::localRedirResponseMalformed);
-				response.type = Response::localRedir;
-				step = Parser::complete;
+				response.setType(Response::localRedir);
 				break;
 			case Response::Location::client:
-				if (response.headers.find(parse::header::LOWER_CONTENT_TYPE) !=
-					response.headers.end())
-				{
-					response.type = Response::clientRedirDoc;
-					step = Parser::body;
-				}
+				if (response.hasHeader(parse::CONTENT_TYPE))
+					response.setType(Response::clientRedirDoc);
 				else
-				{
-					response.type = Response::clientRedir;
-					step = Parser::complete;
-				}
+					response.setType(Response::clientRedir);
 
-				response.statusLine.statusCode = Response::StatusLine::DEFAULT_REDIR_STATUS_CODE;
-				response.statusLine.reason = Response::StatusLine::DEFAULT_REDIR_REASON;
+				response.setDefaultRedirStatus();
 				break;
 			default:
 				break;
@@ -135,21 +147,19 @@ void classifyResponse(Response &response, Parser::Step &step)
 	}
 	else
 	{
-		if (response.headers.find(parse::header::LOWER_CONTENT_TYPE) == response.headers.end())
+		if (!response.hasHeader(parse::CONTENT_TYPE))
 			throw Exception(Exception::documentResponseMalformed);
-		response.type = Response::document;
-		step = Parser::body;
+		response.setType(Response::document);
 	}
 }
 
-void parseHeaderLine(
-	std::vector<char>::const_iterator	itStart,
-	std::vector<char>::const_iterator	itLineEnd,
-	std::map<std::string, std::string> &headers
+void Parser::parseHeaderLine(
+	std::vector<char>::const_iterator itStart,
+	std::vector<char>::const_iterator itLineEnd,
+	Response						 &response
 )
 {
-	std::string key;
-	std::string value;
+	std::string key, value;
 
 	switch (parse::parse_header_line(itStart, itLineEnd, key, value))
 	{
@@ -164,13 +174,74 @@ void parseHeaderLine(
 		default:
 			break;
 	}
-	headers[key] = value;
+	response.setHeader(key, value);
+}
+
+void Parser::parseStatus(Response &response)
+{
+	std::string const &status = response.getHeader(parse::STATUS);
+
+	if (status.empty())
+		return;
+
+	std::string::const_iterator it_status_code_end =
+		parse::find_white_spaces(status.begin(), status.end());
+
+	if (it_status_code_end == status.end())
+		throw Exception(Exception::statusCodeInvalid);
+
+	std::string status_code(status.begin(), it_status_code_end);
+
+	char *endptr = NULL;
+	errno = 0;
+	unsigned long val = std::strtoul(status_code.c_str(), &endptr, 10);
+
+	if (errno == ERANGE || *endptr != '\0' || status_code[0] == '-')
+		throw Exception(Exception::statusCodeInvalid);
+	if (val < 100 || val > 599)
+		throw Exception(Exception::statusCodeInvalid);
+
+	std::string reason(it_status_code_end + 1, status.end());
+	parse::trim(reason, parse::WHITE_SPACES);
+
+	response.setStatus(static_cast<unsigned short>(val), reason);
+}
+
+void Parser::parseLocation(Response &response)
+{
+	std::string const &location = response.getHeader(parse::LOCATION);
+
+	if (location.empty())
+		return;
+
+	if (!parse::is_valid_uri_syntax(location.begin(), location.end()))
+		throw Exception(Exception::locationInvalid);
+
+	std::string		  uri, query;
+	std::size_t const query_pos = location.find('?');
+
+	if (query_pos != std::string::npos)
+	{
+		uri = std::string(location.begin(), location.begin() + query_pos);
+		query = location.substr(query_pos + 1);
+	}
+	else
+		uri = location;
+
+	Response::Location::Type location_type =
+		(uri[0] == '/') ? Response::Location::local : Response::Location::client;
+
+	response.setLocation(uri, query, location_type);
 }
 
 void Parser::parseContentLength(Response &response)
 {
-	switch (parse::parse_content_length(response.headers, _maxBodySize, response.contentLength))
+	std::size_t content_length;
+
+	switch (parse::parse_content_length(response.getHeaders(), _maxBodySize, content_length))
 	{
+		case parse::ParseContentLength::contentLengthMissing:
+			return;
 		case parse::ParseContentLength::contentLengthInvalid:
 			throw Exception(Exception::contentLengthInvalid);
 		case parse::ParseContentLength::bodyTooLarge:
@@ -178,6 +249,7 @@ void Parser::parseContentLength(Response &response)
 		default:
 			break;
 	}
+	response.setContentLength(content_length);
 }
 
 void Parser::parseBody(
@@ -186,9 +258,11 @@ void Parser::parseBody(
 {
 	validateBodySize(bodyBytesRead + inputBuf.size());
 
-	if (response.contentLength >= 0 && bodyBytesRead + inputBuf.size() > response.contentLength)
-		throw Exception(Exception::bodyTooLarge);
-	bodyBytesRead += response.body.write(inputBuf);
+	if (response.hasContentLength() &&
+		bodyBytesRead + inputBuf.size() > response.getContentLength())
+		throw Exception(Exception::bodySizeMismatch);
+
+	bodyBytesRead += response.appendBody(inputBuf);
 }
 
 void Parser::validateHeaderLineSize(std::size_t size)

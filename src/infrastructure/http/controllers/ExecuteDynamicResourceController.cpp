@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:18:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:20:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy 
 	Request const &request = context.input.state.request;
 
 	std::string bodyPath;
-	if (request.body.exists())
-		bodyPath = request.body.getPath();
-	if (request.contentLength > _limitsProvider.getMaxBodySize(request.startLine.target))
+	if (request._body.exists())
+		bodyPath = request._body.getPath();
+	if (request._contentLength > _limitsProvider.getMaxBodySize(request._startLine.target))
 		throw Exception(Exception::bodyTooLarge);
 	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
 
@@ -57,17 +57,17 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 {
 	std::map<std::string, std::string> metaVariable;
 
-	metaVariable[cgiMeta::REQUEST_METHOD] = request.startLine.method;
-	if (!request.startLine.query.empty())
-		metaVariable[cgiMeta::QUERY_STRING] = request.startLine.query;
+	metaVariable[cgiMeta::REQUEST_METHOD] = request._startLine.method;
+	if (!request._startLine.query.empty())
+		metaVariable[cgiMeta::QUERY_STRING] = request._startLine.query;
 
 	std::map<std::string, std::string>::const_iterator content_length_it =
-		request.headers.find(header::LOWER_CONTENT_LENGTH);
+		request._headers.find(header::LOWER_CONTENT_LENGTH);
 	if (content_length_it != metaVariable.end())
 		metaVariable[cgiMeta::CONTENT_LENGTH] = content_length_it->second;
 
 	std::map<std::string, std::string>::const_iterator content_type_it =
-		request.headers.find(header::LOWER_CONTENT_TYPE);
+		request._headers.find(header::LOWER_CONTENT_TYPE);
 	if (content_type_it != metaVariable.end())
 		metaVariable[cgiMeta::CONTENT_TYPE] = content_type_it->second;
 	return (metaVariable);

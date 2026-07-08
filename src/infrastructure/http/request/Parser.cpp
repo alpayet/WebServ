@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 16:35:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 06:45:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,11 @@
 #include "infrastructure/http/methods.hpp"
 #include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/parsing/header_parser.hpp"
+#include "infrastructure/parsing/line_reader.hpp"
 #include "infrastructure/parsing/utils.hpp"
 #include <algorithm>
 #include <cerrno>
-
-namespace {
-bool is_invalid_target_char(unsigned char c) { return (c <= 32 || c == 127); }
-
-bool is_valid_target_syntax(
-	std::vector<char>::const_iterator it_start, std::vector<char>::const_iterator it_end
-)
-{
-	if (it_start == it_end)
-		return (false);
-	if (*it_start != '/')
-		return (false);
-	if (std::find_if(it_start, it_end, is_invalid_target_char) != it_end)
-		return (false);
-	return (true);
-}
-} // namespace
 
 namespace http {
 namespace request {
@@ -87,7 +72,6 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 				{
 					state.currenLineSize += 1;
 					validateRequestLineSize(state.currenLineSize);
-
 					parse::consume_line(inputBuf);
 					break;
 				}
@@ -115,8 +99,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					break;
 				}
 
-				parseRequestLine(it_start, it_line_end, state.request.startLine);
-
+				parseRequestLine(it_start, it_line_end, state.request);
 				parse::consume_line(inputBuf);
 				state.currenLineSize = 0;
 				state.step = Parser::header;
@@ -141,8 +124,9 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 
 				if (it_start == it_line_end)
 				{
-					if (state.request.contentLength != 0 &&
-						expects_body(state.request.startLine.method))
+					parseContentLength(state.request);
+					if (state.request.getContentLength() != 0 &&
+						expects_body(state.request.getMethod()))
 						state.step = Parser::body;
 					else
 					{
@@ -153,25 +137,25 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 					break;
 				}
 
-				parseHeaderLine(it_start, it_line_end, state.request.headers);
-				parseContentLength(state.request);
-
+				parseHeaderLine(it_start, it_line_end, state.request);
 				parse::consume_line(inputBuf);
 				break;
 			}
 			case Parser::body:
 			{
-				parseBody(inputBuf, state.request, state.bodyBytesRead);
-				inputBuf.clear();
+				std::size_t current_body_bytes_read =
+					parseBody(inputBuf, state.request, state.bodyBytesRead);
+				inputBuf.erase(inputBuf.begin(), inputBuf.begin() + current_body_bytes_read);
 
-				if (state.bodyBytesRead == state.request.contentLength)
+				if (state.bodyBytesRead == state.request.getContentLength())
 				{
 					state.step = Parser::complete;
 					can_continue = false;
-					break;
 				}
+				break;
 			}
 			default:
+				can_continue = false;
 				break;
 		}
 	}
@@ -181,7 +165,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 void Parser::parseRequestLine(
 	std::vector<char>::const_iterator itStart,
 	std::vector<char>::const_iterator itLineEnd,
-	Request::StartLine				 &startLine
+	Request							 &request
 )
 {
 	if (parse::has_line_break(itStart, itLineEnd))
@@ -189,22 +173,25 @@ void Parser::parseRequestLine(
 
 	std::vector<char>::const_iterator it = itStart;
 
-	startLine.method = extractMethod(it, itLineEnd);
-	extractTargetandQuery(it, itLineEnd, startLine.target, startLine.query);
-	startLine.protocol = extractProtocol(it, itLineEnd);
+	std::string method, target, query, protocol;
+
+	method = extractMethod(it, itLineEnd);
+	extractTargetandQuery(it, itLineEnd, target, query);
+	protocol = extractProtocol(it, itLineEnd);
+
+	request.setStartLine(method, target, query, protocol);
 
 	if (std::find_if(it, itLineEnd, parse::is_not_white_spaces) != itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 }
 
 void Parser::parseHeaderLine(
-	std::vector<char>::const_iterator	itStart,
-	std::vector<char>::const_iterator	itLineEnd,
-	std::map<std::string, std::string> &headers
+	std::vector<char>::const_iterator itStart,
+	std::vector<char>::const_iterator itLineEnd,
+	Request							 &request
 )
 {
-	std::string key;
-	std::string value;
+	std::string key, value;
 
 	switch (parse::parse_header_line(itStart, itLineEnd, key, value))
 	{
@@ -219,15 +206,17 @@ void Parser::parseHeaderLine(
 		default:
 			break;
 	}
-	headers[key] = value;
+	request.setHeader(key, value);
 }
 
 void Parser::parseContentLength(Request &request)
 {
-	switch (parse::parse_content_length(request.headers, _maxBodySize, request.contentLength))
+	std::size_t content_length;
+
+	switch (parse::parse_content_length(request.getHeaders(), _maxBodySize, content_length))
 	{
 		case parse::ParseContentLength::contentLengthMissing:
-			if (expects_body(request.startLine.method))
+			if (expects_body(request.getMethod()))
 				throw Exception(Exception::contentLengthRequired);
 			break;
 		case parse::ParseContentLength::contentLengthInvalid:
@@ -237,21 +226,22 @@ void Parser::parseContentLength(Request &request)
 		default:
 			break;
 	}
+	request.setContentLength(content_length);
 }
 
-void Parser::parseBody(
-	std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead
-)
+std::size_t
+Parser::parseBody(std::vector<char> const &inputBuf, Request &request, std::size_t &bodyBytesRead)
 {
 	validateBodySize(bodyBytesRead + inputBuf.size());
 
-	if (bodyBytesRead + inputBuf.size() > request.contentLength)
+	if (bodyBytesRead + inputBuf.size() > request.getContentLength())
 	{
-		request.body.write(inputBuf, request.contentLength - bodyBytesRead);
-		bodyBytesRead = request.contentLength;
+		request.appendBody(inputBuf, request.getContentLength() - bodyBytesRead);
+		bodyBytesRead = request.getContentLength();
+		return (request.getContentLength() - bodyBytesRead);
 	}
-	else
-		bodyBytesRead += request.body.write(inputBuf);
+	bodyBytesRead += request.appendBody(inputBuf);
+	return (inputBuf.size());
 }
 
 std::string Parser::extractMethod(
@@ -287,7 +277,9 @@ void Parser::extractTargetandQuery(
 	if (it_target_end == itLineEnd)
 		throw Exception(Exception::requestLineMalformed);
 
-	if (!is_valid_target_syntax(it_target_start, it_target_end))
+	if (*it_target_start != '/')
+		throw Exception(Exception::targetInvalid);
+	if (!parse::is_valid_uri_syntax(it_target_start, it_target_end))
 		throw Exception(Exception::targetInvalid);
 
 	std::vector<char>::const_iterator it_query = std::find(it_target_start, it_target_end, '?');

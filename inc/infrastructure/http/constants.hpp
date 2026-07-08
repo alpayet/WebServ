@@ -5,35 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/06 04:29:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 03:16:15 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/08 00:32:23 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/08 00:33:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSINGCONSTANTS_HPP
-#define PARSINGCONSTANTS_HPP
+#ifndef HTTPCONSTANTS_HPP
+#define HTTPCONSTANTS_HPP
 
-#include <cstdlib>
+namespace http {
 
-namespace parse {
-extern char const COLON;
-extern char const SP;
-extern char const HT;
-extern char const WHITE_SPACES[3];
-extern char const CR;
-extern char const LF;
-extern char const CRLF[3];
-
+namespace header {
 extern char const CONTENT_LENGTH[];
 extern char const CONTENT_TYPE[];
-extern char const STATUS[];
-extern char const LOCATION[];
+} // namespace header
 
-extern std::size_t const DEFAULT_MAX_REQUEST_LINE_SIZE = 8192;
-extern std::size_t const DEFAULT_MAX_HEADER_LINE_SIZE = 8192;
-extern std::size_t const DEFAULT_MAX_HEADER_COUNT = 100;
-extern std::size_t const DEFAULT_MAX_BODY_SIZE = 1048576;
+} // namespace http
 
-} // namespace parse
-
-#endif // PARSINGCONSTANTS_HPP
+#endif // HTTPCONSTANTS_HPP

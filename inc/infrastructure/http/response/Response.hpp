@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:51:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:36:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ class Response
   public:
 	class Builder;
 
-	class StatusLine
+  private:
+	struct StatusLine
 	{
-	  public:
 		StatusLine(void);
 
 		unsigned short statusCode;
@@ -46,6 +46,8 @@ class Response
 		static unsigned short const DEFAULT_STATUS_CODE;
 		static char const			DEFAULT_REASON[];
 	};
+
+  public:
 	struct Header
 	{
 		std::string key;
@@ -55,17 +57,23 @@ class Response
   public:
 	Response(void);
 
-	StatusLine			statusLine;
-	std::vector<Header> headers;
-	std::size_t			contentLength;
-	std::vector<char>	body;
+	unsigned short			   getStatusCode(void) const;
+	std::string const		  &getStatusReason(void) const;
+	std::vector<Header> const &getHeaders(void);
+	std::size_t				   getContentLength(void) const;
+	std::vector<char> const	  &getBody(void) const;
 
 	void reset(void);
 
 	static Response
 	buildErrorPage(unsigned short StatusErrorCode, app::SystemResourceInfo const &errorPageInfo);
-
 	static Response buildDefault(unsigned short statusCode);
+
+  private:
+	StatusLine			_statusLine;
+	std::vector<Header> _headers;
+	std::size_t			_contentLength;
+	std::vector<char>	_body;
 };
 
 class Response::Builder

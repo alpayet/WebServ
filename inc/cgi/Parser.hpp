@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:28:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 23:58:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 06:44:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ class Parser
 		complete
 	};
 
-	class State
+	struct State
 	{
-	  public:
 		State(void);
 
 		Step		step;
@@ -53,7 +52,7 @@ class Parser
   public:
 	Parser(parse::IValidationPolicy &validationPolicy);
 
-	Step parse(std::vector<char> &inputBuf, State &state);
+	Step parse(std::vector<char> &inputBuf, bool isCgiEof, State &state);
 
   private:
 	Parser(Parser const &src);
@@ -66,13 +65,15 @@ class Parser
 
 	parse::IValidationPolicy &_validationPolicy;
 
-	void classifyResponse(Response &response, Step &step);
+	void classifyResponse(Response &response);
 
 	void parseHeaderLine(
-		std::vector<char>::const_iterator	itStart,
-		std::vector<char>::const_iterator	itLineEnd,
-		std::map<std::string, std::string> &headers
+		std::vector<char>::const_iterator itStart,
+		std::vector<char>::const_iterator itLineEnd,
+		Response						 &response
 	);
+	void parseStatus(Response &response);
+	void parseLocation(Response &response);
 	void parseContentLength(Response &response);
 	void
 	parseBody(std::vector<char> const &inputBuf, Response &response, std::size_t &bodyBytesRead);

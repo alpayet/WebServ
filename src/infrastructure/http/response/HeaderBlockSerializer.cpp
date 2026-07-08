@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:16:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 00:49:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 01:15:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
 #include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/response/Response.hpp"
-#include "infrastructure/http/response/statusReason.hpp"
+#include "infrastructure/http/response/get_status_reason.hpp"
 #include <iterator>
 #include <sstream>
 
@@ -29,15 +29,15 @@ void HeaderBlockSerializer::serialize(
 	headerBlock += SP;
 
 	std::stringstream ss;
-	ss << response.statusLine.statusCode;
+	ss << response._statusLine.statusCode;
 	headerBlock += ss.str();
 	headerBlock += SP;
 
-	headerBlock += response.statusLine.reason;
+	headerBlock += response._statusLine.reason;
 	headerBlock += CRLF;
 
-	for (std::vector<Response::Header>::const_iterator i = response.headers.begin();
-		 i != response.headers.end(); ++i)
+	for (std::vector<Response::Header>::const_iterator i = response._headers.begin();
+		 i != response._headers.end(); ++i)
 	{
 		headerBlock += i->key;
 		headerBlock += COLON;

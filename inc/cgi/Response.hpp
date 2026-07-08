@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/07 14:23:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 05:16:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,44 @@ class Response
 		clientRedirDoc
 	};
 
-	class StatusLine
+  private:
+	class Status
 	{
 	  public:
-		StatusLine(void);
+		Status(void);
 
-		unsigned short statusCode;
-		std::string	   reason;
-		bool		   exists;
+		unsigned short	   getStatusCode(void) const;
+		std::string const &getReason(void) const;
+
+		void setStatus(unsigned statusCode, std::string const &reason);
+		void setDefaultRedirStatus(void);
+		bool exists(void) const;
+		void reset(void);
+
+	  private:
+		unsigned short _statusCode;
+		std::string	   _reason;
+		bool		   _exists;
 
 		static unsigned short const DEFAULT_STATUS_CODE;
 		static char const			DEFAULT_REASON[];
 		static unsigned short const DEFAULT_REDIR_STATUS_CODE;
 		static char const			DEFAULT_REDIR_REASON[];
-
-		void reset(void);
 	};
 
-	class Location
+  public:
+	struct Location
 	{
-	  public:
 		enum Type
 		{
 			local,
 			client
 		};
 
-	  public:
 		Location(void);
 
 		std::string uri;
+		std::string query;
 		Type		type;
 
 		void reset(void);
@@ -68,20 +76,44 @@ class Response
   public:
 	Response(void);
 
-	StatusLine						   statusLine;
-	std::map<std::string, std::string> headers;
-	Location						   location;
-	ssize_t							   contentLength;
-	fileSystem::TempWriter			   body;
-	Type							   type;
+	unsigned short							  getStatusCode(void) const;
+	std::string const						 &getStatusReason(void) const;
+	std::size_t								  getHeadersSize(void) const;
+	std::map<std::string, std::string> const &getHeaders(void);
+	std::string const						 &getHeader(std::string const &key) const;
+	bool									  hasHeader(std::string const &key) const;
+	std::string const						 &getLocationUri(void) const;
+	Location::Type							  getLocationType(void) const;
+	bool									  hasLocation(void) const;
+	std::size_t								  getContentLength(void) const;
+	bool									  hasContentLength(void) const;
+	Type									  getType(void) const;
 
-	static char const BODY_NAME_TEMPLATE[];
+	void setStatus(unsigned short statusCode, std::string const &reason);
+	void setDefaultRedirStatus();
+	void setHeader(std::string const &key, std::string const &value);
+	void setLocation(std::string const &uri, std::string const &query, Location::Type type);
+	void setContentLength(std::size_t contentLength);
+	void setType(Type type);
+
+	std::size_t appendBody(std::vector<char> const &buf);
+	std::size_t appendBody(std::vector<char> const &buf, std::size_t size);
 
 	void reset(void);
 
   private:
 	Response(Response const &src);
 	Response &operator=(Response const &rhs);
+
+	Status							   _status;
+	std::map<std::string, std::string> _headers;
+	Location						   _location;
+	bool							   _hasContentLength;
+	std::size_t						   _contentLength;
+	fileSystem::TempWriter			   _body;
+	Type							   _type;
+
+	static char const BODY_NAME_TEMPLATE[];
 };
 } // namespace cgi
 

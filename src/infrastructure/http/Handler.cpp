@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 06:21:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:29:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,16 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamS
 		if (cgi::Parser::parse(context_stream.buf, context_stream.state) == cgi::Parser::complete)
 		{
 			// TODO a fini
-			if (context_stream.state.response.type == cgi::Response::localRedir)
+			if (context_stream.state.response.getType() == cgi::Response::localRedir)
 			{
 				if (++context_stream.localRedirDepth > Context::Stream::MAX_LOCAL_REDIR_DEPTH)
 					throw Exception(Exception::maxLocalRedirDepthExceeded);
 
 				context_stream.reset();
 				_contexts[id].output.reset();
-				_contexts[id].input.state.request.startLine.target =
-					context_stream.state.response.location;
+				_contexts[id].input.state.request.setTarget(
+					context_stream.state.response.getLocationUri()
+				);
 				_router.route(_contexts[id]);
 			}
 			return (ITransfertHandler::complete);

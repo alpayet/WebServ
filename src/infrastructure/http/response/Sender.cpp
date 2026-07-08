@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 04:32:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:25:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ namespace response {
 
 Sender::State::State(void) : step(HeaderBlock), totalBytesRead(0), cgiBuf() {}
 
-Sender::Sender(IHttpVersionProvider &httpVersionProvider)
-	: _httpVersionProvider(httpVersionProvider)
-{}
-
 void Sender::State::reset(void)
 {
 	step = HeaderBlock;
 	totalBytesRead = 0;
 	cgiBuf.clear();
 }
+
+Sender::Sender(IHttpVersionProvider &httpVersionProvider)
+	: _httpVersionProvider(httpVersionProvider)
+{}
 
 Sender::Step Sender::produce(
 	std::vector<char>	 &outputBuf,
@@ -50,21 +50,21 @@ Sender::Step Sender::produce(
 			break;
 		case body:
 			outputBuf.clear();
-			outputBuf = response.body;
+			outputBuf = response.getBody();
 			state.step = complete;
 			break;
 		case resource:
 		{
 			outputBuf.clear();
 			size_t const bytes_read =
-				reader->read(outputBuf, response.contentLength - state.totalBytesRead);
+				reader->read(outputBuf, response.getContentLength() - state.totalBytesRead);
 
-			if (bytes_read == 0 && state.totalBytesRead < response.contentLength)
+			if (bytes_read == 0 && state.totalBytesRead < response.getContentLength())
 			{
 				// TODO: a vori avec luca si il catch les throw et deconnecte le client
 				// throw ;
 			}
-			if (state.totalBytesRead + bytes_read == response.contentLength)
+			if (state.totalBytesRead + bytes_read == response.getContentLength())
 				state.step = complete;
 
 			state.totalBytesRead += bytes_read;
