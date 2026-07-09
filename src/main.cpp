@@ -92,8 +92,11 @@ int main(int argc, char **argv)
 			std::string const		requete_test("GET /app/ HTTP/1.0\r\n\r\n");
 			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
 
-			std::string const		cgi_response_test("Status: 200 OK\r\n\
-Content-Type: text/html\r\nContent-Length: 11\r\n\r\nHello World");
+			std::string const cgi_response_test(
+				"Status: 99 Invalid\r\n"
+				"Content-Type: text/html\r\n"
+				"\r\n"
+			);
 			std::vector<char> const cgi_input_buf(
 				cgi_response_test.begin(), cgi_response_test.end()
 			);

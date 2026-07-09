@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 18:56:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:32:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 
 				if (state.bodyBytesRead == state.request.getContentLength())
 				{
+					state.request.prepareForReading();
 					state.step = Parser::complete;
 					can_continue = false;
 				}

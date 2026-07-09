@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 21:56:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:14:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ Sender::Step Sender::produce(
 			if (bytes_read == 0 && state.totalBytesRead < response.getContentLength())
 			{
 				// TODO: a vori avec luca si il catch les throw et deconnecte le client
-				// throw ;
+				// throw "caca";
 			}
-			if (state.totalBytesRead + bytes_read == response.getContentLength())
-				state.step = complete;
 
 			state.totalBytesRead += bytes_read;
+			if (state.totalBytesRead == response.getContentLength())
+				state.step = complete;
 			break;
 		}
 		case cgi:

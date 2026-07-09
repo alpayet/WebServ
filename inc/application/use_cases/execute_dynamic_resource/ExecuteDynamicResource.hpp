@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 01:46:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:01:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 namespace app {
 class IResourceLocator;
 class IDynamicResourceExecutor;
-class IResourceReader;
 
 namespace useCase {
 class ExecuteDynamicResource
@@ -44,20 +43,13 @@ class ExecuteDynamicResource
 		std::string						   bodyPath;
 		std::map<std::string, std::string> metaVariables;
 	};
-	class IOutputPort
-	{
-	  public:
-		virtual ~IOutputPort() {}
-
-		virtual void presentDynamicContent(IResourceReader *resourceReader) = 0;
-	};
 
   public:
 	ExecuteDynamicResource(
 		IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 	);
 
-	void execute(Input const &dtoInput, IOutputPort &outputPort);
+	void execute(Input const &dtoInput);
 
   private:
 	ExecuteDynamicResource(ExecuteDynamicResource const &src);

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:14:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:31:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,12 @@ std::size_t Response::appendBody(std::vector<char> const &buf) { return (_body.w
 std::size_t Response::appendBody(std::vector<char> const &buf, std::size_t size)
 {
 	return (_body.write(buf, size));
+}
+
+void Response::prepareForReading(void)
+{
+	if (_body.exists())
+		_body.resetPosition();
 }
 
 void Response::reset(void)

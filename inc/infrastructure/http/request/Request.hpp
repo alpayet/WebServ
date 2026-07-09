@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 23:36:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:29:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ class Request
 
 	std::size_t appendBody(std::vector<char> const &buf);
 	std::size_t appendBody(std::vector<char> const &buf, std::size_t size);
+
+	void prepareForReading(void);
 
 	void reset(void);
 

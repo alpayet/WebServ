@@ -157,7 +157,8 @@ void Cgi::execute(
 		usleep(14000);
 	}
 	// if post call function to write body in fsd[1]
-	// TODO: not close and return that fd
+	// TODO: ce pas fermer ce fd et le passé a un orchestrateur qui va appelr la methode d'ajoue a
+	// epoll du transport
 	close(fds[1]);
 }
 

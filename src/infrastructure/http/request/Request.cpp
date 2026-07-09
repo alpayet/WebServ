@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 23:37:21 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:31:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ std::size_t Request::appendBody(std::vector<char> const &buf) { return (_body.wr
 std::size_t Request::appendBody(std::vector<char> const &buf, std::size_t size)
 {
 	return (_body.write(buf, size));
+}
+
+void Request::prepareForReading(void)
+{
+	if (_body.exists())
+		_body.resetPosition();
 }
 
 void Request::reset(void)

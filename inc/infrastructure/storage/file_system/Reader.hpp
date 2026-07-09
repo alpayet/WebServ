@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:24:22 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:12:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ class Reader : public app::IResourceReader
 
 	int			_fd;
 	std::string _path;
+	bool		_shouldClose;
 
 	static int openFile(std::string const &path);
 

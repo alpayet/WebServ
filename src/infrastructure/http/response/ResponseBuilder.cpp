@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:14:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 02:23:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ Response::Builder &Response::Builder::withContentLength(std::string const &conte
 	unsigned long val = std::strtoull(contentLength.c_str(), &endptr, 10);
 
 	withContentLength(static_cast<size_t>(val));
-	return (*this);
-}
-
-Response::Builder &Response::Builder::withHeaders(std::map<std::string, std::string> const &headers)
-{
-	for (std::map<std::string, std::string>::const_iterator i = headers.begin(); i != headers.end();
-		 ++i)
-		withHeader(i->first, i->second);
 	return (*this);
 }
 

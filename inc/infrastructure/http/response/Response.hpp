@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:46:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 02:24:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ class Response::Builder
 	Builder	 &withStatusLine(unsigned short statusCode);
 	Builder	 &withContentLength(std::size_t contentLength);
 	Builder	 &withContentLength(std::string const &contentLength);
-	Builder	 &withHeaders(std::map<std::string, std::string> const &headers);
 	Builder	 &withHeader(std::string const &key, std::string const &value);
 	Builder	 &withHeader(std::string const &key, std::size_t value);
 	Builder	 &withBody(std::vector<char> const &body);

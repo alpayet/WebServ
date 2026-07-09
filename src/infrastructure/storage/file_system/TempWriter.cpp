@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:13:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:27:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ void TempWriter::generateUniqueTempFile(void)
 		throw Exception(Exception::fileOpenFailed);
 
 	_fd = fd;
+}
+
+void TempWriter::resetPosition(void)
+{
+	if (_fd >= 0 && ::lseek(_fd, 0, SEEK_SET) < 0)
+		throw Exception(Exception::fileLseekFailed);
 }
 
 void TempWriter::reset(void)

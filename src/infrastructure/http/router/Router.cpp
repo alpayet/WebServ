@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 23:43:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:11:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void Router::route(Context &context)
 	if (std::find(allowed_methods.begin(), allowed_methods.end(), method) == allowed_methods.end())
 		throw Exception(Exception::methodNotAllowed);
 
+	// TODO: a voir avec marylene dans quel cas entre dans lutilisation du cgi, potentiellment
+	// rajouter
 	if (method == GET)
 		_serveStaticResourceController(context, route_policy);
 	if (method == DELETE)

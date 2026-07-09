@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 21:22:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:32:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ Parser::Step Parser::parse(std::vector<char> &inputBuf, bool isCgiEof, Parser::S
 								 state.bodyBytesRead == state.response.getContentLength()))
 				{
 					state.response.setContentLength(state.bodyBytesRead);
+					state.response.prepareForReading();
 					state.step = Parser::complete;
 					can_continue = false;
 				}

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:17:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:02:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
-#include "infrastructure/http/presenters/ExecuteDynamicResourcePresenter.hpp"
 #include "infrastructure/http/request/Request.hpp"
 #include "infrastructure/parsing/constants.hpp"
 #include <map>
@@ -44,14 +43,7 @@ void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy 
 	app::useCase::ExecuteDynamicResource::Input const &dto =
 		ExecuteDynamicResourceDtoMapper::toDto(request, routePolicy, bodyPath, MetaVariables);
 
-	ExecuteDynamicResourcePresenter presenter;
-
-	_useCase.execute(dto, presenter);
-
-	ExecuteDynamicResourcePresenter::ViewModel const &viewModel = presenter.getViewModel();
-	context.output.response = viewModel.response;
-	delete (context.output.reader);
-	context.output.reader = viewModel.reader;
+	_useCase.execute(dto);
 }
 
 std::map<std::string, std::string>

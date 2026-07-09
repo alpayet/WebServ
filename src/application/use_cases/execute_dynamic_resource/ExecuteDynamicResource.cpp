@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 04:13:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:00:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ ExecuteDynamicResource::ExecuteDynamicResource(
 	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
 {}
 
-void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
+void ExecuteDynamicResource::execute(Input const &dtoInput)
 {
 	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
@@ -41,10 +41,9 @@ void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputP
 
 	// TODO : voir pour les permissions du fichier cgi
 
-	IResourceReader *resource_reader = _dynamicResourceExecutor.execute(
+	_dynamicResourceExecutor.execute(
 		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
 	);
-	outputPort.presentDynamicContent(resource_reader);
 }
 } // namespace useCase
 } // namespace app

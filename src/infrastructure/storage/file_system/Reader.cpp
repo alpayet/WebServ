@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:24:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:13:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 #include <unistd.h>
 
 namespace fileSystem {
-Reader::Reader(std::string const &path) : _fd(-1), _path(path) {}
+Reader::Reader(std::string const &path) : _fd(-1), _path(path), _shouldClose(true) {}
 
-Reader::Reader(int const fd) : _fd(fd), _path() {}
+Reader::Reader(int const fd) : _fd(fd), _path(), _shouldClose(false) {}
 
 Reader::~Reader(void)
 {
-	if (_fd >= 0 && close(_fd) < 0)
+	if (_shouldClose && _fd >= 0 && close(_fd) < 0)
 		std::cerr << "Error : " << std::strerror(errno) << '\n';
 }
 

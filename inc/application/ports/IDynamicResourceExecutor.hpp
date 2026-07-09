@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 03:43:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:58:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class IDynamicResourceExecutor
   public:
 	virtual ~IDynamicResourceExecutor(void) {}
 
-	virtual IResourceReader *execute(
+	virtual void execute(
 		std::string const						 &resourcePath,
 		std::string const						 &bodyPath,
 		std::map<std::string, std::string> const &metaVariables

@@ -80,7 +80,6 @@ SRC_FILES = \
 	infrastructure/http/presenters/success_lookup.cpp \
 	infrastructure/http/presenters/ServeStaticResourcePresenter.cpp \
 	infrastructure/http/presenters/get_listing_html.cpp \
-	infrastructure/http/presenters/ExecuteDynamicResourcePresenter.cpp \
 	infrastructure/http/presenters/DeleteStaticResourcePresenter.cpp \
 	infrastructure/http/mappers/ServeStaticResourceDtoMapper.cpp \
 	infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \

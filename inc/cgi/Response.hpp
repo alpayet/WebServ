@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:11:32 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:28:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ class Response
 
 	std::size_t appendBody(std::vector<char> const &buf);
 	std::size_t appendBody(std::vector<char> const &buf, std::size_t size);
+
+	void prepareForReading(void);
 
 	void reset(void);
 
