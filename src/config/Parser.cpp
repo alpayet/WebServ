@@ -66,10 +66,10 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 	direc.name = m_it->data;
 	++m_it;
 
-	int nb_val = 1;
+	int nb_val = 0;
 	for (; m_it->type == str_type || m_it->type == int_type; ++m_it, ++nb_val)
 	{
-		if (keywords[i].max_args < nb_val)
+		if (keywords[i].max_args <= nb_val)
 		{
 			std::ostringstream os;
 			os << "'" << direc.name << "' can't have more than " << keywords[i].max_args
