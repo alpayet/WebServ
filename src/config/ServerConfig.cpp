@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <vector>
+#include <algorithm>
 
 #include "application/ports/SystemResourceInfos.hpp"
 #include "config/Semantic.hpp"
@@ -30,7 +31,7 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	throw("no corresponding location block");
+	throw("bananano corresponding location block");
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
@@ -50,17 +51,35 @@ http::RoutePolicy ServerConfig::match(std::string const &uri) const
 	Location loc = findLocationFromUri(uri);
 
 	http::RoutePolicy route;
+
 	route.matchedRoute = loc.path;
 	if (!loc.root.empty())
 		route.rootPath = loc.root;
 	else
 		route.rootPath = m_root + loc.path.substr(1, loc.path.size() - 1);
+
 	route.isListingEnabled = loc.autoindex;
+
 	if (!loc.index.empty())
 		route.indexesId = loc.index;
 	else
 		route.indexesId = m_index;
 	route.allowedMethods = getAllowedMethods(loc);
+
+	std::size_t pos = uri.find_last_of("/");
+	if (pos != std::string::npos)
+	{
+		std::string file = uri.substr(pos + 1, uri.size() - pos + 1);
+		if (std::find(loc.cgi.begin(), loc.cgi.end(), file) != loc.cgi.end())
+			route.isCgi = true;
+		else 
+			route.isCgi = false;
+	}
+	else 
+	{
+		route.isCgi = false;
+	}
+
 	return route;
 }
 

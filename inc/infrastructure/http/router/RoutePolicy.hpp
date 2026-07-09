@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RoutePolicy.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 19:36:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 15:28:31 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ struct RoutePolicy
 	bool					 isListingEnabled;
 	std::vector<std::string> indexesId;
 	std::vector<std::string> allowedMethods;
+	bool					 isCgi;
 };
 } // namespace http
 
