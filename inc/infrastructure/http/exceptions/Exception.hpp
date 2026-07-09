@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 04:26:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 17:39:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ class Exception : public std::exception
 		headerLineTooLarge,
 		headerCountTooLarge,
 		bodyTooLarge,
+		matchRouteFailed,
 		maxLocalRedirDepthExceeded,
 		timeOut
-
 	};
 
   public:

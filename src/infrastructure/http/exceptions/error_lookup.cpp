@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:52:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 17:51:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,39 +18,33 @@ unsigned short to_status_code(Exception::ErrorCode error_code)
 	switch (error_code)
 	{
 		case Exception::lineBreakInvalid:
-			return (400);
 		case Exception::requestLineMalformed:
-			return (400);
 		case Exception::headerLineMalformed:
-			return (400);
 		case Exception::methodInvalid:
-			return (400);
-		case Exception::methodNotAllowed:
-			return (405);
 		case Exception::targetInvalid:
-			return (400);
-		case Exception::versionInvalid:
-			return (505);
 		case Exception::headerKeyInvalid:
-			return (400);
 		case Exception::headerValueInvalid:
-			return (400);
 		case Exception::contentLengthInvalid:
 			return (400);
+		case Exception::matchRouteFailed:
+			return (404);
+		case Exception::methodNotAllowed:
+			return (405);
+		case Exception::timeOut:
+			return (408);
 		case Exception::contentLengthRequired:
 			return (411);
+		case Exception::bodyTooLarge:
+			return (413);
 		case Exception::requestLineTooLarge:
 			return (414);
 		case Exception::headerLineTooLarge:
-			return (431);
 		case Exception::headerCountTooLarge:
 			return (431);
-		case Exception::bodyTooLarge:
-			return (413);
 		case Exception::maxLocalRedirDepthExceeded:
 			return (500);
-		case Exception::timeOut:
-			return (408);
+		case Exception::versionInvalid:
+			return (505);
 		default:
 			return (500);
 	}
@@ -66,6 +60,9 @@ unsigned short to_status_code(cgi::Exception::ErrorCode error_code)
 {
 	switch (error_code)
 	{
+		case cgi::Exception::pipeFailed:
+		case cgi::Exception::forkFailed:
+			return (500);
 		case cgi::Exception::documentResponseMalformed:
 		case cgi::Exception::localRedirResponseMalformed:
 		case cgi::Exception::clientRedirResponseMalformed:
@@ -95,16 +92,15 @@ unsigned short to_status_code(app::Exception::ErrorCode error_code)
 {
 	switch (error_code)
 	{
+		case app::Exception::pathTraversalDetected:
+			return (400);
 		case app::Exception::accessDenied:
+		case app::Exception::listingDisabled:
 			return (403);
 		case app::Exception::notFound:
 			return (404);
-		case app::Exception::listingDisabled:
-			return (403);
 		case app::Exception::deleteFailed:
 			return (500);
-		case app::Exception::pathTraversalDetected:
-			return (400);
 		default:
 			return (500);
 	}

@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 			http::Handler	   handler(requestParser, cgiParser, router, sender, server_config);
 			ITransfertHandler &tranfer = handler;
 
-			std::string const		requete_test("GET /app/ HTTP/1.0\r\n\r\n");
+			std::string const		requete_test("GET /a/ HTTP/1.0\r\n\r\n");
 			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
 
 			std::string const cgi_response_test(

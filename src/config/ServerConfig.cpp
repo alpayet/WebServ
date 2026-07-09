@@ -16,6 +16,7 @@
 
 #include "application/Exception.hpp"
 #include "config/Semantic.hpp"
+#include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/fileSystem.hpp"
 
@@ -35,7 +36,7 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	throw("bananano corresponding location block");
+	throw http::Exception(http::Exception::matchRouteFailed);
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const

@@ -25,6 +25,7 @@
  */
 
 #include "cgi/Cgi.hpp"
+#include "cgi/Exception.hpp"
 #include <fcntl.h>
 #include <iterator>
 #include <stdlib.h>
@@ -48,9 +49,6 @@ bool hasSheBang(std::string const &filename)
 		return true;
 	return false;
 }
-
-#include <map>
-#include <utility>
 
 std::map<std::string, std::pair<std::string, std::string> > interpreters = {
 	{".py", {"/bin/python3", "python3"}},
@@ -127,7 +125,7 @@ void Cgi::execute(
 
 	if (pipe(fds) < 0)
 	{
-		throw("banana");
+		throw cgi::Exception(cgi::Exception::pipeFailed);
 	}
 
 	pid_t pid = fork();
@@ -140,7 +138,7 @@ void Cgi::execute(
 		execve("/bin/python", [ "python3", "dto.path" ], &envp[0]);
 	}
 	if (pid == -1)
-		throw("banana");
+		throw cgi::Exception(cgi::Exception::forkFailed);
 	time_t base_time = time(0);
 	int	   status;
 	while (waitpid(pid, &status, WNOHANG) != pid)
