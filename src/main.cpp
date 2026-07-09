@@ -49,13 +49,13 @@ int main(int argc, char **argv)
 	try
 	{
 		fileCheck(argc, argv[1]);
-		Config				conf(argv[1]);
-		std::vector<Server> server_configs = conf.getServers();
+		Config					  conf(argv[1]);
+		std::vector<ServerConfig> server_configs = conf.getServerConfigs();
 
-		std::vector<Server>::iterator ite = server_configs.end();
-		for (std::vector<Server>::iterator it = server_configs.begin(); it != ite; ++it)
+		std::vector<ServerConfig>::iterator ite = server_configs.end();
+		for (std::vector<ServerConfig>::iterator it = server_configs.begin(); it != ite; ++it)
 		{
-			Server				server_config = *it;
+			ServerConfig		server_config = *it;
 			fileSystem::Storage storage;
 
 			fileSystem::DirectoryExplorer	  directory_explorer;

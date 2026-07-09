@@ -27,7 +27,7 @@ struct Location
 };
 
 class ServerConfig : public app::IResourceLocator,
-					 public http::IRequestValidationPolicy,
+					 public parse::IValidationPolicy,
 					 public http::ILimitsProvider,
 					 public http::IRouteRegistry,
 					 public http::IHttpVersionProvider,

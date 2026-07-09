@@ -103,7 +103,6 @@
 #files
 SRC_FILES = \
 	main.cpp \
-	server/Server.cpp \
 	infrastructure/storage/file_system/TempWriter.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/Reader.cpp \
@@ -157,6 +156,7 @@ SRC_FILES = \
 	config/Tokenizer.cpp \
 	config/Semantic.cpp \
 	config/Parser.cpp \
+	config/ServerConfig.cpp \
 	config/Config.cpp
 
 #directories

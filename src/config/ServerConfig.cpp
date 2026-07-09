@@ -123,7 +123,7 @@ std::string ServerConfig::resolvePhysicalPath(
 	return resUri;
 }
 
-std::string Server::resolvePhysicalPath(std::string const &uri) const
+std::string ServerConfig::resolvePhysicalPath(std::string const &uri) const
 {
 	std::string resUri = uri;
 	resUri.replace(0, 1, m_root);
@@ -170,7 +170,7 @@ app::SystemResourceInfo setSRI(std::string const &path)
 }
 
 // get
-app::SystemResourceInfos ServerConfig::locate(
+app::SystemResourceInfo ServerConfig::locate(
 	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
@@ -181,7 +181,7 @@ app::SystemResourceInfos ServerConfig::locate(
 }
 
 // TODO: check directory before calling
-app::SystemResourceInfos ServerConfig::locateDefaultIndex(
+app::SystemResourceInfo ServerConfig::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,
 	std::string const			   &rootPath
