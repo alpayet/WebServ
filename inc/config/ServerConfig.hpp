@@ -5,8 +5,8 @@
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
-#include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/http/router/IRouteRegistry.hpp"
+#include "infrastructure/parsing/IValidationPolicy.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -26,19 +26,19 @@ struct Location
 	Location() : met_get(true), met_post(true), met_del(true), autoindex(false), ret(0) {};
 };
 
-class Server : public app::IResourceLocator,
-			   public parse::IValidationPolicy,
-			   public http::ILimitsProvider,
-			   public http::IRouteRegistry,
-			   public http::IHttpVersionProvider,
-			   public http::IErrorPagesProvider
+class ServerConfig : public app::IResourceLocator,
+					 public http::IRequestValidationPolicy,
+					 public http::ILimitsProvider,
+					 public http::IRouteRegistry,
+					 public http::IHttpVersionProvider,
+					 public http::IErrorPagesProvider
 {
   public:
 	/** CTOR */
-	Server()
-		: m_port(8080), m_interface("0.0.0.0"), m_max_body(1000000), m_transport(TRANSPORT_TCP),
+	ServerConfig()
+		: m_port(8080), m_max_body(1000000), m_transport(TRANSPORT_TCP),
 		  m_applicative_protocol(APP_HTTP) {};
-	~Server() {};
+	~ServerConfig() {};
 
 	enum TransportProtocol
 	{
@@ -53,17 +53,17 @@ class Server : public app::IResourceLocator,
 	};
 
 	/** GETTERS */
-	unsigned short							  getPort() const { return m_port; };
-	std::string const						 &getInterface() const { return m_interface; };
-	virtual std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
-	std::vector<Location> const				 &getLocations() const { return m_locations; };
-	int										  getClientMaxBody() const { return m_max_body; };
-	std::string const						 &getRoot() const { return m_root; };
-	std::vector<std::string> const			 &getIndex() const { return m_index; };
+	unsigned short					  getPort() const { return m_port; };
+	std::string const				 &getHostname() const { return m_hostname; };
+	std::map<int, std::string> const &getErrPages() const { return m_error_pages; };
+	std::vector<Location> const		 &getLocations() const { return m_locations; };
+	int								  getClientMaxBody() const { return m_max_body; };
+	std::string const				 &getRoot() const { return m_root; };
+	std::vector<std::string> const	 &getIndex() const { return m_index; };
 
 	/** SETTERS */
 	void setPort(int port) { m_port = port; };
-	void setInterface(std::string const &interface) { m_interface = interface; };
+	void setHostname(std::string const &hostname) { m_hostname = hostname; };
 	void addErrPage(int err_nb, std::string const &err_path) { m_error_pages[err_nb] = err_path; };
 	void addLocation(Location const &location) { m_locations.push_back(location); };
 	void setClientMaxBody(long max_body) { m_max_body = max_body; };
@@ -100,7 +100,7 @@ class Server : public app::IResourceLocator,
 
   private:
 	unsigned short			   m_port;
-	std::string				   m_interface;
+	std::string				   m_hostname;
 	std::map<int, std::string> m_error_pages;
 	std::vector<Location>	   m_locations;
 	std::size_t				   m_max_body;
@@ -111,6 +111,6 @@ class Server : public app::IResourceLocator,
 };
 
 std::ostream &operator<<(std::ostream &os, Location const &l);
-std::ostream &operator<<(std::ostream &os, Server const &s);
+std::ostream &operator<<(std::ostream &os, ServerConfig const &s);
 
 #endif

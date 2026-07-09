@@ -1,5 +1,5 @@
 @startuml serverDiag
-+class Server
++class ServerConfig
 {
 	- listens : list<int>
 	- serv_names : list<string>

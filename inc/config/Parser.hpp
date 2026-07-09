@@ -19,7 +19,7 @@ struct p_Location
 	std::vector<p_Directive>	directives;
 };
 
-struct p_Server
+struct p_ServerConfig
 {
 	std::vector<p_Directive>	directives;
 	std::vector<p_Location>		locations;
@@ -27,7 +27,7 @@ struct p_Server
 
 struct p_Config
 {
-	std::vector<p_Server> servers;
+	std::vector<p_ServerConfig> servers;
 };
 		
 class ParserFormatException : public ConfigException
@@ -56,8 +56,8 @@ class Parser
 		p_Config	m_config;
 		template<typename T>
 		p_Directive	parseDirective(T& t, e_block comp);
-		p_Location	parseLocation(p_Server& serv);
-		p_Server	parseServer();
+		p_Location	parseLocation(p_ServerConfig& serv);
+		p_ServerConfig	parseServerConfig();
 		void		parseConfig();
 		void	expect(char c);
 };

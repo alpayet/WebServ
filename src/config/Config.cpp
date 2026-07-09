@@ -33,17 +33,17 @@ Config::Config(char* filename)
 	
 	// std::cout << conf << std::endl;
 
-	checkOverlap(conf);
+	checkDupHostname(conf);
 	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
 	{
 		checkDupLoc(conf.servers[i]);
 	}
 
-	std::vector<p_Server>::const_iterator ite = conf.servers.end();
-	for (std::vector<p_Server>::const_iterator it = conf.servers.begin() ; it != ite ; ++it)
+	std::vector<p_ServerConfig>::const_iterator ite = conf.servers.end();
+	for (std::vector<p_ServerConfig>::const_iterator it = conf.servers.begin() ; it != ite ; ++it)
 	{
-		Server serv;
-		initServer(serv, *it);
+		ServerConfig serv;
+		initServerConfig(serv, *it);
 		initLocation(serv, *it);
 		this->m_servers.push_back(serv);
 	}
