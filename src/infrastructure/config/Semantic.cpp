@@ -1,5 +1,5 @@
-#include "config/Semantic.hpp"
-#include "config/Parser.hpp"
+#include "infrastructure/config/Semantic.hpp"
+#include "infrastructure/config/Parser.hpp"
 #include <iterator>
 #include <sstream>
 #include <vector>

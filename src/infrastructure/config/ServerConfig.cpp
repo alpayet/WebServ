@@ -1,5 +1,5 @@
 
-#include "config/ServerConfig.hpp"
+#include "infrastructure/config/ServerConfig.hpp"
 
 #include <algorithm>
 #include <cerrno>
@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "application/Exception.hpp"
-#include "config/Semantic.hpp"
+#include "infrastructure/config/Semantic.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/fileSystem.hpp"

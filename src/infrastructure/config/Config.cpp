@@ -1,10 +1,10 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "config/Config.hpp"
-#include "config/Tokenizer.hpp"
-#include "config/Parser.hpp"
-#include "config/Semantic.hpp"
+#include "infrastructure/config/Config.hpp"
+#include "infrastructure/config/Tokenizer.hpp"
+#include "infrastructure/config/Parser.hpp"
+#include "infrastructure/config/Semantic.hpp"
 #include <vector>
 #include <iterator>
 

@@ -4,8 +4,8 @@
 # include <vector>
 # include <string>
 # include <iterator>
-# include "config/Tokenizer.hpp"
-# include "config/Config.hpp"
+# include "infrastructure/config/Tokenizer.hpp"
+# include "infrastructure/config/Config.hpp"
 
 struct p_Directive
 {

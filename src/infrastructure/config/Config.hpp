@@ -4,7 +4,7 @@
 # include <vector>
 # include <string>
 # include <exception>
-# include "config/ServerConfig.hpp"
+# include "infrastructure/config/ServerConfig.hpp"
 
 class ConfigException : public std::exception
 {

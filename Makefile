@@ -153,17 +153,17 @@ SRC_FILES = \
 	domain/value_objects/ResourceMetaData.cpp \
 	domain/entities/StaticResource.cpp \
 	domain/entities/DynamicResource.cpp \
-	config/Tokenizer.cpp \
-	config/Semantic.cpp \
-	config/Parser.cpp \
-	config/ServerConfig.cpp \
-	config/Config.cpp
+	infrastructure/config/Tokenizer.cpp \
+	infrastructure/config/Semantic.cpp \
+	infrastructure/config/Parser.cpp \
+	infrastructure/config/ServerConfig.cpp \
+	infrastructure/config/Config.cpp
 
 #directories
 SRC_DIR = src/
 
 OBJ_DIR = obj/
-INC_DIR = inc/
+INC_DIR = src/
 
 #files full paths
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

@@ -1,5 +1,5 @@
-#include "config/Parser.hpp"
-#include "config/keywords.hpp"
+#include "infrastructure/config/Parser.hpp"
+#include "infrastructure/config/keywords.hpp"
 #include <iostream>
 #include <sstream>
 
