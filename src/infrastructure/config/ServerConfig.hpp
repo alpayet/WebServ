@@ -36,7 +36,7 @@ class ServerConfig : public app::IResourceLocator,
   public:
 	/** CTOR */
 	ServerConfig()
-		: m_port(8080), m_max_body(1000000), m_transport(TRANSPORT_TCP),
+		: m_port(8080), m_max_body(1048576), m_transport(TRANSPORT_TCP),
 		  m_applicative_protocol(APP_HTTP) {};
 	~ServerConfig() {};
 
