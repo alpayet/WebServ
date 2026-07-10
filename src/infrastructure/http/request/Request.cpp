@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:31:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:57:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,27 @@ void Request::reset(void)
 	_hasContentLength = false;
 	_contentLength = 0;
 	_body.reset();
+}
+
+std::ostream &operator<<(std::ostream &lhs, Request const &rhs)
+{
+	lhs << "***HTTP REQUEST***" << std::endl;
+
+	lhs << "\tStartLine:" << std::endl;
+	lhs << "\t\tMethod:" << rhs.getMethod() << std::endl;
+	lhs << "\t\tTarget:" << rhs.getTarget() << std::endl;
+	lhs << "\t\tQuery:" << rhs.getQuery() << std::endl;
+	lhs << "\t\tProtocol:" << rhs.getProtocol() << std::endl;
+
+	lhs << "\tHeaders:" << std::endl;
+	for (std::map<std::string, std::string>::const_iterator it; it != rhs.getHeaders().end(); ++it)
+		lhs << "\t\t" << it->first << ':' << it->second << std::endl;
+
+	lhs << "\tHasContentLength:" << std::boolalpha << rhs.hasContentLength() << std::endl;
+	lhs << "\tContentLength:" << rhs.getContentLength() << std::endl;
+
+	lhs << "***END HTTP REQUEST***" << std::endl;
+	return (lhs);
 }
 
 } // namespace http

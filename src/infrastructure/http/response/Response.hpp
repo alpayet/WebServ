@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 02:24:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:41:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ class Response::Builder
   private:
 	Response _response;
 };
+
+std::ostream &operator<<(std::ostream &lhs, Response const &rhs);
+
 } // namespace http
 
 #endif // HTTPRESPONSE_HPP

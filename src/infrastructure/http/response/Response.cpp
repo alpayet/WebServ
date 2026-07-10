@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:47:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:56:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,23 @@ void Response::reset(void)
 	_headers.clear();
 	_contentLength = 0;
 	_body.clear();
+}
+
+std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
+{
+	lhs << "***HTTP RESPONSE***" << std::endl;
+
+	lhs << "\tStatusLine:" << std::endl;
+	lhs << "\t\tStatusCode:" << rhs.getStatusCode() << std::endl;
+	lhs << "\t\tReason:" << rhs.getStatusReason() << std::endl;
+
+	lhs << "\tHeaders:" << std::endl;
+	for (std::vector<Response::Header>::const_iterator it; it != rhs.getHeaders().end(); ++it)
+		lhs << "\t\t" << it->key << ':' << it->value << std::endl;
+
+	lhs << "\tContentLength:" << rhs.getContentLength() << std::endl;
+
+	lhs << "***END HTTP RESPONSE***" << std::endl;
+	return (lhs);
 }
 } // namespace http

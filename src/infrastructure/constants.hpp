@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_default_body.hpp                               :+:      :+:    :+:   */
+/*   constants.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/01 23:06:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 17:56:05 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/10 17:41:32 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/10 18:08:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPGENERATEDEFAULTBODY_HPP
-#define HTTPGENERATEDEFAULTBODY_HPP
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
-namespace http {
+#define SERVEUR_SOFTWARE "webserv/1.0"
 
-char const *get_default_body(unsigned short status_code);
-} // namespace http
-
-#endif // HTTPGENERATEDEFAULTBODY_HPP
+#endif // CONSTANTS_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:31:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:56:55 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ Response::Response(void)
 
 unsigned short	   Response::getStatusCode(void) const { return (_status.getStatusCode()); }
 std::string const &Response::getStatusReason(void) const { return (_status.getReason()); }
+bool			   Response::hasStatus(void) const { return (_status.exists()); }
 std::size_t		   Response::getHeadersSize(void) const { return (_headers.size()); }
 std::map<std::string, std::string> const &Response::getHeaders(void) const { return (_headers); }
 std::string const						 &Response::getHeader(std::string const &key) const
@@ -136,5 +137,32 @@ void Response::reset(void)
 	_contentLength = 0;
 	_hasContentLength = false;
 	_body.reset();
+}
+
+std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
+{
+	lhs << "***CGI RESPONSE***" << std::endl;
+
+	lhs << "\tStatus:" << std::endl;
+	lhs << "\t\tHasStatus:" << std::boolalpha << rhs.hasStatus() << std::endl;
+	lhs << "\t\tStatusCode:" << rhs.getStatusCode() << std::endl;
+	lhs << "\t\tReason:" << rhs.getStatusReason() << std::endl;
+
+	lhs << "\tHeaders:" << std::endl;
+	for (std::map<std::string, std::string>::const_iterator it; it != rhs.getHeaders().end(); ++it)
+		lhs << "\t\t" << it->first << ':' << it->second << std::endl;
+
+	lhs << "\tLocation:" << std::endl;
+	lhs << "\t\tUri:" << rhs.getLocationUri() << std::endl;
+	lhs << "\t\tQuery:" << rhs.getLocationQuery() << std::endl;
+	lhs << "\t\tType:" << rhs.getLocationType() << std::endl;
+
+	lhs << "\tHasContentLength:" << std::boolalpha << rhs.hasContentLength() << std::endl;
+	lhs << "\tContentLength:" << rhs.getContentLength() << std::endl;
+
+	lhs << "\tType:" << rhs.getType() << std::endl;
+
+	lhs << "***END CGI RESPONSE***" << std::endl;
+	return (lhs);
 }
 } // namespace cgi

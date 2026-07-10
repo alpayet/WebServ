@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:28:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:49:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ class Response
 
 	unsigned short							  getStatusCode(void) const;
 	std::string const						 &getStatusReason(void) const;
+	bool									  hasStatus(void) const;
 	std::size_t								  getHeadersSize(void) const;
 	std::map<std::string, std::string> const &getHeaders(void) const;
 	std::string const						 &getHeader(std::string const &key) const;
@@ -119,6 +120,9 @@ class Response
 
 	static char const BODY_NAME_TEMPLATE[];
 };
+
+std::ostream &operator<<(std::ostream &lhs, Response const &rhs);
+
 } // namespace cgi
 
 #endif // CGIRESPONSE_HPP

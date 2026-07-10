@@ -6,11 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:00:37 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/06 05:28:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/10 18:08:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/get_default_body.hpp"
+#include "infrastructure/constants.hpp"
 
 namespace http {
 char const *get_default_body(unsigned short status_code)
@@ -31,7 +32,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>200 OK</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>200 OK</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -40,7 +41,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>201 Created</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>201 Created</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -49,7 +50,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>202 Accepted</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>202 Accepted</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -58,7 +59,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>203 Non-Authoritative Information</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>203 Non-Authoritative Information</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -67,7 +68,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>206 Partial Content</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>206 Partial Content</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -76,7 +77,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>207 Multi-Status</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>207 Multi-Status</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -85,7 +86,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>208 Already Reported</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>208 Already Reported</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -94,7 +95,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>226 IM Used</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>226 IM Used</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -103,7 +104,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>300 Multiple Choices</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>300 Multiple Choices</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -112,7 +113,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>301 Moved Permanently</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>301 Moved Permanently</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -121,7 +122,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>302 Found</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>302 Found</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -130,7 +131,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>303 See Other</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>303 See Other</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -139,7 +140,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>305 Use Proxy</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>305 Use Proxy</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -148,7 +149,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>307 Temporary Redirect</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>307 Temporary Redirect</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -157,7 +158,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>308 Permanent Redirect</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>308 Permanent Redirect</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -166,7 +167,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>400 Bad Request</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>400 Bad Request</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -175,7 +176,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>401 Unauthorized</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>401 Unauthorized</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -184,7 +185,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>402 Payment Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>402 Payment Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -193,7 +194,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>403 Forbidden</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>403 Forbidden</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -202,7 +203,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>404 Not Found</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>404 Not Found</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -211,7 +212,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>405 Method Not Allowed</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>405 Method Not Allowed</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -220,7 +221,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>406 Not Acceptable</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>406 Not Acceptable</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -229,7 +230,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>407 Proxy Authentication Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>407 Proxy Authentication Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -238,7 +239,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>408 Request Timeout</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>408 Request Timeout</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -247,7 +248,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>409 Conflict</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>409 Conflict</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -256,7 +257,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>410 Gone</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>410 Gone</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -265,7 +266,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>411 Length Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>411 Length Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -274,7 +275,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>412 Precondition Failed</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>412 Precondition Failed</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -283,7 +284,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>413 Content Too Large</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>413 Content Too Large</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -292,7 +293,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>414 URI Too Long</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>414 URI Too Long</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -301,7 +302,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>415 Unsupported Media Type</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>415 Unsupported Media Type</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -310,7 +311,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>416 Range Not Satisfiable</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>416 Range Not Satisfiable</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -319,7 +320,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>417 Expectation Failed</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>417 Expectation Failed</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -328,7 +329,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>421 Misdirected Request</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>421 Misdirected Request</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -337,7 +338,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>422 Unprocessable Content</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>422 Unprocessable Content</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -346,7 +347,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>423 Locked</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>423 Locked</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -355,7 +356,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>424 Failed Dependency</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>424 Failed Dependency</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -364,7 +365,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>425 Too Early</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>425 Too Early</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -373,7 +374,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>426 Upgrade Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>426 Upgrade Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -382,7 +383,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>428 Precondition Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>428 Precondition Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -391,7 +392,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>429 Too Many Requests</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>429 Too Many Requests</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -400,7 +401,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>431 Request Header Fields Too Large</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>431 Request Header Fields Too Large</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -409,7 +410,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>451 Unavailable For Legal Reasons</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>451 Unavailable For Legal Reasons</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -418,7 +419,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>500 Internal Server Error</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>500 Internal Server Error</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -427,7 +428,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>501 Not Implemented</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>501 Not Implemented</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -436,7 +437,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>502 Bad Gateway</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>502 Bad Gateway</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -445,7 +446,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>503 Service Unavailable</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>503 Service Unavailable</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -454,7 +455,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>504 Gateway Timeout</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>504 Gateway Timeout</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -463,7 +464,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>505 HTTP Version Not Supported</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>505 HTTP Version Not Supported</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -472,7 +473,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>506 Variant Also Negotiates</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>506 Variant Also Negotiates</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -481,7 +482,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>507 Insufficient Storage</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>507 Insufficient Storage</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -490,7 +491,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>508 Loop Detected</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>508 Loop Detected</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -499,7 +500,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>510 Not Extended</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>510 Not Extended</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -508,7 +509,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>511 Network Authentication Required</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>511 Network Authentication Required</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 
@@ -517,7 +518,7 @@ char const *get_default_body(unsigned short status_code)
 				   "<head><title>Unknown Status Code</title></head>\r\n"
 				   "<body>\r\n"
 				   "<center><h1>Execution Status Acknowledged</h1></center>\r\n"
-				   "<hr><center>webserv/1.0</center>\r\n"
+				   "<hr><center>" SERVEUR_SOFTWARE "</center>\r\n"
 				   "</body>\r\n"
 				   "</html>\r\n";
 	}
