@@ -80,7 +80,7 @@ class ServerConfig : public app::IResourceLocator,
 	virtual std::size_t		 getMaxRequestLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderCount(void) const;
-	virtual std::size_t		 getMaxBodySize(void) const; // void param
+	virtual std::size_t		 getMaxBodySize(void) const;
 	virtual std::size_t		 getMaxBodySize(std::string const &uri) const;
 	std::vector<std::string> getAllowedMethods(Location const &loc) const;
 	TransportProtocol		 getTransportProtocol(void) const;

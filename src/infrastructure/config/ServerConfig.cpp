@@ -89,20 +89,10 @@ http::RoutePolicy ServerConfig::match(std::string const &uri) const
 	return route;
 }
 
-// TODO: check
 std::string ServerConfig::resolvePhysicalPath(
 	std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
-	// std::string path;
-	// if (rootPath.empty())
-	// 	path = m_root + matchedRoute.substr(1, matchedRoute.size() - 1);
-	// else
-	// 	path = rootPath;
-	// std::string resUri = uri;
-	// resUri.replace(0, matchedRoute.size(), path);
-	// return resUri;
-
 	std::string resUri = uri;
 	resUri.replace(0, matchedRoute.size(), rootPath);
 
@@ -170,7 +160,6 @@ app::SystemResourceInfo setSRI(std::string const &path)
 	return sri;
 }
 
-// get
 app::SystemResourceInfo ServerConfig::locate(
 	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 ) const
@@ -181,7 +170,6 @@ app::SystemResourceInfo ServerConfig::locate(
 	return sri;
 }
 
-// TODO: check directory before calling
 app::SystemResourceInfo ServerConfig::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,

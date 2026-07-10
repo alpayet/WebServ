@@ -1,5 +1,5 @@
-#ifndef KEYWORDS_H
-#define KEYWORDS_H
+#ifndef KEYWORDS_HPP
+#define KEYWORDS_HPP
 
 #include <string>
 

@@ -1,15 +1,8 @@
 #ifndef SEMANTIC_HPP
 # define SEMANTIC_HPP
 
-// class Semantic
-// {
-	
-// };
-
 # include "config/Config.hpp"
 # include <string>
-
-// class ConfigException;
 
 class SemanticException : public ConfigException
 {

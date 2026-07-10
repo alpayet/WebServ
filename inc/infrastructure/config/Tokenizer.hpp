@@ -3,7 +3,7 @@
 
 # include <string>
 # include <vector>
-# include "config/keywords.h"
+# include "config/keywords.hpp"
 
 static const std::string stops[] = { " ", "\t", "\n", "\v",
 										"\f", "\r" };

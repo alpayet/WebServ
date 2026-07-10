@@ -30,8 +30,6 @@ Config::Config(char* filename)
 	Parser prs(tok.getTokens());
 	p_Config conf;
 	prs.parse(conf);
-	
-	// std::cout << conf << std::endl;
 
 	checkDupHostname(conf);
 	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
