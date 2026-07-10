@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 03:42:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/12 18:17:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:24:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		internalErrorFileOpenFailed,
-		internalErrorFileUnlinkFailed,
-		internalErrorFileWriteFailed,
-		fileNotFound,
-		permissionDenied
+		fileOpenFailed,
+		fileWriteFailed,
+		fileReadFailed,
+		fileTruncateFailed,
+		fileLseekFailed
 	};
 
   public:
-	Exception(std::string const &message, ErrorCode const internalCode) throw();
-	Exception(ErrorCode const internalCode) throw();
+	Exception(std::string const &message, ErrorCode internalCode) throw();
+	Exception(ErrorCode internalCode) throw();
 	virtual ~Exception(void) throw() {}
 
-	ErrorCode getErrorCode(void) const;
+	ErrorCode getErrorCode(void) const throw();
 
 	virtual char const *what(void) const throw();
 

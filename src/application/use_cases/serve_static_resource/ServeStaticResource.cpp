@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:02:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 00:41:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "application/ports/ICollectionExplorer.hpp"
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
-#include "application/ports/SystemResourceInfos.hpp"
 #include "domain/entities/StaticResource.hpp"
 
 namespace app {
@@ -31,7 +30,7 @@ ServeStaticResource::ServeStaticResource(
 
 void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
-	SystemResourceInfos target_infos =
+	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
@@ -43,7 +42,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 
 	if (target_meta_data.isCollection())
 	{
-		SystemResourceInfos index_infos = _resourceLocator.locateDefaultIndex(
+		SystemResourceInfo index_infos = _resourceLocator.locateDefaultIndex(
 			dtoInput.indexesId, dtoInput.matchedRoute, dtoInput.rootPath
 		);
 
@@ -62,21 +61,22 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 				generateListing(dtoInput, outputPort, target_meta_data);
 		}
 	}
-	serveContent(dtoInput, outputPort, target_meta_data);
+	else
+		serveContent(dtoInput, outputPort, target_meta_data);
 }
 
 void ServeStaticResource::serveContent(
 	Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 )
 {
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
+	domain::StaticResource static_resource(dtoInput.id, metaData);
 
 	if (!static_resource.isReadable())
 		throw Exception(Exception::accessDenied);
 
 	IResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getResourcePath());
-	outputPort.presentContent(resourceFound, static_resource.getResourceSize(), resource_reader);
+	outputPort.presentStaticContent(found, static_resource.getResourceSize(), resource_reader);
 }
 
 void ServeStaticResource::generateListing(
@@ -86,16 +86,16 @@ void ServeStaticResource::generateListing(
 	if (!dtoInput.isListingEnabled)
 		throw Exception(Exception::listingDisabled);
 
-	domain::StaticResource static_resource(dtoInput.id, dtoInput.rootPath, metaData);
+	domain::StaticResource static_resource(dtoInput.id, metaData);
 
 	if (!static_resource.isReadable() || !static_resource.isExecutable())
 		throw Exception(Exception::accessDenied);
 
-	// TODO: voir pour la gestion du listing si contenue d ulisting dans fichier ou direct en ram
-	std::vector<char> collection_data =
-		_collectionExplorer.listingCollection(static_resource.getResourcePath());
+	std::vector<CollectionEntry> const &collection_data = _collectionExplorer.listCollection(
+		static_resource.getResourcePath(), dtoInput.matchedRoute, dtoInput.rootPath
+	);
 
-	outputPort.presentListing(resourceFound, collection_data);
+	outputPort.presentListing(found, static_resource.getId(), collection_data);
 }
 } // namespace useCase
 } // namespace app

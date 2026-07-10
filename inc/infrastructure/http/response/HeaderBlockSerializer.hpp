@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:13:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 23:37:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/27 05:59:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 namespace http {
 
-struct Response;
+class Response;
 
 namespace response {
 class HeaderBlockSerializer

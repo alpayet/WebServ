@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/18 00:18:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:00:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "application/Exception.hpp"
 #include "application/ports/IDynamicResourceExecutor.hpp"
 #include "application/ports/IResourceLocator.hpp"
-#include "application/ports/SystemResourceInfos.hpp"
-#include "application/ports/presenters/IExecuteDynamicResource.hpp"
+#include "application/ports/SystemResourceInfo.hpp"
 #include "domain/entities/DynamicResource.hpp"
 
 namespace app {
@@ -26,9 +25,10 @@ ExecuteDynamicResource::ExecuteDynamicResource(
 	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
 {}
 
-void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
+void ExecuteDynamicResource::execute(Input const &dtoInput)
 {
-	SystemResourceInfos target_infos = _resourceLocator.locate(dtoInput.id, dtoInput.rootPath);
+	SystemResourceInfo target_infos =
+		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
 
@@ -37,10 +37,10 @@ void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputP
 		target_infos.resourceSize, target_infos.canBeDeleted
 	);
 
-	domain::DynamicResource dynamic_resource =
-		domain::DynamicResource(dtoInput.id, dtoInput.rootPath, target_meta_data);
+	domain::DynamicResource dynamic_resource(dtoInput.id, target_meta_data);
 
 	// TODO : voir pour les permissions du fichier cgi
+
 	_dynamicResourceExecutor.execute(
 		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
 	);

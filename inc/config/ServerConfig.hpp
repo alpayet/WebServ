@@ -4,8 +4,9 @@
 #include "application/ports/IResourceLocator.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
-#include "infrastructure/http/request/IRequestValidationPolicy.hpp"
-#include "infrastructure/http/router/RoutePolicy.hpp"
+#include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
+#include "infrastructure/http/router/IRouteRegistry.hpp"
+#include "infrastructure/parsing/IValidationPolicy.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -26,10 +27,11 @@ struct Location
 };
 
 class ServerConfig : public app::IResourceLocator,
-			   public http::IRequestValidationPolicy,
-			   public http::ILimitsProvider,
-			   public http::RoutePolicy,
-			   public http::IHttpVersionProvider
+					 public parse::IValidationPolicy,
+					 public http::ILimitsProvider,
+					 public http::IRouteRegistry,
+					 public http::IHttpVersionProvider,
+					 public http::IErrorPagesProvider
 {
   public:
 	/** CTOR */
@@ -72,6 +74,7 @@ class ServerConfig : public app::IResourceLocator,
 	std::string resolvePhysicalPath(
 		std::string const &uri, std::string const &matchedRoute, std::string const &rootPath
 	) const;
+	std::string				 resolvePhysicalPath(std::string const &uri) const;
 	Location				 findLocationFromUri(std::string const &uri) const;
 	virtual std::string		 getHttpVersion(void) const;
 	virtual std::size_t		 getMaxRequestLineSize(void) const;
@@ -83,14 +86,15 @@ class ServerConfig : public app::IResourceLocator,
 	TransportProtocol		 getTransportProtocol(void) const;
 	ApplicativeProtocol		 getApplicativeProtocol(void) const;
 
-	virtual app::SystemResourceInfos locate(
+	virtual app::SystemResourceInfo locate(
 		std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 	) const;
-	virtual app::SystemResourceInfos locateDefaultIndex(
+	virtual app::SystemResourceInfo locateDefaultIndex(
 		std::vector<std::string> const &indexesId,
 		std::string const			   &matchedRoute,
 		std::string const			   &rootPath
 	) const;
+	virtual app::SystemResourceInfo locateErrorPage(std::string const &uri) const;
 
 	virtual http::RoutePolicy match(std::string const &uri) const;
 

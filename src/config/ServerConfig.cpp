@@ -1,6 +1,10 @@
 
 #include "config/ServerConfig.hpp"
 
+#include <algorithm>
+#include <cerrno>
+#include <climits>
+#include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -9,11 +13,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <vector>
-#include <algorithm>
 
-#include "application/ports/SystemResourceInfos.hpp"
+#include "application/Exception.hpp"
 #include "config/Semantic.hpp"
-#include "infrastructure/storage/file_system/Storage.hpp"
+#include "infrastructure/http/exceptions/Exception.hpp"
+#include "infrastructure/http/router/RoutePolicy.hpp"
+#include "infrastructure/storage/file_system/fileSystem.hpp"
 
 Location ServerConfig::findLocationFromUri(std::string const &uri) const
 {
@@ -31,7 +36,7 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	throw("bananano corresponding location block");
+	throw http::Exception(http::Exception::matchRouteFailed);
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
@@ -65,17 +70,18 @@ http::RoutePolicy ServerConfig::match(std::string const &uri) const
 	else
 		route.indexesId = m_index;
 	route.allowedMethods = getAllowedMethods(loc);
-
+	route.hasReturn = loc.ret != 0;
+	route.returnCode = loc.ret;
 	std::size_t pos = uri.find_last_of("/");
 	if (pos != std::string::npos)
 	{
 		std::string file = uri.substr(pos + 1, uri.size() - pos + 1);
 		if (std::find(loc.cgi.begin(), loc.cgi.end(), file) != loc.cgi.end())
 			route.isCgi = true;
-		else 
+		else
 			route.isCgi = false;
 	}
-	else 
+	else
 	{
 		route.isCgi = false;
 	}
@@ -99,60 +105,84 @@ std::string ServerConfig::resolvePhysicalPath(
 
 	std::string resUri = uri;
 	resUri.replace(0, matchedRoute.size(), rootPath);
+
+	char resPath[PATH_MAX];
+	if (!realpath(resUri.c_str(), resPath))
+	{
+		if (errno == EIO || errno == ENOMEM)
+			throw std::runtime_error("realpath");
+	}
+	if (resUri[resUri.size() - 1] == '/')
+	{
+		resUri = resPath;
+		resUri += "/";
+	}
+	else
+		resUri = resPath;
+	if (resUri.find(rootPath) != 0)
+		throw app::Exception(app::Exception::pathTraversalDetected);
 	return resUri;
 }
 
-app::SystemResourceInfos setSRI(std::string const &path)
+std::string ServerConfig::resolvePhysicalPath(std::string const &uri) const
 {
-	app::SystemResourceInfos sri;
+	std::string resUri = uri;
+	resUri.replace(0, 1, m_root);
+
+	return resUri;
+}
+
+app::SystemResourceInfo setSRI(std::string const &path)
+{
+	app::SystemResourceInfo sri;
 
 	sri.resourcePath = path;
 
-	if (!fileSystem::Storage::exists(sri.resourcePath))
+	if (!fileSystem::exists(sri.resourcePath))
 	{
 		sri.exists = false;
 		return sri;
 	}
 	sri.exists = true;
 
-	if (fileSystem::Storage::isRegularFile(sri.resourcePath))
+	if (fileSystem::isRegularFile(sri.resourcePath))
 		sri.type = domain::leaf;
-	else if (fileSystem::Storage::isDirectory(sri.resourcePath))
+	else if (fileSystem::isDirectory(sri.resourcePath))
 		sri.type = domain::collection;
 	else
 		sri.type = domain::unknown;
 
 	sri.permissions = domain::none;
-	if (fileSystem::Storage::isReadable(sri.resourcePath))
+	if (fileSystem::isReadable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::readable);
-	if (fileSystem::Storage::isWritable(sri.resourcePath))
+	if (fileSystem::isWritable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::writable);
-	if (fileSystem::Storage::isExecutable(sri.resourcePath))
+	if (fileSystem::isExecutable(sri.resourcePath))
 		sri.permissions =
 			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
 
-	sri.resourceSize = fileSystem::Storage::getSize(sri.resourcePath);
+	sri.resourceSize = fileSystem::getSize(sri.resourcePath);
 
-	sri.canBeDeleted = fileSystem::Storage::isDeletable(sri.resourcePath);
+	sri.canBeDeleted = fileSystem::isDeletable(sri.resourcePath);
 
 	return sri;
 }
 
 // get
-app::SystemResourceInfos ServerConfig::locate(
+app::SystemResourceInfo ServerConfig::locate(
 	std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 ) const
 {
-	app::SystemResourceInfos sri;
+	app::SystemResourceInfo sri;
 
 	sri = setSRI(resolvePhysicalPath(id, matchedRoute, rootPath));
 	return sri;
 }
 
 // TODO: check directory before calling
-app::SystemResourceInfos ServerConfig::locateDefaultIndex(
+app::SystemResourceInfo ServerConfig::locateDefaultIndex(
 	std::vector<std::string> const &indexesId,
 	std::string const			   &matchedRoute,
 	std::string const			   &rootPath
@@ -163,19 +193,26 @@ app::SystemResourceInfos ServerConfig::locateDefaultIndex(
 		resPath += "/";
 
 	if (indexesId.empty())
-		return app::SystemResourceInfos();
+		return app::SystemResourceInfo();
 
 	std::vector<std::string>::const_iterator ite = indexesId.end();
 	std::vector<std::string>::const_iterator it = indexesId.begin();
 	for (; it != ite; ++it)
 	{
-		if (fileSystem::Storage::exists(resPath + *it) &&
-			fileSystem::Storage::isRegularFile(resPath + *it))
+		if (fileSystem::exists(resPath + *it) && fileSystem::isRegularFile(resPath + *it))
 		{
 			return setSRI(resPath + *it);
 		}
 	}
 	return setSRI(resPath + indexesId[0]);
+}
+
+app::SystemResourceInfo ServerConfig::locateErrorPage(std::string const &uri) const
+{
+	app::SystemResourceInfo sri;
+
+	sri = setSRI(resolvePhysicalPath(uri));
+	return sri;
 }
 
 std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.0"); }
@@ -203,7 +240,10 @@ std::size_t ServerConfig::getMaxBodySize(std::string const &uri) const
 	return (m_max_body);
 }
 
-ServerConfig::TransportProtocol ServerConfig::getTransportProtocol(void) const { return m_transport; }
+ServerConfig::TransportProtocol ServerConfig::getTransportProtocol(void) const
+{
+	return m_transport;
+}
 
 ServerConfig::ApplicativeProtocol ServerConfig::getApplicativeProtocol(void) const
 {

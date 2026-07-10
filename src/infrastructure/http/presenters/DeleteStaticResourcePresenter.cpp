@@ -6,29 +6,28 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:57:56 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 21:58:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:45:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "DeleteStaticResourcePresenter.hpp"
+#include "infrastructure/http/presenters/DeleteStaticResourcePresenter.hpp"
+#include "infrastructure/http/presenters/success_lookup.hpp"
+#include "infrastructure/http/response/Response.hpp"
+#include <sstream>
 
-DeleteStaticResourcePresenter::DeleteStaticResourcePresenter(void) {}
-
-DeleteStaticResourcePresenter::DeleteStaticResourcePresenter(
-	DeleteStaticResourcePresenter const &src
-)
+namespace http {
+DeleteStaticResourcePresenter::ViewModel const &
+DeleteStaticResourcePresenter::getViewModel(void) const
 {
-	*this = src;
+	return (_viewModel);
 }
 
-DeleteStaticResourcePresenter::~DeleteStaticResourcePresenter(void) {}
-
-DeleteStaticResourcePresenter &
-DeleteStaticResourcePresenter::operator=(DeleteStaticResourcePresenter const &rhs)
+void DeleteStaticResourcePresenter::presentDeletedResource(app::ResourceStatus status)
 {
-	if (this != &rhs)
-	{
-		//
-	}
-	return (*this);
+	Response::Builder response_builder;
+
+	response_builder.withStatusLine(to_status_code(status));
+
+	_viewModel.response = response_builder.build();
 }
+} // namespace http

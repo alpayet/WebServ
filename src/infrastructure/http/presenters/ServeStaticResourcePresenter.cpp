@@ -6,14 +6,15 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 19:53:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 23:44:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/presenters/ServeStaticResourcePresenter.hpp"
-#include "infrastructure/http/Constants.hpp"
+#include "infrastructure/http/constants.hpp"
+#include "infrastructure/http/presenters/get_listing_html.hpp"
+#include "infrastructure/http/presenters/success_lookup.hpp"
 #include "infrastructure/http/response/Response.hpp"
-#include <sstream>
 
 namespace http {
 
@@ -23,37 +24,34 @@ ServeStaticResourcePresenter::getViewModel(void) const
 	return (_viewModel);
 }
 
-void ServeStaticResourcePresenter::presentContent(
-	app::ResourceStatus const resourceStatus,
-	std::size_t const		  resourceSize,
-	app::IResourceReader	 *resourceReader
+void ServeStaticResourcePresenter::presentStaticContent(
+	app::ResourceStatus status, std::size_t resourceSize, app::IResourceReader *resourceReader
 )
 {
-	unsigned short statusCode;
+	Response::Builder builder;
 
-	switch (resourceStatus)
-	{
-		case app::resourceFound:
-			statusCode = 200;
-			break;
-		default:
-			break;
-	}
+	builder.withStatusLine(to_status_code(status));
+	builder.withContentLength(resourceSize);
 
-	std::stringstream contentLengthAsString;
-	contentLengthAsString << resourceSize;
-
-	Response::Builder response_builder;
-
-	response_builder.withStatusCode(statusCode);
-	response_builder.withHeader(header::CONTENT_LENGTH, contentLengthAsString.str());
-
-	_viewModel.response = response_builder.build();
+	_viewModel.response = builder.build();
 	_viewModel.reader = resourceReader;
 }
 
 void ServeStaticResourcePresenter::presentListing(
-	app::ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
+	app::ResourceStatus						 status,
+	std::string const						&id,
+	std::vector<app::CollectionEntry> const &collectionData
 )
-{}
+{
+	std::string const &listing_html = get_listing_html(id, collectionData);
+
+	Response::Builder builder;
+
+	builder.withStatusLine(to_status_code(status));
+	builder.withContentLength(listing_html.size());
+	builder.withBody(listing_html);
+
+	_viewModel.response = builder.build();
+	_viewModel.reader = NULL;
+}
 } // namespace http

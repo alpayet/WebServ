@@ -3,30 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   IResourceLocator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 09:53:56 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/06/30 18:30:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRESOURCELOCATOR_HPP
 #define IRESOURCELOCATOR_HPP
 
+#include "domain/enums/ResourcePermissions.hpp"
+#include "application/ports/SystemResourceInfo.hpp"
+#include "domain/enums/ResourceType.hpp"
 #include <string>
 #include <vector>
 
 namespace app {
-struct SystemResourceInfos;
-
 class IResourceLocator
 {
   public:
 	virtual ~IResourceLocator(void) {}
-	virtual SystemResourceInfos locate(
+	virtual SystemResourceInfo locate(
 		std::string const &id, std::string const &matchedRoute, std::string const &rootPath
 	) const = 0;
-	virtual SystemResourceInfos locateDefaultIndex(
+	virtual SystemResourceInfo locateDefaultIndex(
 		std::vector<std::string> const &indexesId,
 		std::string const			   &matchedRoute,
 		std::string const			   &rootPath

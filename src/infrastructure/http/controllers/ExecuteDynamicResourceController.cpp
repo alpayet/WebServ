@@ -6,18 +6,20 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 03:19:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 04:02:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/ExecuteDynamicResourceController.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
-#include "infrastructure/http/Constants.hpp"
+#include "cgi/constants.hpp"
 #include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
 #include "infrastructure/http/request/Request.hpp"
+#include "infrastructure/parsing/constants.hpp"
 #include <map>
 
 namespace http {
@@ -27,17 +29,15 @@ ExecuteDynamicResourceController::ExecuteDynamicResourceController(
 	: _useCase(useCase), _limitsProvider(limitsProvider)
 {}
 
-void ExecuteDynamicResourceController::operator()(
-	Request const &request, Context &context, RoutePolicy const &routePolicy
-)
+void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy const &routePolicy)
 {
+	Request const &request = context.input.state.request;
+
 	std::string bodyPath;
-	if (request.body.exists())
-		bodyPath = request.body.getPath();
-
-	if (request.contentLength > _limitsProvider.getMaxBodySize(request.target))
+	if (request.hasBody())
+		bodyPath = request.getBodyPath();
+	if (request.getContentLength() > _limitsProvider.getMaxBodySize(request.getTarget()))
 		throw Exception(Exception::bodyTooLarge);
-
 	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
 
 	app::useCase::ExecuteDynamicResource::Input const &dto =
@@ -51,19 +51,15 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 {
 	std::map<std::string, std::string> metaVariable;
 
-	metaVariable[cgiMeta::REQUEST_METHOD] = request.method;
-	if (!request.query.empty())
-		metaVariable[cgiMeta::QUERY_STRING] = request.query;
+	metaVariable[cgi::meta::REQUEST_METHOD] = request.getMethod();
+	if (request.hasQuery())
+		metaVariable[cgi::meta::QUERY_STRING] = request.getQuery();
 
-	std::map<std::string, std::string>::const_iterator content_length_it =
-		request.headers.find(header::LOWER_CONTENT_LENGTH);
-	if (content_length_it != metaVariable.end())
-		metaVariable[cgiMeta::CONTENT_LENGTH] = content_length_it->second;
+	if (request.hasContentLength())
+		metaVariable[cgi::meta::CONTENT_LENGTH] = request.getHeader(parse::CONTENT_TYPE);
 
-	std::map<std::string, std::string>::const_iterator content_type_it =
-		request.headers.find(header::LOWER_CONTENT_TYPE);
-	if (content_type_it != metaVariable.end())
-		metaVariable[cgiMeta::CONTENT_TYPE] = content_type_it->second;
+	if (request.hasHeader(parse::CONTENT_TYPE))
+		metaVariable[cgi::meta::CONTENT_TYPE] = request.getHeader(parse::CONTENT_TYPE);
 	return (metaVariable);
 }
 } // namespace http

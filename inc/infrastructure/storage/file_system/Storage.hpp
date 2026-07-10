@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:29:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 03:41:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/05 03:21:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,11 @@ namespace fileSystem {
 class Storage : public app::IStaticResourceStorage
 {
   public:
+	Storage(void) {}
 	virtual ~Storage(void) {}
 
 	virtual void				  remove(std::string const &resourcePath);
 	virtual app::IResourceReader *createReader(std::string const &resourcePath);
-	app::IResourceReader		 *createReader(int const fd);
-
-	static bool		   exists(std::string const &path);
-	static bool		   isRegularFile(std::string const &path);
-	static bool		   isDirectory(std::string const &path);
-	static bool		   isReadable(std::string const &path);
-	static bool		   isWritable(std::string const &path);
-	static bool		   isExecutable(std::string const &path);
-	static std::size_t getSize(std::string const &path);
-	static bool		   isDeletable(std::string const &path);
 
   private:
 	Storage(Storage const &src);

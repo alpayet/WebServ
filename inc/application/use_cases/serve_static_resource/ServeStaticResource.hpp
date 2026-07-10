@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 04:01:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/01 01:46:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ class ResourceMetaData;
 
 namespace app {
 class IResourceLocator;
-class IResourceReader;
 class IStaticResourceStorage;
+class IResourceReader;
 class ICollectionExplorer;
+struct CollectionEntry;
 
 namespace useCase {
 class ServeStaticResource
@@ -40,7 +41,8 @@ class ServeStaticResource
 			bool const						isListingEnabled,
 			std::vector<std::string> const &indexesId
 		)
-			: id(id), rootPath(rootPath), isListingEnabled(isListingEnabled), indexesId(indexesId)
+			: id(id), matchedRoute(matchedRoute), rootPath(rootPath),
+			  isListingEnabled(isListingEnabled), indexesId(indexesId)
 		{}
 		std::string				 id;
 		std::string				 matchedRoute;
@@ -53,13 +55,15 @@ class ServeStaticResource
 	  public:
 		virtual ~IOutputPort() {}
 
-		virtual void presentContent(
-			ResourceStatus const resourceStatus,
+		virtual void presentStaticContent(
+			ResourceStatus const status,
 			std::size_t const	 resourceSize,
 			IResourceReader		*resourceReader
 		) = 0;
 		virtual void presentListing(
-			ResourceStatus const resourceStatus, std::vector<char> const &CollectionData
+			ResourceStatus const				status,
+			std::string const				   &id,
+			std::vector<CollectionEntry> const &collectionData
 		) = 0;
 	};
 
@@ -76,10 +80,10 @@ class ServeStaticResource
 	ServeStaticResource(ServeStaticResource const &src);
 	ServeStaticResource &operator=(ServeStaticResource const &rhs);
 
-	void ServeStaticResource::serveContent(
+	void serveContent(
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
-	void ServeStaticResource::generateListing(
+	void generateListing(
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 

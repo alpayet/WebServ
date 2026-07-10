@@ -6,23 +6,43 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/16 21:45:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:32:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DELETESTATICRESOURCEPRESENTER_HPP
 #define DELETESTATICRESOURCEPRESENTER_HPP
 
-class DeleteStaticResourcePresenter
+#include "application/ResourceStatus.hpp"
+#include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
+#include "infrastructure/http/response/Response.hpp"
+#include <string>
+#include <vector>
+
+namespace http {
+
+class DeleteStaticResourcePresenter : public app::useCase::DeleteStaticResource::IOutputPort
 {
   public:
-	DeleteStaticResourcePresenter(void);
-	DeleteStaticResourcePresenter(DeleteStaticResourcePresenter const &src);
-	~DeleteStaticResourcePresenter(void);
+	struct ViewModel
+	{
+		Response response;
+	};
 
-	DeleteStaticResourcePresenter &operator=(DeleteStaticResourcePresenter const &rhs);
+  public:
+	DeleteStaticResourcePresenter(void) {}
+	virtual ~DeleteStaticResourcePresenter(void) {}
+
+	ViewModel const &getViewModel(void) const;
+
+	virtual void presentDeletedResource(app::ResourceStatus status);
 
   private:
+	DeleteStaticResourcePresenter(DeleteStaticResourcePresenter const &src);
+	DeleteStaticResourcePresenter &operator=(DeleteStaticResourcePresenter const &rhs);
+
+	ViewModel _viewModel;
 };
+} // namespace http
 
 #endif // DELETESTATICRESOURCEPRESENTER_HPP

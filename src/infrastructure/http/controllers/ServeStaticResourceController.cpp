@@ -6,11 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 21:25:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:16:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/controllers/ServeStaticResourceController.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/mappers/ServeStaticResourceDtoMapper.hpp"
@@ -34,8 +35,8 @@ void ServeStaticResourceController::operator()(Context &context, RoutePolicy con
 	_useCase.execute(dto, presenter);
 
 	ServeStaticResourcePresenter::ViewModel const &viewModel = presenter.getViewModel();
-
 	context.output.response = viewModel.response;
+	delete (context.output.reader);
 	context.output.reader = viewModel.reader;
 }
 } // namespace http

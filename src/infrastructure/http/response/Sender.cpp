@@ -6,41 +6,80 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 23:49:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:14:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/Sender.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"
 #include "infrastructure/http/response/HeaderBlockSerializer.hpp"
+#include "infrastructure/http/response/Response.hpp"
 
 namespace http {
 namespace response {
+
+Sender::State::State(void) : step(HeaderBlock), totalBytesRead(0), cgiBuf() {}
+
+void Sender::State::reset(void)
+{
+	step = HeaderBlock;
+	totalBytesRead = 0;
+	cgiBuf.clear();
+}
 
 Sender::Sender(IHttpVersionProvider &httpVersionProvider)
 	: _httpVersionProvider(httpVersionProvider)
 {}
 
-Sender::State Sender::produce(Context::Output &context)
+Sender::Step Sender::produce(
+	std::vector<char>	 &outputBuf,
+	Response const		 &response,
+	app::IResourceReader *reader,
+	State				 &state
+)
 {
-	switch (context.state)
+	switch (state.step)
 	{
 		case HeaderBlock:
-			context.buf.clear();
+			outputBuf.clear();
 			HeaderBlockSerializer::serialize(
-				context.buf, context.response, _httpVersionProvider.getHttpVersion()
+				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
-
-			context.state = (context.reader) ? resource : body;
+			if (reader)
+				state.step = resource;
+			else if (response.hasBody())
+				state.step = body;
+			else
+				state.step = complete;
 			break;
 		case body:
-			context.buf.clear();
-			/* code */
+			outputBuf.clear();
+			outputBuf = response.getBody();
+			state.step = complete;
+			break;
 		case resource:
-			context.buf.clear();
+		{
+			outputBuf.clear();
+			size_t const bytes_read =
+				reader->read(outputBuf, response.getContentLength() - state.totalBytesRead);
+
+			if (bytes_read == 0 && state.totalBytesRead < response.getContentLength())
+			{
+				// TODO: a vori avec luca si il catch les throw et deconnecte le client
+				// throw "caca";
+			}
+
+			state.totalBytesRead += bytes_read;
+			if (state.totalBytesRead == response.getContentLength())
+				state.step = complete;
+			break;
+		}
+		case cgi:
 		default:
 			break;
 	}
+	return (state.step);
 }
 
 } // namespace response

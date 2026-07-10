@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 23:07:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 00:15:09 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 
 namespace http {
-struct Request;
-class RoutePolicy;
+class Request;
+struct RoutePolicy;
 
 class ExecuteDynamicResourceDtoMapper
 {
   public:
-	static app::useCase::ExecuteDynamicResource::Input ExecuteDynamicResourceDtoMapper::toDto(
+	static app::useCase::ExecuteDynamicResource::Input toDto(
 		Request const							 &request,
 		RoutePolicy const						 &routePolicy,
 		std::string const						 &bodyPath,

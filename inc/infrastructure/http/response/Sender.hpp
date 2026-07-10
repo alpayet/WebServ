@@ -6,36 +6,61 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/25 22:51:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/08 02:22:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPRESPONSESENDER_HPP
 #define HTTPRESPONSESENDER_HPP
 
-#include "infrastructure/http/Context.hpp"
 #include <vector>
+
+namespace app {
+class IResourceReader;
+} // namespace app
 
 namespace http {
 
 class IHttpVersionProvider;
+class Response;
 
 namespace response {
 class Sender
 {
   public:
-	enum State
+	enum Step
 	{
 		HeaderBlock,
 		body,
 		resource,
-		complete,
+		cgi,
+		complete
+	};
+
+	struct State
+	{
+		State(void);
+
+		Step			  step;
+		std::size_t		  totalBytesRead;
+		std::vector<char> cgiBuf;
+
+		void reset(void);
+
+	  private:
+		State(State const &src);
+		State &operator=(State const &rhs);
 	};
 
   public:
 	Sender(IHttpVersionProvider &httpVersionProvider);
 
-	State produce(Context::Output &context);
+	Step produce(
+		std::vector<char>	 &outputBuf,
+		Response const		 &response,
+		app::IResourceReader *reader,
+		State				 &state
+	);
 
   private:
 	Sender(Sender const &src);

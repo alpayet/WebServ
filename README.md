@@ -15,12 +15,12 @@ server {
 	hostname 10.15.2.1;
 
 	root /var/www/html/
-	
+
 	location / {
 		root /var/www/html/example;
 		index index.html index.htm;
 	}
-	
+
 	location /banana/ {
 		return 404;
 	}
@@ -32,7 +32,7 @@ server {
 	location /cgi-bin/ {
 		cgi test.py;
 	}
-	
+
 	error_page 500 /500.html;
 	error_page 404 /404.html;
 }
@@ -45,7 +45,7 @@ Also, every location and root has to be a directory, whereas index can't have an
 
 `hostname`: name of to identify the server, must be unique in configuration file
 
-`root` (outside location block): path for the server, the location blocks without a root directive will append there path to that route 
+`root` (outside location block): path for the server, the location blocks without a root directive will append there path to that route
 
 `location`: starts of the location block for a specific path
 
@@ -73,6 +73,8 @@ Also, every location and root has to be a directory, whereas index can't have an
 [Mozilla developer doc on HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)
 
 [RFC on HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
+
+[RFC on CGI](https://datatracker.ietf.org/doc/html/rfc3875)
 
 [Code(quoi); article on network programmation](https://www.codequoi.com/programmation-reseau-via-socket-en-c/)
 

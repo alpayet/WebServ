@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/23 01:39:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 18:17:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTROUTER_HPP
+#ifndef HTTPROUTER_HPP
 #define HTTPROUTER_HPP
 
 namespace http {
@@ -24,13 +24,13 @@ class Router
 {
   public:
 	Router(
-		IRouteRegistry					 &routeRegistry,
-		ServeStaticResourceController	 &serveStaticResourceController,
-		DeleteStaticResourceController	 &deleteStaticResourceController,
-		ExecuteDynamicResourceController &executeDynamicResourceController
+		IRouteRegistry				   &routeRegistry,
+		ServeStaticResourceController  &serveStaticResourceController,
+		DeleteStaticResourceController &deleteStaticResourceController
+		// ExecuteDynamicResourceController &executeDynamicResourceController
 	);
 
-	void Router::route(Context &context);
+	void route(Context &context);
 
   private:
 	Router(Router const &src);
@@ -38,9 +38,9 @@ class Router
 
 	IRouteRegistry &_routeRegistry;
 
-	ServeStaticResourceController	 &_serveStaticResourceController;
-	DeleteStaticResourceController	 &_deleteStaticResourceController;
-	ExecuteDynamicResourceController &_executeDynamicResourceController;
+	ServeStaticResourceController  &_serveStaticResourceController;
+	DeleteStaticResourceController &_deleteStaticResourceController;
+	// ExecuteDynamicResourceController &_executeDynamicResourceController;
 };
 } // namespace http
 

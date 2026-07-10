@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/22 21:37:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/06/30 18:40:19 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ namespace domain {
 class StaticResource
 {
   public:
-	StaticResource(
-		std::string const &id, std::string const &rootPath, ResourceMetaData const &metaData
-	);
+	StaticResource(std::string const &id, ResourceMetaData const &metaData);
 
+	std::string const &getId(void) const;
 	std::string const &getResourcePath(void) const;
 	std::size_t		   getResourceSize(void) const;
 

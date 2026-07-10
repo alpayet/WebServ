@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 02:29:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/09 03:26:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,28 @@ class TempWriter
 	TempWriter(std::string const &tempFileName);
 	~TempWriter(void);
 
-	std::string getTempFilePath(void) const;
-	bool		exists(void) const;
+	std::string const &getPath(void) const;
+	int				   getFd(void) const;
 
-	void writeChunk(std::vector<char> const &data);
+	std::size_t write(std::vector<char> const &buf, std::size_t size);
+	std::size_t write(std::vector<char> const &buf);
+
+	bool exists(void) const;
+
+	void resetPosition(void);
+	void reset(void);
 
   private:
 	TempWriter(TempWriter const &src);
 	TempWriter &operator=(TempWriter const &rhs);
 
-	std::ofstream _tempFile;
-	std::string	  _tempFileName;
-	std::string	  _tempFilePath;
-	bool		  _exists;
+	int			_fd;
+	std::string _nameTemplate;
+	std::string _path;
 
 	static char const TMP_DIRECTORY[];
 
-	static std::string generateUniqueTempFile(std::string const &fileName);
+	void generateUniqueTempFile(void);
 };
 } // namespace fileSystem
 

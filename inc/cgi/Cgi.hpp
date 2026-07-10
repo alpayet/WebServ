@@ -6,13 +6,12 @@
 class Cgi : public app::IDynamicResourceExecutor
 {
   public:
-	virtual IResourceReader *execute(
+	virtual void execute(
 		std::string const						 &resourcePath,
 		std::string const						 &bodyPath,
 		std::map<std::string, std::string> const &metaVariables
-	);
-
-  private:
+	)
+	{}
 };
-
+// TODO: faire aussi le cleear des enfants zombies
 #endif

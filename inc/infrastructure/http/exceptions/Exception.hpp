@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Exception.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/13 16:30:01 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/07/09 17:39:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		invalidLineBreak,
+		lineBreakInvalid,
 		requestLineMalformed,
 		headerLineMalformed,
 		methodInvalid,
@@ -37,20 +37,20 @@ class Exception : public std::exception
 		headerLineTooLarge,
 		headerCountTooLarge,
 		bodyTooLarge,
-		bodyFileOpenFailed,
-		bodyFileWriteFailed
+		matchRouteFailed,
+		maxLocalRedirDepthExceeded,
+		timeOut
 	};
 
   public:
-	Exception(std::string const &message, ErrorCode const internalCode) throw();
-	Exception(ErrorCode const internalCode) throw();
-	// TODO: faire une surcharge du construteur qui prend un int en param pour pouvoir throw
-	// nimporte laquelle error code
+	Exception(std::string const &message, ErrorCode internalCode) throw();
+	Exception(ErrorCode internalCode) throw();
+
 	virtual ~Exception(void) throw() {}
 
-	ErrorCode getErrorCode(void) const;
-
 	virtual char const *what(void) const throw();
+
+	ErrorCode getErrorCode(void) const throw();
 
   private:
 	std::string _message;

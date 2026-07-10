@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 22:34:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:36:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,17 @@ class Exception : public std::exception
 	{
 		accessDenied,
 		notFound,
-		listingDisabled
+		listingDisabled,
+		deleteFailed,
+		pathTraversalDetected,
 	};
 
   public:
-	Exception(std::string const &message, ErrorCode const internalCode) throw();
-	Exception(ErrorCode const internalCode) throw();
+	Exception(std::string const &message, ErrorCode internalCode) throw();
+	Exception(ErrorCode internalCode) throw();
 	virtual ~Exception(void) throw() {}
 
-	ErrorCode getErrorCode(void) const;
+	ErrorCode getErrorCode(void) const throw();
 
 	virtual char const *what(void) const throw();
 

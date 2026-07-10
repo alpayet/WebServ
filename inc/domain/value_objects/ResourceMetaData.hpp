@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:42:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/26 03:41:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/04 22:34:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class ResourceMetaData
 {
   public:
 	ResourceMetaData(
-		std::string			resourcePath,
+		std::string const  &resourcePath,
 		ResourceType		type,
 		ResourcePermissions permissions,
 		std::size_t			resourceSize,
