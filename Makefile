@@ -103,6 +103,7 @@
 #files
 SRC_FILES = \
 	main.cpp \
+	infrastructure/constants.cpp \
 	infrastructure/storage/file_system/TempWriter.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/Reader.cpp \
@@ -117,7 +118,6 @@ SRC_FILES = \
 	infrastructure/http/methods.cpp \
 	infrastructure/http/Handler.cpp \
 	infrastructure/http/Context.cpp \
-	infrastructure/http/constants.cpp \
 	infrastructure/http/router/Router.cpp \
 	infrastructure/http/response/Sender.cpp \
 	infrastructure/http/response/ResponseBuilder.cpp \

@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:22:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:18:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/parsing/header_parser.hpp"
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/constants.hpp"
 #include "infrastructure/parsing/line_reader.hpp"
 #include "infrastructure/parsing/utils.hpp"
 #include <algorithm>
@@ -54,7 +54,7 @@ ParseContentLength::Result parse_content_length(
 	std::size_t								 &out_content_length
 )
 {
-	std::map<std::string, std::string>::const_iterator it = headers.find(CONTENT_LENGTH);
+	std::map<std::string, std::string>::const_iterator it = headers.find(headers::CONTENT_LENGTH);
 
 	if (it == headers.end())
 		return (ParseContentLength::contentLengthMissing);

@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 02:23:59 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:20:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/http/constants.hpp"
+#include "infrastructure/constants.hpp"
 #include "infrastructure/http/exceptions/error_lookup.hpp"
 #include "infrastructure/http/response/Response.hpp"
 #include "infrastructure/http/response/get_default_body.hpp"
@@ -41,7 +41,7 @@ Response::Builder &Response::Builder::withStatusLine(unsigned short statusCode)
 
 Response::Builder &Response::Builder::withContentLength(std::size_t contentLength)
 {
-	withHeader(header::CONTENT_LENGTH, contentLength);
+	withHeader(headers::CONTENT_LENGTH, contentLength);
 	_response._contentLength = contentLength;
 	return (*this);
 }

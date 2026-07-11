@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constants.hpp                                      :+:      :+:    :+:   */
+/*   constants.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/08 00:32:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 00:33:32 by alpayet          ###   ########.fr       */
+/*   Created: 2026/07/11 20:23:53 by alpayet           #+#    #+#             */
+/*   Updated: 2026/07/11 20:28:58 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HTTPCONSTANTS_HPP
-#define HTTPCONSTANTS_HPP
+#include "infrastructure/constants.hpp"
 
-namespace http {
+namespace headers {
+char const CONTENT_LENGTH[] = "content-length";
+char const CONTENT_TYPE[] = "content-type";
+char const COOKIE[] = "cookie";
+char const SET_COOKIE[] = "set-cookie";
+char const STATUS[] = "status";
+char const LOCATION[] = "location";
 
-namespace header {
-extern char const CONTENT_LENGTH[];
-extern char const CONTENT_TYPE[];
-} // namespace header
-
-} // namespace http
-
-#endif // HTTPCONSTANTS_HPP
+} // namespace headers

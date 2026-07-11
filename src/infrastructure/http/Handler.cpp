@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:41:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:44:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
+#include <iostream>
 
 namespace http {
 Handler::Handler(
@@ -112,6 +113,7 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamS
 		if (_cgiParser.parse(context_stream.buf, status, context_stream.state) ==
 			cgi::Parser::complete)
 		{
+			std::cout << context_stream.state.response << std::endl;
 			dispatchCgiResponse(_contexts[id]);
 			return (ITransfertHandler::complete);
 		}

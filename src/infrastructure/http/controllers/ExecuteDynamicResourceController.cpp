@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 04:02:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 20:53:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "application/ports/IResourceReader.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "cgi/constants.hpp"
+#include "infrastructure/constants.hpp"
 #include "infrastructure/http/Context.hpp"
 #include "infrastructure/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/http/exceptions/Exception.hpp"
 #include "infrastructure/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
 #include "infrastructure/http/request/Request.hpp"
-#include "infrastructure/parsing/constants.hpp"
 #include <map>
 
 namespace http {
@@ -56,10 +56,12 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 		metaVariable[cgi::meta::QUERY_STRING] = request.getQuery();
 
 	if (request.hasContentLength())
-		metaVariable[cgi::meta::CONTENT_LENGTH] = request.getHeader(parse::CONTENT_TYPE);
+		metaVariable[cgi::meta::CONTENT_LENGTH] = request.getHeader(headers::CONTENT_TYPE);
 
-	if (request.hasHeader(parse::CONTENT_TYPE))
-		metaVariable[cgi::meta::CONTENT_TYPE] = request.getHeader(parse::CONTENT_TYPE);
+	if (request.hasHeader(headers::CONTENT_TYPE))
+		metaVariable[cgi::meta::CONTENT_TYPE] = request.getHeader(headers::CONTENT_TYPE);
+	if (request.hasHeader(headers::COOKIE))
+		metaVariable[cgi::meta::HTTP_COOKIE] = request.getHeader(headers::COOKIE);
 	return (metaVariable);
 }
 } // namespace http

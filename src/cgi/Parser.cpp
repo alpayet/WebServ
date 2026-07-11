@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:32:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:40:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cgi/Parser.hpp"
 #include "cgi/Exception.hpp"
+#include "infrastructure/constants.hpp"
 #include "infrastructure/parsing/IValidationPolicy.hpp"
 #include "infrastructure/parsing/constants.hpp"
 #include "infrastructure/parsing/header_parser.hpp"
@@ -136,7 +137,7 @@ void Parser::classifyResponse(Response &response)
 				response.setType(Response::localRedir);
 				break;
 			case Response::Location::client:
-				if (response.hasHeader(parse::CONTENT_TYPE))
+				if (response.hasHeader(headers::CONTENT_TYPE))
 					response.setType(Response::clientRedirDoc);
 				else
 					response.setType(Response::clientRedir);
@@ -149,7 +150,7 @@ void Parser::classifyResponse(Response &response)
 	}
 	else
 	{
-		if (!response.hasHeader(parse::CONTENT_TYPE))
+		if (!response.hasHeader(headers::CONTENT_TYPE))
 			throw Exception(Exception::documentResponseMalformed);
 		response.setType(Response::document);
 	}
@@ -176,12 +177,15 @@ void Parser::parseHeaderLine(
 		default:
 			break;
 	}
-	response.setHeader(key, value);
+	if (key == headers::SET_COOKIE)
+		response.setCookie(value);
+	else
+		response.setHeader(key, value);
 }
 
 void Parser::parseStatus(Response &response)
 {
-	std::string const &status = response.getHeader(parse::STATUS);
+	std::string const &status = response.getHeader(headers::STATUS);
 
 	if (status.empty())
 		return;
@@ -213,7 +217,7 @@ void Parser::parseStatus(Response &response)
 
 void Parser::parseLocation(Response &response)
 {
-	std::string const &location = response.getHeader(parse::LOCATION);
+	std::string const &location = response.getHeader(headers::LOCATION);
 
 	if (location.empty())
 		return;

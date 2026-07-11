@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 18:49:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 20:34:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ class Response
 	std::map<std::string, std::string> const &getHeaders(void) const;
 	std::string const						 &getHeader(std::string const &key) const;
 	bool									  hasHeader(std::string const &key) const;
+	std::vector<std::string> const			 &getCookies(void) const;
 	std::string const						 &getLocationUri(void) const;
 	std::string const						 &getLocationQuery(void) const;
 	Location::Type							  getLocationType(void) const;
@@ -95,6 +96,7 @@ class Response
 	void setStatus(unsigned short statusCode, std::string const &reason);
 	void setDefaultRedirStatus();
 	void setHeader(std::string const &key, std::string const &value);
+	void setCookie(std::string const &value);
 	void setLocation(std::string const &uri, std::string const &query, Location::Type type);
 	void setContentLength(std::size_t contentLength);
 	void setType(Type type);
@@ -112,6 +114,7 @@ class Response
 
 	Status							   _status;
 	std::map<std::string, std::string> _headers;
+	std::vector<std::string>		   _cookies;
 	Location						   _location;
 	bool							   _hasContentLength;
 	std::size_t						   _contentLength;

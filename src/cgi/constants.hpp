@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:45:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 23:36:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 20:38:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ extern char const CONTENT_LENGTH[];
 extern char const CONTENT_TYPE[];
 extern char const REQUEST_METHOD[];
 extern char const QUERY_STRING[];
+extern char const HTTP_COOKIE[];
 } // namespace meta
 } // namespace cgi
 

@@ -6,11 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 18:56:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:48:46 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cgi/Response.hpp"
+#include "infrastructure/constants.hpp"
 
 namespace cgi {
 unsigned short const Response::Status::DEFAULT_STATUS_CODE = 200;
@@ -58,7 +59,8 @@ void Response::Location::reset(void)
 }
 
 Response::Response(void)
-	: _status(), _headers(), _hasContentLength(false), _contentLength(0), _body(BODY_NAME_TEMPLATE)
+	: _status(), _headers(), _cookies(), _hasContentLength(false), _contentLength(0),
+	  _body(BODY_NAME_TEMPLATE)
 {}
 
 unsigned short	   Response::getStatusCode(void) const { return (_status.getStatusCode()); }
@@ -80,14 +82,15 @@ bool Response::hasHeader(std::string const &key) const
 {
 	return (_headers.find(key) != _headers.end());
 }
-std::string const		&Response::getLocationUri(void) const { return (_location.uri); }
-std::string const		&Response::getLocationQuery(void) const { return (_location.query); }
-Response::Location::Type Response::getLocationType(void) const { return (_location.type); }
-bool					 Response::hasLocation(void) const { return (!_location.uri.empty()); }
-std::size_t				 Response::getContentLength(void) const { return (_contentLength); }
-bool					 Response::hasContentLength(void) const { return (_hasContentLength); }
-Response::Type			 Response::getType(void) const { return (_type); }
-int						 Response::getBodyFd(void) const { return (_body.getFd()); }
+std::vector<std::string> const &Response::getCookies(void) const { return (_cookies); }
+std::string const			   &Response::getLocationUri(void) const { return (_location.uri); }
+std::string const			   &Response::getLocationQuery(void) const { return (_location.query); }
+Response::Location::Type		Response::getLocationType(void) const { return (_location.type); }
+bool		   Response::hasLocation(void) const { return (!_location.uri.empty()); }
+std::size_t	   Response::getContentLength(void) const { return (_contentLength); }
+bool		   Response::hasContentLength(void) const { return (_hasContentLength); }
+Response::Type Response::getType(void) const { return (_type); }
+int			   Response::getBodyFd(void) const { return (_body.getFd()); }
 
 void Response::setStatus(unsigned short statusCode, std::string const &reason)
 {
@@ -100,6 +103,8 @@ void Response::setHeader(std::string const &key, std::string const &value)
 {
 	_headers[key] = value;
 }
+
+void Response::setCookie(std::string const &value) { _cookies.push_back(value); }
 
 void Response::setLocation(std::string const &uri, std::string const &query, Location::Type type)
 {
@@ -133,6 +138,7 @@ void Response::reset(void)
 {
 	_status.reset();
 	_headers.clear();
+	_cookies.clear();
 	_location.reset();
 	_contentLength = 0;
 	_hasContentLength = false;
@@ -149,8 +155,14 @@ std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
 	lhs << "\t\tReason:" << rhs.getStatusReason() << std::endl;
 
 	lhs << "\tHeaders:" << std::endl;
-	for (std::map<std::string, std::string>::const_iterator it; it != rhs.getHeaders().end(); ++it)
+	for (std::map<std::string, std::string>::const_iterator it = rhs.getHeaders().begin();
+		 it != rhs.getHeaders().end(); ++it)
 		lhs << "\t\t" << it->first << ':' << it->second << std::endl;
+
+	lhs << "\tCookies:" << std::endl;
+	for (std::vector<std::string>::const_iterator it = rhs.getCookies().begin();
+		 it != rhs.getCookies().end(); ++it)
+		lhs << "\t\t" << headers::SET_COOKIE << ':' << *it << std::endl;
 
 	lhs << "\tLocation:" << std::endl;
 	lhs << "\t\tUri:" << rhs.getLocationUri() << std::endl;

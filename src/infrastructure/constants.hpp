@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 17:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 18:08:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 20:28:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,14 @@
 #define CONSTANTS_HPP
 
 #define SERVEUR_SOFTWARE "webserv/1.0"
+
+namespace headers {
+extern char const CONTENT_LENGTH[];
+extern char const CONTENT_TYPE[];
+extern char const COOKIE[];
+extern char const SET_COOKIE[];
+extern char const STATUS[];
+extern char const LOCATION[];
+} // namespace headers
 
 #endif // CONSTANTS_HPP

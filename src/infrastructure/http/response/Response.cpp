@@ -6,13 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 18:56:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:45:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/response/Response.hpp"
 #include "application/ports/SystemResourceInfo.hpp"
-#include "infrastructure/http/constants.hpp"
 #include "infrastructure/http/response/get_default_body.hpp"
 #include "infrastructure/http/response/get_status_reason.hpp"
 #include <cstring>
@@ -79,7 +78,8 @@ std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
 	lhs << "\t\tReason:" << rhs.getStatusReason() << std::endl;
 
 	lhs << "\tHeaders:" << std::endl;
-	for (std::vector<Response::Header>::const_iterator it; it != rhs.getHeaders().end(); ++it)
+	for (std::vector<Response::Header>::const_iterator it = rhs.getHeaders().begin();
+		 it != rhs.getHeaders().end(); ++it)
 		lhs << "\t\t" << it->key << ':' << it->value << std::endl;
 
 	lhs << "\tContentLength:" << rhs.getContentLength() << std::endl;

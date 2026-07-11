@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 21:05:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 02:57:04 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/11 22:39:10 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/mappers/CgiResponseMapper.hpp"
 #include "cgi/Response.hpp"
+#include "infrastructure/constants.hpp"
 #include "infrastructure/http/response/Response.hpp"
-#include "infrastructure/parsing/constants.hpp"
 
 namespace http {
 
@@ -24,12 +24,18 @@ Response CgiResponseMapper::toHttpResponse(cgi::Response const &cgiResponse)
 	builder.withStatusCode(cgiResponse.getStatusCode());
 	builder.withStatusReason(cgiResponse.getStatusReason());
 	builder.withContentLength(cgiResponse.getContentLength());
-	for (std::map<std::string, std::string>::const_iterator i = cgiResponse.getHeaders().begin();
-		 i != cgiResponse.getHeaders().end(); ++i)
+
+	for (std::map<std::string, std::string>::const_iterator it = cgiResponse.getHeaders().begin();
+		 it != cgiResponse.getHeaders().end(); ++it)
 	{
-		if (i->first != parse::STATUS && i->first != parse::CONTENT_LENGTH)
-			builder.withHeader(i->first, i->second);
+		if (it->first != headers::STATUS && it->first != headers::CONTENT_LENGTH)
+			builder.withHeader(it->first, it->second);
 	}
+
+	for (std::vector<std::string>::const_iterator it = cgiResponse.getCookies().begin();
+		 it != cgiResponse.getCookies().end(); ++it)
+		builder.withHeader(headers::SET_COOKIE, *it);
+
 	return (builder.build());
 }
 
