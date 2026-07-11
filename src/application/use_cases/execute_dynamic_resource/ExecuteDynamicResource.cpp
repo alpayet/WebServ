@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 04:00:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/12 01:39:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void ExecuteDynamicResource::execute(Input const &dtoInput)
 
 	domain::DynamicResource dynamic_resource(dtoInput.id, target_meta_data);
 
-	// TODO : voir pour les permissions du fichier cgi
+	if (!dynamic_resource.isReadable() || !dynamic_resource.isExecutable())
+		throw Exception(Exception::accessDenied);
 
 	_dynamicResourceExecutor.execute(
 		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
