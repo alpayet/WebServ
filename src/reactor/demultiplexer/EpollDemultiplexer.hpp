@@ -5,10 +5,8 @@
 
 #include <sys/epoll.h>
 
-#include "reactor/EventType.hpp"
+#include "fd/Fd.hpp"
 #include "reactor/demultiplexer/IEventDemultiplexer.hpp"
-
-#define EPOLL_MAX_EVENTS 64
 
 namespace webserv {
 namespace reactor {
@@ -33,7 +31,9 @@ private:
   EpollDemultiplexer(const EpollDemultiplexer &);
   EpollDemultiplexer &operator=(const EpollDemultiplexer &);
 
-  int m_epoll_fd;
+  static const int EPOLL_MAX_EVENTS = 64;
+
+  fd::Fd m_epoll_fd;
   struct epoll_event m_events[EPOLL_MAX_EVENTS];
 };
 

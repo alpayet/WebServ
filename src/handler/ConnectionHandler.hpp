@@ -20,13 +20,13 @@ class ITransport;
 
 namespace handler {
 
-class ConnectionHandler : public reactor::IEventHandler {
+class ConnectionHandler : public IEventHandler {
 public:
   ConnectionHandler(transport::ITransport *connection,
                     protocol::IProtocol *protocol);
   ~ConnectionHandler();
 
-  int getHandlerFd() const;
+  int getFd() const;
   void onReadable(reactor::Reactor &reactor);
   void onWritable(reactor::Reactor &reactor);
 

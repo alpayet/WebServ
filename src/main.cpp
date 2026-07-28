@@ -5,17 +5,15 @@
 
 #include "Server.hpp"
 #include "config/ServerConfig.hpp"
-#include "transport/endpoint/build_endpoints.hpp"
 #include "utils/Logger.hpp"
 
 using namespace webserv;
 
-volatile sig_atomic_t running = 1;
+volatile sig_atomic_t g_running = 1;
 
 static void sigHandler(const int signum) {
-  LOG("Signal " << signum << " received");
-  (void)signum;
-  running = 0;
+  LOG("signal " << signum << " received");
+  g_running = 0;
 }
 
 static void initSignals() {
@@ -34,12 +32,10 @@ int main() {
                                          config::ServerConfig::TRANSPORT_TCP,
                                          config::ServerConfig::APP_TEST));
   configs.push_back(config::ServerConfig("localhost", 3000));
+  configs.push_back(config::ServerConfig("localhost", 3000));
 
   try {
-    const std::vector<transport::IEndpoint *> endpoints =
-        transport::buildEndpoints(configs);
-
-    Server server(endpoints);
+    Server server(configs);
     server.run();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;

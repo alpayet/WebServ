@@ -6,18 +6,22 @@
 #include "reactor/demultiplexer/Demultiplexer.hpp"
 
 namespace webserv {
-namespace reactor {
 
+namespace handler {
 class IEventHandler;
+}
+
+namespace reactor {
 
 class Reactor {
 public:
   Reactor();
   ~Reactor();
 
-  void registerEventHandler(IEventHandler *event_handler, int flag);
-  void modifyEventFlag(int fd, int flag);
+  bool addEventHandler(handler::IEventHandler *event_handler, int flag);
   void removeEventHandler(int fd);
+
+  void modifyEventFlag(int fd, int flag);
 
   void run();
 
@@ -25,13 +29,14 @@ private:
   Reactor(const Reactor &);
   Reactor &operator=(const Reactor &);
 
-  IEventHandler *getEventHandler(int event_fd) const;
+  handler::IEventHandler *getEventHandler(int event_fd) const;
   void dispatch(int n_events);
+  bool hasBeenClosed(int fd) const;
   void clearClosedEventHandlers();
 
   Demultiplexer m_demux;
-  std::vector<IEventHandler *> m_event_handlers;
-  std::vector<IEventHandler *> m_closed;
+  std::vector<handler::IEventHandler *> m_event_handlers;
+  std::vector<handler::IEventHandler *> m_closed;
 };
 
 } // namespace reactor

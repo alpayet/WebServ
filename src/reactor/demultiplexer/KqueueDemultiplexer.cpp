@@ -2,27 +2,23 @@
 
 #ifdef __APPLE__
 
-#include <stdint.h>
-#include <unistd.h>
-
 #include <stdexcept>
+#include <stdint.h>
 
+#include "reactor/EventType.hpp"
 #include "utils/Logger.hpp"
 
 namespace webserv {
 namespace reactor {
 
-KqueueDemultiplexer::KqueueDemultiplexer() : m_kqueue_fd(-1), m_events() {
-  m_kqueue_fd = kqueue();
-  if (m_kqueue_fd == -1)
+KqueueDemultiplexer::KqueueDemultiplexer() : m_kqueue_fd(kqueue()), m_events() {
+  if (m_kqueue_fd.get() == -1)
     throw std::runtime_error("kqueue() failed");
-  LOG("kqueue demultiplexer ready, fd: " << m_kqueue_fd);
+  std::memset(m_events, 0, sizeof(m_events));
+  DEBUG("kqueue demultiplexer ready, fd: " << m_kqueue_fd.get());
 }
 
-KqueueDemultiplexer::~KqueueDemultiplexer() {
-  if (m_kqueue_fd != -1)
-    close(m_kqueue_fd);
-}
+KqueueDemultiplexer::~KqueueDemultiplexer() {}
 
 bool KqueueDemultiplexer::apply(const int fd, const int flag) {
   struct kevent changes[2];
@@ -37,34 +33,34 @@ bool KqueueDemultiplexer::apply(const int fd, const int flag) {
   EV_SET(&changes[0], ident, EVFILT_READ, read_flag, 0, 0, 0);
   EV_SET(&changes[1], ident, EVFILT_WRITE, write_flag, 0, 0, 0);
 
-  return kevent(m_kqueue_fd, changes, 2, 0, 0, 0) != -1;
+  return kevent(m_kqueue_fd.get(), changes, 2, 0, 0, 0) != -1;
 }
 
 bool KqueueDemultiplexer::add(const int fd, const int flag) {
-  LOG("kqueue add fd: " << fd << " flag: " << flag);
+  DEBUG("kqueue add fd: " << fd << " flag: " << flag);
   return apply(fd, flag);
 }
 
 bool KqueueDemultiplexer::modify(const int fd, const int flag) {
-  LOG("kqueue modify fd: " << fd << " flag: " << flag);
+  DEBUG("kqueue modify fd: " << fd << " flag: " << flag);
   return apply(fd, flag);
 }
 
 bool KqueueDemultiplexer::remove(const int fd) {
-  LOG("kqueue remove fd: " << fd);
+  DEBUG("kqueue remove fd: " << fd);
   struct kevent changes[2];
   const uintptr_t ident = static_cast<uintptr_t>(fd);
 
   EV_SET(&changes[0], ident, EVFILT_READ, EV_DELETE, 0, 0, 0);
   EV_SET(&changes[1], ident, EVFILT_WRITE, EV_DELETE, 0, 0, 0);
 
-  return kevent(m_kqueue_fd, changes, 2, 0, 0, 0) != -1;
+  return kevent(m_kqueue_fd.get(), changes, 2, 0, 0, 0) != -1;
 }
 
 int KqueueDemultiplexer::wait(const int timeout_ms) {
   (void)timeout_ms;
 
-  return kevent(m_kqueue_fd, 0, 0, m_events, KQ_MAX_EVENTS, 0);
+  return kevent(m_kqueue_fd.get(), 0, 0, m_events, KQ_MAX_EVENTS, 0);
 }
 
 int KqueueDemultiplexer::getEventFd(const int index) const {

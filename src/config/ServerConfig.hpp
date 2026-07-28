@@ -19,27 +19,33 @@ struct Location {
 };
 
 class ServerConfig {
- public:
+public:
   enum TransportProtocol { TRANSPORT_TCP, TRANSPORT_UDP };
 
   enum ApplicativeProtocol { APP_HTTP, APP_TEST };
 
   class ConfigException : public std::runtime_error {
-   public:
-    explicit ConfigException(const std::string& what) throw();
+  public:
+    explicit ConfigException(const std::string &what) throw();
   };
 
-  ServerConfig(const std::string& host, int port,
-               TransportProtocol transport = TRANSPORT_TCP,
-               ApplicativeProtocol app = APP_HTTP);
+  ServerConfig(const std::string &host, int port);
+  ServerConfig(const std::string &host, int port, TransportProtocol transport,
+               ApplicativeProtocol app);
   ~ServerConfig();
 
-  const std::string& getHost() const;
+  const std::string &getHost() const;
   int getPort() const;
   TransportProtocol getTransport() const;
   ApplicativeProtocol getApplicativeProtocol() const;
 
- private:
+  class Exception : public std::runtime_error {
+  public:
+    explicit Exception(const std::string &what)
+        : std::runtime_error("Config error: " + what) {}
+  };
+
+private:
   TransportProtocol m_transport;
   ApplicativeProtocol m_applicative_protocol;
   std::string m_host;
@@ -48,7 +54,7 @@ class ServerConfig {
   std::vector<Location> m_locations;
 };
 
-}
-}
+} // namespace config
+} // namespace webserv
 
 #endif

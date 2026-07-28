@@ -18,7 +18,7 @@ typedef EpollDemultiplexer Demultiplexer;
 typedef KqueueDemultiplexer Demultiplexer;
 #endif
 
-}
-}
+} // namespace reactor
+} // namespace webserv
 
 #endif

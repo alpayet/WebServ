@@ -1,8 +1,8 @@
 #ifndef TCPTRANSPORT_HPP
 #define TCPTRANSPORT_HPP
 
+#include "fd/Fd.hpp"
 #include "transport/ITransport.hpp"
-#include "transport/Socket.hpp"
 
 namespace webserv {
 namespace transport {
@@ -20,7 +20,7 @@ private:
   TcpTransport(const TcpTransport &);
   TcpTransport &operator=(const TcpTransport &);
 
-  Socket m_socket;
+  fd::Fd m_fd;
 };
 
 } // namespace transport

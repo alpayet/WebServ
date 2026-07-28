@@ -5,10 +5,8 @@
 
 #include <sys/event.h>
 
-#include "reactor/EventType.hpp"
+#include "fd/Fd.hpp"
 #include "reactor/demultiplexer/IEventDemultiplexer.hpp"
-
-#define KQ_MAX_EVENTS 64
 
 namespace webserv {
 namespace reactor {
@@ -35,7 +33,9 @@ private:
 
   bool apply(int fd, int flag);
 
-  int m_kqueue_fd;
+  static const int KQ_MAX_EVENTS = 64;
+
+  fd::Fd m_kqueue_fd;
   struct kevent m_events[KQ_MAX_EVENTS];
 };
 

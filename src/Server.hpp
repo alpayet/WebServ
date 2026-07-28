@@ -4,16 +4,17 @@
 #include <vector>
 
 #include "reactor/Reactor.hpp"
+#include "transport/endpoint/Endpoints.hpp"
 
 namespace webserv {
 
-namespace transport {
-class IEndpoint;
+namespace config {
+class ServerConfig;
 }
 
 class Server {
 public:
-  explicit Server(const std::vector<transport::IEndpoint *> &endpoints);
+  explicit Server(const std::vector<config::ServerConfig> &configs);
   ~Server();
 
   void run();
@@ -22,10 +23,8 @@ private:
   Server(const Server &);
   Server &operator=(const Server &);
 
-  void destroyEndpoints();
-
+  transport::Endpoints m_endpoints;
   reactor::Reactor m_reactor;
-  std::vector<transport::IEndpoint *> m_endpoints;
 };
 
 } // namespace webserv

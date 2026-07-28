@@ -1,11 +1,14 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#ifdef WS_DEBUG
 #include <iostream>
-#define LOG(x) std::cerr << "[webserv] " << x << '\n'
+
+#define LOG(s) std::cout << "[webserv] " << s << '\n'
+
+#ifdef WS_DEBUG
+#define DEBUG(s) std::cerr << "[debug] " << s << '\n'
 #else
-#define LOG(x) ((void)0)
+#define DEBUG(s) ((void)0)
 #endif
 
 #endif

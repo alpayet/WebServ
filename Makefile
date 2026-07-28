@@ -1,15 +1,18 @@
-.PHONY : all debug clean fclean re
+.PHONY : all d vlg clean fclean re
 
 # files
 SRC_FILES = main.cpp Server.cpp \
+	config/ServerConfig.cpp \
+	fd/Fd.cpp \
+	handler/TcpListenerHandler.cpp handler/ConnectionHandler.cpp \
+	handler/TcpConnectionFactory.cpp \
+	protocol/TestProtocol.cpp \
 	reactor/Reactor.cpp \
 	reactor/demultiplexer/EpollDemultiplexer.cpp \
 	reactor/demultiplexer/KqueueDemultiplexer.cpp \
-	event_handler/TcpListenerHandler.cpp event_handler/TcpListenerFactory.cpp event_handler/ConnectionHandler.cpp \
-	transport/Socket.cpp transport/TcpTransport.cpp \
-	transport/endpoint/build_endpoints.cpp transport/endpoint/TcpEndpoint.cpp \
-	protocol/TestProtocol.cpp \
-	config/ServerConfig.cpp \
+	transport/socket.cpp transport/TcpTransport.cpp \
+	transport/endpoint/TcpEndpoint.cpp transport/endpoint/Endpoints.cpp \
+	transport/endpoint/build_endpoints.cpp \
 	utils/utils.cpp
 
 # directories
@@ -41,7 +44,10 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp Makefile
 
 -include $(DEP)
 
-debug : all
+d :
+	$(MAKE) re EXTRA_FLAGS='$(EXTRA_FLAGS) -DWS_DEBUG'
+
+vlg : all
 	$(DEBUG_VALGRIND) ./$(NAME) $(ARGS)
 
 clean :

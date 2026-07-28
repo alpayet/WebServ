@@ -1,76 +1,69 @@
-#include "build_endpoints.hpp"
+#include "transport/endpoint/build_endpoints.hpp"
 
 #include <cstddef>
-#include <iostream>
-#include <stdexcept>
 
-#include "IEndpoint.hpp"
-#include "TcpEndpoint.hpp"
 #include "config/ServerConfig.hpp"
-#include "event_handler/IEventHandlerFactory.hpp"
-#include "event_handler/TcpListenerFactory.hpp"
+#include "handler/IConnectionFactory.hpp"
+#include "handler/TcpConnectionFactory.hpp"
 #include "protocol/IProtocolFactory.hpp"
 #include "protocol/TestProtocol.hpp"
+#include "transport/endpoint/Endpoints.hpp"
+#include "transport/endpoint/IEndpoint.hpp"
+#include "transport/endpoint/TcpEndpoint.hpp"
+#include "utils/utils.hpp"
 
 namespace webserv {
 namespace transport {
 
 static protocol::IProtocolFactory *
-makeProtocol(const config::ServerConfig &config) {
+buildProtocol(const config::ServerConfig &config) {
   switch (config.getApplicativeProtocol()) {
-  case config::ServerConfig::APP_HTTP:
-    return new protocol::TestProtocolFactory(
-        "<h1>Hello Webserv oui oui c'est un grand oui</h1>\n");
   case config::ServerConfig::APP_TEST:
-    return new protocol::TestProtocolFactory("OUI app protocol test\n");
+    return new protocol::TestProtocolFactory("test proto blablabla");
+  default:
+    throw config::ServerConfig::Exception(
+        "no applicative protocol builder for " + config.getHost() + ":" +
+        ft::intToString(config.getPort()));
   }
-  throw std::runtime_error("unknown application protocol");
 }
 
-static IEndpoint *makeEndpoint(const config::ServerConfig &config) {
+static IEndpoint *buildTransport(const config::ServerConfig &config,
+                                 protocol::IProtocolFactory *protocol) {
   switch (config.getTransport()) {
   case config::ServerConfig::TRANSPORT_TCP: {
-    protocol::IProtocolFactory *app_protocol = makeProtocol(config);
+    handler::IConnectionFactory *connection;
 
-    IEventHandlerFactory *handler_factory;
     try {
-      handler_factory = new handler::TcpListenerFactory(app_protocol);
-    } catch (const std::exception &e) {
-      (void)e;
-      delete app_protocol;
+      connection = new handler::TcpConnectionFactory(protocol);
+    } catch (...) {
+      delete protocol;
       throw;
     }
 
     try {
-      return new TcpEndpoint(config.getHost(), config.getPort(),
-                             handler_factory);
-    } catch (const std::exception &e) {
-      (void)e;
-      delete handler_factory;
+      return new TcpEndpoint(config.getHost(), config.getPort(), connection);
+    } catch (...) {
+      delete connection;
       throw;
     }
   }
-  case config::ServerConfig::TRANSPORT_UDP:
-    throw std::runtime_error("UDP transport not implemented");
+  default:
+    delete protocol;
+    throw config::ServerConfig::Exception("no transport builder for " +
+                                          config.getHost() + ":" +
+                                          ft::intToString(config.getPort()));
   }
-  throw std::runtime_error("unknown transport protocol");
 }
 
-std::vector<IEndpoint *>
-buildEndpoints(const std::vector<config::ServerConfig> &configs) {
-  std::vector<IEndpoint *> endpoints;
-  endpoints.reserve(configs.size());
+void buildEndpoints(const std::vector<config::ServerConfig> &configs,
+                    Endpoints &endpoints) {
 
-  try {
-    for (std::size_t i = 0; i < configs.size(); ++i)
-      endpoints.push_back(makeEndpoint(configs[i]));
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
-    for (std::size_t i = 0; i < endpoints.size(); ++i)
-      delete endpoints[i];
-    throw;
+  for (std::size_t i = 0; i < configs.size(); ++i) {
+    const config::ServerConfig &config = configs[i];
+
+    protocol::IProtocolFactory *protocol = buildProtocol(config);
+    endpoints.add(buildTransport(config, protocol));
   }
-  return endpoints;
 }
 
 } // namespace transport

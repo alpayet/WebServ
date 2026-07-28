@@ -23,7 +23,7 @@ ConnectionHandler::~ConnectionHandler() {
   delete m_protocol;
 }
 
-int ConnectionHandler::getHandlerFd() const { return m_transport->getFd(); }
+int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   char buffer[RECV_CHUNK];

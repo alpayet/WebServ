@@ -13,6 +13,7 @@ public:
   virtual ~ITransport() {}
 
   virtual int getFd() const = 0;
+
   virtual ssize_t read(char *buf, std::size_t len) = 0;
   virtual ssize_t write(const char *buf, std::size_t len) = 0;
 };

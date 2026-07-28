@@ -2,40 +2,37 @@
 
 #include <cstddef>
 #include <iostream>
-#include <stdexcept>
 
 #include "config/ServerConfig.hpp"
 #include "transport/endpoint/IEndpoint.hpp"
+#include "transport/endpoint/build_endpoints.hpp"
+#include "utils/Logger.hpp"
 
 namespace webserv {
 
-Server::Server(const std::vector<transport::IEndpoint *> &endpoints)
-    : m_reactor(), m_endpoints(endpoints) {
+Server::Server(const std::vector<config::ServerConfig> &configs)
+    : m_endpoints(), m_reactor() {
+
+  transport::buildEndpoints(configs, m_endpoints);
+
   std::size_t opened = 0;
 
   for (std::size_t i = 0; i < m_endpoints.size(); ++i) {
     try {
-      m_endpoints[i]->openEndpoint(m_reactor);
+      m_endpoints[i].open(m_reactor);
       ++opened;
     } catch (const std::exception &e) {
-      std::cerr << "server: endpoint skipped: " << e.what() << std::endl;
+      LOG("endpoint skipped: " << e.what());
     }
   }
 
-  if (opened == 0) {
-    destroyEndpoints();
-    throw config::ServerConfig::ConfigException(
-        "no endpoint could be established");
-  }
+  if (opened == 0)
+    throw config::ServerConfig::Exception("no endpoint could be open");
+
+  LOG("listening on " << opened << (opened == 1 ? " endpoint" : " endpoints"));
 }
 
-Server::~Server() { destroyEndpoints(); }
-
-void Server::destroyEndpoints() {
-  for (std::size_t i = 0; i < m_endpoints.size(); ++i)
-    delete m_endpoints[i];
-  m_endpoints.clear();
-}
+Server::~Server() {}
 
 void Server::run() { m_reactor.run(); }
 

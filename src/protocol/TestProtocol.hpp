@@ -24,10 +24,8 @@ private:
   TestProtocol(const TestProtocol &);
   TestProtocol &operator=(const TestProtocol &);
 
-  std::string m_read_buf;
-  std::vector<char> m_write_buf;
-  std::size_t m_write_buf_pos;
-  bool m_complete;
+  std::string m_request;
+  std::vector<char> m_response;
 };
 
 class TestProtocolFactory : public IProtocolFactory {

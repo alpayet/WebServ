@@ -1,5 +1,5 @@
-#ifndef BUILD_LISTENER_HPP
-#define BUILD_LISTENER_HPP
+#ifndef BUILD_ENDPOINTS_HPP
+#define BUILD_ENDPOINTS_HPP
 
 #include <vector>
 
@@ -11,10 +11,10 @@ class ServerConfig;
 
 namespace transport {
 
-class IEndpoint;
+class Endpoints;
 
-std::vector<IEndpoint *>
-buildEndpoints(const std::vector<config::ServerConfig> &configs);
+void buildEndpoints(const std::vector<config::ServerConfig> &configs,
+                    Endpoints &endpoints);
 
 } // namespace transport
 } // namespace webserv
