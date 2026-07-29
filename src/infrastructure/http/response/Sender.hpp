@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:22:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/29 19:02:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ class Sender
 		HeaderBlock,
 		body,
 		resource,
-		cgi,
 		complete
 	};
 

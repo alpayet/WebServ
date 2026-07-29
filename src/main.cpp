@@ -60,38 +60,38 @@ int main(int argc, char **argv)
 			fileSystem::Storage storage;
 
 			fileSystem::DirectoryExplorer	  directory_explorer;
-			app::useCase::ServeStaticResource serveStaticResource_use_case(
+			app::useCase::ServeStaticResource serve_static_resource_use_case(
 				server_config, storage, directory_explorer
 			);
-			http::ServeStaticResourceController serveStaticResource_controller(
-				serveStaticResource_use_case
+			http::ServeStaticResourceController serve_static_resource_controller(
+				serve_static_resource_use_case
 			);
-			app::useCase::DeleteStaticResource deleteStaticResource_use_case(
+			app::useCase::DeleteStaticResource delete_static_resource_use_case(
 				server_config, storage
 			);
-			http::DeleteStaticResourceController deleteStaticResource_controller(
-				deleteStaticResource_use_case
+			http::DeleteStaticResourceController delete_static_resource_controller(
+				delete_static_resource_use_case
 			);
 			Cgi									 cgi;
-			app::useCase::ExecuteDynamicResource executeDynamicResource_use_case(
+			app::useCase::ExecuteDynamicResource execute_dynamic_resource_use_case(
 				server_config, cgi
 			);
-			http::ExecuteDynamicResourceController executeDynamicResource_controller(
-				executeDynamicResource_use_case, server_config
+			http::ExecuteDynamicResourceController execute_dynamic_resource_controller(
+				execute_dynamic_resource_use_case, server_config
 			);
 
-			http::request::Parser requestParser(server_config, server_config);
-			cgi::Parser			  cgiParser(server_config);
+			http::request::Parser request_parser(server_config, server_config);
+			cgi::Parser			  cgi_parser(server_config);
 			http::Router		  router(
-				server_config, serveStaticResource_controller, deleteStaticResource_controller
+				server_config, serve_static_resource_controller, delete_static_resource_controller
 			);
 			http::response::Sender sender(server_config);
 
-			http::Handler	   handler(requestParser, cgiParser, router, sender, server_config);
+			http::Handler	   handler(request_parser, cgi_parser, router, sender, server_config);
 			ITransfertHandler &tranfer = handler;
 
-			std::string const		requete_test("GET /a/ HTTP/1.0\r\n\r\n");
-			std::vector<char> const input_buf(requete_test.begin(), requete_test.end());
+			std::string const		request_test("GET /a/ HTTP/1.0\r\n\r\n");
+			std::vector<char> const input_buf(request_test.begin(), request_test.end());
 
 			std::string const cgi_response_test(
 				"Content-Type: text/html\r\n"
@@ -105,14 +105,14 @@ int main(int argc, char **argv)
 			);
 			tranfer.prepareContext(0);
 
-			ITransfertHandler::ProcessingStatus processingStatus;
+			ITransfertHandler::ProcessingStatus processing_status;
 
-			// processingStatus =
+			// processing_status =
 			// 	tranfer.pushRequest(0, input_buf, ITransfertHandler::RequestStatus::normal);
-			processingStatus =
+			processing_status =
 				tranfer.pushStream(0, cgi_input_buf, ITransfertHandler::StreamStatus::normal);
 
-			if (processingStatus == ITransfertHandler::complete)
+			if (processing_status == ITransfertHandler::complete)
 			{
 				while (!tranfer.isResponseComplete(0))
 				{

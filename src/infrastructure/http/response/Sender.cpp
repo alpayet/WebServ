@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:14:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/29 19:02:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ Sender::Step Sender::produce(
 				state.step = complete;
 			break;
 		}
-		case cgi:
 		default:
 			break;
 	}
