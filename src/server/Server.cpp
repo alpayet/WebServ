@@ -1,10 +1,9 @@
 #include "server/Server.hpp"
 
-#include "infrastructure/config/Config.hpp"
-
 #include <cstddef>
 #include <iostream>
 
+#include "infrastructure/config/Config.hpp"
 #include "infrastructure/config/ServerConfig.hpp"
 #include "server/transport/endpoint/IEndpoint.hpp"
 #include "server/transport/endpoint/build_endpoints.hpp"

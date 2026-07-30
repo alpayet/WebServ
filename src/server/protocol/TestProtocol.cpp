@@ -34,7 +34,7 @@ IProtocol::ProtocolState TestProtocol::receive(std::vector<char> &buffer) {
 
 const std::vector<char> &TestProtocol::response() { return m_response; }
 
-bool TestProtocol::isResponseComplete() {return true;}
+bool TestProtocol::isResponseComplete() { return true; }
 
 void TestProtocol::reset() { m_request.clear(); }
 
@@ -45,9 +45,7 @@ TestProtocolFactory::TestProtocolFactory(const std::string &body)
 
 TestProtocolFactory::~TestProtocolFactory() {}
 
-IProtocol *TestProtocolFactory::create() {
-  return new TestProtocol(m_body);
-}
+IProtocol *TestProtocolFactory::create() { return new TestProtocol(m_body); }
 
 } // namespace protocol
 } // namespace webserv

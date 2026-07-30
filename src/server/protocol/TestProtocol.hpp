@@ -17,7 +17,7 @@ public:
 
   ProtocolState receive(std::vector<char> &buffer);
   const std::vector<char> &response();
-	bool isResponseComplete();
+  bool isResponseComplete();
   void reset();
   bool shouldKeepAlive() const;
 

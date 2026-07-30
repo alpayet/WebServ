@@ -1,8 +1,8 @@
 #ifndef ITRANSPORT_HPP
 #define ITRANSPORT_HPP
 
-#include <sys/types.h>
 #include <cstddef>
+#include <sys/types.h>
 
 namespace webserv {
 namespace transport {

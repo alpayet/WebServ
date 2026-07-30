@@ -10,7 +10,7 @@ namespace transport {
 
 class Endpoints;
 
-void buildEndpoints(const std::vector< ServerConfig> &configs,
+void buildEndpoints(const std::vector<ServerConfig> &configs,
                     Endpoints &endpoints);
 
 } // namespace transport

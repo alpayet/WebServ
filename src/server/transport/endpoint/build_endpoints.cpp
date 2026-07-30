@@ -18,18 +18,16 @@
 namespace webserv {
 namespace transport {
 
-static protocol::IProtocolFactory *
-buildProtocol(const ServerConfig &config) {
-	switch (config.getApplicativeProtocol()) {
-		case ServerConfig::APP_TEST:
-			return new protocol::TestProtocolFactory("test proto blablabla");
-		case ServerConfig::APP_HTTP:
-			DEBUG("http proto");
-			return new protocol::HttpProtocolFactory(config);
+static protocol::IProtocolFactory *buildProtocol(const ServerConfig &config) {
+  switch (config.getApplicativeProtocol()) {
+  case ServerConfig::APP_TEST:
+    return new protocol::TestProtocolFactory("test proto blablabla");
+  case ServerConfig::APP_HTTP:
+    return new protocol::HttpProtocolFactory(config);
   default:
-    throw ConfigException(
-        "no applicative protocol builder for " + config.getHostname() + ":" +
-        ft::intToString(config.getPort()));
+    throw ConfigException("no applicative protocol builder for " +
+                          config.getHostname() + ":" +
+                          ft::intToString(config.getPort()));
   }
 }
 
@@ -47,7 +45,8 @@ static IEndpoint *buildTransport(const ServerConfig &config,
     }
 
     try {
-      return new TcpEndpoint(config.getHostname(), config.getPort(), connection);
+      return new TcpEndpoint(config.getHostname(), config.getPort(),
+                             connection);
     } catch (...) {
       delete connection;
       throw;
@@ -55,13 +54,12 @@ static IEndpoint *buildTransport(const ServerConfig &config,
   }
   default:
     delete protocol;
-    throw ConfigException("no transport builder for " +
-                                          config.getHostname() + ":" +
-                                          ft::intToString(config.getPort()));
+    throw ConfigException("no transport builder for " + config.getHostname() +
+                          ":" + ft::intToString(config.getPort()));
   }
 }
 
-void buildEndpoints(const std::vector< ::ServerConfig> &configs,
+void buildEndpoints(const std::vector<ServerConfig> &configs,
                     Endpoints &endpoints) {
 
   for (std::size_t i = 0; i < configs.size(); ++i) {

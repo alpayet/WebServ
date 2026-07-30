@@ -17,7 +17,6 @@ ssize_t TcpTransport::read(char *buf, std::size_t len) {
   return socket::recv(m_fd.get(), buf, len);
 }
 
-//peut bad alloc buffer de 0
 ssize_t TcpTransport::write(const char *buf, std::size_t len) {
   return socket::send(m_fd.get(), buf, len);
 }

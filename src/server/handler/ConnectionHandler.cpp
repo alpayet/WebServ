@@ -34,8 +34,7 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
     return;
   }
 
-  const protocol::IProtocol::ProtocolState state =
-      m_protocol->receive(buffer);
+  const protocol::IProtocol::ProtocolState state = m_protocol->receive(buffer);
 
   if (state == protocol::IProtocol::READ_OK) {
     const std::vector<char> &response = m_protocol->response();
@@ -49,15 +48,15 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
 }
 
 void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
-	if (m_write_pos < m_write_buf.size()) {
-		const ssize_t bytes_send = m_transport->write(&m_write_buf[m_write_pos],
-		m_write_buf.size() - m_write_pos);
-		if (bytes_send < 0) {
-			reactor.removeEventHandler(m_transport->getFd());
-			return;
-		}
-		m_write_pos += static_cast<std::size_t>(bytes_send);
-	}
+  if (m_write_pos < m_write_buf.size()) {
+    const ssize_t bytes_send = m_transport->write(
+        &m_write_buf[m_write_pos], m_write_buf.size() - m_write_pos);
+    if (bytes_send < 0) {
+      reactor.removeEventHandler(m_transport->getFd());
+      return;
+    }
+    m_write_pos += static_cast<std::size_t>(bytes_send);
+  }
 
   if (m_write_pos < m_write_buf.size())
     return;
@@ -65,20 +64,18 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_write_buf.clear();
   m_write_pos = 0;
 
-	if (!m_protocol->isResponseComplete()) {
-		const std::vector<char> &chunk = m_protocol->response();
-		m_write_buf.assign(chunk.begin(), chunk.end());
-		return;
-	}
+  if (!m_protocol->isResponseComplete()) {
+    const std::vector<char> &chunk = m_protocol->response();
+    m_write_buf.assign(chunk.begin(), chunk.end());
+    return;
+  }
 
-
-    if (m_protocol->shouldKeepAlive()) {
-      m_protocol->reset();
-      reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
-    } else {
-      reactor.removeEventHandler(m_transport->getFd());
-    }
-
+  if (m_protocol->shouldKeepAlive()) {
+    m_protocol->reset();
+    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
+  } else {
+    reactor.removeEventHandler(m_transport->getFd());
+  }
 }
 
 } // namespace handler

@@ -13,7 +13,7 @@ public:
   virtual IProtocol *create() = 0;
 };
 
-}
-}
+} // namespace protocol
+} // namespace webserv
 
 #endif
