@@ -24,7 +24,7 @@ class Router
 {
   public:
 	Router(
-		IRouteRegistry				   &routeRegistry,
+		const IRouteRegistry				   &routeRegistry,
 		ServeStaticResourceController  &serveStaticResourceController,
 		DeleteStaticResourceController &deleteStaticResourceController
 		// ExecuteDynamicResourceController &executeDynamicResourceController
@@ -36,7 +36,7 @@ class Router
 	Router(Router const &src);
 	Router &operator=(Router const &rhs);
 
-	IRouteRegistry &_routeRegistry;
+	const IRouteRegistry &_routeRegistry;
 
 	ServeStaticResourceController  &_serveStaticResourceController;
 	DeleteStaticResourceController &_deleteStaticResourceController;

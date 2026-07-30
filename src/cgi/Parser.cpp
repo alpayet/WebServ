@@ -34,7 +34,7 @@ void Parser::State::reset(void)
 	bodyBytesRead = 0;
 }
 
-Parser::Parser(parse::IValidationPolicy &validationPolicy) : _validationPolicy(validationPolicy)
+Parser::Parser(const parse::IValidationPolicy &validationPolicy) : _validationPolicy(validationPolicy)
 {
 	_maxRequestLineSize =
 		std::min(_validationPolicy.getMaxRequestLineSize(), parse::DEFAULT_MAX_REQUEST_LINE_SIZE);

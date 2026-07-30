@@ -32,7 +32,7 @@ class ExecuteDynamicResourceController
 {
   public:
 	ExecuteDynamicResourceController(
-		app::useCase::ExecuteDynamicResource &useCase, ILimitsProvider &limitsProvider
+		app::useCase::ExecuteDynamicResource &useCase, const ILimitsProvider &limitsProvider
 	);
 
 	void operator()(Context &context, RoutePolicy const &routePolicy);
@@ -42,7 +42,7 @@ class ExecuteDynamicResourceController
 	ExecuteDynamicResourceController &operator=(ExecuteDynamicResourceController const &rhs);
 
 	app::useCase::ExecuteDynamicResource &_useCase;
-	ILimitsProvider						 &_limitsProvider;
+	const ILimitsProvider						 &_limitsProvider;
 
 	static std::map<std::string, std::string> createMetaVariables(Request const &request);
 };

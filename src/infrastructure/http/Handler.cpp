@@ -34,7 +34,7 @@ Handler::Handler(
 	cgi::Parser			&cgiParser,
 	Router				&router,
 	response::Sender	&sender,
-	IErrorPagesProvider &errorPagesProvider
+	const IErrorPagesProvider &errorPagesProvider
 )
 	: _requestParser(parser), _cgiParser(cgiParser), _router(router), _sender(sender),
 	  _errorPagesProvider(errorPagesProvider)
@@ -42,31 +42,31 @@ Handler::Handler(
 
 // TODO : check pour linsertion
 
-void Handler::prepareContext(unsigned int id) { _contexts[id].reset(); }
+void Handler::prepareContext(Context &context) { context.reset(); }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus::Type status)
+Handler::pushRequest(Context &context, std::vector<char> const &inputBuf, ITransfertHandler::RequestStatus::Type status)
 {
 	try
 	{
-		if (status == RequestStatus::timeOut)
+		if (status == ITransfertHandler::RequestStatus::timeOut)
 			throw Exception(Exception::timeOut);
 
-		Context::Input &context_input = _contexts[id].input;
+		Context::Input &context_input = context.input;
 
 		context_input.buf.insert(context_input.buf.end(), inputBuf.begin(), inputBuf.end());
 
 		if (_requestParser.parse(context_input.buf, context_input.state) ==
 			request::Parser::complete)
 		{
-			_router.route(_contexts[id]);
+			_router.route(context);
 			return (ITransfertHandler::complete);
 		}
 		return (ITransfertHandler::needMoreData);
 	}
 	catch (http::ReturnException const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
+		Context::Output &context_output = context.output;
 
 		prepareDirectResponse(e.getStatusCode(), context_output.response, &context_output.reader);
 
@@ -74,23 +74,23 @@ Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, Request
 	}
 	catch (http::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (fileSystem::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (app::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (domain::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (...)
 	{
-		Context::Output &context_output = _contexts[id].output;
+		Context::Output &context_output = context.output;
 
 		prepareDirectResponse(500, context_output.response, &context_output.reader);
 
@@ -99,14 +99,14 @@ Handler::pushRequest(unsigned int id, std::vector<char> const &inputBuf, Request
 }
 
 ITransfertHandler::ProcessingStatus
-Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus::Type status)
+Handler::pushStream(Context &context, std::vector<char> const &streamBuf, ITransfertHandler::StreamStatus::Type status)
 {
 	try
 	{
-		if (status == StreamStatus::timeOut)
+		if (status == ITransfertHandler::StreamStatus::timeOut)
 			throw cgi::Exception(cgi::Exception::timeOut);
 
-		Context::Stream &context_stream = _contexts[id].stream;
+		Context::Stream &context_stream = context.stream;
 
 		context_stream.buf.insert(context_stream.buf.end(), streamBuf.begin(), streamBuf.end());
 
@@ -114,14 +114,14 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamS
 			cgi::Parser::complete)
 		{
 			std::cout << context_stream.state.response << std::endl;
-			dispatchCgiResponse(_contexts[id]);
+			dispatchCgiResponse(context);
 			return (ITransfertHandler::complete);
 		}
 		return (ITransfertHandler::needMoreData);
 	}
 	catch (http::ReturnException const &e)
 	{
-		Context::Output &context_output = _contexts[id].output;
+		Context::Output &context_output = context.output;
 
 		prepareDirectResponse(e.getStatusCode(), context_output.response, &context_output.reader);
 
@@ -129,27 +129,27 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamS
 	}
 	catch (http::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (fileSystem::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (cgi::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (app::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (domain::Exception const &e)
 	{
-		return (handleError(id, e));
+		return (handleError(context, e));
 	}
 	catch (...)
 	{
-		Context::Output &context_output = _contexts[id].output;
+		Context::Output &context_output = context.output;
 
 		prepareDirectResponse(500, context_output.response, &context_output.reader);
 
@@ -157,10 +157,10 @@ Handler::pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamS
 	}
 }
 
-std::vector<char> const &Handler::pull(unsigned int id)
+std::vector<char> const &Handler::pull(Context &context)
 {
 	// TODO A voir avec luca si il catch des exection pour close la connection dun client
-	Context::Output &context_output = _contexts[id].output;
+	Context::Output &context_output = context.output;
 
 	if (_sender.produce(
 			context_output.buf, context_output.response, context_output.reader, context_output.state
@@ -171,12 +171,12 @@ std::vector<char> const &Handler::pull(unsigned int id)
 	return (context_output.buf);
 }
 
-bool Handler::isResponseComplete(unsigned int id)
+bool Handler::isResponseComplete(Context &context)
 {
-	return (_contexts[id].output.isResponseComplete);
+	return (context.output.isResponseComplete);
 }
 
-void Handler::reset(unsigned int id) { _contexts[id].reset(); }
+void Handler::reset(Context &context) { context.reset(); }
 
 void Handler::dispatchCgiResponse(Context &context)
 {

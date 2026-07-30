@@ -39,7 +39,7 @@ void Parser::State::reset(void)
 }
 
 Parser::Parser(
-	parse::IValidationPolicy &validationPolicy, IHttpVersionProvider &httpVersionProvider
+	const parse::IValidationPolicy &validationPolicy, const IHttpVersionProvider &httpVersionProvider
 )
 	: _validationPolicy(validationPolicy), _httpVersionProvider(httpVersionProvider)
 {

@@ -53,7 +53,7 @@ class Sender
 	};
 
   public:
-	Sender(IHttpVersionProvider &httpVersionProvider);
+	Sender(const IHttpVersionProvider &httpVersionProvider);
 
 	Step produce(
 		std::vector<char>	 &outputBuf,
@@ -66,7 +66,7 @@ class Sender
 	Sender(Sender const &src);
 	Sender &operator=(Sender const &rhs);
 
-	IHttpVersionProvider &_httpVersionProvider;
+	const IHttpVersionProvider &_httpVersionProvider;
 };
 } // namespace response
 } // namespace http

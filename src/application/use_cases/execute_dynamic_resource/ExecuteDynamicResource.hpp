@@ -46,7 +46,7 @@ class ExecuteDynamicResource
 
   public:
 	ExecuteDynamicResource(
-		IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+		const IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 	);
 
 	void execute(Input const &dtoInput);
@@ -55,7 +55,7 @@ class ExecuteDynamicResource
 	ExecuteDynamicResource(ExecuteDynamicResource const &src);
 	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-	IResourceLocator		 &_resourceLocator;
+	const IResourceLocator		 &_resourceLocator;
 	IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 } // namespace useCase

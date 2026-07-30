@@ -56,7 +56,7 @@ class Parser
 	};
 
   public:
-	Parser(parse::IValidationPolicy &validationPolicy, IHttpVersionProvider &httpVersionProvider);
+	Parser(const parse::IValidationPolicy &validationPolicy, const IHttpVersionProvider &httpVersionProvider);
 
 	Step parse(std::vector<char> &inputBuf, State &state);
 
@@ -69,8 +69,8 @@ class Parser
 	std::size_t _maxHeaderCount;
 	std::size_t _maxBodySize;
 
-	parse::IValidationPolicy &_validationPolicy;
-	IHttpVersionProvider	 &_httpVersionProvider;
+	const parse::IValidationPolicy &_validationPolicy;
+	const IHttpVersionProvider	 &_httpVersionProvider;
 
 	void parseRequestLine(
 		std::vector<char>::const_iterator itStart,

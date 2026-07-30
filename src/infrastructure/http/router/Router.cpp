@@ -25,7 +25,7 @@
 
 namespace http {
 Router::Router(
-	IRouteRegistry				   &routeRegistry,
+	const IRouteRegistry				   &routeRegistry,
 	ServeStaticResourceController  &serveStaticResourceController,
 	DeleteStaticResourceController &deleteStaticResourceController
 	// ExecuteDynamicResourceController &executeDynamicResourceController

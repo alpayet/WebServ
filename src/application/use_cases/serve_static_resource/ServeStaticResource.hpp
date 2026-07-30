@@ -69,7 +69,7 @@ class ServeStaticResource
 
   public:
 	ServeStaticResource(
-		IResourceLocator	   &resourceLocator,
+		const IResourceLocator	   &resourceLocator,
 		IStaticResourceStorage &staticResourceStorage,
 		ICollectionExplorer	   &collectionExplorer
 	);
@@ -87,7 +87,7 @@ class ServeStaticResource
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 
-	IResourceLocator	   &_resourceLocator;
+	const IResourceLocator	   &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
 	ICollectionExplorer	   &_collectionExplorer;
 };

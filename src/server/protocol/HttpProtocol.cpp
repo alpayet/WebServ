@@ -1,0 +1,40 @@
+#include "server/protocol/HttpProtocol.hpp"
+
+#include "infrastructure/config/ServerConfig.hpp"
+#include "infrastructure/http/Handler.hpp"
+
+namespace webserv {
+namespace protocol {
+
+HttpProtocol::HttpProtocol(http::Handler &handler) : m_context(), m_handler(handler) {}
+
+HttpProtocol::~HttpProtocol() {}
+
+IProtocol::ProtocolState HttpProtocol::receive(std::vector<char> &buffer) {
+
+	ITransfertHandler::ProcessingStatus status = m_handler.pushRequest(m_context, buffer, ITransfertHandler::RequestStatus::normal);
+	switch (status)
+	{
+		case ITransfertHandler::needMoreData:
+			return IProtocol::READ_MORE;
+			case ITransfertHandler::complete:
+			return IProtocol::READ_OK;
+	default:
+			return IProtocol::CLOSE_CONNECTION;
+	}
+}
+
+const std::vector<char> &HttpProtocol::response() {
+	return m_handler.pull(m_context);
+}
+
+bool HttpProtocol::isResponseComplete() {
+	return m_handler.isResponseComplete(m_context);
+}
+
+void HttpProtocol::reset() {}
+
+bool HttpProtocol::shouldKeepAlive() const {return false;}
+
+}
+}

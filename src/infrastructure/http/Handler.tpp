@@ -17,9 +17,9 @@
 
 namespace http {
 template <typename ExceptionType>
-ITransfertHandler::ProcessingStatus Handler::handleError(int id, ExceptionType const &e)
+ITransfertHandler::ProcessingStatus Handler::handleError(Context &context, ExceptionType const &e)
 {
-	Context::Output &context_output = _contexts[id].output;
+	Context::Output &context_output = context.output;
 	unsigned short	 statusCode = to_status_code(e.getErrorCode());
 
 	prepareDirectResponse(statusCode, context_output.response, &context_output.reader);

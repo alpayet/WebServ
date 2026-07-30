@@ -1,5 +1,5 @@
-#ifndef SERVER_HPP
-#define SERVER_HPP
+#ifndef SERVERCONFIG_HPP
+#define SERVERCONFIG_HPP
 
 #include "application/ports/IResourceLocator.hpp"
 #include "infrastructure/http/IHttpVersionProvider.hpp"

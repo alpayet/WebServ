@@ -20,7 +20,7 @@
 namespace app {
 namespace useCase {
 ExecuteDynamicResource::ExecuteDynamicResource(
-	IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+	const IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 )
 	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
 {}

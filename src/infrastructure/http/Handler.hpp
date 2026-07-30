@@ -22,7 +22,7 @@ class Router;
 class IErrorPagesProvider;
 class IErrorPageLocator;
 
-class Handler : public ITransfertHandler
+class Handler
 {
   public:
 	Handler(
@@ -30,34 +30,31 @@ class Handler : public ITransfertHandler
 		cgi::Parser			&cgiParser,
 		Router				&router,
 		response::Sender	&sender,
-		IErrorPagesProvider &errorPagesProvider
+		const IErrorPagesProvider &errorPagesProvider
 	);
 
-	virtual void prepareContext(unsigned int id);
+	void prepareContext(Context &context);
 
-	virtual ProcessingStatus
-	pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus::Type status);
-	virtual ProcessingStatus
-	pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus::Type status);
+	ITransfertHandler::ProcessingStatus
+	pushRequest(Context &context, std::vector<char> const &inputBuf, ITransfertHandler::RequestStatus::Type status);
+	ITransfertHandler::ProcessingStatus
+	pushStream(Context &context, std::vector<char> const &streamBuf, ITransfertHandler::StreamStatus::Type status);
 
-	virtual std::vector<char> const &pull(unsigned int id);
+	std::vector<char> const &pull(Context &context);
 
-	virtual bool isResponseComplete(unsigned int id);
+	bool isResponseComplete(Context &context);
 
-	virtual void reset(unsigned int id);
+	void reset(Context &context);
 
   private:
 	Handler(Handler const &src);
 	Handler &operator=(Handler const &rhs);
 
-	// TODO : a voir pour mettre cette limite de max de connections dans la config ou pas
-	Context _contexts[1024];
-
 	request::Parser		&_requestParser;
 	cgi::Parser			&_cgiParser;
 	Router				&_router;
 	response::Sender	&_sender;
-	IErrorPagesProvider &_errorPagesProvider;
+	const IErrorPagesProvider &_errorPagesProvider;
 
 	void dispatchCgiResponse(Context &context);
 
@@ -66,7 +63,7 @@ class Handler : public ITransfertHandler
 	);
 
 	template <typename ExceptionType>
-	ITransfertHandler::ProcessingStatus handleError(int id, ExceptionType const &e);
+	ITransfertHandler::ProcessingStatus handleError(Context &context, ExceptionType const &e);
 };
 } // namespace http
 

@@ -28,7 +28,7 @@ void Sender::State::reset(void)
 	cgiBuf.clear();
 }
 
-Sender::Sender(IHttpVersionProvider &httpVersionProvider)
+Sender::Sender(const IHttpVersionProvider &httpVersionProvider)
 	: _httpVersionProvider(httpVersionProvider)
 {}
 

@@ -20,7 +20,7 @@
 namespace app {
 namespace useCase {
 DeleteStaticResource::DeleteStaticResource(
-	IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+	const IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 )
 	: _resourceLocator(resourceLocator), _staticResourceStorage(staticResourceStorage)
 {}

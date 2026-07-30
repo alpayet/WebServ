@@ -13,7 +13,12 @@
 #ifndef ITRANSFERTHANDLER_HPP
 #define ITRANSFERTHANDLER_HPP
 
+#include "server/protocol/IProtocol.hpp"
+
+
 #include <vector>
+
+class Context;
 
 class ITransfertHandler
 {
@@ -44,18 +49,18 @@ class ITransfertHandler
   public:
 	virtual ~ITransfertHandler() {}
 
-	virtual void prepareContext(unsigned int id) = 0;
+	virtual void prepareContext(Context &context) = 0;
 
-	virtual ProcessingStatus
-	pushRequest(unsigned int id, std::vector<char> const &inputBuf, RequestStatus::Type status) = 0;
-	virtual ProcessingStatus
-	pushStream(unsigned int id, std::vector<char> const &streamBuf, StreamStatus::Type status) = 0;
+	virtual webserv::protocol::IProtocol::ProtocolState
+	pushRequest(Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status) = 0;
+	virtual webserv::protocol::IProtocol::ProtocolState
+	pushStream(Context &context, std::vector<char> const &streamBuf, StreamStatus::Type status) = 0;
 
-	virtual std::vector<char> const &pull(unsigned int id) = 0;
+	virtual std::vector<char> const &pull(Context &context) = 0;
 
-	virtual bool isResponseComplete(unsigned int id) = 0;
+	virtual bool isResponseComplete(Context &context) = 0;
 
-	virtual void reset(unsigned int id) = 0;
+	virtual void reset(Context &context) = 0;
 };
 
 #endif // ITRANSFERTHANDLER_HPP

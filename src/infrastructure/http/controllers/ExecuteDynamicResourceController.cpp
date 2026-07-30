@@ -24,7 +24,7 @@
 
 namespace http {
 ExecuteDynamicResourceController::ExecuteDynamicResourceController(
-	app::useCase::ExecuteDynamicResource &useCase, ILimitsProvider &limitsProvider
+	app::useCase::ExecuteDynamicResource &useCase, const ILimitsProvider &limitsProvider
 )
 	: _useCase(useCase), _limitsProvider(limitsProvider)
 {}

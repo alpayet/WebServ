@@ -50,7 +50,7 @@ class Parser
 	};
 
   public:
-	Parser(parse::IValidationPolicy &validationPolicy);
+	Parser(const parse::IValidationPolicy &validationPolicy);
 
 	Step parse(std::vector<char> &inputBuf, bool isCgiEof, State &state);
 
@@ -63,7 +63,7 @@ class Parser
 	std::size_t _maxHeaderCount;
 	std::size_t _maxBodySize;
 
-	parse::IValidationPolicy &_validationPolicy;
+	const parse::IValidationPolicy &_validationPolicy;
 
 	void classifyResponse(Response &response);
 

@@ -20,7 +20,7 @@
 namespace app {
 namespace useCase {
 ServeStaticResource::ServeStaticResource(
-	IResourceLocator	   &resourceLocator,
+	const IResourceLocator	   &resourceLocator,
 	IStaticResourceStorage &staticResourceStorage,
 	ICollectionExplorer	   &collectionExplorer
 )
