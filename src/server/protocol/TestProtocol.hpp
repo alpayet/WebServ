@@ -15,7 +15,7 @@ public:
   explicit TestProtocol(const std::string &body);
   ~TestProtocol();
 
-  ProtocolState receive(std::vector<char> &buffer);
+  ProtocolState request(std::vector<char> &buffer);
   const std::vector<char> &response();
   bool isResponseComplete();
   void reset();

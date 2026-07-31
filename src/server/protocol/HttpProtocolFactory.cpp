@@ -2,6 +2,7 @@
 
 #include "infrastructure/config/ServerConfig.hpp"
 #include "server/protocol/HttpProtocol.hpp"
+#include "server/utils/Logger.hpp"
 
 namespace webserv {
 namespace protocol {
@@ -22,7 +23,11 @@ HttpProtocolFactory::HttpProtocolFactory(const ::ServerConfig &config)
 
 HttpProtocolFactory::~HttpProtocolFactory() {}
 
-IProtocol *HttpProtocolFactory::create() { return new HttpProtocol(_handler); }
+IProtocol *HttpProtocolFactory::create() {
+
+  DEBUG("new httpProtocol pfactory->create");
+  return new HttpProtocol(_handler);
+}
 
 } // namespace protocol
 } // namespace webserv

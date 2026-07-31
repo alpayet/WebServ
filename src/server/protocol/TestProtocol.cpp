@@ -20,7 +20,7 @@ TestProtocol::TestProtocol(const std::string &body)
 
 TestProtocol::~TestProtocol() {}
 
-IProtocol::ProtocolState TestProtocol::receive(std::vector<char> &buffer) {
+IProtocol::ProtocolState TestProtocol::request(std::vector<char> &buffer) {
   // if (len == 0)
   //   return SEND_OK;
   //

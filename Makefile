@@ -74,7 +74,7 @@ SRC_FILES = main.cpp \
 
 # directories
 SRC_DIR = src/
-OBJ_DIR = obj/
+OBJ_DIR = .obj/
 
 # files full paths
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

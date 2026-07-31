@@ -11,10 +11,10 @@ namespace webserv {
 namespace handler {
 
 TcpConnectionFactory::TcpConnectionFactory(
-    protocol::IProtocolFactory *app_protocol)
-    : m_app_protocol(app_protocol) {}
+    protocol::IProtocolFactory *app_protocol_factory)
+    : m_app_protocol_factory(app_protocol_factory) {}
 
-TcpConnectionFactory::~TcpConnectionFactory() { delete m_app_protocol; }
+TcpConnectionFactory::~TcpConnectionFactory() { delete m_app_protocol_factory; }
 
 IEventHandler *TcpConnectionFactory::create(const int client_fd) const {
 
@@ -25,14 +25,14 @@ IEventHandler *TcpConnectionFactory::create(const int client_fd) const {
 
   protocol::IProtocol *app_protocol;
   try {
-    app_protocol = m_app_protocol->create();
+    app_protocol = m_app_protocol_factory->create();
   } catch (...) {
     delete transport;
     throw;
   }
 
   try {
-    return new handler::ConnectionHandler(transport, app_protocol);
+    return new ConnectionHandler(transport, app_protocol);
   } catch (...) {
     delete app_protocol;
     delete transport;
