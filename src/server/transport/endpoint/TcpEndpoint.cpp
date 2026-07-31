@@ -8,6 +8,7 @@
 #include "server/handler/TcpListenerHandler.hpp"
 #include "server/reactor/EventType.hpp"
 #include "server/reactor/Reactor.hpp"
+#include "server/transport/endpoint/EndpointException.hpp"
 #include "server/transport/socket.hpp"
 #include "server/utils/Logger.hpp"
 #include "server/utils/utils.hpp"
@@ -38,18 +39,18 @@ void TcpEndpoint::open(reactor::Reactor &reactor) {
       socket::createSocket(m_host, m_port, SOCK_STREAM, &m_family));
 
   if (!listener_fd.setNonBlocking())
-    throw IEndpoint::Exception("can't set here " + formatEndpoint() +
-                               " non-blocking");
+    throw EndpointException("can't set here " + formatEndpoint() +
+                            " non-blocking");
 
   if (listen(listener_fd.get(), TCP_BACKLOG) == -1)
-    throw IEndpoint::Exception("listen failed for " + formatEndpoint());
+    throw EndpointException("listen failed for " + formatEndpoint());
 
   if (!reactor.addEventHandler(
           new handler::TcpListenerHandler(listener_fd.release(),
                                           *m_connection_factory),
           reactor::EVENT_READ))
-    throw IEndpoint::Exception("reactor registration failed for " +
-                               formatEndpoint());
+    throw EndpointException("reactor registration failed for " +
+                            formatEndpoint());
 
   LOG("endpoint open: " << formatEndpoint());
 }

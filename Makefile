@@ -13,6 +13,7 @@ SRC_FILES = main.cpp \
 	server/reactor/demultiplexer/KqueueDemultiplexer.cpp \
 	server/transport/socket.cpp server/transport/TcpTransport.cpp \
 	server/transport/endpoint/TcpEndpoint.cpp server/transport/endpoint/Endpoints.cpp \
+	server/transport/endpoint/EndpointException.cpp \
 	server/transport/endpoint/build_endpoints.cpp \
 	server/utils/utils.cpp \
 	infrastructure/constants.cpp \
