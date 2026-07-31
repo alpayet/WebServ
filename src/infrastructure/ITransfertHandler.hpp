@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ITransfertHandler.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:37:47 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 01:43:20 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ class ITransfertHandler
 
 	virtual void prepareContext(Context &context) = 0;
 
-	virtual webserv::protocol::IProtocol::ProtocolState
+	virtual ITransfertHandler::ProcessingStatus
 	pushRequest(Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status) = 0;
-	virtual webserv::protocol::IProtocol::ProtocolState
+	virtual ITransfertHandler::ProcessingStatus
 	pushStream(Context &context, std::vector<char> const &streamBuf, StreamStatus::Type status) = 0;
 
 	virtual std::vector<char> const &pull(Context &context) = 0;

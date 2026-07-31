@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 22:40:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 02:44:37 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ void Parser::parseContentLength(Response &response)
 
 	switch (parse::parse_content_length(response.getHeaders(), _maxBodySize, content_length))
 	{
-		case parse::ParseContentLength::contentLengthMissing:
+		case parse::ParseContentLength::noContentLength:
 			return;
 		case parse::ParseContentLength::contentLengthInvalid:
 			throw Exception(Exception::contentLengthInvalid);

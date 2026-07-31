@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:32:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 02:53:28 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,11 +211,11 @@ void Parser::parseHeaderLine(
 
 void Parser::parseContentLength(Request &request)
 {
-	std::size_t content_length;
+	std::size_t content_length = 0;
 
 	switch (parse::parse_content_length(request.getHeaders(), _maxBodySize, content_length))
 	{
-		case parse::ParseContentLength::contentLengthMissing:
+		case parse::ParseContentLength::noContentLength:
 			if (expects_body(request.getMethod()))
 				throw Exception(Exception::contentLengthRequired);
 			break;

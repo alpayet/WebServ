@@ -203,7 +203,7 @@ app::SystemResourceInfo ServerConfig::locateErrorPage(std::string const &uri) co
 	return sri;
 }
 
-std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.0"); }
+std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.1"); }
 
 std::size_t ServerConfig::getMaxRequestLineSize(void) const
 {

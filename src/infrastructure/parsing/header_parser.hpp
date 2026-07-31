@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header_parser.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:28:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 02:44:37 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ struct ParseContentLength
 	enum Result
 	{
 		success,
-		contentLengthMissing,
+		noContentLength,
 		contentLengthInvalid,
 		bodyTooLarge
 	};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServeStaticResource.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 00:41:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 03:07:38 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
 #include "domain/entities/StaticResource.hpp"
+#include <iostream>
+
 
 namespace app {
 namespace useCase {
@@ -32,6 +34,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 {
 	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
+
 	if (!target_infos.exists)
 		throw Exception(Exception::notFound);
 
@@ -50,6 +53,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 			generateListing(dtoInput, outputPort, target_meta_data);
 		else
 		{
+			std::cout << " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 			domain::ResourceMetaData index_meta_data(
 				index_infos.resourcePath, index_infos.type, index_infos.permissions,
 				index_infos.resourceSize, index_infos.canBeDeleted
