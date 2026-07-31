@@ -26,7 +26,8 @@ ConnectionHandler::~ConnectionHandler() {
 int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
-  std::vector<char> buffer(RECV_CHUNK);
+  std::vector<char> buffer(RECV_CHUNK, 0);
+
   const ssize_t bytes_read = m_transport->read(&buffer[0], buffer.size());
 
   if (bytes_read <= 0) {

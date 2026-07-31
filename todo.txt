@@ -1,0 +1,14 @@
+TODO:
+
+merge protocol interface/enums
+show ConfigException to maryleeeene
+merge HttpProtocol / Handler
+
+Conditional jump
+
+timout
+Cgi
+
+tester
+
+PUUUSHH

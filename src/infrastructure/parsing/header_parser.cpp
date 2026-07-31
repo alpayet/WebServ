@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header_parser.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 22:18:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/07/31 02:44:37 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ ParseContentLength::Result parse_content_length(
 	std::map<std::string, std::string>::const_iterator it = headers.find(headers::CONTENT_LENGTH);
 
 	if (it == headers.end())
-		return (ParseContentLength::contentLengthMissing);
+		return (ParseContentLength::noContentLength);
 
 	std::string content_length = it->second;
 	if (content_length.empty())

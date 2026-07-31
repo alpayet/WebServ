@@ -11,10 +11,12 @@ HttpProtocol::HttpProtocol(http::Handler &handler)
 
 HttpProtocol::~HttpProtocol() {}
 
+// IProtocol::ProtocolState HttpProtocol::receive(std::vector<char> &buffer, requestStatus) {
 IProtocol::ProtocolState HttpProtocol::receive(std::vector<char> &buffer) {
 
   const ITransfertHandler::ProcessingStatus status = m_handler.pushRequest(
       m_context, buffer, ITransfertHandler::RequestStatus::normal);
+
   switch (status) {
   case ITransfertHandler::needMoreData:
     return IProtocol::READ_MORE;
