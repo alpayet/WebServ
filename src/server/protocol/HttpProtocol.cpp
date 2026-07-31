@@ -1,6 +1,5 @@
 #include "server/protocol/HttpProtocol.hpp"
 
-#include "infrastructure/config/ServerConfig.hpp"
 #include "infrastructure/http/Handler.hpp"
 #include "server/utils/Logger.hpp"
 
@@ -12,7 +11,9 @@ HttpProtocol::HttpProtocol(http::Handler &handler)
   DEBUG("new httpProtocol/client, new context ");
 }
 
-HttpProtocol::~HttpProtocol() { DEBUG("reset HttpProtocol context "); }
+HttpProtocol::~HttpProtocol() {
+  DEBUG("httpProtocol destructor, reset HttpProtocol context ");
+}
 
 // TODO:
 //  IProtocol::ProtocolState HttpProtocol::request(std::vector<char> &buffer,
