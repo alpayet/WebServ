@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Context.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 02:24:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/03 16:16:12 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ class Context
 		Output(void);
 		~Output(void);
 
-		std::vector<char>		buf;
 		response::Sender::State state;
 		Response				response;
 		app::IResourceReader   *reader;
-		bool					isResponseComplete;
 
 		void reset(void);
 

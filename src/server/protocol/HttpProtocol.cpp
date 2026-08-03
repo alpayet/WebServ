@@ -29,17 +29,22 @@ IProtocol::ProtocolState HttpProtocol::request(std::vector<char> &buffer) {
   }
 }
 
-const std::vector<char> &HttpProtocol::response() {
-  return m_handler.pull(m_context);
+bool HttpProtocol::response(std::vector<char> & r) {
+
+  switch (m_handler.pull(m_context, r))
+  {
+    case ITransfertHandler::needMoreData:
+      return false;
+    case ITransfertHandler::complete:
+      return true;
+    default:
+      return false;
+  }
 }
 
-bool HttpProtocol::isResponseComplete() {
-  return m_handler.isResponseComplete(m_context);
-}
+void HttpProtocol::reset() {m_context.reset();}
 
-void HttpProtocol::reset() {}
-
-bool HttpProtocol::shouldKeepAlive() const { return false; }
+bool HttpProtocol::shouldKeepAlive() const { return true; }
 
 } // namespace protocol
 } // namespace webserv

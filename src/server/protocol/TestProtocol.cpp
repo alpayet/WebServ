@@ -32,9 +32,7 @@ IProtocol::ProtocolState TestProtocol::request(std::vector<char> &buffer) {
   return READ_OK;
 }
 
-const std::vector<char> &TestProtocol::response() { return m_response; }
-
-bool TestProtocol::isResponseComplete() { return true; }
+bool TestProtocol::response(std::vector<char> & r) { return false;  }
 
 void TestProtocol::reset() { m_request.clear(); }
 

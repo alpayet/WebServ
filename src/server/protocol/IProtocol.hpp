@@ -20,8 +20,7 @@ public:
   virtual ~IProtocol() {}
 
   virtual ProtocolState request(std::vector<char> &buffer) = 0;
-  virtual const std::vector<char> &response() = 0;
-  virtual bool isResponseComplete() = 0;
+  virtual bool response(std::vector<char> & r) = 0;
   virtual void reset() = 0;
   virtual bool shouldKeepAlive() const = 0;
 };

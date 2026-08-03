@@ -46,8 +46,9 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
       m_protocol->request(m_read_buf);
 
   if (state == protocol::IProtocol::READ_OK) {
-    const std::vector<char> &response = m_protocol->response();
-    m_write_buf.assign(response.begin(), response.end());
+    const std::vector<char> tmp_response(0);
+
+    m_protocol->response(m_write_buf);
     m_write_pos = 0;
     reactor.modifyEventFlag(m_transport->getFd(),
                             reactor::EVENT_READ | reactor::EVENT_WRITE);
@@ -57,8 +58,8 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
 }
 
 void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
-  // DEBUG("send response, buffer : " << std::string(m_write_buf.begin(),
-  //                                                 m_write_buf.end()));
+  DEBUG("send response, buffer : " << std::string(m_write_buf.begin(),
+                                                  m_write_buf.end()));
 
   if (m_write_pos < m_write_buf.size()) {
     const ssize_t bytes_send = m_transport->write(
@@ -76,13 +77,13 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_write_buf.clear();
   m_write_pos = 0;
 
-  if (!m_protocol->isResponseComplete()) {
-    const std::vector<char> &chunk = m_protocol->response();
-    m_write_buf.assign(chunk.begin(), chunk.end());
+ const bool res = m_protocol->response(m_write_buf);
+  if (!res)
     return;
-  }
+
 
   if (m_protocol->shouldKeepAlive()) {
+    // DEBUG("keep alive");
     m_protocol->reset();
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
   } else

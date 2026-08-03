@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 22:44:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/03 16:17:08 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,23 +157,18 @@ Handler::pushStream(Context &context, std::vector<char> const &streamBuf, ITrans
 	}
 }
 
-std::vector<char> const &Handler::pull(Context &context)
+ITransfertHandler::ProcessingStatus Handler::pull(Context &context, std::vector<char>& outputBuf)
 {
 	// TODO A voir avec luca si il catch des exection pour close la connection dun client
 	Context::Output &context_output = context.output;
 
 	if (_sender.produce(
-			context_output.buf, context_output.response, context_output.reader, context_output.state
+			outputBuf, context_output.response, context_output.reader, context_output.state
 		) == response::Sender::complete)
-		context_output.isResponseComplete = true;
+		return (ITransfertHandler::complete);
 	// TODO: ne pas oubleir de reset le contexte ici / a voir avec luca si il reset
 
-	return (context_output.buf);
-}
-
-bool Handler::isResponseComplete(Context &context)
-{
-	return (context.output.isResponseComplete);
+	return (ITransfertHandler::needMoreData);
 }
 
 void Handler::reset(Context &context) { context.reset(); }
