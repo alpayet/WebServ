@@ -7,20 +7,14 @@ namespace webserv {
 namespace protocol {
 
 HttpProtocol::HttpProtocol(http::Handler &handler)
-    : m_context(), m_handler(handler) {
-  DEBUG("new httpProtocol/client, new context ");
-}
+    : m_context(), m_handler(handler) {}
 
-HttpProtocol::~HttpProtocol() {
-  DEBUG("httpProtocol destructor, reset HttpProtocol context ");
-}
+HttpProtocol::~HttpProtocol() {}
 
 // TODO:
 //  IProtocol::ProtocolState HttpProtocol::request(std::vector<char> &buffer,
 //  requestStatus) {
 IProtocol::ProtocolState HttpProtocol::request(std::vector<char> &buffer) {
-
-  DEBUG("new request call");
 
   const ITransfertHandler::ProcessingStatus status = m_handler.pushRequest(
       m_context, buffer, ITransfertHandler::RequestStatus::normal);

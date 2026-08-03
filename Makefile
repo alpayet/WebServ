@@ -15,7 +15,7 @@ SRC_FILES = main.cpp \
 	server/transport/endpoint/TcpEndpoint.cpp server/transport/endpoint/Endpoints.cpp \
 	server/transport/endpoint/EndpointException.cpp \
 	server/transport/endpoint/build_endpoints.cpp \
-	server/utils/utils.cpp \
+	server/utils/utils.cpp server/utils/Logger.cpp \
 	infrastructure/constants.cpp \
 	infrastructure/storage/file_system/TempWriter.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
@@ -84,7 +84,8 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 NAME = webserv
 
 CC = c++
-CFLAGS = -Wall -Wextra -Weffc++ -MMD -MP -std=c++98 -g
+#CFLAGS = -Wall -Wextra -Weffc++ -MMD -MP -std=c++98 -g
+CFLAGS = -Wall -Wextra -Weffc++ -MMD -MP -std=c++98 -O3
 CFLAGS += $(EXTRA_FLAGS)
 IFLAGS = -I $(SRC_DIR)
 MAKE = @make --no-print-directory -j

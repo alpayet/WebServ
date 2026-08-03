@@ -90,7 +90,7 @@ void Reactor::removeEventHandler(const int fd) {
 }
 
 void Reactor::run() {
-  LOG("reactor loop starting...");
+  Logger("reactor loop starting...");
 
   while (g_running) {
     const int n_events = m_demux.wait(-1);
@@ -99,7 +99,7 @@ void Reactor::run() {
 
     clearClosedEventHandlers();
   }
-  LOG("reactor run loop stopped");
+  Logger("reactor run loop stopped");
 }
 
 void Reactor::dispatch(const int n_events) {

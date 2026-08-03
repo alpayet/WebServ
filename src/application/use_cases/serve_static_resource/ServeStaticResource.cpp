@@ -53,7 +53,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 			generateListing(dtoInput, outputPort, target_meta_data);
 		else
 		{
-			std::cout << " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
+			// std::cout << " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 			domain::ResourceMetaData index_meta_data(
 				index_infos.resourcePath, index_infos.type, index_infos.permissions,
 				index_infos.resourceSize, index_infos.canBeDeleted

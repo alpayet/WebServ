@@ -8,6 +8,7 @@
 #include "server/transport/endpoint/IEndpoint.hpp"
 #include "server/transport/endpoint/build_endpoints.hpp"
 #include "server/utils/Logger.hpp"
+#include "utils/utils.hpp"
 
 namespace webserv {
 
@@ -30,7 +31,7 @@ Server::Server(const std::vector<ServerConfig> &configs)
   if (opened == 0)
     throw ConfigException("no endpoint could be open");
 
-  LOG("listening on " << opened << (opened == 1 ? " endpoint" : " endpoints"));
+  Logger("listening on " + ft::intToString(static_cast<int>(opened)) + (opened == 1 ? " endpoint" : " endpoints"));
 }
 
 Server::~Server() {}

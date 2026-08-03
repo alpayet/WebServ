@@ -42,7 +42,7 @@ void TcpEndpoint::open(reactor::Reactor &reactor) {
     throw EndpointException("can't set here " + formatEndpoint() +
                             " non-blocking");
 
-  if (listen(listener_fd.get(), TCP_BACKLOG) == -1)
+  if (listen(listener_fd.get(), SOMAXCONN) == -1)
     throw EndpointException("listen failed for " + formatEndpoint());
 
   if (!reactor.addEventHandler(
@@ -52,7 +52,7 @@ void TcpEndpoint::open(reactor::Reactor &reactor) {
     throw EndpointException("reactor registration failed for " +
                             formatEndpoint());
 
-  LOG("endpoint open: " << formatEndpoint());
+  Logger("listening on: " + formatEndpoint());
 }
 
 } // namespace transport

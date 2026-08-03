@@ -30,8 +30,6 @@ private:
   TcpEndpoint(const TcpEndpoint &);
   TcpEndpoint &operator=(const TcpEndpoint &);
 
-  static const int TCP_BACKLOG = 128;
-
   std::string m_host;
   int m_port;
   std::string m_family;
