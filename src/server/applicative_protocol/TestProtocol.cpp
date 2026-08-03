@@ -1,4 +1,4 @@
-#include "server/protocol/TestProtocol.hpp"
+#include "server/applicative_protocol/TestProtocol.hpp"
 
 #include "server/utils/utils.hpp"
 

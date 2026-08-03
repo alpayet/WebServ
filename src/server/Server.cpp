@@ -5,8 +5,8 @@
 
 #include "infrastructure/config/Config.hpp"
 #include "infrastructure/config/ServerConfig.hpp"
-#include "server/transport/endpoint/IEndpoint.hpp"
-#include "server/transport/endpoint/build_endpoints.hpp"
+#include "server/transport_protocol/endpoint/IEndpoint.hpp"
+#include "server/transport_protocol/endpoint/build_endpoints.hpp"
 #include "server/utils/Logger.hpp"
 #include "utils/utils.hpp"
 

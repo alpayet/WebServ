@@ -2,7 +2,7 @@
 #define HTTPPROTOCOL_HPP
 
 #include "infrastructure/http/Context.hpp"
-#include "server/protocol/IProtocol.hpp"
+#include "server/applicative_protocol/IProtocol.hpp"
 
 namespace http {
 class Handler;

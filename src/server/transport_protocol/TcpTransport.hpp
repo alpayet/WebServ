@@ -2,7 +2,7 @@
 #define TCPTRANSPORT_HPP
 
 #include "server/fd/Fd.hpp"
-#include "server/transport/ITransport.hpp"
+#include "server/transport_protocol/ITransport.hpp"
 
 namespace webserv {
 namespace transport {

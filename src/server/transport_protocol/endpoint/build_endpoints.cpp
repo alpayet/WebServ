@@ -1,17 +1,17 @@
-#include "server/transport/endpoint/build_endpoints.hpp"
+#include "server/transport_protocol/endpoint/build_endpoints.hpp"
 
 #include <cstddef>
 
 #include "infrastructure/config/Config.hpp"
 #include "infrastructure/config/ServerConfig.hpp"
+#include "server/applicative_protocol/HttpProtocolFactory.hpp"
+#include "server/applicative_protocol/IProtocolFactory.hpp"
+#include "server/applicative_protocol/TestProtocol.hpp"
 #include "server/handler/IConnectionFactory.hpp"
 #include "server/handler/TcpConnectionFactory.hpp"
-#include "server/protocol/HttpProtocolFactory.hpp"
-#include "server/protocol/IProtocolFactory.hpp"
-#include "server/protocol/TestProtocol.hpp"
-#include "server/transport/endpoint/Endpoints.hpp"
-#include "server/transport/endpoint/IEndpoint.hpp"
-#include "server/transport/endpoint/TcpEndpoint.hpp"
+#include "server/transport_protocol/endpoint/Endpoints.hpp"
+#include "server/transport_protocol/endpoint/IEndpoint.hpp"
+#include "server/transport_protocol/endpoint/TcpEndpoint.hpp"
 #include "server/utils/Logger.hpp"
 #include "server/utils/utils.hpp"
 

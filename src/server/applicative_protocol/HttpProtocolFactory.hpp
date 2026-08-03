@@ -12,7 +12,7 @@
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/storage/file_system/DirectoryExplorer.hpp"
 #include "infrastructure/storage/file_system/Storage.hpp"
-#include "server/protocol/IProtocolFactory.hpp"
+#include "server/applicative_protocol/IProtocolFactory.hpp"
 
 class ServerConfig;
 

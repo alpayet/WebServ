@@ -1,4 +1,4 @@
-#include "server/protocol/HttpProtocol.hpp"
+#include "server/applicative_protocol/HttpProtocol.hpp"
 
 #include "infrastructure/http/Handler.hpp"
 #include "server/utils/Logger.hpp"

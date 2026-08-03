@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "server/protocol/IProtocol.hpp"
-#include "server/protocol/IProtocolFactory.hpp"
+#include "server/applicative_protocol/IProtocol.hpp"
+#include "server/applicative_protocol/IProtocolFactory.hpp"
 
 namespace webserv {
 namespace protocol {

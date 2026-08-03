@@ -1,6 +1,6 @@
-#include "server/transport/TcpTransport.hpp"
+#include "server/transport_protocol/TcpTransport.hpp"
 
-#include "server/transport/socket.hpp"
+#include "server/transport_protocol/socket.hpp"
 
 #include <vector>
 

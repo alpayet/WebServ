@@ -6,15 +6,15 @@ SRC_FILES = main.cpp \
 	server/fd/Fd.cpp \
 	server/handler/TcpListenerHandler.cpp server/handler/ConnectionHandler.cpp \
 	server/handler/TcpConnectionFactory.cpp \
-	server/protocol/TestProtocol.cpp \
-	server/protocol/HttpProtocolFactory.cpp server/protocol/HttpProtocol.cpp \
+	server/applicative_protocol/TestProtocol.cpp \
+	server/applicative_protocol/HttpProtocolFactory.cpp server/applicative_protocol/HttpProtocol.cpp \
 	server/reactor/Reactor.cpp \
 	server/reactor/demultiplexer/EpollDemultiplexer.cpp \
 	server/reactor/demultiplexer/KqueueDemultiplexer.cpp \
-	server/transport/socket.cpp server/transport/TcpTransport.cpp \
-	server/transport/endpoint/TcpEndpoint.cpp server/transport/endpoint/Endpoints.cpp \
-	server/transport/endpoint/EndpointException.cpp \
-	server/transport/endpoint/build_endpoints.cpp \
+	server/transport_protocol/socket.cpp server/transport_protocol/TcpTransport.cpp \
+	server/transport_protocol/endpoint/TcpEndpoint.cpp server/transport_protocol/endpoint/Endpoints.cpp \
+	server/transport_protocol/endpoint/EndpointException.cpp \
+	server/transport_protocol/endpoint/build_endpoints.cpp \
 	server/utils/utils.cpp server/utils/Logger.cpp \
 	infrastructure/constants.cpp \
 	infrastructure/storage/file_system/TempWriter.cpp \

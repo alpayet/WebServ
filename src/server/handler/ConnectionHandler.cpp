@@ -1,9 +1,9 @@
 #include "server/handler/ConnectionHandler.hpp"
 
-#include "server/protocol/IProtocol.hpp"
+#include "server/applicative_protocol/IProtocol.hpp"
 #include "server/reactor/EventType.hpp"
 #include "server/reactor/Reactor.hpp"
-#include "server/transport/ITransport.hpp"
+#include "server/transport_protocol/ITransport.hpp"
 #include "server/utils/Logger.hpp"
 
 #include <string>

@@ -1,11 +1,11 @@
 #include "server/handler/TcpConnectionFactory.hpp"
 
+#include "server/applicative_protocol/IProtocol.hpp"
+#include "server/applicative_protocol/IProtocolFactory.hpp"
 #include "server/fd/Fd.hpp"
 #include "server/handler/ConnectionHandler.hpp"
-#include "server/protocol/IProtocol.hpp"
-#include "server/protocol/IProtocolFactory.hpp"
-#include "server/transport/ITransport.hpp"
-#include "server/transport/TcpTransport.hpp"
+#include "server/transport_protocol/ITransport.hpp"
+#include "server/transport_protocol/TcpTransport.hpp"
 
 namespace webserv {
 namespace handler {

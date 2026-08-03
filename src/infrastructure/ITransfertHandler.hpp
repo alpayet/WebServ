@@ -13,8 +13,7 @@
 #ifndef ITRANSFERTHANDLER_HPP
 #define ITRANSFERTHANDLER_HPP
 
-#include "server/protocol/IProtocol.hpp"
-
+#include "server/applicative_protocol/IProtocol.hpp"
 
 #include <vector>
 

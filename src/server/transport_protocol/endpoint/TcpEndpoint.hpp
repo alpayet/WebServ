@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "server/transport/endpoint/IEndpoint.hpp"
+#include "server/transport_protocol/endpoint/IEndpoint.hpp"
 
 namespace webserv {
 

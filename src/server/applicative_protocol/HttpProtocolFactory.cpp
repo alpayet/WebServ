@@ -1,7 +1,7 @@
 #include "HttpProtocolFactory.hpp"
 
 #include "infrastructure/config/ServerConfig.hpp"
-#include "server/protocol/HttpProtocol.hpp"
+#include "server/applicative_protocol/HttpProtocol.hpp"
 #include "server/utils/Logger.hpp"
 
 namespace webserv {

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "server/reactor/Reactor.hpp"
-#include "server/transport/endpoint/Endpoints.hpp"
+#include "server/transport_protocol/endpoint/Endpoints.hpp"
 
 class ServerConfig;
 

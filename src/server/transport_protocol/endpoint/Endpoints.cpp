@@ -1,6 +1,6 @@
-#include "server/transport/endpoint/Endpoints.hpp"
+#include "server/transport_protocol/endpoint/Endpoints.hpp"
 
-#include "server/transport/endpoint/IEndpoint.hpp"
+#include "server/transport_protocol/endpoint/IEndpoint.hpp"
 
 namespace webserv {
 namespace transport {
