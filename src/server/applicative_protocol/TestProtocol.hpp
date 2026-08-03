@@ -16,8 +16,7 @@ public:
   ~TestProtocol();
 
   ProtocolState request(std::vector<char> &buffer);
-  const std::vector<char> &response();
-  bool isResponseComplete();
+  bool response(std::vector<char> &);
   void reset();
   bool shouldKeepAlive() const;
 

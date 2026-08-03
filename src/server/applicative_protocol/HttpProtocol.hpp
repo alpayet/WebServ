@@ -17,8 +17,7 @@ public:
   ~HttpProtocol();
 
   ProtocolState request(std::vector<char> &buffer);
-  const std::vector<char> &response();
-  bool isResponseComplete();
+  bool response(std::vector<char> & r);
   void reset();
   bool shouldKeepAlive() const;
 

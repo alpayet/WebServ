@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 22:38:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/03 16:17:25 by ludebion         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ class Handler
 	ITransfertHandler::ProcessingStatus
 	pushStream(Context &context, std::vector<char> const &streamBuf, ITransfertHandler::StreamStatus::Type status);
 
-	std::vector<char> const &pull(Context &context);
-
-	bool isResponseComplete(Context &context);
+	ITransfertHandler::ProcessingStatus pull(Context &context, std::vector<char>& outputBuf);
 
 	void reset(Context &context);
 
