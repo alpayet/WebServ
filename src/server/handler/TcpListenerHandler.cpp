@@ -22,29 +22,30 @@ void TcpListenerHandler::onWritable(reactor::Reactor &) {}
 
 void TcpListenerHandler::onReadable(reactor::Reactor &reactor) {
 
-  const int client_fd = transport::socket::accept(m_listener_fd.get());
+  for (;;) {
+    const int client_fd = transport::socket::accept(m_listener_fd.get());
 
-  if (client_fd < 0)
-    return;
+    if (client_fd < 0)
+      return;
 
-  fd::Fd tmp_fd(client_fd);
+    fd::Fd tmp_fd(client_fd);
 
-  if (!tmp_fd.setNonBlocking()) {
-    DEBUG("can't set fd " << client_fd << " non-blocking so delete it");
-    return;
+    if (!tmp_fd.setNonBlocking()) {
+      DEBUG("can't set fd " << client_fd << " non-blocking so delete it");
+      continue;
+    }
+
+    try {
+      IEventHandler *handler = m_connection_factory.create(tmp_fd.release());
+
+      reactor.addEventHandler(handler, reactor::EVENT_READ);
+    } catch (const std::exception &e) {
+      DEBUG("can't add new client after accept, remove client fd: "
+            << client_fd << ": " << e.what());
+    }
+
+    // LOG("accepted client fd: " << client_fd);
   }
-
-  try {
-    IEventHandler *handler = m_connection_factory.create(tmp_fd.release());
-
-    reactor.addEventHandler(handler, reactor::EVENT_READ);
-  } catch (const std::exception &e) {
-    DEBUG("can't add new client after accept, remove client fd: "
-          << client_fd << ": " << e.what());
-    return;
-  }
-
-  LOG("accepted client fd: " << client_fd);
 }
 
 } // namespace handler
