@@ -36,6 +36,7 @@ private:
 
   transport::ITransport *m_transport;
   protocol::IProtocol *m_protocol;
+  std::vector<char> m_read_buf;
   std::vector<char> m_write_buf;
   std::size_t m_write_pos;
 };

@@ -17,8 +17,8 @@ namespace handler {
 
 ConnectionHandler::ConnectionHandler(transport::ITransport *connection,
                                      protocol::IProtocol *protocol)
-    : m_transport(connection), m_protocol(protocol), m_write_buf(),
-      m_write_pos(0) {}
+    : m_transport(connection), m_protocol(protocol), m_read_buf(RECV_CHUNK),
+      m_write_buf(), m_write_pos(0) {}
 
 ConnectionHandler::~ConnectionHandler() {
   delete m_transport;
@@ -28,21 +28,22 @@ ConnectionHandler::~ConnectionHandler() {
 int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
-  DEBUG("read request");
+  m_read_buf.resize(RECV_CHUNK);
 
-  std::vector<char> buffer(RECV_CHUNK, 0);
-
-  const ssize_t bytes_read = m_transport->read(&buffer[0], buffer.size());
+  const ssize_t bytes_read =
+      m_transport->read(&m_read_buf[0], m_read_buf.size());
 
   if (bytes_read <= 0) {
     reactor.removeEventHandler(m_transport->getFd());
     return;
   }
 
-  // DEBUG("read request, buffer : " << std::string(buffer.begin(),
-  // buffer.end()));
+  m_read_buf.resize(bytes_read);
+  // DEBUG("read request, buffer : " << std::string(m_read_buf.begin(),
+  // m_read_buf.end()));
 
-  const protocol::IProtocol::ProtocolState state = m_protocol->request(buffer);
+  const protocol::IProtocol::ProtocolState state =
+      m_protocol->request(m_read_buf);
 
   if (state == protocol::IProtocol::READ_OK) {
     const std::vector<char> &response = m_protocol->response();
@@ -69,18 +70,13 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
     m_write_pos += static_cast<std::size_t>(bytes_send);
   }
 
-  if (m_write_pos < m_write_buf.size()) {
-    DEBUG("all buffer not send");
+  if (m_write_pos < m_write_buf.size())
     return;
-  }
 
   m_write_buf.clear();
   m_write_pos = 0;
 
-  DEBUG("write buffer and cursor reset");
-
   if (!m_protocol->isResponseComplete()) {
-    DEBUG("write buffer and cursor reset but response not complete");
     const std::vector<char> &chunk = m_protocol->response();
     m_write_buf.assign(chunk.begin(), chunk.end());
     return;
