@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/10 18:24:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 15:32:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Request
 	bool									  hasHeader(std::string const &key) const;
 	std::size_t								  getContentLength(void) const;
 	bool									  hasContentLength(void) const;
+	std::string const						 &getConnection(void) const;
 	std::string const						 &getBodyPath(void) const;
 	bool									  hasBody(void) const;
 

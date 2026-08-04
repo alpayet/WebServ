@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 22:48:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 15:36:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,21 @@ bool Response::hasHeader(std::string const &key) const
 	return (_headers.find(key) != _headers.end());
 }
 std::vector<std::string> const &Response::getCookies(void) const { return (_cookies); }
+
 std::string const			   &Response::getLocationUri(void) const { return (_location.uri); }
+
 std::string const			   &Response::getLocationQuery(void) const { return (_location.query); }
+
 Response::Location::Type		Response::getLocationType(void) const { return (_location.type); }
+
 bool		   Response::hasLocation(void) const { return (!_location.uri.empty()); }
+
 std::size_t	   Response::getContentLength(void) const { return (_contentLength); }
+
 bool		   Response::hasContentLength(void) const { return (_hasContentLength); }
+
 Response::Type Response::getType(void) const { return (_type); }
+
 int			   Response::getBodyFd(void) const { return (_body.getFd()); }
 
 void Response::setStatus(unsigned short statusCode, std::string const &reason)

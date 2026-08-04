@@ -28,6 +28,7 @@ SRC_FILES = main.cpp \
 	infrastructure/parsing/line_reader.cpp \
 	infrastructure/parsing/header_parser.cpp \
 	infrastructure/parsing/constants.cpp \
+	infrastructure/http/updateKeepAliveStatus.cpp \
 	infrastructure/http/methods.cpp \
 	infrastructure/http/Handler.cpp \
 	infrastructure/http/Context.cpp \

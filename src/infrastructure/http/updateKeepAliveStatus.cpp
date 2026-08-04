@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constants.cpp                                      :+:      :+:    :+:   */
+/*   updateKeepAliveStatus.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/11 20:23:53 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 14:58:43 by alpayet          ###   ########.fr       */
+/*   Created: 2026/08/04 15:19:52 by alpayet           #+#    #+#             */
+/*   Updated: 2026/08/04 15:49:43 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/constants.hpp"
+#include "infrastructure/http/updateKeepAliveStatus.hpp"
 
-namespace headers {
-char const CONTENT_LENGTH[] = "content-length";
-char const CONTENT_TYPE[] = "content-type";
-char const CONNECTION[] = "connection";
-char const COOKIE[] = "cookie";
-char const SET_COOKIE[] = "set-cookie";
-char const STATUS[] = "status";
-char const LOCATION[] = "location";
+namespace http {
+void updateKeepAliveStatus(Context &context)
+{
+	std::string const &request_connection = context.input.state.request.getConnection();
 
-} // namespace headers
+	if (request_connection == "close")
+		context.shouldKeepAlive = false;
+	else if (request_connection == "keep-alive")
+		context.shouldKeepAlive = true;
+}
+} // namespace http

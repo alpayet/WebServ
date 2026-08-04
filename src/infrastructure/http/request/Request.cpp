@@ -6,11 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 22:46:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 15:38:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/http/request/Request.hpp"
+#include "infrastructure/constants.hpp"
 
 namespace http {
 char const Request::BODY_NAME_TEMPLATE[] = "http_request_body";
@@ -27,14 +28,20 @@ Request::Request()
 {}
 
 std::string const &Request::getMethod(void) const { return (_startLine.method); }
+
 std::string const &Request::getTarget(void) const { return (_startLine.target); }
+
 std::string const &Request::getQuery(void) const { return (_startLine.query); }
+
 bool			   Request::hasQuery(void) const { return (!_startLine.query.empty()); }
+
 std::string const &Request::getProtocol(void) const { return (_startLine.protocol); }
 std::map<std::string, std::string> const &Request::getHeaders(void) const { return (_headers); }
+
 std::string const						 &Request::getHeader(std::string const &key) const
 {
 	std::map<std::string, std::string>::const_iterator itValue = _headers.find(key);
+
 	if (itValue == _headers.end())
 	{
 		static std::string const empty;
@@ -42,13 +49,30 @@ std::string const						 &Request::getHeader(std::string const &key) const
 	}
 	return (itValue->second);
 }
+
 bool Request::hasHeader(std::string const &key) const
 {
 	return (_headers.find(key) != _headers.end());
 }
+
 std::size_t		   Request::getContentLength(void) const { return (_contentLength); }
+
 bool			   Request::hasContentLength(void) const { return (_hasContentLength); }
+
+std::string const	&Request::getConnection(void) const
+{
+	std::map<std::string, std::string>::const_iterator itValue = _headers.find(headers::CONNECTION);
+
+	if (itValue == _headers.end())
+	{
+		static std::string const empty;
+		return (empty);
+	}
+	return (itValue->second);
+}
+
 std::string const &Request::getBodyPath(void) const { return (_body.getPath()); }
+
 bool			   Request::hasBody(void) const { return (_body.exists()); }
 
 void Request::setStartLine(

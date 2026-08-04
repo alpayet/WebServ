@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constants.cpp                                      :+:      :+:    :+:   */
+/*   updateKeepAliveStatus.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/11 20:23:53 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 14:58:43 by alpayet          ###   ########.fr       */
+/*   Created: 2026/08/04 15:44:29 by alpayet           #+#    #+#             */
+/*   Updated: 2026/08/04 15:49:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/constants.hpp"
+#ifndef HTTPUPDATEKEEPALIVESTATUS_HPP
+#define HTTPUPDATEKEEPALIVESTATUS_HPP
 
-namespace headers {
-char const CONTENT_LENGTH[] = "content-length";
-char const CONTENT_TYPE[] = "content-type";
-char const CONNECTION[] = "connection";
-char const COOKIE[] = "cookie";
-char const SET_COOKIE[] = "set-cookie";
-char const STATUS[] = "status";
-char const LOCATION[] = "location";
+#include "infrastructure/http/request/Request.hpp"
+#include "infrastructure/http/Context.hpp"
 
-} // namespace headers
+namespace http {
+void updateKeepAliveStatus(Context &context);
+} // namespace http
+
+#endif // HTTPUPDATEKEEPALIVESTATUS_HPP

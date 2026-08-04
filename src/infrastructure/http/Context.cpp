@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Context.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:05:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/03 16:16:51 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:56:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,14 @@ void Context::Output::reset(void)
 	reader = NULL;
 }
 
+Context::Context(void) : input(), stream(), output(), shouldKeepAlive(true) {}
+
 void Context::reset(void)
 {
 	input.reset();
 	stream.reset();
 	output.reset();
+	shouldKeepAlive = true;
 }
 
 } // namespace http

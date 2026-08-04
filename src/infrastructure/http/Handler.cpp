@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/03 16:17:08 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 15:50:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include "infrastructure/http/router/Router.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
-#include <iostream>
+#include "infrastructure/http/updateKeepAliveStatus.hpp"
 
 namespace http {
 Handler::Handler(
@@ -59,6 +59,7 @@ Handler::pushRequest(Context &context, std::vector<char> const &inputBuf, ITrans
 		if (_requestParser.parse(context_input.buf, context_input.state) ==
 			request::Parser::complete)
 		{
+			updateKeepAliveStatus(context);
 			_router.route(context);
 			return (ITransfertHandler::complete);
 		}
@@ -113,7 +114,6 @@ Handler::pushStream(Context &context, std::vector<char> const &streamBuf, ITrans
 		if (_cgiParser.parse(context_stream.buf, status, context_stream.state) ==
 			cgi::Parser::complete)
 		{
-			std::cout << context_stream.state.response << std::endl;
 			dispatchCgiResponse(context);
 			return (ITransfertHandler::complete);
 		}

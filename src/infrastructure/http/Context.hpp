@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Context.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/03 16:16:12 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:55:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <vector>
 
 namespace http {
-class Context
+struct Context
 {
   public:
 	struct Input
@@ -70,12 +70,13 @@ class Context
 		Output &operator=(Output const &rhs);
 	};
 
-  public:
-	Context(void) {}
+	Context(void);
 
 	Input  input;
 	Stream stream;
 	Output output;
+
+	bool shouldKeepAlive;
 
 	void reset(void);
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 18:17:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 15:51:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ class IRouteRegistry;
 class ServeStaticResourceController;
 class DeleteStaticResourceController;
 class ExecuteDynamicResourceController;
-class Context;
+struct Context;
 
 class Router
 {

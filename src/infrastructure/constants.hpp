@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 17:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 20:28:07 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 14:58:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 namespace headers {
 extern char const CONTENT_LENGTH[];
 extern char const CONTENT_TYPE[];
+extern char const CONNECTION[];
 extern char const COOKIE[];
 extern char const SET_COOKIE[];
 extern char const STATUS[];

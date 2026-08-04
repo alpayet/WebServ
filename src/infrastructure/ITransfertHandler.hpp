@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ITransfertHandler.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/31 01:43:20 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 15:51:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #include <vector>
 
-class Context;
+struct Context;
 
 class ITransfertHandler
 {
