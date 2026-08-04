@@ -38,7 +38,10 @@ bool EpollDemultiplexer::add(const int fd, const int flag) {
   std::memset(&ev, 0, sizeof(ev));
   ev.events = getEpollMask(flag);
   ev.data.fd = fd;
-  DEBUG("epoll add fd: " << fd << " flag: " << flag);
+  const std::string s(flag & EVENT_WRITE  ? "write"
+                      : flag & EVENT_READ ? "read"
+                                          : "none");
+  DEBUG("epoll add fd: " << fd << " flag: " << s);
   return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_ADD, fd, &ev) != -1;
 }
 
@@ -47,7 +50,10 @@ bool EpollDemultiplexer::modify(const int fd, const int flag) {
   std::memset(&ev, 0, sizeof(ev));
   ev.events = getEpollMask(flag);
   ev.data.fd = fd;
-  DEBUG("epoll modify fd: " << fd << " flag: " << flag);
+  const std::string s(flag & EVENT_WRITE  ? "write"
+                      : flag & EVENT_READ ? "read"
+                                          : "none");
+  DEBUG("epoll modify fd: " << fd << " flag: " << s);
   return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_MOD, fd, &ev) != -1;
 }
 

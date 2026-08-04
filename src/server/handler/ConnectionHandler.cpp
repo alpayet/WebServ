@@ -46,12 +46,8 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
       m_protocol->request(m_read_buf);
 
   if (state == protocol::IProtocol::READ_OK) {
-    const std::vector<char> tmp_response(0);
-
-    m_protocol->response(m_write_buf);
     m_write_pos = 0;
-    reactor.modifyEventFlag(m_transport->getFd(),
-                            reactor::EVENT_READ | reactor::EVENT_WRITE);
+    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
   } else if (state == protocol::IProtocol::CLOSE_CONNECTION) {
     reactor.removeEventHandler(m_transport->getFd());
   }
@@ -77,13 +73,14 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_write_buf.clear();
   m_write_pos = 0;
 
- const bool res = m_protocol->response(m_write_buf);
-  if (!res)
+  const bool is_response_complete = m_protocol->response(m_write_buf);
+  if (!m_write_buf.empty())
+    return;
+  if (!is_response_complete)
     return;
 
-
   if (m_protocol->shouldKeepAlive()) {
-    // DEBUG("keep alive");
+    DEBUG("keep alive");
     m_protocol->reset();
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
   } else
