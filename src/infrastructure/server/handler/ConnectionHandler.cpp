@@ -46,21 +46,19 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor)
 	// DEBUG("read request, buffer : " << std::string(m_read_buf.begin(),
 	// m_read_buf.end()));
 
-	appProtocol::IProtocol::PushStatus const state =
+	appProtocol::IProtocol::PushStatus const push_state =
 		m_app_protocol->pushRequest(m_read_buf, appProtocol::IProtocol::RequestStatus::NORMAL);
 
-	if (state == appProtocol::IProtocol::PUSH_COMPLETE)
+	if (push_state == appProtocol::IProtocol::PUSH_COMPLETE)
 	{
-		std::vector<char> const tmp_response(0);
-
-		m_app_protocol->pullResponse(m_write_buf);
 		m_write_pos = 0;
-		reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ | reactor::EVENT_WRITE);
+		reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
 	}
-	// else if (state == appProtocol::IApplicationProtocol::CLOSE_CONNECTION)
-	// {
-	// 	reactor.removeEventHandler(m_transport->getFd());
-	// }
+	// TODO a voir cela avec Luca
+	//  else if (push_state == protocol::IProtocol::CLOSE_CONNECTION)
+	//  {
+	//  	reactor.removeEventHandler(m_transport->getFd());
+	//  }
 }
 
 void ConnectionHandler::onWritable(reactor::Reactor &reactor)
@@ -85,13 +83,15 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor)
 	m_write_buf.clear();
 	m_write_pos = 0;
 
-	appProtocol::IProtocol::PullStatus const state = m_app_protocol->pullResponse(m_write_buf);
-	if (state == appProtocol::IProtocol::HAS_MORE)
+	appProtocol::IProtocol::PullStatus const pull_state = m_app_protocol->pullResponse(m_write_buf);
+	if (!m_write_buf.empty())
+		return;
+	if (pull_state == appProtocol::IProtocol::HAS_MORE)
 		return;
 
 	if (m_app_protocol->shouldKeepAlive())
 	{
-		// DEBUG("keep alive");
+		DEBUG("keep alive");
 		m_app_protocol->reset();
 		reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
 	}

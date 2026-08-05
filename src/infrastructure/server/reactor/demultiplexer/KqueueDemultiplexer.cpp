@@ -40,13 +40,15 @@ bool KqueueDemultiplexer::apply(int const fd, int const flag)
 
 bool KqueueDemultiplexer::add(int const fd, int const flag)
 {
-	DEBUG("kqueue add fd: " << fd << " flag: " << flag);
+	std::string const s(flag & EVENT_WRITE ? "write" : flag & EVENT_READ ? "read" : "none");
+	DEBUG("kqueue add fd: " << fd << " flag: " << s);
 	return apply(fd, flag);
 }
 
 bool KqueueDemultiplexer::modify(int const fd, int const flag)
 {
-	DEBUG("kqueue modify fd: " << fd << " flag: " << flag);
+	std::string const s(flag & EVENT_WRITE ? "write" : flag & EVENT_READ ? "read" : "none");
+	DEBUG("kqueue modify fd: " << fd << " flag: " << s);
 	return apply(fd, flag);
 }
 
