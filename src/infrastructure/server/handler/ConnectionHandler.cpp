@@ -1,0 +1,103 @@
+#include "infrastructure/server/handler/ConnectionHandler.hpp"
+
+#include "infrastructure/server/application_protocol/IProtocol.hpp"
+#include "infrastructure/server/reactor/EventType.hpp"
+#include "infrastructure/server/reactor/Reactor.hpp"
+#include "infrastructure/server/transport_protocol/ITransport.hpp"
+#include "infrastructure/server/utils/Logger.hpp"
+
+#include <string>
+
+namespace {
+std::size_t const RECV_CHUNK = 64u * 1024u;
+}
+
+namespace webserv {
+namespace handler {
+
+ConnectionHandler::ConnectionHandler(
+	transport::ITransport *connection, appProtocol::IProtocol *appProtocol
+)
+	: m_transport(connection), m_app_protocol(appProtocol), m_read_buf(RECV_CHUNK), m_write_buf(),
+	  m_write_pos(0)
+{}
+
+ConnectionHandler::~ConnectionHandler()
+{
+	delete m_transport;
+	delete m_app_protocol;
+}
+
+int ConnectionHandler::getFd() const { return m_transport->getFd(); }
+
+void ConnectionHandler::onReadable(reactor::Reactor &reactor)
+{
+	m_read_buf.resize(RECV_CHUNK);
+
+	ssize_t const bytes_read = m_transport->read(&m_read_buf[0], m_read_buf.size());
+
+	if (bytes_read <= 0)
+	{
+		reactor.removeEventHandler(m_transport->getFd());
+		return;
+	}
+
+	m_read_buf.resize(bytes_read);
+	// DEBUG("read request, buffer : " << std::string(m_read_buf.begin(),
+	// m_read_buf.end()));
+
+	appProtocol::IProtocol::PushStatus const state =
+		m_app_protocol->pushRequest(m_read_buf, appProtocol::IProtocol::RequestStatus::NORMAL);
+
+	if (state == appProtocol::IProtocol::PUSH_COMPLETE)
+	{
+		std::vector<char> const tmp_response(0);
+
+		m_app_protocol->pullResponse(m_write_buf);
+		m_write_pos = 0;
+		reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ | reactor::EVENT_WRITE);
+	}
+	// else if (state == appProtocol::IApplicationProtocol::CLOSE_CONNECTION)
+	// {
+	// 	reactor.removeEventHandler(m_transport->getFd());
+	// }
+}
+
+void ConnectionHandler::onWritable(reactor::Reactor &reactor)
+{
+	DEBUG("send response, buffer : " << std::string(m_write_buf.begin(), m_write_buf.end()));
+
+	if (m_write_pos < m_write_buf.size())
+	{
+		ssize_t const bytes_send =
+			m_transport->write(&m_write_buf[m_write_pos], m_write_buf.size() - m_write_pos);
+		if (bytes_send < 0)
+		{
+			reactor.removeEventHandler(m_transport->getFd());
+			return;
+		}
+		m_write_pos += static_cast<std::size_t>(bytes_send);
+	}
+
+	if (m_write_pos < m_write_buf.size())
+		return;
+
+	m_write_buf.clear();
+	m_write_pos = 0;
+
+	appProtocol::IProtocol::PullStatus const state = m_app_protocol->pullResponse(m_write_buf);
+	if (state == appProtocol::IProtocol::HAS_MORE)
+		return;
+
+	if (m_app_protocol->shouldKeepAlive())
+	{
+		// DEBUG("keep alive");
+		m_app_protocol->reset();
+		reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
+	}
+	else
+		reactor.removeEventHandler(m_transport->getFd());
+}
+
+} // namespace handler
+} // namespace webserv

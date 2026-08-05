@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header_parser.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/31 02:44:37 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 19:31:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ struct ParseHeaderLine
 {
 	enum Result
 	{
-		success,
-		lineBreakInvalid,
-		malformed,
-		keyInvalid,
-		valueInvalid
+		SUCCESS,
+		LINE_BREAK_INVALID,
+		MALFORMED,
+		KEY_INVALID,
+		VALUE_INVALID
 	};
 };
 
@@ -35,10 +35,10 @@ struct ParseContentLength
 {
 	enum Result
 	{
-		success,
-		noContentLength,
-		contentLengthInvalid,
-		bodyTooLarge
+		SUCCESS,
+		NO_CONTENT_LENGTH,
+		CONTENT_LENGTH_INVALID,
+		BODY_TOO_LARGE
 	};
 };
 

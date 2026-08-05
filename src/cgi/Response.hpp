@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/11 20:34:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:21:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ class Response
   public:
 	enum Type
 	{
-		document,
-		localRedir,
-		clientRedir,
-		clientRedirDoc
+		DOCUMENT,
+		LOCAL_REDIR,
+		CLIENT_REDIR,
+		CLIENT_REDIR_DOC
 	};
 
   private:

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 03:24:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:16:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ void Storage::remove(std::string const &resourcePath)
 	switch (errno)
 	{
 		case ENOENT:
-			throw app::Exception(app::Exception::notFound);
+			throw app::Exception(app::Exception::NOT_FOUND);
 			break;
 		case EACCES:
 		case EPERM:
-			throw app::Exception(app::Exception::accessDenied);
+			throw app::Exception(app::Exception::ACCESS_DENIED);
 			break;
 		default:
-			throw app::Exception(app::Exception::deleteFailed);
+			throw app::Exception(app::Exception::DELETE_FAILED);
 			break;
 	}
 }

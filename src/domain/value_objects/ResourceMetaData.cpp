@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:35:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:23:18 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ ResourceMetaData::ResourceMetaData(
 	: _permissions(permissions), _resourceSize(resourceSize), _canBeDeleted(canBeDeleted)
 {
 	if (resourcePath.empty())
-		throw Exception(Exception::pathMissing);
+		throw Exception(Exception::PATH_MISSING);
 	_resourcePath = resourcePath;
-	if (type == unknown)
-		throw Exception(Exception::typeUnsupported);
+	if (type == UNKNOWN)
+		throw Exception(Exception::TYPE_UNSUPPORTED);
 	_type = type;
 }
 
@@ -35,11 +35,11 @@ std::string const &ResourceMetaData::getResourcePath(void) const { return (_reso
 
 std::size_t ResourceMetaData::getResourceSize(void) const { return (_resourceSize); }
 
-bool ResourceMetaData::isExecutable(void) const { return (_permissions & executable); }
+bool ResourceMetaData::isExecutable(void) const { return (_permissions & EXECUTABLE); }
 
-bool ResourceMetaData::isReadable(void) const { return (_permissions & readable); }
+bool ResourceMetaData::isReadable(void) const { return (_permissions & READABLE); }
 
-bool ResourceMetaData::isCollection(void) const { return (_type == collection); }
+bool ResourceMetaData::isCollection(void) const { return (_type == COLLECTION); }
 
 bool ResourceMetaData::canBeDeleted() const { return (_canBeDeleted); }
 

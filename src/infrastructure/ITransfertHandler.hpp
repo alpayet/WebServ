@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 17:56:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 15:51:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/05 03:21:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITRANSFERTHANDLER_HPP
 #define ITRANSFERTHANDLER_HPP
 
-#include "server/applicative_protocol/IProtocol.hpp"
+#include "infrastructure/server/application_protocol/IProtocol.hpp"
 
 #include <vector>
 
@@ -24,24 +24,24 @@ class ITransfertHandler
   public:
 	enum ProcessingStatus
 	{
-		needMoreData,
-		complete
+		NEED_MORE_DATA,
+		COMPLETE
 	};
 	struct RequestStatus
 	{
 		enum Type
 		{
-			normal,
-			timeOut
+			NORMAL,
+			TIMEOUT
 		};
 	};
 	struct StreamStatus
 	{
 		enum Type
 		{
-			normal,
-			timeOut,
-			endOfStream
+			NORMAL,
+			TIMEOUT,
+			END_OF_STREAM
 		};
 	};
 
@@ -50,8 +50,9 @@ class ITransfertHandler
 
 	virtual void prepareContext(Context &context) = 0;
 
-	virtual ITransfertHandler::ProcessingStatus
-	pushRequest(Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status) = 0;
+	virtual ITransfertHandler::ProcessingStatus pushRequest(
+		Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status
+	) = 0;
 	virtual ITransfertHandler::ProcessingStatus
 	pushStream(Context &context, std::vector<char> const &streamBuf, StreamStatus::Type status) = 0;
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 16:40:38 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 07:07:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:22:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 namespace domain {
 enum ResourceType
 {
-	leaf,
-	collection,
-	unknown
+	LEAF,
+	COLLECTION,
+	UNKNOWN
 };
 } // namespace domain
 

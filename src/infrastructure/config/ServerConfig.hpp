@@ -2,11 +2,11 @@
 #define SERVERCONFIG_HPP
 
 #include "application/ports/IResourceLocator.hpp"
-#include "infrastructure/http/IHttpVersionProvider.hpp"
-#include "infrastructure/http/controllers/ILimitsProvider.hpp"
-#include "infrastructure/http/exceptions/IErrorPagesProvider.hpp"
-#include "infrastructure/http/router/IRouteRegistry.hpp"
 #include "infrastructure/parsing/IValidationPolicy.hpp"
+#include "infrastructure/server/application_protocol/http/IHttpVersionProvider.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ILimitsProvider.hpp"
+#include "infrastructure/server/application_protocol/http/exceptions/IErrorPagesProvider.hpp"
+#include "infrastructure/server/application_protocol/http/router/IRouteRegistry.hpp"
 #include <map>
 #include <string>
 #include <vector>
@@ -37,7 +37,7 @@ class ServerConfig : public app::IResourceLocator,
 	/** CTOR */
 	ServerConfig()
 		: m_port(8080), m_max_body(1048576), m_transport(TRANSPORT_TCP),
-		  m_applicative_protocol(APP_HTTP) {};
+		  m_application_protocol(APP_HTTP) {};
 	~ServerConfig() {};
 
 	enum TransportProtocol
@@ -107,7 +107,7 @@ class ServerConfig : public app::IResourceLocator,
 	std::string				   m_root;
 	std::vector<std::string>   m_index;
 	TransportProtocol		   m_transport;
-	ApplicativeProtocol		   m_applicative_protocol;
+	ApplicativeProtocol		   m_application_protocol;
 };
 
 std::ostream &operator<<(std::ostream &os, Location const &l);

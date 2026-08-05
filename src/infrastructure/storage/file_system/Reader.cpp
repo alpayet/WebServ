@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:13:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:33:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ std::size_t Reader::readSize(std::vector<char> &buf, std::size_t size)
 
 	ssize_t bytes_read = ::read(_fd, &buf[0], size);
 	if (bytes_read < 0)
-		throw Exception(Exception::fileReadFailed);
+		throw Exception(Exception::READ_FAILED);
 
 	buf.resize(bytes_read);
 
@@ -61,7 +61,7 @@ std::size_t Reader::readChunk(std::vector<char> &buf)
 
 	ssize_t bytes_read = ::read(_fd, &buf[0], CHUNCK_SIZE);
 	if (bytes_read < 0)
-		throw Exception(Exception::fileReadFailed);
+		throw Exception(Exception::READ_FAILED);
 
 	buf.resize(bytes_read);
 
@@ -72,7 +72,7 @@ int Reader::openFile(std::string const &path)
 {
 	int fd = open(path.c_str(), O_RDONLY | O_CLOEXEC);
 	if (fd < 0)
-		throw Exception(Exception::fileOpenFailed);
+		throw Exception(Exception::OPEN_FAILED);
 	return (fd);
 }
 } // namespace fileSystem

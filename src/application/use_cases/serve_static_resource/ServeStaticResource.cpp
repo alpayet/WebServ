@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServeStaticResource.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ludebion <ludebion@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/31 03:07:38 by ludebion         ###   ########.fr       */
+/*   Updated: 2026/08/04 19:16:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
 #include "application/ports/IResourceLocator.hpp"
 #include "application/ports/IStaticResourceStorage.hpp"
 #include "domain/entities/StaticResource.hpp"
-#include <iostream>
-
 
 namespace app {
 namespace useCase {
 ServeStaticResource::ServeStaticResource(
-	const IResourceLocator	   &resourceLocator,
+	IResourceLocator const &resourceLocator,
 	IStaticResourceStorage &staticResourceStorage,
 	ICollectionExplorer	   &collectionExplorer
 )
@@ -36,7 +34,7 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
 
 	if (!target_infos.exists)
-		throw Exception(Exception::notFound);
+		throw Exception(Exception::NOT_FOUND);
 
 	domain::ResourceMetaData target_meta_data(
 		target_infos.resourcePath, target_infos.type, target_infos.permissions,
@@ -53,7 +51,6 @@ void ServeStaticResource::execute(Input const &dtoInput, IOutputPort &outputPort
 			generateListing(dtoInput, outputPort, target_meta_data);
 		else
 		{
-			// std::cout << " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 			domain::ResourceMetaData index_meta_data(
 				index_infos.resourcePath, index_infos.type, index_infos.permissions,
 				index_infos.resourceSize, index_infos.canBeDeleted
@@ -76,11 +73,11 @@ void ServeStaticResource::serveContent(
 	domain::StaticResource static_resource(dtoInput.id, metaData);
 
 	if (!static_resource.isReadable())
-		throw Exception(Exception::accessDenied);
+		throw Exception(Exception::ACCESS_DENIED);
 
 	IResourceReader *resource_reader =
 		_staticResourceStorage.createReader(static_resource.getResourcePath());
-	outputPort.presentStaticContent(found, static_resource.getResourceSize(), resource_reader);
+	outputPort.presentStaticContent(FOUND, static_resource.getResourceSize(), resource_reader);
 }
 
 void ServeStaticResource::generateListing(
@@ -88,18 +85,18 @@ void ServeStaticResource::generateListing(
 )
 {
 	if (!dtoInput.isListingEnabled)
-		throw Exception(Exception::listingDisabled);
+		throw Exception(Exception::LISTING_DISABLED);
 
 	domain::StaticResource static_resource(dtoInput.id, metaData);
 
 	if (!static_resource.isReadable() || !static_resource.isExecutable())
-		throw Exception(Exception::accessDenied);
+		throw Exception(Exception::ACCESS_DENIED);
 
 	std::vector<CollectionEntry> const &collection_data = _collectionExplorer.listCollection(
 		static_resource.getResourcePath(), dtoInput.matchedRoute, dtoInput.rootPath
 	);
 
-	outputPort.presentListing(found, static_resource.getId(), collection_data);
+	outputPort.presentListing(FOUND, static_resource.getId(), collection_data);
 }
 } // namespace useCase
 } // namespace app

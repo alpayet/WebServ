@@ -125,7 +125,7 @@ void Cgi::execute(
 
 	if (pipe(fds) < 0)
 	{
-		throw cgi::Exception(cgi::Exception::pipeFailed);
+		throw cgi::Exception(cgi::Exception::PIPE_FAILED);
 	}
 
 	pid_t pid = fork();
@@ -138,7 +138,7 @@ void Cgi::execute(
 		execve("/bin/python", [ "python3", "dto.path" ], &envp[0]);
 	}
 	if (pid == -1)
-		throw cgi::Exception(cgi::Exception::forkFailed);
+		throw cgi::Exception(cgi::Exception::FORK_FAILED);
 	time_t base_time = time(0);
 	int	   status;
 	while (waitpid(pid, &status, WNOHANG) != pid)
