@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 20:03:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/05 20:53:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/parsing/header_parser.hpp"
-#include "infrastructure/constants.hpp"
 #include "infrastructure/parsing/line_reader.hpp"
 #include "infrastructure/parsing/utils.hpp"
+#include "infrastructure/server/application_protocol/constants.hpp"
 #include <algorithm>
 #include <cerrno>
 

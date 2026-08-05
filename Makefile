@@ -8,7 +8,6 @@ SRC_FILES = \
 	infrastructure/config/Semantic.cpp \
 	infrastructure/config/Config.cpp \
 	infrastructure/config/Parser.cpp \
-	infrastructure/constants.cpp \
 	infrastructure/parsing/line_reader.cpp \
 	infrastructure/parsing/constants.cpp \
 	infrastructure/parsing/utils.cpp \
@@ -65,6 +64,7 @@ SRC_FILES = \
 	infrastructure/server/application_protocol/http/presenters/ServeStaticResourcePresenter.cpp \
 	infrastructure/server/application_protocol/http/presenters/DeleteStaticResourcePresenter.cpp \
 	infrastructure/server/application_protocol/http/methods.cpp \
+	infrastructure/server/application_protocol/constants.cpp \
 	infrastructure/server/application_protocol/TestProtocol.cpp \
 	cgi/constants.cpp \
 	cgi/Response.cpp \

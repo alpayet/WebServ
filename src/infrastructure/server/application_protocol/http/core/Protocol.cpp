@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 04:29:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/05 20:59:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include "infrastructure/server/application_protocol/http/update_keep_alive_status.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
+#include <iostream>
 
 namespace http {
 
@@ -164,7 +165,10 @@ Protocol::PullStatus Protocol::pullResponse(Context &context, std::vector<char> 
 	if (_sender.produce(
 			outputBuf, context_output.response, context_output.reader, context_output.state
 		) == response::Sender::COMPLETE)
+	{
+		std::cout << context.output.response << std::endl;
 		return (IProtocol::PULL_COMPLETE);
+	}
 	// TODO: ne pas oubleir de reset le contexte ici / a voir avec luca si il reset
 
 	return (IProtocol::HAS_MORE);

@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 20:23:53 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 14:58:43 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/05 20:42:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/constants.hpp"
+#include "infrastructure/server/application_protocol/constants.hpp"
 
 namespace headers {
 char const CONTENT_LENGTH[] = "content-length";
