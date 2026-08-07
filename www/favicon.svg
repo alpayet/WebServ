@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- fond arrondi -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- unité serveur 1 -->
+  <rect x="116" y="126" width="280" height="116" rx="26" fill="#ffffff"/>
+  <circle cx="162" cy="184" r="15" fill="#06b6d4"/>
+  <rect x="300" y="170" width="64" height="12" rx="6" fill="#c7d2fe"/>
+  <rect x="300" y="196" width="64" height="12" rx="6" fill="#c7d2fe"/>
+
+  <!-- unité serveur 2 -->
+  <rect x="116" y="270" width="280" height="116" rx="26" fill="#ffffff"/>
+  <circle cx="162" cy="328" r="15" fill="#22d3ee"/>
+  <rect x="300" y="314" width="64" height="12" rx="6" fill="#c7d2fe"/>
+  <rect x="300" y="340" width="64" height="12" rx="6" fill="#c7d2fe"/>
+</svg>

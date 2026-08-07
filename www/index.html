@@ -2,78 +2,82 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Webserv - Functionality test</title>
-	<style>
-		body {
-			font-family: system-ui, sans-serif;
-			max-width: 900px;
-			margin: 2rem auto;
-		}
+    <meta charset="UTF-8">
+    <title>Webserv - Functionality test</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
 
-		section {
-			border: 1px solid #ccc;
-			padding: 1rem;
-			margin-bottom: 2rem;
-			border-radius: 8px;
-		}
+        section {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
 
-		button,
-		input[type="submit"] {
-			padding: 0.5rem 1rem;
-			cursor: pointer;
-		}
-	</style>
+        button,
+        input[type="submit"] {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-	<h1>Webserv - Validation Suite</h1>
+<h1>Webserv - Validation Suite</h1>
 
-	<section>
-		<h2>1. GET & Cookies (Session Management)</h2>
-		<p>Tests the transmission of <code>HTTP_COOKIE</code> and the reception of <code>Set-Cookie</code>.</p>
-		<a href="/cgi-bin/cookie.py"><button>Open the visit counter (CGI GET)</button></a>
-	</section>
+<section>
+    <h2>1. GET & Cookies (Session Management)</h2>
+    <p>Tests the transmission of <code>HTTP_COOKIE</code> and the reception of <code>Set-Cookie</code>.</p>
+    <a href="/cgi-bin/cookie.py">
+        <button>Open the visit counter (CGI GET)</button>
+    </a>
+</section>
 
-	<section>
-		<h2>2. POST Multipart & Upload (Image Display)</h2>
-		<p>Tests <code>CONTENT_TYPE</code>, <code>CONTENT_LENGTH</code>, and reading binary data from <i>stdin</i>.</p>
-		<form action="/cgi-bin/upload.py" method="POST" enctype="multipart/form-data">
-			<input type="file" name="file_to_upload" required>
-			<input type="submit" value="Upload and Display">
-		</form>
-	</section>
+<section>
+    <h2>2. POST Multipart & Upload (Image Display)</h2>
+    <p>Tests <code>CONTENT_TYPE</code>, <code>CONTENT_LENGTH</code>, and reading binary data from <i>stdin</i>.</p>
+    <form action="/cgi-bin/upload.py" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file_to_upload" required>
+        <input type="submit" value="Upload and Display">
+    </form>
+</section>
 
-	<section>
-		<h2>3. DELETE (Static & CGI)</h2>
-		<p>Tests the handling of <code>REQUEST_METHOD=DELETE</code>.</p>
-		<!-- Replace 'test.txt' with a file that actually exists in your uploads folder -->
-		<button onclick="sendDelete('/uploads/test.txt')">Static DELETE (/uploads/test.txt)</button>
-		<button onclick="sendDelete('/cgi-bin/delete.sh')">DELETE via Bash CGI</button>
-		<p id="delete-result" style="color: red; font-weight: bold;"></p>
-	</section>
+<section>
+    <h2>3. DELETE (Static & CGI)</h2>
+    <p>Tests the handling of <code>REQUEST_METHOD=DELETE</code>.</p>
+    <!-- Replace 'test.txt' with a file that actually exists in your uploads folder -->
+    <button onclick="sendDelete('/uploads/test.txt')">Static DELETE (/uploads/test.txt)</button>
+    <button onclick="sendDelete('/cgi-bin/delete.sh')">DELETE via Bash CGI</button>
+    <p id="delete-result" style="color: red; font-weight: bold;"></p>
+</section>
 
-	<section>
-		<h2>4. CGI Responses (The 4 Types)</h2>
-		<p>Tests CGI response routing via <code>QUERY_STRING</code>.</p>
-		<ul>
-			<li><a href="/cgi-bin/redirects.py?type=doc">Document Response (Standard)</a></li>
-			<li><a href="/cgi-bin/redirects.py?type=local">Local Redirect (Server intercepts)</a></li>
-			<li><a href="/cgi-bin/redirects.py?type=client">Client Redirect (Browser redirects)</a></li>
-			<li><a href="/cgi-bin/redirects.py?type=clientdoc">Client Redirect with Document</a></li>
-		</ul>
-	</section>
+<section>
+    <h2>4. CGI Responses (The 4 Types)</h2>
+    <p>Tests CGI response routing via <code>QUERY_STRING</code>.</p>
+    <ul>
+        <li><a href="/cgi-bin/redirects.py?type=doc">Document Response (Standard)</a></li>
+        <li><a href="/cgi-bin/redirects.py?type=local">Local Redirect (Server intercepts)</a></li>
+        <li><a href="/cgi-bin/redirects.py?type=client">Client Redirect (Browser redirects)</a></li>
+        <li><a href="/cgi-bin/redirects.py?type=clientdoc">Client Redirect with Document</a></li>
+    </ul>
+</section>
 
-	<script>
-		function sendDelete(url) {
-			fetch(url, { method: 'DELETE' })
-				.then(response => {
-					document.getElementById('delete-result').innerText =
-						`HTTP Status: ${response.status} ${response.statusText}`;
-				})
-				.catch(error => alert("Network error: " + error));
-		}
-	</script>
+<script>
+    function sendDelete(url) {
+        fetch(url, {method: 'DELETE'})
+            .then(response => {
+                document.getElementById('delete-result').innerText =
+                    `HTTP Status: ${response.status} ${response.statusText}`;
+            })
+            .catch(error => alert("Network error: " + error));
+    }
+</script>
 </body>
 
 </html>
