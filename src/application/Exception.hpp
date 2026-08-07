@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 17:34:45 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:36:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:16:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ class Exception : public std::exception
   public:
 	enum ErrorCode
 	{
-		accessDenied,
-		notFound,
-		listingDisabled,
-		deleteFailed,
-		pathTraversalDetected,
+		ACCESS_DENIED,
+		NOT_FOUND,
+		LISTING_DISABLED,
+		DELETE_FAILED,
+		PATH_TRAVERSAL_DETECTED,
 	};
 
   public:

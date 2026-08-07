@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:28:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 06:44:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:17:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ class Parser
   public:
 	enum Step
 	{
-		header,
-		body,
-		complete
+		HEADER,
+		BODY,
+		COMPLETE
 	};
 
 	struct State
@@ -50,7 +50,7 @@ class Parser
 	};
 
   public:
-	Parser(parse::IValidationPolicy &validationPolicy);
+	Parser(parse::IValidationPolicy const &validationPolicy);
 
 	Step parse(std::vector<char> &inputBuf, bool isCgiEof, State &state);
 
@@ -63,7 +63,7 @@ class Parser
 	std::size_t _maxHeaderCount;
 	std::size_t _maxBodySize;
 
-	parse::IValidationPolicy &_validationPolicy;
+	parse::IValidationPolicy const &_validationPolicy;
 
 	void classifyResponse(Response &response);
 

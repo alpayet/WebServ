@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:27:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:33:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ std::size_t TempWriter::write(std::vector<char> const &buf, std::size_t size)
 
 	ssize_t bytes_written = ::write(_fd, &buf[0], size);
 	if (bytes_written < 0)
-		throw Exception(Exception::fileWriteFailed);
+		throw Exception(Exception::WRITE_FAILED);
 
 	return (bytes_written);
 }
@@ -55,7 +55,7 @@ std::size_t TempWriter::write(std::vector<char> const &buf)
 
 	ssize_t bytes_written = ::write(_fd, &buf[0], buf.size());
 	if (bytes_written < 0)
-		throw Exception(Exception::fileWriteFailed);
+		throw Exception(Exception::WRITE_FAILED);
 
 	return (bytes_written);
 }
@@ -68,7 +68,7 @@ void TempWriter::generateUniqueTempFile(void)
 
 	int fd = mkostemp(&_path[0], O_CLOEXEC);
 	if (fd < 0)
-		throw Exception(Exception::fileOpenFailed);
+		throw Exception(Exception::OPEN_FAILED);
 
 	_fd = fd;
 }
@@ -76,7 +76,7 @@ void TempWriter::generateUniqueTempFile(void)
 void TempWriter::resetPosition(void)
 {
 	if (_fd >= 0 && ::lseek(_fd, 0, SEEK_SET) < 0)
-		throw Exception(Exception::fileLseekFailed);
+		throw Exception(Exception::LSEEK_FAILED);
 }
 
 void TempWriter::reset(void)
@@ -84,9 +84,9 @@ void TempWriter::reset(void)
 	if (_fd >= 0)
 	{
 		if (ftruncate(_fd, 0) < 0)
-			throw Exception(Exception::fileTruncateFailed);
+			throw Exception(Exception::TRUNCATE_FAILED);
 		if (::lseek(_fd, 0, SEEK_SET) < 0)
-			throw Exception(Exception::fileLseekFailed);
+			throw Exception(Exception::LSEEK_FAILED);
 	}
 }
 } // namespace fileSystem

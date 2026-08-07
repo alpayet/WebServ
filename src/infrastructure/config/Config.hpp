@@ -3,17 +3,14 @@
 
 # include <vector>
 # include <string>
-# include <exception>
+# include <stdexcept>
 # include "infrastructure/config/ServerConfig.hpp"
 
-class ConfigException : public std::exception
-{
-	public:
-		ConfigException(const std::string& msg) throw() : m_msg(msg) {};
-		virtual ~ConfigException() throw() {};
-		virtual const char* what() const throw() { return m_msg.c_str(); };
-	protected:
-		std::string m_msg;
+//TODO: to see
+class ConfigException : public std::runtime_error {
+public:
+	explicit ConfigException(const std::string &what)
+		: std::runtime_error("Config error: " + what) {}
 };
 
 class Config

@@ -16,8 +16,8 @@
 
 #include "application/Exception.hpp"
 #include "infrastructure/config/Semantic.hpp"
-#include "infrastructure/http/exceptions/Exception.hpp"
-#include "infrastructure/http/router/RoutePolicy.hpp"
+#include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
+#include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/fileSystem.hpp"
 
 Location ServerConfig::findLocationFromUri(std::string const &uri) const
@@ -36,7 +36,7 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	throw http::Exception(http::Exception::matchRouteFailed);
+	throw http::Exception(http::Exception::MATCH_ROUTE_FAILED);
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
@@ -110,7 +110,7 @@ std::string ServerConfig::resolvePhysicalPath(
 	else
 		resUri = resPath;
 	if (resUri.find(rootPath) != 0)
-		throw app::Exception(app::Exception::pathTraversalDetected);
+		throw app::Exception(app::Exception::PATH_TRAVERSAL_DETECTED);
 	return resUri;
 }
 
@@ -136,22 +136,22 @@ app::SystemResourceInfo setSRI(std::string const &path)
 	sri.exists = true;
 
 	if (fileSystem::isRegularFile(sri.resourcePath))
-		sri.type = domain::leaf;
+		sri.type = domain::LEAF;
 	else if (fileSystem::isDirectory(sri.resourcePath))
-		sri.type = domain::collection;
+		sri.type = domain::COLLECTION;
 	else
-		sri.type = domain::unknown;
+		sri.type = domain::UNKNOWN;
 
-	sri.permissions = domain::none;
+	sri.permissions = domain::NONE;
 	if (fileSystem::isReadable(sri.resourcePath))
 		sri.permissions =
-			static_cast<domain::ResourcePermissions>(sri.permissions | domain::readable);
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::READABLE);
 	if (fileSystem::isWritable(sri.resourcePath))
 		sri.permissions =
-			static_cast<domain::ResourcePermissions>(sri.permissions | domain::writable);
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::WRITABLE);
 	if (fileSystem::isExecutable(sri.resourcePath))
 		sri.permissions =
-			static_cast<domain::ResourcePermissions>(sri.permissions | domain::executable);
+			static_cast<domain::ResourcePermissions>(sri.permissions | domain::EXECUTABLE);
 
 	sri.resourceSize = fileSystem::getSize(sri.resourcePath);
 
@@ -203,7 +203,7 @@ app::SystemResourceInfo ServerConfig::locateErrorPage(std::string const &uri) co
 	return sri;
 }
 
-std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.0"); }
+std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.1"); }
 
 std::size_t ServerConfig::getMaxRequestLineSize(void) const
 {
@@ -235,7 +235,7 @@ ServerConfig::TransportProtocol ServerConfig::getTransportProtocol(void) const
 
 ServerConfig::ApplicativeProtocol ServerConfig::getApplicativeProtocol(void) const
 {
-	return m_applicative_protocol;
+	return m_application_protocol;
 }
 
 /** DISPLAY FUNCTIONS */

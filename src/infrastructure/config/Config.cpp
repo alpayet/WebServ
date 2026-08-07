@@ -18,7 +18,19 @@ Config::Config(char* filename)
 
 	std::ostringstream buf;
 	buf << file.rdbuf();
-	std::string file_str = buf.str();
+	std::string tmp_file_str = buf.str();
+
+	std::string file_str;
+	for (std::size_t i = 0; i < tmp_file_str.size(); )
+	{
+		if (tmp_file_str[i] == '#')
+		{
+			std::size_t nl = tmp_file_str.find('\n', i);
+			i = (nl == std::string::npos) ? tmp_file_str.size() : nl;
+		}
+		else
+			file_str += tmp_file_str[i++];
+	}
 
 	Tokenizer tok;
 	tok.tokenize(file_str);
@@ -45,5 +57,5 @@ Config::Config(char* filename)
 		initLocation(serv, *it);
 		this->m_servers.push_back(serv);
 	}
-	
+
 }

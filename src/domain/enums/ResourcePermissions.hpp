@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 16:38:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 07:06:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/04 19:22:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 namespace domain {
 enum ResourcePermissions
 {
-	none = 0,
-	readable = 1 << 0,
-	writable = 1 << 1,
-	executable = 1 << 2
+	NONE = 0,
+	READABLE = 1 << 0,
+	WRITABLE = 1 << 1,
+	EXECUTABLE = 1 << 2
 };
 } // namespace domain
 

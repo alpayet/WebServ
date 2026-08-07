@@ -44,7 +44,7 @@ class DeleteStaticResource
 
   public:
 	DeleteStaticResource(
-		IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		const IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
 	);
 
 	void execute(Input const &dtoInput, IOutputPort &outputPort);
@@ -53,7 +53,7 @@ class DeleteStaticResource
 	DeleteStaticResource(DeleteStaticResource const &src);
 	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	IResourceLocator	   &_resourceLocator;
+	const IResourceLocator	   &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
 };
 } // namespace useCase
