@@ -31,9 +31,6 @@ int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
-  std::cout << "update fd:" << m_transport->getFd()
-            << " on read last activity time_t: " << m_last_activity
-            << std::endl;
 
   m_read_buf.resize(RECV_CHUNK);
 
@@ -41,14 +38,11 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
       m_transport->read(&m_read_buf[0], m_read_buf.size());
 
   if (bytes_read <= 0) {
-    std::cout << "bytes read: " << bytes_read << std::endl;
     reactor.removeEventHandler(m_transport->getFd());
     return;
   }
 
   m_read_buf.resize(bytes_read);
-  DEBUG("read request, buffer : " << std::string(m_read_buf.begin(),
-                                                 m_read_buf.end()));
 
   appProtocol::IProtocol::PushStatus const push_state =
       m_app_protocol->pushRequest(
@@ -66,12 +60,7 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
 }
 
 void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
-  DEBUG("send response, buffer : " << std::string(m_write_buf.begin(),
-                                                  m_write_buf.end()));
   m_last_activity = ft::now();
-  std::cout << "update fd:" << m_transport->getFd()
-            << " on write last activity time_t: " << m_last_activity
-            << std::endl;
 
   if (m_write_pos < m_write_buf.size()) {
     ssize_t const bytes_send = m_transport->write(
@@ -98,21 +87,14 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
     return;
 
   if (m_app_protocol->shouldKeepAlive()) {
-    DEBUG("keep alive");
     m_app_protocol->reset();
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
-  } else {
-    std::cout << "no keep-al remove fd:" << m_transport->getFd() << std::endl;
+  } else
     reactor.removeEventHandler(m_transport->getFd());
-  }
 }
 
 void ConnectionHandler::onTimeout(reactor::Reactor &reactor) {
-
   m_last_activity = ft::now();
-  std::cout << "update fd:" << m_transport->getFd()
-            << " on timeout last activity time_t: " << m_last_activity
-            << std::endl;
 
   const std::vector<char> empty(0);
 

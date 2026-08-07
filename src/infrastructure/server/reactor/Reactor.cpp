@@ -90,12 +90,9 @@ void Reactor::removeEventHandler(int const fd) {
 }
 
 int Reactor::getNextIdleConnectionsTimeout() const {
-
   const std::time_t now = ft::now();
   std::time_t next_timeout = 0;
   bool need_timeout = false;
-
-  std::cout << "now time_t: " << now << std::endl;
 
   for (std::size_t i = 0; i < m_event_handlers.size(); ++i) {
     const handler::IEventHandler *handler = getEventHandler(i);
@@ -112,7 +109,6 @@ int Reactor::getNextIdleConnectionsTimeout() const {
       need_timeout = true;
       next_timeout = soon;
     }
-    std::cout << "next timeout time_t: " << next_timeout << std::endl;
   }
   if (!need_timeout)
     return -1;
