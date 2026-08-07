@@ -10,40 +10,34 @@
 namespace webserv {
 namespace handler {
 
-TcpConnectionFactory::TcpConnectionFactory(appProtocol::IProtocolFactory *app_protocol_factory)
-	: m_app_protocol_factory(app_protocol_factory)
-{}
+TcpConnectionFactory::TcpConnectionFactory(
+    appProtocol::IProtocolFactory *app_protocol_factory)
+    : m_app_protocol_factory(app_protocol_factory) {}
 
 TcpConnectionFactory::~TcpConnectionFactory() { delete m_app_protocol_factory; }
 
-IEventHandler *TcpConnectionFactory::create(int const client_fd) const
-{
+IEventHandler *TcpConnectionFactory::create(int const client_fd) const {
 
-	fd::Fd tmp_fd(client_fd);
+  fd::Fd tmp_fd(client_fd);
 
-	transport::ITransport *transport = new transport::TcpTransport(tmp_fd.release());
+  transport::ITransport *transport =
+      new transport::TcpTransport(tmp_fd.release());
 
-	appProtocol::IProtocol *app_protocol;
-	try
-	{
-		app_protocol = m_app_protocol_factory->create();
-	}
-	catch (...)
-	{
-		delete transport;
-		throw;
-	}
+  appProtocol::IProtocol *app_protocol;
+  try {
+    app_protocol = m_app_protocol_factory->create();
+  } catch (...) {
+    delete transport;
+    throw;
+  }
 
-	try
-	{
-		return new ConnectionHandler(transport, app_protocol);
-	}
-	catch (...)
-	{
-		delete app_protocol;
-		delete transport;
-		throw;
-	}
+  try {
+    return new ConnectionHandler(transport, app_protocol);
+  } catch (...) {
+    delete app_protocol;
+    delete transport;
+    throw;
+  }
 }
 
 } // namespace handler

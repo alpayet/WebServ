@@ -11,33 +11,32 @@
 namespace webserv {
 namespace reactor {
 
-class KqueueDemultiplexer : public IEventDemultiplexer
-{
-  public:
-	KqueueDemultiplexer();
-	~KqueueDemultiplexer();
+class KqueueDemultiplexer : public IEventDemultiplexer {
+public:
+  KqueueDemultiplexer();
+  ~KqueueDemultiplexer();
 
-	bool add(int fd, int flag);
-	bool modify(int fd, int flag);
-	bool remove(int fd);
+  bool add(int fd, int flag);
+  bool modify(int fd, int flag);
+  bool remove(int fd);
 
-	int wait(int timeout_ms);
+  int wait(int timeout_ms);
 
-	int	 getEventFd(int index) const;
-	bool isReadable(int index) const;
-	bool isWritable(int index) const;
-	bool isError(int index) const;
+  int getEventFd(int index) const;
+  bool isReadable(int index) const;
+  bool isWritable(int index) const;
+  bool isError(int index) const;
 
-  private:
-	KqueueDemultiplexer(KqueueDemultiplexer const &);
-	KqueueDemultiplexer &operator=(KqueueDemultiplexer const &);
+private:
+  KqueueDemultiplexer(KqueueDemultiplexer const &);
+  KqueueDemultiplexer &operator=(KqueueDemultiplexer const &);
 
-	bool apply(int fd, int flag);
+  bool apply(int fd, int flag);
 
-	static int const KQ_MAX_EVENTS = 64;
+  static int const KQ_MAX_EVENTS = 64;
 
-	fd::Fd		  m_kqueue_fd;
-	struct kevent m_events[KQ_MAX_EVENTS];
+  fd::Fd m_kqueue_fd;
+  struct kevent m_events[KQ_MAX_EVENTS];
 };
 
 } // namespace reactor

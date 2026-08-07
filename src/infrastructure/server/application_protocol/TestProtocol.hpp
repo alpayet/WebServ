@@ -10,39 +10,39 @@
 namespace webserv {
 namespace appProtocol {
 
-class TestProtocol : public IProtocol
-{
-  public:
-	explicit TestProtocol(std::string const &body);
-	~TestProtocol();
+class TestProtocol : public IProtocol {
+public:
+  explicit TestProtocol(std::string const &body);
+  ~TestProtocol();
 
-	PushStatus pushRequest(std::vector<char> const &inputBuf, RequestStatus::Type status);
-	PushStatus pushStream(std::vector<char> const &streamBuf, StreamStatus::Type status);
+  PushStatus pushRequest(std::vector<char> const &inputBuf,
+                         RequestStatus::Type status);
+  PushStatus pushStream(std::vector<char> const &streamBuf,
+                        StreamStatus::Type status);
 
-	PullStatus pullResponse(std::vector<char> &outputBuf);
+  PullStatus pullResponse(std::vector<char> &outputBuf);
 
-	void reset(void);
+  void reset(void);
 
-	bool shouldKeepAlive(void) const;
+  bool shouldKeepAlive(void) const;
 
-  private:
-	TestProtocol(TestProtocol const &);
-	TestProtocol &operator=(TestProtocol const &);
+private:
+  TestProtocol(TestProtocol const &);
+  TestProtocol &operator=(TestProtocol const &);
 
-	std::string		  m_request;
-	std::vector<char> m_response;
+  std::string m_request;
+  std::vector<char> m_response;
 };
 
-class TestProtocolFactory : public IProtocolFactory
-{
-  public:
-	explicit TestProtocolFactory(std::string const &body);
-	~TestProtocolFactory();
+class TestProtocolFactory : public IProtocolFactory {
+public:
+  explicit TestProtocolFactory(std::string const &body);
+  ~TestProtocolFactory();
 
-	IProtocol *create();
+  IProtocol *create();
 
-  private:
-	std::string m_body;
+private:
+  std::string m_body;
 };
 
 } // namespace appProtocol
