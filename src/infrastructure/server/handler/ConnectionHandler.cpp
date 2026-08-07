@@ -32,6 +32,7 @@ int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
+  m_read_buf.resize(RECV_CHUNK);
   const ssize_t bytes_read =
       m_transport->read(&m_read_buf[0], m_read_buf.size());
 
@@ -39,6 +40,8 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
     reactor.removeEventHandler(m_transport->getFd());
     return;
   }
+
+  m_read_buf.resize(static_cast<std::size_t>(bytes_read));
 
   const appProtocol::IProtocol::PushStatus push_state =
       m_app_protocol->pushRequest(
