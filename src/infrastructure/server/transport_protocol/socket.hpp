@@ -15,6 +15,8 @@ int createSocket(const std::string &host, int port, int socktype,
 
 int accept(int listen_fd);
 
+bool setNoDelay(int fd);
+
 ssize_t recv(int fd, char *buf, std::size_t len);
 ssize_t send(int fd, const char *buf, std::size_t len);
 

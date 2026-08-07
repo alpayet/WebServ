@@ -89,13 +89,10 @@ void Reactor::removeEventHandler(int const fd) {
   }
 }
 
-int Reactor::getNextIdleConnectionsTimeout() const {
-
+int Reactor::computePollTimeout() const {
   const std::time_t now = ft::now();
   std::time_t next_timeout = 0;
   bool need_timeout = false;
-
-  std::cout << "now time_t: " << now << std::endl;
 
   for (std::size_t i = 0; i < m_event_handlers.size(); ++i) {
     const handler::IEventHandler *handler = getEventHandler(i);
@@ -112,7 +109,6 @@ int Reactor::getNextIdleConnectionsTimeout() const {
       need_timeout = true;
       next_timeout = soon;
     }
-    std::cout << "next timeout time_t: " << next_timeout << std::endl;
   }
   if (!need_timeout)
     return -1;
@@ -121,7 +117,7 @@ int Reactor::getNextIdleConnectionsTimeout() const {
   return next_timeout * 1000;
 }
 
-void Reactor::handleTimeouts() {
+void Reactor::expireIdleConnections() {
   const std::time_t now = ft::now();
 
   for (std::size_t i = 0; i < m_event_handlers.size(); ++i) {
@@ -142,10 +138,10 @@ void Reactor::run() {
   Logger("reactor loop starting...");
 
   while (g_running) {
-    int const n_events = m_demux.wait(getNextIdleConnectionsTimeout());
+    int const n_events = m_demux.wait(computePollTimeout());
     if (n_events > 0)
       dispatch(n_events);
-    handleTimeouts();
+    expireIdleConnections();
     clearClosedEventHandlers();
   }
   Logger("reactor run loop stopped");
@@ -173,8 +169,6 @@ void Reactor::dispatch(int const n_events) {
 
       if (m_demux.isWritable(i))
         handler->onWritable(*this);
-
-      // handler->onTimeout(*this);
     } catch (std::exception const &e) {
       DEBUG("handler on fd " << fd << " throw, remove it: " << e.what());
       removeEventHandler(fd);
@@ -186,12 +180,6 @@ void Reactor::clearClosedEventHandlers() {
   for (std::size_t i = 0; i < m_closed.size(); ++i)
     delete m_closed[i];
   m_closed.clear();
-}
-
-void Reactor::clearTimeoutEventHandlers() {
-  for (std::size_t i = 0; i < m_timeout.size(); ++i)
-    delete m_timeout[i];
-  m_timeout.clear();
 }
 
 } // namespace reactor

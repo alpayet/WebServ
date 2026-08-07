@@ -6,12 +6,11 @@ namespace appProtocol {
 
 class IProtocol;
 
-class IProtocolFactory
-{
-  public:
-	virtual ~IProtocolFactory() {}
+class IProtocolFactory {
+public:
+  virtual ~IProtocolFactory() {}
 
-	virtual IProtocol *create() = 0;
+  virtual IProtocol *create() = 0;
 };
 
 } // namespace appProtocol

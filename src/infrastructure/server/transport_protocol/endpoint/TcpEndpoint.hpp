@@ -13,27 +13,27 @@ class IConnectionFactory;
 
 namespace transport {
 
-class TcpEndpoint : public IEndpoint
-{
-  public:
-	TcpEndpoint(std::string const &host, int port, handler::IConnectionFactory *connection_factory);
-	~TcpEndpoint();
+class TcpEndpoint : public IEndpoint {
+public:
+  TcpEndpoint(std::string const &host, int port,
+              handler::IConnectionFactory *connection_factory);
+  ~TcpEndpoint();
 
-	std::string const &getHost() const;
-	int				   getPort() const;
-	std::string const &getFamily() const;
+  std::string const &getHost() const;
+  int getPort() const;
+  std::string const &getFamily() const;
 
-	void		open(reactor::Reactor &reactor);
-	std::string formatEndpoint() const;
+  void open(reactor::Reactor &reactor);
+  std::string formatEndpoint() const;
 
-  private:
-	TcpEndpoint(TcpEndpoint const &);
-	TcpEndpoint &operator=(TcpEndpoint const &);
+private:
+  TcpEndpoint(TcpEndpoint const &);
+  TcpEndpoint &operator=(TcpEndpoint const &);
 
-	std::string					 m_host;
-	int							 m_port;
-	std::string					 m_family;
-	handler::IConnectionFactory *m_connection_factory;
+  std::string m_host;
+  int m_port;
+  std::string m_family;
+  handler::IConnectionFactory *m_connection_factory;
 };
 
 } // namespace transport

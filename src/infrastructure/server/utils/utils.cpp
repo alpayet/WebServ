@@ -5,32 +5,30 @@
 #include <sys/time.h>
 
 namespace ft {
-std::string intToString(int const n)
-{
-	std::stringstream ss;
-	ss << n;
-	return ss.str();
+std::string intToString(int const n) {
+  std::stringstream ss;
+  ss << n;
+  return ss.str();
 }
 
 std::time_t now() { return std::time(0); }
 
-std::string nowFormat()
-{
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
+std::string nowFormat() {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
 
-	std::time_t const now = tv.tv_sec;
-	std::tm const	 *lt = std::localtime(&now);
+  std::time_t const now = tv.tv_sec;
+  std::tm const *lt = std::localtime(&now);
 
-	char time_buffer[80];
-	std::strftime(time_buffer, sizeof(time_buffer), "%Y/%m/%d %H:%M:%S", lt);
+  char time_buffer[80];
+  std::strftime(time_buffer, sizeof(time_buffer), "%Y/%m/%d %H:%M:%S", lt);
 
-	int const milliseconds = tv.tv_usec / 1000;
+  int const milliseconds = tv.tv_usec / 1000;
 
-	std::stringstream ss;
-	ss << time_buffer << '.' << std::setfill('0') << std::setw(3) << milliseconds;
+  std::stringstream ss;
+  ss << time_buffer << '.' << std::setfill('0') << std::setw(3) << milliseconds;
 
-	return ss.str();
+  return ss.str();
 }
 
 } // namespace ft
