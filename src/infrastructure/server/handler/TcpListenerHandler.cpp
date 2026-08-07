@@ -35,6 +35,8 @@ void TcpListenerHandler::onReadable(reactor::Reactor &reactor) {
       continue;
     }
 
+    transport::socket::setNoDelay(tmp_fd.get());
+
     try {
       IEventHandler *handler = m_connection_factory.create(tmp_fd.release());
 

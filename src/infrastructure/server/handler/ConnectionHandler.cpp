@@ -10,7 +10,7 @@
 #include <string>
 
 namespace {
-std::size_t const RECV_CHUNK = 64u * 1024u;
+std::size_t const RECV_CHUNK = 16 * 1024;
 }
 
 namespace webserv {
@@ -32,9 +32,7 @@ int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  m_read_buf.resize(RECV_CHUNK);
-
-  ssize_t const bytes_read =
+  const ssize_t bytes_read =
       m_transport->read(&m_read_buf[0], m_read_buf.size());
 
   if (bytes_read <= 0) {
@@ -42,9 +40,7 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
     return;
   }
 
-  m_read_buf.resize(bytes_read);
-
-  appProtocol::IProtocol::PushStatus const push_state =
+  const appProtocol::IProtocol::PushStatus push_state =
       m_app_protocol->pushRequest(
           m_read_buf, appProtocol::IProtocol::RequestStatus::NORMAL);
 
@@ -63,7 +59,7 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
   if (m_write_pos < m_write_buf.size()) {
-    ssize_t const bytes_send = m_transport->write(
+    const ssize_t bytes_send = m_transport->write(
         &m_write_buf[m_write_pos], m_write_buf.size() - m_write_pos);
     if (bytes_send < 0) {
       reactor.removeEventHandler(m_transport->getFd());
@@ -78,7 +74,7 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_write_buf.clear();
   m_write_pos = 0;
 
-  appProtocol::IProtocol::PullStatus const pull_state =
+  const appProtocol::IProtocol::PullStatus pull_state =
       m_app_protocol->pullResponse(m_write_buf);
 
   if (!m_write_buf.empty())

@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <netdb.h>
+#include <netinet/tcp.h>
 #include <stdexcept>
 
 #include "infrastructure/server/utils/utils.hpp"
@@ -73,6 +74,11 @@ int createSocket(std::string const &host, int const port, int const socktype,
 }
 
 int accept(int const listen_fd) { return ::accept(listen_fd, 0, 0); }
+
+bool setNoDelay(const int fd) {
+  const int yes = 1;
+  return setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(yes)) != -1;
+}
 
 ssize_t recv(int const fd, char *buf, std::size_t const len) {
   return ::recv(fd, buf, len, 0);
