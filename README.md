@@ -1,14 +1,16 @@
 *This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis*
 
 # Description
+
 The goal is to make an HTTP server.
 
-
 # Instructions
+
 To launch the program, use the command line
 `./webserv <configuration file>`
 
 Configuration file ressemble the server block of the nginx file:
+
 ```
 server {
 	listen 8081;
@@ -38,18 +40,21 @@ server {
 }
 ```
 
-Some differences exist between the two files such as no redefinition of values, for example, if you already defined an index in a location block, you can't reuse the keyword `index` inside that block.
+Some differences exist between the two files such as no redefinition of values, for example, if you already defined an
+index in a location block, you can't reuse the keyword `index` inside that block.
 Also, every location and root has to be a directory, whereas index can't have any directory.
 
 `server`: defines the start of a server setup
 
 `hostname`: name of to identify the server, must be unique in configuration file
 
-`root` (outside location block): path for the server, the location blocks without a root directive will append there path to that route
+`root` (outside location block): path for the server, the location blocks without a root directive will append there
+path to that route
 
 `location`: starts of the location block for a specific path
 
-`root` (in location block): use as an alias to replace the path of the location block (the one the user will enter but end up internally where defined by the root directive)
+`root` (in location block): use as an alias to replace the path of the location block (the one the user will enter but
+end up internally where defined by the root directive)
 
 `listen`: defines the port used
 
@@ -67,9 +72,8 @@ Also, every location and root has to be a directory, whereas index can't have an
 
 `return`: directly return the error code mentionned
 
-
-
 # Resourses
+
 [Mozilla developer doc on HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)
 
 [RFC on HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
@@ -83,3 +87,13 @@ Also, every location and root has to be a directory, whereas index can't have an
 [CGI](https://www.stat.berkeley.edu/~spector/s133/Cgi1a.html)
 
 [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+### Server resources
+
+Epoll/Kqueue : man pages
+
+Sockets/bind()/listen()/accept()... : https://beej.us/guide/bgnet/pdf/bgnet_usl_c_1.pdf
+
+Connections timeout handling:
+https://stackoverflow.com/questions/10772208/epoll-and-timeouts
+https://groups.google.com/g/comp.unix.programmer/c/WqLDeCvBQEo?pli=1

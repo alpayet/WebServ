@@ -4,6 +4,8 @@
 #include "infrastructure/server/handler/IEventHandler.hpp"
 #include "infrastructure/storage/file_system/fd/Fd.hpp"
 
+#include <ctime>
+
 namespace webserv {
 
 namespace reactor {
@@ -14,22 +16,25 @@ namespace handler {
 
 class IConnectionFactory;
 
-class TcpListenerHandler : public IEventHandler
-{
-  public:
-	TcpListenerHandler(int listen_fd, IConnectionFactory const &connection_factory);
-	~TcpListenerHandler();
+class TcpListenerHandler : public IEventHandler {
+public:
+  TcpListenerHandler(int listen_fd,
+                     IConnectionFactory const &connection_factory);
+  ~TcpListenerHandler();
 
-	int	 getFd() const;
-	void onReadable(reactor::Reactor &reactor);
-	void onWritable(reactor::Reactor &reactor);
+  int getFd() const;
+  std::time_t getLastActivity() const;
 
-  private:
-	TcpListenerHandler(TcpListenerHandler const &);
-	TcpListenerHandler &operator=(TcpListenerHandler const &);
+  void onReadable(reactor::Reactor &reactor);
+  void onWritable(reactor::Reactor &reactor);
+  void onTimeout(reactor::Reactor &reactor);
 
-	fd::Fd					  m_listener_fd;
-	IConnectionFactory const &m_connection_factory;
+private:
+  TcpListenerHandler(TcpListenerHandler const &);
+  TcpListenerHandler &operator=(TcpListenerHandler const &);
+
+  fd::Fd m_listener_fd;
+  IConnectionFactory const &m_connection_factory;
 };
 
 } // namespace handler

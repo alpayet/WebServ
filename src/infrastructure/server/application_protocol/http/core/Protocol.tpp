@@ -17,14 +17,16 @@
 
 namespace http {
 template <class ExceptionType>
-Protocol::PushStatus Protocol::handleError(Context &context, ExceptionType const &e)
-{
-	Context::Output &context_output = context.output;
-	unsigned short	 statusCode = to_status_code(e.getErrorCode());
+Protocol::PushStatus Protocol::handleError(Context &context,
+                                           ExceptionType const &e) {
+  Context::Output &context_output = context.output;
+  unsigned short statusCode = to_status_code(e.getErrorCode());
 
-	prepareDirectResponse(statusCode, context_output.response, &context_output.reader);
+  context.shouldKeepAlive = false;
+  prepareDirectResponse(statusCode, context_output.response,
+                        &context_output.reader);
 
-	return (IProtocol::PUSH_COMPLETE);
+  return (IProtocol::PUSH_COMPLETE);
 }
 
 } // namespace http
