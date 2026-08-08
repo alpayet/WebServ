@@ -35,11 +35,11 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
     return;
   }
 
-  const appProtocol::IProtocol::PushStatus push_state =
+  const appProtocol::IProtocol::PushStatus::Type push_state =
       m_app_protocol->pushRequest(
-          m_read_buf, bytes_read ,appProtocol::IProtocol::RequestStatus::NORMAL);
+          m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
 
-  if (push_state == appProtocol::IProtocol::PUSH_COMPLETE) {
+  if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE) {
     m_write_pos = 0;
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
   }
@@ -69,12 +69,12 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
   m_write_buf.clear();
   m_write_pos = 0;
 
-  const appProtocol::IProtocol::PullStatus pull_state =
+  const appProtocol::IProtocol::PullStatus::Type pull_state =
       m_app_protocol->pullResponse(m_write_buf);
 
   if (!m_write_buf.empty())
     return;
-  if (pull_state == appProtocol::IProtocol::HAS_MORE)
+  if (pull_state == appProtocol::IProtocol::PullStatus::HAS_MORE)
     return;
 
   if (m_app_protocol->shouldKeepAlive()) {

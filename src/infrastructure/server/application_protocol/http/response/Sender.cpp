@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 20:06:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/08 18:36:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/server/application_protocol/http/IHttpVersionProvider.hpp"
 #include "infrastructure/server/application_protocol/http/response/HeaderBlockSerializer.hpp"
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
+#include <stdexcept>
 
 namespace http {
 namespace response {
@@ -65,10 +66,7 @@ Sender::Step Sender::produce(
 				reader->read(outputBuf, response.getContentLength() - state.totalBytesRead);
 
 			if (bytes_read == 0 && state.totalBytesRead < response.getContentLength())
-			{
-				// TODO: a vori avec luca si il catch les throw et deconnecte le client
-				// throw "caca";
-			}
+				throw std::runtime_error("Resource truncated unexpectedly");
 
 			state.totalBytesRead += bytes_read;
 			if (state.totalBytesRead == response.getContentLength())

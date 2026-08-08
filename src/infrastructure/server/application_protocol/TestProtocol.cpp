@@ -20,7 +20,7 @@ TestProtocol::TestProtocol(std::string const &body)
 
 TestProtocol::~TestProtocol() {}
 
-IProtocol::PushStatus
+TestProtocol::PushStatus::Type
 TestProtocol::pushRequest(char const *inputBuf, std::size_t size,
                           RequestStatus::Type status) {
   // if (len == 0)
@@ -29,19 +29,19 @@ TestProtocol::pushRequest(char const *inputBuf, std::size_t size,
   // m_request.append(data, len);
 
   if (m_request.find("\r\n\r\n") == std::string::npos)
-    return IProtocol::NEED_MORE_DATA;
+    return PushStatus::NEED_MORE_DATA;
 
-  return IProtocol::PUSH_COMPLETE;
+  return PushStatus::COMPLETE;
 }
 
-IProtocol::PushStatus
+TestProtocol::PushStatus::Type
 TestProtocol::pushStream(std::vector<char> const &streamBuf,
                          StreamStatus::Type status) {
-  return IProtocol::PUSH_COMPLETE;
+  return PushStatus::COMPLETE;
 }
 
-IProtocol::PullStatus TestProtocol::pullResponse(std::vector<char> &outputBuf) {
-  return IProtocol::HAS_MORE;
+TestProtocol::PullStatus::Type TestProtocol::pullResponse(std::vector<char> &outputBuf) {
+  return PullStatus::HAS_MORE;
 }
 
 void TestProtocol::reset() { m_request.clear(); }

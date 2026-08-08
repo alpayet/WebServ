@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/08 00:28:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/08 19:24:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 #include "infrastructure/server/application_protocol/http/update_keep_alive_status.hpp"
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
-#include <iostream>
 
 namespace http {
 
@@ -37,11 +36,11 @@ Protocol::Protocol(request::Parser &requestParser, cgi::Parser &cgiParser,
     : _requestParser(requestParser), _cgiParser(cgiParser), _router(router),
       _sender(sender), _errorPagesProvider(errorPagesProvider) {}
 
-Protocol::PushStatus
+Protocol::PushStatus::Type
 Protocol::pushRequest(Context &context, char const *inputBuf, std::size_t size,
-                      Protocol::RequestStatus::Type status) {
+                      RequestStatus::Type status) {
   try {
-    if (status == Protocol::RequestStatus::TIMEOUT)
+    if (status == RequestStatus::TIMEOUT)
       throw Exception(Exception::TIMEOUT);
 
     Context::Input &context_input = context.input;
@@ -54,16 +53,16 @@ Protocol::pushRequest(Context &context, char const *inputBuf, std::size_t size,
         request::Parser::COMPLETE) {
       update_keep_alive_status(context);
       _router.route(context);
-      return (IProtocol::PUSH_COMPLETE);
+      return (PushStatus::COMPLETE);
     }
-    return (IProtocol::NEED_MORE_DATA);
+    return (PushStatus::NEED_MORE_DATA);
   } catch (http::ReturnException const &e) {
     Context::Output &context_output = context.output;
 
     prepareDirectResponse(e.getStatusCode(), context_output.response,
                           &context_output.reader);
 
-    return (IProtocol::PUSH_COMPLETE);
+    return (PushStatus::COMPLETE);
   } catch (http::Exception const &e) {
     return (handleError(context, e));
   } catch (fileSystem::Exception const &e) {
@@ -77,15 +76,16 @@ Protocol::pushRequest(Context &context, char const *inputBuf, std::size_t size,
 
     prepareDirectResponse(500, context_output.response, &context_output.reader);
 
-    return (IProtocol::PUSH_COMPLETE);
+    return (PushStatus::COMPLETE);
   }
 }
 
-Protocol::PushStatus Protocol::pushStream(Context &context,
+Protocol::PushStatus::Type Protocol::pushStream(Context &context,
                                           std::vector<char> const &streamBuf,
-                                          Protocol::StreamStatus::Type status) {
+                                          StreamStatus::Type status) {
+  //TODO: voir avec luca si il faut keep alive le client si le cgi associé timeout ou si il eof trop tot
   try {
-    if (status == Protocol::StreamStatus::TIMEOUT)
+    if (status == StreamStatus::TIMEOUT)
       throw cgi::Exception(cgi::Exception::TIMEOUT);
 
     Context::Stream &context_stream = context.stream;
@@ -96,16 +96,16 @@ Protocol::PushStatus Protocol::pushStream(Context &context,
     if (_cgiParser.parse(context_stream.buf, status, context_stream.state) ==
         cgi::Parser::COMPLETE) {
       dispatchCgiResponse(context);
-      return (IProtocol::PUSH_COMPLETE);
+      return (PushStatus::COMPLETE);
     }
-    return (IProtocol::NEED_MORE_DATA);
+    return (PushStatus::NEED_MORE_DATA);
   } catch (http::ReturnException const &e) {
     Context::Output &context_output = context.output;
 
     prepareDirectResponse(e.getStatusCode(), context_output.response,
                           &context_output.reader);
 
-    return (IProtocol::PUSH_COMPLETE);
+    return (PushStatus::COMPLETE);
   } catch (http::Exception const &e) {
     return (handleError(context, e));
   } catch (fileSystem::Exception const &e) {
@@ -121,25 +121,30 @@ Protocol::PushStatus Protocol::pushStream(Context &context,
 
     prepareDirectResponse(500, context_output.response, &context_output.reader);
 
-    return (IProtocol::PUSH_COMPLETE);
+    return (PushStatus::COMPLETE);
   }
 }
 
-Protocol::PullStatus Protocol::pullResponse(Context &context,
+Protocol::PullStatus::Type Protocol::pullResponse(Context &context,
                                             std::vector<char> &outputBuf) {
-  // TODO A voir avec luca si il catch des exection pour close la connection dun
-  // client
-  Context::Output &context_output = context.output;
+  try
+  {
+    Context::Output &context_output = context.output;
 
-  if (_sender.produce(outputBuf, context_output.response, context_output.reader,
+    if (_sender.produce(outputBuf, context_output.response, context_output.reader,
                       context_output.state) == response::Sender::COMPLETE) {
-    // std::cout << context.output.response << std::endl;
-    return (IProtocol::PULL_COMPLETE);
+      // std::cout << context.output.response << std::endl;
+      return (PullStatus::COMPLETE);
+    }
+    return (PullStatus::HAS_MORE);
   }
-  // TODO: ne pas oubleir de reset le contexte ici / a voir avec luca si il
-  // reset
+  catch (...)
+  {
+    context.shouldKeepAlive = false;
+    return (PullStatus::ERROR);
+  }
 
-  return (IProtocol::HAS_MORE);
+
 }
 
 void Protocol::dispatchCgiResponse(Context &context) {
@@ -204,6 +209,17 @@ void Protocol::prepareDirectResponse(unsigned short statusCode,
     }
   }
   response = Response::buildDefault(statusCode);
+}
+
+Protocol::PushStatus::Type Protocol::handleError(Context &context, cgi::Exception const &e)
+{
+  Context::Output &context_output = context.output;
+  unsigned short statusCode = to_status_code(e.getErrorCode());
+
+  prepareDirectResponse(statusCode, context_output.response,
+                        &context_output.reader);
+
+  return (PushStatus::COMPLETE);
 }
 
 } // namespace http

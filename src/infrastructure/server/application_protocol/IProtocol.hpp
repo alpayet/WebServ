@@ -17,9 +17,13 @@ public:
     CLOSE_CONNECTION
   };
 
-  enum PushStatus { NEED_MORE_DATA, PUSH_COMPLETE };
+  struct PushStatus {
+    enum Type { NEED_MORE_DATA, COMPLETE };
+  };
 
-  enum PullStatus { HAS_MORE, PULL_COMPLETE };
+  struct PullStatus {
+    enum Type { HAS_MORE, COMPLETE, ERROR };
+  };
 
   struct RequestStatus {
     enum Type { NORMAL, TIMEOUT };
@@ -31,12 +35,12 @@ public:
 
   virtual ~IProtocol() {}
 
-  virtual PushStatus pushRequest(char const *inputBuf, std::size_t size,
+  virtual PushStatus::Type pushRequest(char const *inputBuf, std::size_t size,
                                  RequestStatus::Type status) = 0;
-  virtual PushStatus pushStream(std::vector<char> const &streamBuf,
+  virtual PushStatus::Type pushStream(std::vector<char> const &streamBuf,
                                 StreamStatus::Type status) = 0;
 
-  virtual PullStatus pullResponse(std::vector<char> &outputBuf) = 0;
+  virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf) = 0;
 
   virtual void reset(void) = 0;
 

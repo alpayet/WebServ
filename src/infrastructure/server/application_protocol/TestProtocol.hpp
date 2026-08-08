@@ -15,12 +15,12 @@ public:
   explicit TestProtocol(std::string const &body);
   ~TestProtocol();
 
-  PushStatus pushRequest(char const *inputBuf, std::size_t size,
+  PushStatus::Type pushRequest(char const *inputBuf, std::size_t size,
                          RequestStatus::Type status);
-  PushStatus pushStream(std::vector<char> const &streamBuf,
+  PushStatus::Type pushStream(std::vector<char> const &streamBuf,
                         StreamStatus::Type status);
 
-  PullStatus pullResponse(std::vector<char> &outputBuf);
+  PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
   void reset(void);
 
