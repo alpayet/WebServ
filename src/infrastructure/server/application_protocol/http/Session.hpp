@@ -13,10 +13,10 @@ class Session : public webserv::appProtocol::IProtocol
 	Session(Protocol &handler);
 	virtual ~Session() {}
 
-	virtual PushStatus pushRequest(std::vector<char> const &inputBuf, RequestStatus::Type status);
-	virtual PushStatus pushStream(std::vector<char> const &streamBuf, StreamStatus::Type status);
+	virtual PushStatus::Type pushRequest(char const *inputBuf, std::size_t size, RequestStatus::Type status);
+	virtual PushStatus::Type pushStream(std::vector<char> const &streamBuf, StreamStatus::Type status);
 
-	virtual PullStatus pullResponse(std::vector<char> &outputBuf);
+	virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
 	virtual void reset(void);
 

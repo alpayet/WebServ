@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 02:39:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/08 19:22:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/application_protocol/http/core/Context.hpp"
+
+namespace cgi {
+class Exception;
+} // namespace cgi
 
 namespace http {
 
@@ -40,12 +44,12 @@ class Protocol
 		IErrorPagesProvider const &errorPagesProvider
 	);
 
-	PushStatus
-	pushRequest(Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status);
-	PushStatus
+	PushStatus::Type
+	pushRequest(Context &context, char const *inputBuf, std::size_t size, RequestStatus::Type status);
+	PushStatus::Type
 	pushStream(Context &context, std::vector<char> const &streamBuf, StreamStatus::Type status);
 
-	PullStatus pullResponse(Context &context, std::vector<char> &outputBuf);
+	PullStatus::Type pullResponse(Context &context, std::vector<char> &outputBuf);
 
   private:
 	Protocol(Protocol const &src);
@@ -64,7 +68,9 @@ class Protocol
 	);
 
 	template <typename ExceptionType>
-	PushStatus handleError(Context &context, ExceptionType const &e);
+	PushStatus::Type handleError(Context &context, ExceptionType const &e);
+
+	PushStatus::Type handleError(Context &context, cgi::Exception const &e);
 };
 } // namespace http
 
