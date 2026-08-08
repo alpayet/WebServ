@@ -31,7 +31,7 @@ public:
 
   virtual ~IProtocol() {}
 
-  virtual PushStatus pushRequest(std::vector<char> const &inputBuf,
+  virtual PushStatus pushRequest(char const *inputBuf, std::size_t size,
                                  RequestStatus::Type status) = 0;
   virtual PushStatus pushStream(std::vector<char> const &streamBuf,
                                 StreamStatus::Type status) = 0;

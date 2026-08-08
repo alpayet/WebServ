@@ -21,7 +21,7 @@ TestProtocol::TestProtocol(std::string const &body)
 TestProtocol::~TestProtocol() {}
 
 IProtocol::PushStatus
-TestProtocol::pushRequest(std::vector<char> const &inputBuf,
+TestProtocol::pushRequest(char const *inputBuf, std::size_t size,
                           RequestStatus::Type status) {
   // if (len == 0)
   //   return SEND_OK;

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 20:59:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/08 00:28:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Protocol::Protocol(request::Parser &requestParser, cgi::Parser &cgiParser,
       _sender(sender), _errorPagesProvider(errorPagesProvider) {}
 
 Protocol::PushStatus
-Protocol::pushRequest(Context &context, std::vector<char> const &inputBuf,
+Protocol::pushRequest(Context &context, char const *inputBuf, std::size_t size,
                       Protocol::RequestStatus::Type status) {
   try {
     if (status == Protocol::RequestStatus::TIMEOUT)
@@ -46,8 +46,9 @@ Protocol::pushRequest(Context &context, std::vector<char> const &inputBuf,
 
     Context::Input &context_input = context.input;
 
-    context_input.buf.insert(context_input.buf.end(), inputBuf.begin(),
-                             inputBuf.end());
+    if (inputBuf)
+      context_input.buf.insert(context_input.buf.end(), inputBuf,
+                             inputBuf + size);
 
     if (_requestParser.parse(context_input.buf, context_input.state) ==
         request::Parser::COMPLETE) {

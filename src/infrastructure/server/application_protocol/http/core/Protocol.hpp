@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 02:39:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/08 00:09:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Protocol
 	);
 
 	PushStatus
-	pushRequest(Context &context, std::vector<char> const &inputBuf, RequestStatus::Type status);
+	pushRequest(Context &context, char const *inputBuf, std::size_t size, RequestStatus::Type status);
 	PushStatus
 	pushStream(Context &context, std::vector<char> const &streamBuf, StreamStatus::Type status);
 

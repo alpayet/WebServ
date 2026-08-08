@@ -38,9 +38,11 @@ private:
   ConnectionHandler(ConnectionHandler const &);
   ConnectionHandler &operator=(ConnectionHandler const &);
 
+  static std::size_t const RECV_CHUNK = 16 * 1024;
+
   transport::ITransport *m_transport;
   appProtocol::IProtocol *m_app_protocol;
-  std::vector<char> m_read_buf;
+  char m_read_buf[RECV_CHUNK];
   std::vector<char> m_write_buf;
   std::size_t m_write_pos;
   std::time_t m_last_activity;

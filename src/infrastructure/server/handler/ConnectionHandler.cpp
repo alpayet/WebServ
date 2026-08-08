@@ -9,17 +9,12 @@
 
 #include <string>
 
-namespace {
-std::size_t const RECV_CHUNK = 16 * 1024;
-}
-
 namespace webserv {
 namespace handler {
 
 ConnectionHandler::ConnectionHandler(transport::ITransport *connection,
                                      appProtocol::IProtocol *appProtocol)
-    : m_transport(connection), m_app_protocol(appProtocol),
-      m_read_buf(RECV_CHUNK), m_write_buf(), m_write_pos(0),
+    : m_transport(connection), m_app_protocol(appProtocol), m_write_buf(), m_write_pos(0),
       m_last_activity(ft::now()) {}
 
 ConnectionHandler::~ConnectionHandler() {
@@ -32,20 +27,17 @@ int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  m_read_buf.resize(RECV_CHUNK);
   const ssize_t bytes_read =
-      m_transport->read(&m_read_buf[0], m_read_buf.size());
+      m_transport->read(m_read_buf, RECV_CHUNK);
 
   if (bytes_read <= 0) {
     reactor.removeEventHandler(m_transport->getFd());
     return;
   }
 
-  m_read_buf.resize(static_cast<std::size_t>(bytes_read));
-
   const appProtocol::IProtocol::PushStatus push_state =
       m_app_protocol->pushRequest(
-          m_read_buf, appProtocol::IProtocol::RequestStatus::NORMAL);
+          m_read_buf, bytes_read ,appProtocol::IProtocol::RequestStatus::NORMAL);
 
   if (push_state == appProtocol::IProtocol::PUSH_COMPLETE) {
     m_write_pos = 0;
@@ -95,10 +87,7 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
 void ConnectionHandler::onTimeout(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  const std::vector<char> empty(0);
-
-  m_app_protocol->pushRequest(empty,
-                              appProtocol::IProtocol::RequestStatus::TIMEOUT);
+  m_app_protocol->pushRequest(NULL, 0, appProtocol::IProtocol::RequestStatus::TIMEOUT);
 
   reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
 }
