@@ -22,6 +22,8 @@ public:
 
   PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
+  int getStreamId(void) const;
+
   void reset(void);
 
   bool shouldKeepAlive(void) const;

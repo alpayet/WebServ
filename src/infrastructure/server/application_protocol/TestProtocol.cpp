@@ -44,6 +44,8 @@ TestProtocol::PullStatus::Type TestProtocol::pullResponse(std::vector<char> &out
   return PullStatus::HAS_MORE;
 }
 
+int TestProtocol::getStreamId(void) const {return (-1);}
+
 void TestProtocol::reset() { m_request.clear(); }
 
 bool TestProtocol::shouldKeepAlive() const { return false; }

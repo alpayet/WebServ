@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:15:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct Context
 
 		std::vector<char>  buf;
 		cgi::Parser::State state;
+		int				   streamId;
 		int				   localRedirDepth;
 
 		static int const MAX_LOCAL_REDIR_DEPTH = 10;

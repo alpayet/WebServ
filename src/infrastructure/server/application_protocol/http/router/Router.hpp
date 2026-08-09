@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 15:51:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:52:00 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 
 namespace http {
 class IRouteRegistry;
-class ServeStaticResourceController;
-class DeleteStaticResourceController;
-class ExecuteDynamicResourceController;
 struct Context;
+
+namespace controller {
+class ServeStaticResource;
+class DeleteStaticResource;
+class ExecuteDynamicResource;
+} // namespace controller
+
 
 class Router
 {
   public:
 	Router(
-		const IRouteRegistry				   &routeRegistry,
-		ServeStaticResourceController  &serveStaticResourceController,
-		DeleteStaticResourceController &deleteStaticResourceController
-		// ExecuteDynamicResourceController &executeDynamicResourceController
+		IRouteRegistry const		   	 &routeRegistry,
+		controller::ServeStaticResource	 &serveStaticResource,
+		controller::DeleteStaticResource &deleteStaticResource
+		// controller::ExecuteDynamicResource &executeDynamicResource
 	);
 
 	void route(Context &context);
@@ -36,11 +40,11 @@ class Router
 	Router(Router const &src);
 	Router &operator=(Router const &rhs);
 
-	const IRouteRegistry &_routeRegistry;
+	IRouteRegistry const &_routeRegistry;
 
-	ServeStaticResourceController  &_serveStaticResourceController;
-	DeleteStaticResourceController &_deleteStaticResourceController;
-	// ExecuteDynamicResourceController &_executeDynamicResourceController;
+	controller::ServeStaticResource	  &_serveStaticResource;
+	controller::DeleteStaticResource &_deleteStaticResource;
+	// controller::ExecuteDynamicResourcer &_executeDynamicResource;
 };
 } // namespace http
 

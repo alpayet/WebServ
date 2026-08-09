@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ExecuteDynamicResourceController.cpp               :+:      :+:    :+:   */
+/*   ExecuteDynamicResource.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 20:53:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:25:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResourceController.hpp"
-#include "application/ports/IResourceReader.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
+#include "application/ports/IResourceReader.hpp"
 #include "cgi/constants.hpp"
 #include "infrastructure/server/application_protocol/constants.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/server/application_protocol/http/core/Context.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
-#include "infrastructure/server/application_protocol/http/mappers/ExecuteDynamicResourceDtoMapper.hpp"
+#include "infrastructure/server/application_protocol/http/mappers/ExecuteDynamicResourceDto.hpp"
+#include "infrastructure/server/application_protocol/http/presenters/ExecuteDynamicResource.hpp"
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 #include <map>
 
 namespace http {
-ExecuteDynamicResourceController::ExecuteDynamicResourceController(
+namespace controller {
+
+ExecuteDynamicResource::ExecuteDynamicResource(
 	app::useCase::ExecuteDynamicResource &useCase, ILimitsProvider const &limitsProvider
 )
 	: _useCase(useCase), _limitsProvider(limitsProvider)
 {}
 
-void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy const &routePolicy)
+void ExecuteDynamicResource::operator()(Context &context, RoutePolicy const &routePolicy)
 {
 	Request const &request = context.input.state.request;
 
@@ -40,14 +43,19 @@ void ExecuteDynamicResourceController::operator()(Context &context, RoutePolicy 
 		throw Exception(Exception::BODY_TOO_LARGE);
 	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
 
-	app::useCase::ExecuteDynamicResource::Input const &dto =
-		ExecuteDynamicResourceDtoMapper::toDto(request, routePolicy, bodyPath, MetaVariables);
+	presenter::ExecuteDynamicResource presenter;
 
-	_useCase.execute(dto);
+	app::useCase::ExecuteDynamicResource::Input const &dto =
+		mapper::ExecuteDynamicResourceDto::toDto(request, routePolicy, bodyPath, MetaVariables);
+
+	_useCase.execute(dto, presenter);
+
+	presenter::ExecuteDynamicResource::ViewModel const &viewModel = presenter.getViewModel();
+	context.stream.streamId = viewModel.streamId;
 }
 
 std::map<std::string, std::string>
-ExecuteDynamicResourceController::createMetaVariables(Request const &request)
+ExecuteDynamicResource::createMetaVariables(Request const &request)
 {
 	std::map<std::string, std::string> metaVariable;
 
@@ -64,4 +72,6 @@ ExecuteDynamicResourceController::createMetaVariables(Request const &request)
 		metaVariable[cgi::meta::HTTP_COOKIE] = request.getHeader(headers::COOKIE);
 	return (metaVariable);
 }
+} // namespace controller
+
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 04:01:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:11:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class ExecuteDynamicResource
 			: id(id), matchedRoute(matchedRoute), rootPath(rootPath), bodyPath(bodyPath),
 			  metaVariables(metaVariables)
 		{}
+
 		std::string						   id;
 		std::string						   matchedRoute;
 		std::string						   rootPath;
@@ -44,18 +45,26 @@ class ExecuteDynamicResource
 		std::map<std::string, std::string> metaVariables;
 	};
 
+	class IOutputPort
+	{
+	  public:
+		virtual ~IOutputPort() {}
+
+		virtual void presentStream(int streamId) = 0;
+	};
+
   public:
 	ExecuteDynamicResource(
-		const IResourceLocator &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+		IResourceLocator const &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
 	);
 
-	void execute(Input const &dtoInput);
+	void execute(Input const &dtoInput, IOutputPort &outputPort);
 
   private:
 	ExecuteDynamicResource(ExecuteDynamicResource const &src);
 	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-	const IResourceLocator		 &_resourceLocator;
+	IResourceLocator const	 &_resourceLocator;
 	IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 } // namespace useCase

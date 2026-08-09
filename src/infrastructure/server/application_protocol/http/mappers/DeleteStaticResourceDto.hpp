@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ExecuteDynamicResourceDtoMapper.hpp                :+:      :+:    :+:   */
+/*   DeleteStaticResourceDto.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:15:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:23:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
-#define EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
+#ifndef DELETESTATICRESOURCEDTOMAPPER_HPP
+#define DELETESTATICRESOURCEDTOMAPPER_HPP
 
-#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
+#include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 
 namespace http {
 class Request;
 struct RoutePolicy;
 
-class ExecuteDynamicResourceDtoMapper
+namespace mapper {
+class DeleteStaticResourceDto
 {
   public:
-	static app::useCase::ExecuteDynamicResource::Input toDto(
-		Request const							 &request,
-		RoutePolicy const						 &routePolicy,
-		std::string const						 &bodyPath,
-		std::map<std::string, std::string> const &metaVariables
-	);
+	static app::useCase::DeleteStaticResource::Input
+	toDto(Request const &request, RoutePolicy const &routePolicy);
 
   private:
-	ExecuteDynamicResourceDtoMapper(void);
+	DeleteStaticResourceDto(void);
 };
+} // namespace mapper
+
 } // namespace http
 
-#endif // EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
+#endif // DELETESTATICRESOURCEDTOMAPPER_HPP

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 01:46:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 21:27:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ class ServeStaticResource
 			: id(id), matchedRoute(matchedRoute), rootPath(rootPath),
 			  isListingEnabled(isListingEnabled), indexesId(indexesId)
 		{}
+
 		std::string				 id;
 		std::string				 matchedRoute;
 		std::string				 rootPath;
 		bool					 isListingEnabled;
 		std::vector<std::string> indexesId;
 	};
+
 	class IOutputPort
 	{
 	  public:

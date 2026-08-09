@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourcePresenter.hpp                  :+:      :+:    :+:   */
+/*   DeleteStaticResource.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:03:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include <vector>
 
 namespace http {
-
-class DeleteStaticResourcePresenter : public app::useCase::DeleteStaticResource::IOutputPort
+namespace presenter {
+class DeleteStaticResource : public app::useCase::DeleteStaticResource::IOutputPort
 {
   public:
 	struct ViewModel
@@ -30,19 +30,21 @@ class DeleteStaticResourcePresenter : public app::useCase::DeleteStaticResource:
 	};
 
   public:
-	DeleteStaticResourcePresenter(void) {}
-	virtual ~DeleteStaticResourcePresenter(void) {}
+	DeleteStaticResource(void) {}
+	virtual ~DeleteStaticResource(void) {}
 
 	ViewModel const &getViewModel(void) const;
 
 	virtual void presentDeletedResource(app::ResourceStatus status);
 
   private:
-	DeleteStaticResourcePresenter(DeleteStaticResourcePresenter const &src);
-	DeleteStaticResourcePresenter &operator=(DeleteStaticResourcePresenter const &rhs);
+	DeleteStaticResource(DeleteStaticResource const &src);
+	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
 	ViewModel _viewModel;
 };
+} // namespace presenter
+
 } // namespace http
 
 #endif // DELETESTATICRESOURCEPRESENTER_HPP
