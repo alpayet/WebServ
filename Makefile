@@ -25,6 +25,7 @@ SRC_FILES = \
 	infrastructure/server/handler/TcpConnectionFactory.cpp \
 	infrastructure/server/handler/ConnectionHandler.cpp \
 	infrastructure/server/handler/TcpListenerHandler.cpp \
+	infrastructure/server/handler/StreamHandler.cpp \
 	infrastructure/server/Server.cpp \
 	infrastructure/server/transport_protocol/endpoint/build_endpoints.cpp \
 	infrastructure/server/transport_protocol/endpoint/Endpoints.cpp \

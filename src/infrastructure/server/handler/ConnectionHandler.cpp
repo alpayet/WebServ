@@ -1,21 +1,22 @@
 #include "infrastructure/server/handler/ConnectionHandler.hpp"
 
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
+#include "infrastructure/server/handler/StreamHandler.hpp"
 #include "infrastructure/server/reactor/EventType.hpp"
 #include "infrastructure/server/reactor/Reactor.hpp"
 #include "infrastructure/server/transport_protocol/ITransport.hpp"
 #include "infrastructure/server/utils/Logger.hpp"
 #include "infrastructure/server/utils/utils.hpp"
 
-#include <string>
+#include <sys/types.h>
 
 namespace webserv {
 namespace handler {
 
 ConnectionHandler::ConnectionHandler(transport::ITransport *connection,
                                      appProtocol::IProtocol *appProtocol)
-    : m_transport(connection), m_app_protocol(appProtocol), m_write_buf(), m_write_pos(0),
-      m_last_activity(ft::now()) {}
+    : m_transport(connection), m_app_protocol(appProtocol), m_write_buf(),
+      m_write_pos(0), m_last_activity(ft::now()) {}
 
 ConnectionHandler::~ConnectionHandler() {
   delete m_transport;
@@ -27,8 +28,7 @@ int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  const ssize_t bytes_read =
-      m_transport->read(m_read_buf, RECV_CHUNK);
+  const ssize_t bytes_read = m_transport->read(m_read_buf, RECV_CHUNK);
 
   if (bytes_read <= 0) {
     reactor.removeEventHandler(m_transport->getFd());
@@ -37,12 +37,30 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
 
   const appProtocol::IProtocol::PushStatus::Type push_state =
       m_app_protocol->pushRequest(
-          m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
+          m_read_buf, bytes_read,
+          appProtocol::IProtocol::RequestStatus::NORMAL);
 
   if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE) {
     m_write_pos = 0;
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
+  } else if (push_state ==
+             appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE) {
+    try {
+      fd::Fd tmp_fd(m_app_protocol->getStreamId());
+
+      IEventHandler *event = new StreamHandler(
+          tmp_fd.release(), -1, m_transport->getFd(), m_app_protocol);
+      if (!reactor.addEventHandler(event, reactor::EVENT_READ))
+        throw std::runtime_error("can't add cgi event handler");
+
+      reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_NONE);
+
+    } catch (...) {
+      DEBUG("throw on new Cgi");
+      reactor.removeEventHandler(m_transport->getFd());
+    }
   }
+
   // TODO a voir cela avec Luca
   //  else if (push_state == protocol::IProtocol::CLOSE_CONNECTION)
   //  {
@@ -87,7 +105,8 @@ void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
 void ConnectionHandler::onTimeout(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  m_app_protocol->pushRequest(NULL, 0, appProtocol::IProtocol::RequestStatus::TIMEOUT);
+  m_app_protocol->pushRequest(NULL, 0,
+                              appProtocol::IProtocol::RequestStatus::TIMEOUT);
 
   reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
 }

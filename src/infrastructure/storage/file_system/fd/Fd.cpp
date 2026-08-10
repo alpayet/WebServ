@@ -8,7 +8,7 @@ namespace fd {
 
 Fd::Fd() : m_fd(-1) {}
 
-Fd::Fd(int const fd) : m_fd(fd) {}
+Fd::Fd(const int fd) : m_fd(fd) {}
 
 Fd::~Fd() { reset(); }
 
@@ -17,12 +17,12 @@ int Fd::get() const { return m_fd; }
 bool Fd::valid() const { return m_fd >= 0; }
 
 int Fd::release() {
-  int const fd = m_fd;
+  const int fd = m_fd;
   m_fd = -1;
   return fd;
 }
 
-void Fd::reset(int const fd) {
+void Fd::reset(const int fd) {
   if (m_fd >= 0)
     close(m_fd);
   m_fd = fd;
