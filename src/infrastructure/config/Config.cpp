@@ -8,7 +8,7 @@
 #include <vector>
 #include <iterator>
 
-Config::Config(char* filename)
+Config::Config(const char* filename)
 {
 	std::ifstream	file(filename);
 	if (file.fail())

@@ -23,10 +23,7 @@ static void initSignals() {
   std::signal(SIGPIPE, SIG_IGN);
 }
 
-void fileCheck(int const argc, char const *argv) {
-  if (argc != 2)
-    throw ConfigException("No configuration file passed.");
-
+void fileCheck(char const *argv) {
   std::string const filename = argv;
   if (filename.substr(filename.find_last_of('.') + 1) != "conf")
     throw ConfigException("Configuration file must have a `.conf` extension.");
@@ -38,9 +35,20 @@ void fileCheck(int const argc, char const *argv) {
 
 int main(int const argc, char **argv) {
   try {
-    fileCheck(argc, argv[1]);
+	if (argc > 2)
+    	throw ConfigException("Too many arguments passed.");
     initSignals();
-    Config const conf(argv[1]);
+	std::string filepath;
+	if (argc == 2)
+	{
+    	filepath = argv[1];
+	}
+	else
+	{
+		filepath = "conf/test.conf";
+	}
+    fileCheck(filepath.c_str());
+    Config const conf(filepath.c_str());
     std::vector<ServerConfig> const &configs = conf.getServerConfigs();
 
     webserv::Server server(configs);
