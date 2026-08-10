@@ -34,10 +34,10 @@ void StreamHandler::onReadable(reactor::Reactor &reactor) {
     // TODO:
     // voir avec alpayet si je dois pas pushStream Error pour renvoyer une
     // certaine page
-
-    // kill(m_pid, SIGKILL);
-    // waitpid(m_pid, NULL, WNOHANG);
     // reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
+
+    kill(m_pid, SIGKILL);
+    waitpid(m_pid, NULL, WNOHANG);
     reactor.removeEventHandler(m_client_fd);
     reactor.removeEventHandler(m_pipe_fd.get());
     return;
@@ -56,16 +56,15 @@ void StreamHandler::onReadable(reactor::Reactor &reactor) {
           std::vector<char>(m_read_buf, m_read_buf + bytes_read), push_status);
 
   if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE) {
-    // kill(m_pid, SIGKILL);
-    // waitpid(m_pid, NULL, WNOHANG);
+    kill(m_pid, SIGKILL);
+    waitpid(m_pid, NULL, WNOHANG);
     reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
     reactor.removeEventHandler(m_pipe_fd.get());
   }
-  // TODO...
+  // TODO if error...
 }
 
 void StreamHandler::onWritable(reactor::Reactor &reactor) {
-  m_last_activity = ft::now();
   DEBUG("on writable cgi | should not happen");
 }
 
@@ -81,9 +80,8 @@ void StreamHandler::onTimeout(reactor::Reactor &reactor) {
   m_app_protocol->pushStream(empty,
                              appProtocol::IProtocol::StreamStatus::TIMEOUT);
 
-  // kill(m_pid, SIGKILL);
-  // waitpid(m_pid, NULL, WNOHANG);
-
+  kill(m_pid, SIGKILL);
+  waitpid(m_pid, NULL, WNOHANG);
   reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
   reactor.removeEventHandler(m_pipe_fd.get());
 }
