@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CgiResponseMapper.hpp                              :+:      :+:    :+:   */
+/*   CgiResponse.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 21:02:31 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/08 21:58:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:21:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,19 @@ class Response;
 } // namespace cgi
 
 namespace http {
-
 class Response;
 
-class CgiResponseMapper
+namespace mapper {
+class CgiResponse
 {
   public:
 	static Response toHttpResponse(cgi::Response const &cgiResponse);
 
   private:
-	CgiResponseMapper(void);
+	CgiResponse(void);
 };
+} // namespace mapper
+
 } // namespace http
 
 #endif // CGIRESPONSEMAPPER_HPP

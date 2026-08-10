@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 03:38:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:57:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/router/Router.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResourceController.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResourceController.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/ServeStaticResourceController.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ServeStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/core/Context.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/ReturnException.hpp"
@@ -26,13 +26,13 @@
 namespace http {
 Router::Router(
 	IRouteRegistry const		   &routeRegistry,
-	ServeStaticResourceController  &serveStaticResourceController,
-	DeleteStaticResourceController &deleteStaticResourceController
-	// ExecuteDynamicResourceController &executeDynamicResourceController
+	controller::ServeStaticResource			   &serveStaticResource,
+	controller::DeleteStaticResource &deleteStaticResource
+	// controller::ExecuteDynamicResource &executeDynamicResource
 )
-	: _routeRegistry(routeRegistry), _serveStaticResourceController(serveStaticResourceController),
-	  _deleteStaticResourceController(deleteStaticResourceController)
-//   _executeDynamicResourceController(executeDynamicResourceController)
+	: _routeRegistry(routeRegistry), _serveStaticResource(serveStaticResource),
+	  _deleteStaticResource(deleteStaticResource)
+//   _executeDynamicResource(executeDynamicResource)
 {}
 
 void Router::route(Context &context)
@@ -49,10 +49,10 @@ void Router::route(Context &context)
 		throw Exception(Exception::METHOD_NOT_ALLOWED);
 
 	// if (route_policy.isCgi)
-	// 	_executeDynamicResourceController(context, route_policy);
+	// 	_executeDynamicResource(context, route_policy);
 	else if (method == GET)
-		_serveStaticResourceController(context, route_policy);
+		_serveStaticResource(context, route_policy);
 	else if (method == DELETE)
-		_deleteStaticResourceController(context, route_policy);
+		_deleteStaticResource(context, route_policy);
 }
 } // namespace http

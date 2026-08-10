@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ServeStaticResourcePresenter.hpp                   :+:      :+:    :+:   */
+/*   ServeStaticResource.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:04:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include <vector>
 
 namespace http {
-
-class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::IOutputPort
+namespace presenter {
+class ServeStaticResource : public app::useCase::ServeStaticResource::IOutputPort
 {
   public:
 	struct ViewModel
@@ -33,8 +33,8 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 	};
 
   public:
-	ServeStaticResourcePresenter(void) {}
-	virtual ~ServeStaticResourcePresenter(void) {}
+	ServeStaticResource(void) {}
+	virtual ~ServeStaticResource(void) {}
 
 	ViewModel const &getViewModel(void) const;
 
@@ -48,11 +48,13 @@ class ServeStaticResourcePresenter : public app::useCase::ServeStaticResource::I
 	);
 
   private:
-	ServeStaticResourcePresenter(ServeStaticResourcePresenter const &src);
-	ServeStaticResourcePresenter &operator=(ServeStaticResourcePresenter const &rhs);
+	ServeStaticResource(ServeStaticResource const &src);
+	ServeStaticResource &operator=(ServeStaticResource const &rhs);
 
 	ViewModel _viewModel;
 };
+} // namespace presenter
+
 } // namespace http
 
 #endif // SERVESTATICRESOURCEPRESENTER_HPP

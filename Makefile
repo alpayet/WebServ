@@ -35,10 +35,11 @@ SRC_FILES = \
 	infrastructure/server/reactor/demultiplexer/EpollDemultiplexer.cpp \
 	infrastructure/server/reactor/demultiplexer/KqueueDemultiplexer.cpp \
 	infrastructure/server/reactor/Reactor.cpp \
+	infrastructure/server/application_protocol/constants.cpp \
 	infrastructure/server/application_protocol/http/ProtocolFactory.cpp \
-	infrastructure/server/application_protocol/http/controllers/DeleteStaticResourceController.cpp \
-	infrastructure/server/application_protocol/http/controllers/ServeStaticResourceController.cpp \
-	infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResourceController.cpp \
+	infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.cpp \
+	infrastructure/server/application_protocol/http/controllers/ServeStaticResource.cpp \
+	infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.cpp \
 	infrastructure/server/application_protocol/http/request/Parser.cpp \
 	infrastructure/server/application_protocol/http/request/Request.cpp \
 	infrastructure/server/application_protocol/http/update_keep_alive_status.cpp \
@@ -49,22 +50,22 @@ SRC_FILES = \
 	infrastructure/server/application_protocol/http/response/Sender.cpp \
 	infrastructure/server/application_protocol/http/response/Response.cpp \
 	infrastructure/server/application_protocol/http/router/Router.cpp \
-	infrastructure/server/application_protocol/http/mappers/ExecuteDynamicResourceDtoMapper.cpp \
-	infrastructure/server/application_protocol/http/mappers/CgiResponseMapper.cpp \
-	infrastructure/server/application_protocol/http/mappers/ServeStaticResourceDtoMapper.cpp \
-	infrastructure/server/application_protocol/http/mappers/DeleteStaticResourceDtoMapper.cpp \
+	infrastructure/server/application_protocol/http/mappers/ExecuteDynamicResourceDto.cpp \
+	infrastructure/server/application_protocol/http/mappers/CgiResponse.cpp \
+	infrastructure/server/application_protocol/http/mappers/ServeStaticResourceDto.cpp \
+	infrastructure/server/application_protocol/http/mappers/DeleteStaticResourceDto.cpp \
 	infrastructure/server/application_protocol/http/Session.cpp \
 	infrastructure/server/application_protocol/http/exceptions/error_lookup.cpp \
 	infrastructure/server/application_protocol/http/exceptions/ReturnException.cpp \
 	infrastructure/server/application_protocol/http/exceptions/Exception.cpp \
 	infrastructure/server/application_protocol/http/core/Protocol.cpp \
 	infrastructure/server/application_protocol/http/core/Context.cpp \
+	infrastructure/server/application_protocol/http/presenters/DeleteStaticResource.cpp \
+	infrastructure/server/application_protocol/http/presenters/ServeStaticResource.cpp \
 	infrastructure/server/application_protocol/http/presenters/success_lookup.cpp \
 	infrastructure/server/application_protocol/http/presenters/get_listing_html.cpp \
-	infrastructure/server/application_protocol/http/presenters/ServeStaticResourcePresenter.cpp \
-	infrastructure/server/application_protocol/http/presenters/DeleteStaticResourcePresenter.cpp \
+	infrastructure/server/application_protocol/http/presenters/ExecuteDynamicResource.cpp \
 	infrastructure/server/application_protocol/http/methods.cpp \
-	infrastructure/server/application_protocol/constants.cpp \
 	infrastructure/server/application_protocol/TestProtocol.cpp \
 	cgi/constants.cpp \
 	cgi/Response.cpp \

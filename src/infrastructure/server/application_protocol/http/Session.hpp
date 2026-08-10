@@ -18,6 +18,8 @@ class Session : public webserv::appProtocol::IProtocol
 
 	virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
+	virtual int getStreamId(void) const;
+
 	virtual void reset(void);
 
 	virtual bool shouldKeepAlive(void) const;

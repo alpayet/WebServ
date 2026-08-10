@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:15:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 23:07:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ ExecuteDynamicResource::ExecuteDynamicResource(
 	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
 {}
 
-void ExecuteDynamicResource::execute(Input const &dtoInput)
+void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
 {
 	SystemResourceInfo target_infos =
 		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
@@ -42,9 +42,11 @@ void ExecuteDynamicResource::execute(Input const &dtoInput)
 	if (!dynamic_resource.isReadable() || !dynamic_resource.isExecutable())
 		throw Exception(Exception::ACCESS_DENIED);
 
-	_dynamicResourceExecutor.execute(
+	int	stream_id = _dynamicResourceExecutor.execute(
 		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
 	);
+
+	outputPort.presentStream(stream_id);
 }
 } // namespace useCase
 } // namespace app

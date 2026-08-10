@@ -22,6 +22,8 @@ Session::PullStatus::Type Session::pullResponse(std::vector<char> &outputBuf)
 	return (_protocol.pullResponse(_context, outputBuf));
 }
 
+int Session::getStreamId(void) const {return (_context.stream.streamId);}
+
 void Session::reset(void) { _context.reset(); }
 
 bool Session::shouldKeepAlive(void) const { return (_context.shouldKeepAlive); }

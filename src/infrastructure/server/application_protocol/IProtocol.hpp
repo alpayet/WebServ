@@ -18,11 +18,11 @@ public:
   };
 
   struct PushStatus {
-    enum Type { NEED_MORE_DATA, COMPLETE };
+    enum Type { NEED_MORE_DATA, STREAM_AVAILABLE, COMPLETE };
   };
 
   struct PullStatus {
-    enum Type { HAS_MORE, COMPLETE, ERROR };
+    enum Type { HAS_MORE, ERROR, COMPLETE };
   };
 
   struct RequestStatus {
@@ -41,6 +41,8 @@ public:
                                 StreamStatus::Type status) = 0;
 
   virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf) = 0;
+
+  virtual int getStreamId(void) const = 0;
 
   virtual void reset(void) = 0;
 

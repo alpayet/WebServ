@@ -6,9 +6,9 @@
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 #include "cgi/Cgi.hpp"
 #include "infrastructure/server/application_protocol/IProtocolFactory.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResourceController.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResourceController.hpp"
-#include "infrastructure/server/application_protocol/http/controllers/ServeStaticResourceController.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"
+#include "infrastructure/server/application_protocol/http/controllers/ServeStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/core/Protocol.hpp"
 #include "infrastructure/server/application_protocol/http/router/Router.hpp"
 #include "infrastructure/storage/file_system/DirectoryExplorer.hpp"
@@ -44,9 +44,9 @@ class ProtocolFactory : public webserv::appProtocol::IProtocolFactory
 	app::useCase::DeleteStaticResource	 _deleteStaticResourceUseCase;
 	app::useCase::ExecuteDynamicResource _executeDynamicResourceUseCase;
 
-	ServeStaticResourceController	 _serveStaticResourceController;
-	DeleteStaticResourceController	 _deleteStaticResourceController;
-	ExecuteDynamicResourceController _executeDynamicResourceController;
+	controller::ServeStaticResource			   _serveStaticResourceController;
+	controller::DeleteStaticResource 		   _deleteStaticResourceController;
+	controller::ExecuteDynamicResource		   _executeDynamicResourceController;
 
 	request::Parser	 _requestParser;
 	cgi::Parser		 _cgiParser;

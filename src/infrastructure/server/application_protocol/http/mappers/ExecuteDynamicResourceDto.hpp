@@ -1,33 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ServeStaticResourceDtoMapper.hpp                   :+:      :+:    :+:   */
+/*   ExecuteDynamicResourceDto.hpp                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 17:20:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:23:25 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVESTATICRESOURCEDTOMAPPER_HPP
-#define SERVESTATICRESOURCEDTOMAPPER_HPP
+#ifndef EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
+#define EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP
 
-#include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
+#include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 
 namespace http {
 class Request;
 struct RoutePolicy;
 
-class ServeStaticResourceDtoMapper
+namespace mapper {
+class ExecuteDynamicResourceDto
 {
   public:
-	static app::useCase::ServeStaticResource::Input
-	toDto(Request const &request, RoutePolicy const &routePolicy);
+	static app::useCase::ExecuteDynamicResource::Input toDto(
+		Request const							 &request,
+		RoutePolicy const						 &routePolicy,
+		std::string const						 &bodyPath,
+		std::map<std::string, std::string> const &metaVariables
+	);
 
   private:
-	ServeStaticResourceDtoMapper(void);
+	ExecuteDynamicResourceDto(void);
 };
+} // namespace mapper
+
 } // namespace http
 
-#endif // SERVESTATICRESOURCEDTOMAPPER_HPP
+#endif // EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP

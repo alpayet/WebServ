@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   DeleteStaticResourceDtoMapper.hpp                  :+:      :+:    :+:   */
+/*   ServeStaticResourceDto.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:12:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:23:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DELETESTATICRESOURCEDTOMAPPER_HPP
-#define DELETESTATICRESOURCEDTOMAPPER_HPP
+#ifndef SERVESTATICRESOURCEDTOMAPPER_HPP
+#define SERVESTATICRESOURCEDTOMAPPER_HPP
 
-#include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
+#include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
 
 namespace http {
 class Request;
 struct RoutePolicy;
 
-class DeleteStaticResourceDtoMapper
+namespace mapper {
+class ServeStaticResourceDto
 {
   public:
-	static app::useCase::DeleteStaticResource::Input
+	static app::useCase::ServeStaticResource::Input
 	toDto(Request const &request, RoutePolicy const &routePolicy);
 
   private:
-	DeleteStaticResourceDtoMapper(void);
+	ServeStaticResourceDto(void);
 };
+} // namespace mapper
+
 } // namespace http
 
-#endif // DELETESTATICRESOURCEDTOMAPPER_HPP
+#endif // SERVESTATICRESOURCEDTOMAPPER_HPP

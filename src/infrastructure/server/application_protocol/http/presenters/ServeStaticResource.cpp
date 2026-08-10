@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ServeStaticResourcePresenter.cpp                   :+:      :+:    :+:   */
+/*   ServeStaticResource.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 22:08:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/server/application_protocol/http/presenters/ServeStaticResourcePresenter.hpp"
+#include "infrastructure/server/application_protocol/http/presenters/ServeStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/presenters/get_listing_html.hpp"
 #include "infrastructure/server/application_protocol/http/presenters/success_lookup.hpp"
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
 
 namespace http {
+namespace presenter {
 
-ServeStaticResourcePresenter::ViewModel const &
-ServeStaticResourcePresenter::getViewModel(void) const
+ServeStaticResource::ViewModel const &ServeStaticResource::getViewModel(void) const
 {
 	return (_viewModel);
 }
 
-void ServeStaticResourcePresenter::presentStaticContent(
+void ServeStaticResource::presentStaticContent(
 	app::ResourceStatus status, std::size_t resourceSize, app::IResourceReader *resourceReader
 )
 {
@@ -36,7 +36,7 @@ void ServeStaticResourcePresenter::presentStaticContent(
 	_viewModel.reader = resourceReader;
 }
 
-void ServeStaticResourcePresenter::presentListing(
+void ServeStaticResource::presentListing(
 	app::ResourceStatus						 status,
 	std::string const						&id,
 	std::vector<app::CollectionEntry> const &collectionData
@@ -53,4 +53,6 @@ void ServeStaticResourcePresenter::presentListing(
 	_viewModel.response = builder.build();
 	_viewModel.reader = NULL;
 }
+} // namespace presenter
+
 } // namespace http

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 15:51:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/09 21:57:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,24 @@ namespace http {
 struct Context;
 struct RoutePolicy;
 
-class DeleteStaticResourceController
+namespace controller
 {
-  public:
-	DeleteStaticResourceController(app::useCase::DeleteStaticResource &useCase);
+	class DeleteStaticResource
+	{
+	  public:
+		DeleteStaticResource(app::useCase::DeleteStaticResource &useCase);
 
-	void operator()(Context &context, RoutePolicy const &routePolicy);
+		void operator()(Context &context, RoutePolicy const &routePolicy);
 
-  private:
-	DeleteStaticResourceController(DeleteStaticResourceController const &src);
-	DeleteStaticResourceController &operator=(DeleteStaticResourceController const &rhs);
+	  private:
+		DeleteStaticResource(DeleteStaticResource const &src);
+		DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	app::useCase::DeleteStaticResource &_useCase;
-};
+		app::useCase::DeleteStaticResource &_useCase;
+	};
+} // namespace controller
+
 } // namespace http
+
 
 #endif // DELETESTATICRESOURCECONTROLLER_HPP
