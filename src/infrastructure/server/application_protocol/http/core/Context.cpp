@@ -16,42 +16,43 @@
 namespace http {
 Context::Input::Input(void) : buf(), state() {}
 
-void Context::Input::reset(void)
-{
-	buf.clear();
-	state.reset();
+void Context::Input::reset(void) {
+  buf.clear();
+  state.reset();
 }
 
-Context::Stream::Stream(void) : buf(), state(), streamId(-1), localRedirDepth(0) {}
+Context::Stream::Stream(void)
+    : buf(), state(), stream_resources(), localRedirDepth(0) {
+  stream_resources.fd = -1;
+  stream_resources.pid = -1;
+}
 
-void Context::Stream::reset(void)
-{
-	buf.clear();
-	state.reset();
-	streamId = -1;
-	localRedirDepth = 0;
+void Context::Stream::reset(void) {
+  buf.clear();
+  state.reset();
+  stream_resources.fd = -1;
+  stream_resources.pid = -1;
+  localRedirDepth = 0;
 }
 
 Context::Output::Output(void) : state(), response(), reader(NULL) {}
 
 Context::Output::~Output(void) { delete reader; }
 
-void Context::Output::reset(void)
-{
-	state.reset();
-	response.reset();
-	delete reader;
-	reader = NULL;
+void Context::Output::reset(void) {
+  state.reset();
+  response.reset();
+  delete reader;
+  reader = NULL;
 }
 
 Context::Context(void) : input(), stream(), output(), shouldKeepAlive(true) {}
 
-void Context::reset(void)
-{
-	input.reset();
-	stream.reset();
-	output.reset();
-	shouldKeepAlive = true;
+void Context::reset(void) {
+  input.reset();
+  stream.reset();
+  output.reset();
+  shouldKeepAlive = true;
 }
 
 } // namespace http

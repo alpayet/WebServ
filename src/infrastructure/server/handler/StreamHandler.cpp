@@ -15,31 +15,35 @@
 namespace webserv {
 namespace handler {
 
-StreamHandler::StreamHandler(int pipe_fd, pid_t pid, int client_fd,
+StreamHandler::StreamHandler(const app::StreamResources stream_resources,
+                             const int client_fd,
                              appProtocol::IProtocol *protocol)
-    : m_pipe_fd(pipe_fd), m_pid(pid), m_client_fd(client_fd),
+    : m_stream_resources(stream_resources), m_client_fd(client_fd),
       m_app_protocol(protocol), m_read_buf(), m_last_activity(ft::now()) {}
 
 StreamHandler::~StreamHandler() {}
 
-int StreamHandler::getFd() const { return m_pipe_fd.get(); }
+int StreamHandler::getFd() const { return m_stream_resources.fd; }
 
 std::time_t StreamHandler::getLastActivity() const { return m_last_activity; }
 
 void StreamHandler::onReadable(reactor::Reactor &reactor) {
   m_last_activity = ft::now();
 
-  const ssize_t bytes_read = ::read(m_pipe_fd.get(), m_read_buf, RECV_CHUNK);
+  const ssize_t bytes_read =
+      ::read(m_stream_resources.fd, m_read_buf, RECV_CHUNK);
   if (bytes_read < 0) {
     // TODO:
     // voir avec alpayet si je dois pas pushStream Error pour renvoyer une
     // certaine page
+    // also voir si fd et pid peuvent etre -1
     // reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
 
-    kill(m_pid, SIGKILL);
-    waitpid(m_pid, NULL, WNOHANG);
+    kill(m_stream_resources.pid, SIGKILL);
+    waitpid(m_stream_resources.pid, NULL, WNOHANG);
     reactor.removeEventHandler(m_client_fd);
-    reactor.removeEventHandler(m_pipe_fd.get());
+    reactor.removeEventHandler(m_stream_resources.fd);
+    ::close(m_stream_resources.fd);
     return;
   }
 
@@ -52,14 +56,14 @@ void StreamHandler::onReadable(reactor::Reactor &reactor) {
   DEBUG("read " << bytes_read << " bytes");
 
   const appProtocol::IProtocol::PushStatus::Type push_state =
-      m_app_protocol->pushStream(
-          std::vector<char>(m_read_buf, m_read_buf + bytes_read), push_status);
+      m_app_protocol->pushStream(m_read_buf, bytes_read, push_status);
 
   if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE) {
-    kill(m_pid, SIGKILL);
-    waitpid(m_pid, NULL, WNOHANG);
+    kill(m_stream_resources.pid, SIGKILL);
+    waitpid(m_stream_resources.pid, NULL, WNOHANG);
     reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
-    reactor.removeEventHandler(m_pipe_fd.get());
+    reactor.removeEventHandler(m_stream_resources.fd);
+    ::close(m_stream_resources.fd);
   }
   // TODO if error...
 }
@@ -71,19 +75,18 @@ void StreamHandler::onWritable(reactor::Reactor &reactor) {
 void StreamHandler::onTimeout(reactor::Reactor &reactor) {
 
   m_last_activity = ft::now();
-  std::cout << "update fd:" << m_pipe_fd.get()
-            << " on timeout last activity time_t: " << m_last_activity
+  std::cout << "update fd:" << m_stream_resources.fd
+            << " cgi on timeout last activity time_t: " << m_last_activity
             << std::endl;
 
-  const std::vector<char> empty(0);
-
-  m_app_protocol->pushStream(empty,
+  m_app_protocol->pushStream(NULL, 0,
                              appProtocol::IProtocol::StreamStatus::TIMEOUT);
 
-  kill(m_pid, SIGKILL);
-  waitpid(m_pid, NULL, WNOHANG);
+  kill(m_stream_resources.pid, SIGKILL);
+  waitpid(m_stream_resources.pid, NULL, WNOHANG);
   reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
-  reactor.removeEventHandler(m_pipe_fd.get());
+  reactor.removeEventHandler(m_stream_resources.fd);
+  ::close(m_stream_resources.fd);
 }
 
 } // namespace handler

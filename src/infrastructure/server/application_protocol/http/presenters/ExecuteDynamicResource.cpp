@@ -18,12 +18,15 @@
 namespace http {
 namespace presenter {
 
-ExecuteDynamicResource::ViewModel const &ExecuteDynamicResource::getViewModel(void) const
-{
-	return (_viewModel);
+ExecuteDynamicResource::ViewModel const &
+ExecuteDynamicResource::getViewModel(void) const {
+  return (_viewModel);
 }
 
-void ExecuteDynamicResource::presentStream(int streamId) { _viewModel.streamId = streamId; }
+void ExecuteDynamicResource::presentStream(
+    const app::StreamResources resources) {
+  _viewModel.stream_resources = resources;
+}
 } // namespace presenter
 
 } // namespace http

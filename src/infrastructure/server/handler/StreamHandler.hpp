@@ -1,6 +1,7 @@
 #ifndef STREAMHANDLER_HPP
 #define STREAMHANDLER_HPP
 
+#include "application/ports/IDynamicResourceExecutor.hpp"
 #include "infrastructure/server/handler/IEventHandler.hpp"
 #include "infrastructure/storage/file_system/fd/Fd.hpp"
 
@@ -18,7 +19,7 @@ namespace handler {
 
 class StreamHandler : public IEventHandler {
 public:
-  StreamHandler(int pipe_fd, pid_t pid, int client_fd,
+  StreamHandler(app::StreamResources stream_resources, int client_fd,
                 appProtocol::IProtocol *protocol);
   ~StreamHandler();
 
@@ -35,8 +36,7 @@ private:
 
   static std::size_t const RECV_CHUNK = 16 * 1024;
 
-  fd::Fd m_pipe_fd;
-  pid_t m_pid;
+  app::StreamResources m_stream_resources;
   int m_client_fd;
   appProtocol::IProtocol *m_app_protocol;
   char m_read_buf[RECV_CHUNK];

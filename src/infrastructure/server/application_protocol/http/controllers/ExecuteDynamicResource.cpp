@@ -27,50 +27,54 @@ namespace http {
 namespace controller {
 
 ExecuteDynamicResource::ExecuteDynamicResource(
-	app::useCase::ExecuteDynamicResource &useCase, ILimitsProvider const &limitsProvider
-)
-	: _useCase(useCase), _limitsProvider(limitsProvider)
-{}
+    app::useCase::ExecuteDynamicResource &useCase,
+    ILimitsProvider const &limitsProvider)
+    : _useCase(useCase), _limitsProvider(limitsProvider) {}
 
-void ExecuteDynamicResource::operator()(Context &context, RoutePolicy const &routePolicy)
-{
-	Request const &request = context.input.state.request;
+void ExecuteDynamicResource::operator()(Context &context,
+                                        RoutePolicy const &routePolicy) {
+  Request const &request = context.input.state.request;
 
-	std::string bodyPath;
-	if (request.hasBody())
-		bodyPath = request.getBodyPath();
-	if (request.getContentLength() > _limitsProvider.getMaxBodySize(request.getTarget()))
-		throw Exception(Exception::BODY_TOO_LARGE);
-	std::map<std::string, std::string> const &MetaVariables = createMetaVariables(request);
+  std::string bodyPath;
+  if (request.hasBody())
+    bodyPath = request.getBodyPath();
+  if (request.getContentLength() >
+      _limitsProvider.getMaxBodySize(request.getTarget()))
+    throw Exception(Exception::BODY_TOO_LARGE);
+  std::map<std::string, std::string> const &MetaVariables =
+      createMetaVariables(request);
 
-	presenter::ExecuteDynamicResource presenter;
+  presenter::ExecuteDynamicResource presenter;
 
-	app::useCase::ExecuteDynamicResource::Input const &dto =
-		mapper::ExecuteDynamicResourceDto::toDto(request, routePolicy, bodyPath, MetaVariables);
+  app::useCase::ExecuteDynamicResource::Input const &dto =
+      mapper::ExecuteDynamicResourceDto::toDto(request, routePolicy, bodyPath,
+                                               MetaVariables);
 
-	_useCase.execute(dto, presenter);
+  _useCase.execute(dto, presenter);
 
-	presenter::ExecuteDynamicResource::ViewModel const &viewModel = presenter.getViewModel();
-	context.stream.streamId = viewModel.streamId;
+  presenter::ExecuteDynamicResource::ViewModel const &viewModel =
+      presenter.getViewModel();
+  context.stream.stream_resources = viewModel.stream_resources;
 }
 
 std::map<std::string, std::string>
-ExecuteDynamicResource::createMetaVariables(Request const &request)
-{
-	std::map<std::string, std::string> metaVariable;
+ExecuteDynamicResource::createMetaVariables(Request const &request) {
+  std::map<std::string, std::string> metaVariable;
 
-	metaVariable[cgi::meta::REQUEST_METHOD] = request.getMethod();
-	if (request.hasQuery())
-		metaVariable[cgi::meta::QUERY_STRING] = request.getQuery();
+  metaVariable[cgi::meta::REQUEST_METHOD] = request.getMethod();
+  if (request.hasQuery())
+    metaVariable[cgi::meta::QUERY_STRING] = request.getQuery();
 
-	if (request.hasContentLength())
-		metaVariable[cgi::meta::CONTENT_LENGTH] = request.getHeader(headers::CONTENT_TYPE);
+  if (request.hasContentLength())
+    metaVariable[cgi::meta::CONTENT_LENGTH] =
+        request.getHeader(headers::CONTENT_TYPE);
 
-	if (request.hasHeader(headers::CONTENT_TYPE))
-		metaVariable[cgi::meta::CONTENT_TYPE] = request.getHeader(headers::CONTENT_TYPE);
-	if (request.hasHeader(headers::COOKIE))
-		metaVariable[cgi::meta::HTTP_COOKIE] = request.getHeader(headers::COOKIE);
-	return (metaVariable);
+  if (request.hasHeader(headers::CONTENT_TYPE))
+    metaVariable[cgi::meta::CONTENT_TYPE] =
+        request.getHeader(headers::CONTENT_TYPE);
+  if (request.hasHeader(headers::COOKIE))
+    metaVariable[cgi::meta::HTTP_COOKIE] = request.getHeader(headers::COOKIE);
+  return (metaVariable);
 }
 } // namespace controller
 

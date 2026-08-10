@@ -45,11 +45,11 @@ void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
     reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
   } else if (push_state ==
              appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE) {
+    std::cout << "new cgi!" << std::endl;
     try {
-      fd::Fd tmp_fd(m_app_protocol->getStreamId());
-
-      IEventHandler *event = new StreamHandler(
-          tmp_fd.release(), -1, m_transport->getFd(), m_app_protocol);
+      IEventHandler *event =
+          new StreamHandler(m_app_protocol->getStreamResources(),
+                            m_transport->getFd(), m_app_protocol);
       if (!reactor.addEventHandler(event, reactor::EVENT_READ))
         throw std::runtime_error("can't add cgi event handler");
 

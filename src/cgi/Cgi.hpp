@@ -3,15 +3,11 @@
 
 #include "application/ports/IDynamicResourceExecutor.hpp"
 
-class Cgi : public app::IDynamicResourceExecutor
-{
-  public:
-	virtual int execute(
-		std::string const						 &resourcePath,
-		std::string const						 &bodyPath,
-		std::map<std::string, std::string> const &metaVariables
-	)
-	{}
+class Cgi : public app::IDynamicResourceExecutor {
+public:
+  virtual app::StreamResources
+  execute(std::string const &resourcePath, std::string const &bodyPath,
+          std::map<std::string, std::string> const &metaVariables) {}
 };
 // TODO: faire aussi le cleear des enfants zombies
 #endif

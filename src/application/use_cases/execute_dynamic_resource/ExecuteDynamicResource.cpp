@@ -20,33 +20,32 @@
 namespace app {
 namespace useCase {
 ExecuteDynamicResource::ExecuteDynamicResource(
-	IResourceLocator const &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
-)
-	: _resourceLocator(resourceLocator), _dynamicResourceExecutor(dynamicResourceExecutor)
-{}
+    IResourceLocator const &resourceLocator,
+    IDynamicResourceExecutor &dynamicResourceExecutor)
+    : _resourceLocator(resourceLocator),
+      _dynamicResourceExecutor(dynamicResourceExecutor) {}
 
-void ExecuteDynamicResource::execute(Input const &dtoInput, IOutputPort &outputPort)
-{
-	SystemResourceInfo target_infos =
-		_resourceLocator.locate(dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
-	if (!target_infos.exists)
-		throw Exception(Exception::NOT_FOUND);
+void ExecuteDynamicResource::execute(Input const &dtoInput,
+                                     IOutputPort &outputPort) {
+  SystemResourceInfo target_infos = _resourceLocator.locate(
+      dtoInput.id, dtoInput.matchedRoute, dtoInput.rootPath);
+  if (!target_infos.exists)
+    throw Exception(Exception::NOT_FOUND);
 
-	domain::ResourceMetaData target_meta_data(
-		target_infos.resourcePath, target_infos.type, target_infos.permissions,
-		target_infos.resourceSize, target_infos.canBeDeleted
-	);
+  domain::ResourceMetaData target_meta_data(
+      target_infos.resourcePath, target_infos.type, target_infos.permissions,
+      target_infos.resourceSize, target_infos.canBeDeleted);
 
-	domain::DynamicResource dynamic_resource(dtoInput.id, target_meta_data);
+  domain::DynamicResource dynamic_resource(dtoInput.id, target_meta_data);
 
-	if (!dynamic_resource.isReadable() || !dynamic_resource.isExecutable())
-		throw Exception(Exception::ACCESS_DENIED);
+  if (!dynamic_resource.isReadable() || !dynamic_resource.isExecutable())
+    throw Exception(Exception::ACCESS_DENIED);
 
-	int	stream_id = _dynamicResourceExecutor.execute(
-		dynamic_resource.getResourcePath(), dtoInput.bodyPath, dtoInput.metaVariables
-	);
+  StreamResources stream_resources = _dynamicResourceExecutor.execute(
+      dynamic_resource.getResourcePath(), dtoInput.bodyPath,
+      dtoInput.metaVariables);
 
-	outputPort.presentStream(stream_id);
+  outputPort.presentStream(stream_resources);
 }
 } // namespace useCase
 } // namespace app

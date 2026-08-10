@@ -15,20 +15,23 @@
 
 #include <map>
 #include <string>
+#include <sys/types.h>
 
 namespace app {
 class IResourceReader;
 
-class IDynamicResourceExecutor
-{
-  public:
-	virtual ~IDynamicResourceExecutor(void) {}
+struct StreamResources {
+  int fd;
+  pid_t pid;
+};
 
-	virtual int execute(
-		std::string const						 &resourcePath,
-		std::string const						 &bodyPath,
-		std::map<std::string, std::string> const &metaVariables
-	) = 0;
+class IDynamicResourceExecutor {
+public:
+  virtual ~IDynamicResourceExecutor(void) {}
+
+  virtual StreamResources
+  execute(std::string const &resourcePath, std::string const &bodyPath,
+          std::map<std::string, std::string> const &metaVariables) = 0;
 };
 } // namespace app
 

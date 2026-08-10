@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "application/ports/IDynamicResourceExecutor.hpp"
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/application_protocol/IProtocolFactory.hpp"
 
@@ -16,17 +17,17 @@ public:
   ~TestProtocol();
 
   PushStatus::Type pushRequest(char const *inputBuf, std::size_t size,
-                         RequestStatus::Type status);
-  PushStatus::Type pushStream(std::vector<char> const &streamBuf,
-                        StreamStatus::Type status);
+                               RequestStatus::Type status);
+  PushStatus::Type pushStream(const char *streamBuf, std::size_t size,
+                              StreamStatus::Type status);
 
   PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
-  int getStreamId(void) const;
+  app::StreamResources getStreamResources() const;
 
-  void reset(void);
+  void reset();
 
-  bool shouldKeepAlive(void) const;
+  bool shouldKeepAlive() const;
 
 private:
   TestProtocol(TestProtocol const &);

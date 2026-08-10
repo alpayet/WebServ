@@ -5,9 +5,9 @@
 namespace webserv {
 namespace appProtocol {
 
-TestProtocol::TestProtocol(std::string const &body)
+TestProtocol::TestProtocol(const std::string &body)
     : m_request(), m_response() {
-  std::string const raw = "HTTP/1.1 200 OK\r\n"
+  const std::string raw = "HTTP/1.1 200 OK\r\n"
                           "Content-Type: text/plain\r\n"
                           "Content-Length: " +
                           ft::intToString(static_cast<int>(body.size())) +
@@ -21,8 +21,11 @@ TestProtocol::TestProtocol(std::string const &body)
 TestProtocol::~TestProtocol() {}
 
 TestProtocol::PushStatus::Type
-TestProtocol::pushRequest(char const *inputBuf, std::size_t size,
-                          RequestStatus::Type status) {
+TestProtocol::pushRequest(const char *inputBuf, const std::size_t size,
+                          const RequestStatus::Type status) {
+  (void)inputBuf;
+  (void)size;
+  (void)status;
   // if (len == 0)
   //   return SEND_OK;
   //
@@ -35,22 +38,31 @@ TestProtocol::pushRequest(char const *inputBuf, std::size_t size,
 }
 
 TestProtocol::PushStatus::Type
-TestProtocol::pushStream(std::vector<char> const &streamBuf,
-                         StreamStatus::Type status) {
+TestProtocol::pushStream(const char *streamBuf, const std::size_t size,
+                         const StreamStatus::Type status) {
+  (void)streamBuf;
+  (void)size;
+  (void)status;
   return PushStatus::COMPLETE;
 }
 
-TestProtocol::PullStatus::Type TestProtocol::pullResponse(std::vector<char> &outputBuf) {
+TestProtocol::PullStatus::Type
+TestProtocol::pullResponse(std::vector<char> &outputBuf) {
+  (void)outputBuf;
   return PullStatus::HAS_MORE;
 }
 
-int TestProtocol::getStreamId(void) const {return (-1);}
+app::StreamResources TestProtocol::getStreamResources() const {
+  const app::StreamResources resources = {-1, -1};
+
+  return resources;
+}
 
 void TestProtocol::reset() { m_request.clear(); }
 
 bool TestProtocol::shouldKeepAlive() const { return false; }
 
-TestProtocolFactory::TestProtocolFactory(std::string const &body)
+TestProtocolFactory::TestProtocolFactory(const std::string &body)
     : m_body(body) {}
 
 TestProtocolFactory::~TestProtocolFactory() {}

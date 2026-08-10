@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <vector>
 
+#include "application/ports/IDynamicResourceExecutor.hpp"
+
 namespace webserv {
 namespace appProtocol {
 
@@ -35,18 +37,18 @@ public:
 
   virtual ~IProtocol() {}
 
-  virtual PushStatus::Type pushRequest(char const *inputBuf, std::size_t size,
-                                 RequestStatus::Type status) = 0;
-  virtual PushStatus::Type pushStream(std::vector<char> const &streamBuf,
-                                StreamStatus::Type status) = 0;
+  virtual PushStatus::Type pushRequest(const char *inputBuf, std::size_t size,
+                                       RequestStatus::Type status) = 0;
+  virtual PushStatus::Type pushStream(const char *streamBuf, std::size_t size,
+                                      StreamStatus::Type status) = 0;
 
   virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf) = 0;
 
-  virtual int getStreamId(void) const = 0;
+  virtual app::StreamResources getStreamResources() const = 0;
 
-  virtual void reset(void) = 0;
+  virtual void reset() = 0;
 
-  virtual bool shouldKeepAlive(void) const = 0;
+  virtual bool shouldKeepAlive() const = 0;
 };
 
 } // namespace appProtocol

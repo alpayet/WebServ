@@ -20,52 +20,44 @@
 namespace app {
 class IResourceLocator;
 class IDynamicResourceExecutor;
+struct StreamResources;
 
 namespace useCase {
-class ExecuteDynamicResource
-{
+class ExecuteDynamicResource {
+public:
+  struct Input {
+    Input(std::string const &id, std::string const &matchedRoute,
+          std::string const &rootPath, std::string const &bodyPath,
+          std::map<std::string, std::string> const &metaVariables)
+        : id(id), matchedRoute(matchedRoute), rootPath(rootPath),
+          bodyPath(bodyPath), metaVariables(metaVariables) {}
+
+    std::string id;
+    std::string matchedRoute;
+    std::string rootPath;
+    std::string bodyPath;
+    std::map<std::string, std::string> metaVariables;
+  };
+
+  class IOutputPort {
   public:
-	struct Input
-	{
-		Input(
-			std::string const						 &id,
-			std::string const						 &matchedRoute,
-			std::string const						 &rootPath,
-			std::string const						 &bodyPath,
-			std::map<std::string, std::string> const &metaVariables
-		)
-			: id(id), matchedRoute(matchedRoute), rootPath(rootPath), bodyPath(bodyPath),
-			  metaVariables(metaVariables)
-		{}
+    virtual ~IOutputPort() {}
 
-		std::string						   id;
-		std::string						   matchedRoute;
-		std::string						   rootPath;
-		std::string						   bodyPath;
-		std::map<std::string, std::string> metaVariables;
-	};
+    virtual void presentStream(StreamResources stream_resources) = 0;
+  };
 
-	class IOutputPort
-	{
-	  public:
-		virtual ~IOutputPort() {}
+public:
+  ExecuteDynamicResource(IResourceLocator const &resourceLocator,
+                         IDynamicResourceExecutor &dynamicResourceExecutor);
 
-		virtual void presentStream(int streamId) = 0;
-	};
+  void execute(Input const &dtoInput, IOutputPort &outputPort);
 
-  public:
-	ExecuteDynamicResource(
-		IResourceLocator const &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
-	);
+private:
+  ExecuteDynamicResource(ExecuteDynamicResource const &src);
+  ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-	void execute(Input const &dtoInput, IOutputPort &outputPort);
-
-  private:
-	ExecuteDynamicResource(ExecuteDynamicResource const &src);
-	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
-
-	IResourceLocator const	 &_resourceLocator;
-	IDynamicResourceExecutor &_dynamicResourceExecutor;
+  IResourceLocator const &_resourceLocator;
+  IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 } // namespace useCase
 } // namespace app
