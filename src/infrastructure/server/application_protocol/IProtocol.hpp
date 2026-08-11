@@ -11,14 +11,6 @@ namespace appProtocol {
 
 class IProtocol {
 public:
-  enum ProtocolState {
-    READ_MORE,
-    READ_OK,
-    SEND_MORE,
-    SEND_OK,
-    CLOSE_CONNECTION
-  };
-
   struct PushStatus {
     enum Type { NEED_MORE_DATA, STREAM_AVAILABLE, COMPLETE };
   };
