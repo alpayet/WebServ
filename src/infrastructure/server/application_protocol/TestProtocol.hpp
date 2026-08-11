@@ -23,7 +23,7 @@ public:
 
   PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
-  app::StreamResources getStreamResources() const;
+  app::StreamInfo getStreamResources() const;
 
   void reset();
 

@@ -5,7 +5,7 @@
 
 class Cgi : public app::IDynamicResourceExecutor {
 public:
-  virtual app::StreamResources
+  virtual app::StreamInfo
   execute(std::string const &resourcePath, std::string const &bodyPath,
           std::map<std::string, std::string> const &metaVariables) {}
 };

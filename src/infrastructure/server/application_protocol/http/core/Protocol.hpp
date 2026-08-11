@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/08 19:22:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:14:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace http {
 class Router;
 class IErrorPagesProvider;
 class IErrorPageLocator;
-class Context;
+struct Context;
 
 class Protocol {
 public:

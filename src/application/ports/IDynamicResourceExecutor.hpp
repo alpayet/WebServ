@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 21:25:26 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:06:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace app {
 class IResourceReader;
 
-struct StreamResources {
+struct StreamInfo {
   int fd;
   pid_t pid;
 };
@@ -29,7 +29,7 @@ class IDynamicResourceExecutor {
 public:
   virtual ~IDynamicResourceExecutor(void) {}
 
-  virtual StreamResources
+  virtual StreamInfo
   execute(std::string const &resourcePath, std::string const &bodyPath,
           std::map<std::string, std::string> const &metaVariables) = 0;
 };

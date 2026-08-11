@@ -19,7 +19,7 @@ public:
 
   virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf);
 
-  virtual app::StreamResources getStreamResources(void) const;
+  virtual app::StreamInfo getStreamResources(void) const;
 
   virtual void reset(void);
 

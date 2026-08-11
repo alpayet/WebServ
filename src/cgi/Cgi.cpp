@@ -91,7 +91,7 @@ void createEnv(std::map<std::string, std::string> const &metaVariables,
 // ExecuteDynamicResourceUseCase
 // content_location = empty if get
 
-app::StreamResources
+app::StreamInfo
 Cgi::execute(std::string const &resourcePath, std::string const &bodyPath,
              std::map<std::string, std::string> const &metaVariables) {
   // TODO: if post open file at content_location (it's a path)

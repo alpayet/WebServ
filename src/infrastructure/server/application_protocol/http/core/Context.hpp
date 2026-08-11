@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:15:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ public:
 
     std::vector<char> buf;
     cgi::Parser::State state;
-    app::StreamResources stream_resources;
+    app::StreamInfo stream_info;
     int localRedirDepth;
 
     static int const MAX_LOCAL_REDIR_DEPTH = 10;

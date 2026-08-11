@@ -22,9 +22,9 @@ Session::PullStatus::Type Session::pullResponse(std::vector<char> &outputBuf) {
   return (_protocol.pullResponse(_context, outputBuf));
 }
 
-app::StreamResources Session::getStreamResources(void) const {
-  const app::StreamResources resources = {_context.stream.stream_resources.fd,
-                                          _context.stream.stream_resources.pid};
+app::StreamInfo Session::getStreamResources(void) const {
+  const app::StreamInfo resources = {_context.stream.stream_info.fd,
+                                          _context.stream.stream_info.pid};
 
   return resources;
 }

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:11:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace app {
 class IResourceLocator;
 class IDynamicResourceExecutor;
-struct StreamResources;
+struct StreamInfo;
 
 namespace useCase {
 class ExecuteDynamicResource {
@@ -43,7 +43,7 @@ public:
   public:
     virtual ~IOutputPort() {}
 
-    virtual void presentStream(StreamResources stream_resources) = 0;
+    virtual void presentStream(StreamInfo stream_info) = 0;
   };
 
 public:

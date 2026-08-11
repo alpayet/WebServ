@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 21:50:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:14:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class ExecuteDynamicResource
     : public app::useCase::ExecuteDynamicResource::IOutputPort {
 public:
   struct ViewModel {
-    app::StreamResources stream_resources;
+    app::StreamInfo stream_info;
   };
 
 public:
@@ -33,7 +33,7 @@ public:
 
   ViewModel const &getViewModel(void) const;
 
-  virtual void presentStream(app::StreamResources resources);
+  virtual void presentStream(app::StreamInfo resources);
 
 private:
   ExecuteDynamicResource(ExecuteDynamicResource const &src);

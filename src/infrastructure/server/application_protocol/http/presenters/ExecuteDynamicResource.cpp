@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 21:53:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:12:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ ExecuteDynamicResource::getViewModel(void) const {
 }
 
 void ExecuteDynamicResource::presentStream(
-    const app::StreamResources resources) {
-  _viewModel.stream_resources = resources;
+    const app::StreamInfo resources) {
+  _viewModel.stream_info = resources;
 }
 } // namespace presenter
 

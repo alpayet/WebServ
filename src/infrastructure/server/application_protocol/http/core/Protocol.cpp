@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:35:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ Protocol::PushStatus::Type Protocol::pushRequest(Context &context,
       update_keep_alive_status(context);
       _router.route(context);
 
-      if (context.stream.stream_resources.fd >= 0)
+      if (context.stream.stream_info.fd >= 0)
         return (PushStatus::STREAM_AVAILABLE);
       return (PushStatus::COMPLETE);
     }
@@ -91,6 +91,9 @@ Protocol::PushStatus::Type Protocol::pushStream(Context &context,
   // TODO: voir avec luca si il faut keep alive le client si le cgi associé
   // timeout ou si il eof trop tot
   try {
+
+    if (status == StreamStatus::ERROR)
+      throw cgi::Exception(cgi::Exception::READ_FAILED);
     if (status == StreamStatus::TIMEOUT)
       throw cgi::Exception(cgi::Exception::TIMEOUT);
 
@@ -125,6 +128,7 @@ Protocol::PushStatus::Type Protocol::pushStream(Context &context,
   } catch (...) {
     Context::Output &context_output = context.output;
 
+    context.shouldKeepAlive = false;
     prepareDirectResponse(500, context_output.response, &context_output.reader);
 
     return (PushStatus::COMPLETE);

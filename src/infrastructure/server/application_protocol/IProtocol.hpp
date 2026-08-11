@@ -32,7 +32,7 @@ public:
   };
 
   struct StreamStatus {
-    enum Type { NORMAL, TIMEOUT, END_OF_STREAM };
+    enum Type { NORMAL, TIMEOUT, END_OF_STREAM, ERROR };
   };
 
   virtual ~IProtocol() {}
@@ -44,7 +44,7 @@ public:
 
   virtual PullStatus::Type pullResponse(std::vector<char> &outputBuf) = 0;
 
-  virtual app::StreamResources getStreamResources() const = 0;
+  virtual app::StreamInfo getStreamResources() const = 0;
 
   virtual void reset() = 0;
 

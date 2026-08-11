@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:52:58 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:21:09 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 13:58:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Exception : public std::exception
 		BODY_TOO_LARGE,
 		BODY_SIZE_MISMATCH,
 		TIMEOUT,
+		READ_FAILED,
 		PREMATURE_EOF
 	};
 

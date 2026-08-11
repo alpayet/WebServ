@@ -19,7 +19,7 @@ namespace handler {
 
 class StreamHandler : public IEventHandler {
 public:
-  StreamHandler(app::StreamResources stream_resources, int client_fd,
+  StreamHandler(app::StreamInfo stream_info, int client_fd,
                 appProtocol::IProtocol *protocol);
   ~StreamHandler();
 
@@ -36,7 +36,7 @@ private:
 
   static std::size_t const RECV_CHUNK = 16 * 1024;
 
-  app::StreamResources m_stream_resources;
+  app::StreamInfo m_stream_info;
   int m_client_fd;
   appProtocol::IProtocol *m_app_protocol;
   char m_read_buf[RECV_CHUNK];

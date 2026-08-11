@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:25:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void ExecuteDynamicResource::operator()(Context &context,
 
   presenter::ExecuteDynamicResource::ViewModel const &viewModel =
       presenter.getViewModel();
-  context.stream.stream_resources = viewModel.stream_resources;
+  context.stream.stream_info = viewModel.stream_info;
 }
 
 std::map<std::string, std::string>

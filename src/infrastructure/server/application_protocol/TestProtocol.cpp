@@ -52,8 +52,8 @@ TestProtocol::pullResponse(std::vector<char> &outputBuf) {
   return PullStatus::HAS_MORE;
 }
 
-app::StreamResources TestProtocol::getStreamResources() const {
-  const app::StreamResources resources = {-1, -1};
+app::StreamInfo TestProtocol::getStreamResources() const {
+  const app::StreamInfo resources = {-1, -1};
 
   return resources;
 }

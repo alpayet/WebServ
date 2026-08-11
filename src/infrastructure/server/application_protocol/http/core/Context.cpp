@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:05:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:16:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ void Context::Input::reset(void) {
 }
 
 Context::Stream::Stream(void)
-    : buf(), state(), stream_resources(), localRedirDepth(0) {
-  stream_resources.fd = -1;
-  stream_resources.pid = -1;
+    : buf(), state(), stream_info(), localRedirDepth(0) {
+  stream_info.fd = -1;
+  stream_info.pid = -1;
 }
 
 void Context::Stream::reset(void) {
   buf.clear();
   state.reset();
-  stream_resources.fd = -1;
-  stream_resources.pid = -1;
+  stream_info.fd = -1;
+  stream_info.pid = -1;
   localRedirDepth = 0;
 }
 
