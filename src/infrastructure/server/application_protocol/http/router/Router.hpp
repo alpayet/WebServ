@@ -13,39 +13,38 @@
 #ifndef HTTPROUTER_HPP
 #define HTTPROUTER_HPP
 
-namespace http {
-class IRouteRegistry;
-struct Context;
-
-namespace controller {
-class ServeStaticResource;
-class DeleteStaticResource;
-class ExecuteDynamicResource;
-} // namespace controller
-
-
-class Router
+namespace http
 {
-  public:
-	Router(
-		IRouteRegistry const		   	 &routeRegistry,
-		controller::ServeStaticResource	 &serveStaticResource,
-		controller::DeleteStaticResource &deleteStaticResource
-		// controller::ExecuteDynamicResource &executeDynamicResource
-	);
+    class IRouteRegistry;
+    struct Context;
 
-	void route(Context &context);
+    namespace controller
+    {
+        class ServeStaticResource;
+        class DeleteStaticResource;
+        class ExecuteDynamicResource;
+    } // namespace controller
 
-  private:
-	Router(Router const &src);
-	Router &operator=(Router const &rhs);
 
-	IRouteRegistry const &_routeRegistry;
+    class Router
+    {
+    public:
+        Router(IRouteRegistry const& routeRegistry, controller::ServeStaticResource& serveStaticResource,
+               controller::DeleteStaticResource& deleteStaticResource,
+               controller::ExecuteDynamicResource& executeDynamicResource);
 
-	controller::ServeStaticResource	  &_serveStaticResource;
-	controller::DeleteStaticResource &_deleteStaticResource;
-	// controller::ExecuteDynamicResourcer &_executeDynamicResource;
-};
+        void route(Context& context);
+
+    private:
+        Router(Router const& src);
+        Router& operator=(Router const& rhs);
+
+        IRouteRegistry const& _routeRegistry;
+
+        controller::ServeStaticResource& _serveStaticResource;
+        controller::DeleteStaticResource& _deleteStaticResource;
+        controller::ExecuteDynamicResource& _executeDynamicResource;
+    };
 } // namespace http
 
 #endif // HTTPROUTER_HPP

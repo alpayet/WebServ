@@ -68,6 +68,7 @@ SRC_FILES = \
 	infrastructure/server/application_protocol/http/presenters/ExecuteDynamicResource.cpp \
 	infrastructure/server/application_protocol/http/methods.cpp \
 	infrastructure/server/application_protocol/TestProtocol.cpp \
+	cgi/Cgi.cpp \
 	cgi/constants.cpp \
 	cgi/Response.cpp \
 	cgi/Exception.cpp \
@@ -99,7 +100,7 @@ CFLAGS += $(EXTRA_FLAGS)
 IFLAGS = -I $(SRC_DIR)
 MAKE = @make --no-print-directory -j
 
-DEBUG_VALGRIND = valgrind --leak-check=full --show-leak-kinds=all -s
+DEBUG_VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --child-silent-after-fork=yes -s
 
 all : $(NAME)
 
