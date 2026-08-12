@@ -6,8 +6,8 @@
 class Cgi : public app::IDynamicResourceExecutor
 {
 public:
-    app::StreamInfo execute(std::string const& resourcePath, std::string const& bodyPath,
-                            std::map<std::string, std::string> const& metaVariables);
+    app::StreamInfo execute(std::string const &rootPath, std::string const &resourcePath, std::string const &bodyPath,
+                            std::map<std::string, std::string> const &metaVariables);
 };
 
 #endif

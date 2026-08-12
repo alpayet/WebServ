@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/12 21:43:42 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ ExecuteDynamicResource::createMetaVariables(Request const &request) {
 
   if (request.hasContentLength())
     metaVariable[cgi::meta::CONTENT_LENGTH] =
-        request.getHeader(headers::CONTENT_TYPE);
+        request.getHeader(headers::CONTENT_LENGTH);
 
   if (request.hasHeader(headers::CONTENT_TYPE))
     metaVariable[cgi::meta::CONTENT_TYPE] =

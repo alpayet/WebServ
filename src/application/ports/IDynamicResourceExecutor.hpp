@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:06:45 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/12 20:17:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ public:
   virtual ~IDynamicResourceExecutor(void) {}
 
   virtual StreamInfo
-  execute(std::string const &resourcePath, std::string const &bodyPath,
+  execute(std::string const &rootPath, std::string const &resourcePath, std::string const &bodyPath,
           std::map<std::string, std::string> const &metaVariables) = 0;
 };
 } // namespace app

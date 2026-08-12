@@ -3,7 +3,7 @@
 # In Bash, environment variables set by execve are natively accessible.
 # ${VAR:-} to prevent errors if the variable is empty/unset.
 METHOD="${REQUEST_METHOD:-}"
-TARGET_FILE="www/uploads/test.txt"
+TARGET_FILE="../uploads/test.txt"
 
 if [ "$METHOD" = "DELETE" ]; then
 	rm "$TARGET_FILE"

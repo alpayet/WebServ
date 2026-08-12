@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/12 20:16:49 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void ExecuteDynamicResource::execute(Input const &dtoInput,
   if (!dynamic_resource.isReadable() || !dynamic_resource.isExecutable())
     throw Exception(Exception::ACCESS_DENIED);
 
-  StreamInfo stream_info = _dynamicResourceExecutor.execute(
+  StreamInfo stream_info = _dynamicResourceExecutor.execute(dtoInput.rootPath,
       dynamic_resource.getResourcePath(), dtoInput.bodyPath,
       dtoInput.metaVariables);
 

@@ -54,7 +54,7 @@ void createEnv(std::map<std::string, std::string> const& meta_variables, std::ve
     }
 }
 
-void childRoutine(const std::string& uri, const std::string& body_path, int pipe_fds[2], const std::vector<char*>& envp)
+void childRoutine(const std::string& rootPath, const std::string& uri, const std::string& body_path, int pipe_fds[2], const std::vector<char*>& envp)
 {
     std::pair<std::string, std::string> interpreter;
     const bool hasInterpreter = getInterpreter(uri, interpreter);
@@ -65,9 +65,12 @@ void childRoutine(const std::string& uri, const std::string& body_path, int pipe
     const char* in = body_path.empty() ? "/dev/null" : body_path.c_str();
     int in_fd = ::open(in, O_RDONLY);
     if (in_fd < 0 || ::dup2(pipe_fds[1], STDOUT_FILENO) < 0 || ::dup2(in_fd, STDIN_FILENO) < 0 ||
-        ::chdir(uri.substr(0, slash).c_str()) < 0)
+        ::chdir(rootPath.c_str()) < 0)
         ::_exit(1);
 
+
+    // close read buf not using and close write buf now dup in new_write_buf
+    ::close(in_fd);
     ::close(pipe_fds[0]);
     ::close(pipe_fds[1]);
 
@@ -78,14 +81,17 @@ void childRoutine(const std::string& uri, const std::string& body_path, int pipe
     }
     else
     {
+        std::cerr << "does not has interpreter" << std::endl;
+
+        std::string exec_path = "./" + script;
         char* argv[2] = {const_cast<char*>(uri.c_str()), NULL};
-        ::execve(uri.c_str(), argv, &envp[0]);
+        ::execve(exec_path.c_str(), argv, &envp[0]);
     }
     std::cerr << "execve() failed in child" << std::endl;
     ::_exit(1);
 }
 
-app::StreamInfo Cgi::execute(const std::string& resourcePath, const std::string& bodyPath,
+app::StreamInfo Cgi::execute(const std::string& rootPath, const std::string& resourcePath, const std::string& bodyPath,
                              const std::map<std::string, std::string>& meta_variables)
 {
     app::StreamInfo infos = {-1, -1};
@@ -108,12 +114,15 @@ app::StreamInfo Cgi::execute(const std::string& resourcePath, const std::string&
     }
 
     if (infos.pid == 0)
-        childRoutine(resourcePath, bodyPath, pipe_fds, envp);
+        childRoutine(rootPath, resourcePath, bodyPath, pipe_fds, envp);
 
     ::close(pipe_fds[1]);
 
     if (::fcntl(pipe_fds[0], F_SETFL, O_NONBLOCK) == -1)
+    {
+        ::close(pipe_fds[0]);
         throw cgi::Exception(cgi::Exception::SET_NON_BLOCK_FAILED);
+    }
 
     infos.fd = pipe_fds[0];
 
