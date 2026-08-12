@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 00:02:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ Protocol::PushStatus::Type Protocol::pushStream(Context &context,
     context_stream.buf.insert(context_stream.buf.end(), streamBuf,
                               streamBuf + size);
 
-    if (_cgiParser.parse(context_stream.buf, status, context_stream.state) ==
+    if (_cgiParser.parse(context_stream.buf, status == StreamStatus::END_OF_STREAM, context_stream.state) ==
         cgi::Parser::COMPLETE) {
       dispatchCgiResponse(context);
       return (PushStatus::COMPLETE);
