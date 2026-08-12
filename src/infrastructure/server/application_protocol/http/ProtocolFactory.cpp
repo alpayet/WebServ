@@ -14,8 +14,7 @@ namespace http {
         _cgiParser(config), _router(config, _serveStaticResourceController, _deleteStaticResourceController,
                                     _executeDynamicResourceController),
         _sender(config), _protocol(_requestParser, _cgiParser, _router, _sender, config)
-    {
-    }
+    {}
 
     ProtocolFactory::~ProtocolFactory() {}
 

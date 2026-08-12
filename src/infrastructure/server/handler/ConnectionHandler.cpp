@@ -14,7 +14,7 @@ namespace webserv {
     namespace handler {
 
         ConnectionHandler::ConnectionHandler(transport::ITransport* connection, appProtocol::IProtocol* appProtocol) :
-            m_transport(connection), m_app_protocol(appProtocol), m_write_buf(), m_write_pos(0),
+            m_transport(connection), m_app_protocol(appProtocol), m_read_buf(), m_write_buf(), m_write_pos(0),
             m_last_activity(ft::now())
         {}
 
@@ -98,8 +98,7 @@ namespace webserv {
             if (pull_state == appProtocol::IProtocol::PullStatus::HAS_MORE)
                 return;
 
-            // ask alpayetos if il met should keep alive a false sur une erreur chez lui si oui check du state inutile
-            if (m_app_protocol->shouldKeepAlive() && pull_state != appProtocol::IProtocol::PullStatus::ERROR)
+            if (m_app_protocol->shouldKeepAlive())
             {
                 m_app_protocol->reset();
                 reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
