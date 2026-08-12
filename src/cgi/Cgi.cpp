@@ -17,6 +17,7 @@ bool getInterpreter(const std::string& uri, std::pair<std::string, std::string>&
     interpreters[".sh"] = std::make_pair("/bin/bash", "bash");
     interpreters[".py"] = std::make_pair("/usr/bin/python3", "python3");
     interpreters[".php"] = std::make_pair("/usr/bin/php", "php");
+    // interpreters[".py"] = std::make_pair("/null/test/python3", "python3");
     // interpreters[".py"] = std::make_pair("/bin/python3", "python3");
     // interpreters[".php"] = std::make_pair("/bin/php", "php");
 
@@ -58,6 +59,49 @@ void createEnv(std::map<std::string, std::string> const& meta_variables, std::ve
     }
 }
 
+void childRoutine(const std::string& uri, const std::string& body_path, int pipe_fds[2], const std::vector<char*>& envp)
+{
+    std::cerr << "In child routine" << std::endl;
+    std::pair<std::string, std::string> interpreter;
+    const bool hasInterpreter = getInterpreter(uri, interpreter);
+
+    std::size_t slash = uri.find_last_of('/');
+    const std::string script = uri.substr(slash + 1);
+
+    const char* in = body_path.empty() ? "/dev/null" : body_path.c_str();
+    int in_fd = ::open(in, O_RDONLY);
+    if (in_fd < 0 || ::dup2(pipe_fds[1], STDOUT_FILENO) < 0 || ::dup2(in_fd, STDIN_FILENO) < 0 ||
+        ::chdir(uri.substr(0, slash).c_str()) < 0)
+        ::exit(1);
+
+
+    // close read buf not using and close write buf now dup in new_write_buf
+    ::close(pipe_fds[0]);
+    ::close(pipe_fds[1]);
+    // now writing on pipe fd 1 via STDOUT_FILENO
+
+
+    std::cerr << "execve :" << std::endl;
+    std::cerr << "binary: " << interpreter.first << std::endl;
+    std::cerr << "executable: " << interpreter.second << std::endl;
+    std::cerr << "script: " << script << std::endl;
+    if (hasInterpreter)
+    {
+        std::cerr << "has interpreter" << std::endl;
+        char* argv[3] = {const_cast<char*>(interpreter.second.c_str()), const_cast<char*>(script.c_str()), NULL};
+        ::execve(interpreter.first.c_str(), argv, &envp[0]);
+    }
+    else
+    {
+        std::cerr << "does not has interpreter" << std::endl;
+
+        char* argv[2] = {const_cast<char*>(uri.c_str()), NULL};
+        ::execve(uri.c_str(), argv, &envp[0]);
+    }
+    std::cerr << "execve() failed in child" << std::endl;
+    ::exit(1);
+}
+
 app::StreamInfo Cgi::execute(const std::string& resourcePath, const std::string& bodyPath,
                              const std::map<std::string, std::string>& meta_variables)
 {
@@ -71,8 +115,6 @@ app::StreamInfo Cgi::execute(const std::string& resourcePath, const std::string&
     std::vector<std::string> tmp_env;
     std::vector<char*> envp;
     int pipe_fds[2];
-    std::pair<std::string, std::string> interpreter;
-    bool hasInterpreter = getInterpreter(resourcePath, interpreter);
 
     createEnv(meta_variables, tmp_env, envp);
 
@@ -90,41 +132,7 @@ app::StreamInfo Cgi::execute(const std::string& resourcePath, const std::string&
     }
 
     if (infos.pid == 0)
-    {
-        std::size_t s = resourcePath.find_last_of('/');
-        const std::string script = resourcePath.substr(s + 1);
-
-        const char* in = bodyPath.empty() ? "/dev/null" : bodyPath.c_str();
-        int in_fd = ::open(in, O_RDONLY);
-        if (in_fd < 0 || ::dup2(pipe_fds[1], STDOUT_FILENO) < 0 || ::dup2(in_fd, STDIN_FILENO) < 0 ||
-            ::chdir(resourcePath.substr(0, s).c_str()) < 0)
-            ::exit(1);
-
-
-        // close read buf not using and close write buf now dup in new_write_buf
-        ::close(pipe_fds[0]);
-        ::close(pipe_fds[1]);
-        // now writing on pipe fd 1 via STDOUT_FILENO
-
-
-        // std::cerr << "execve :" << std::endl;
-        // std::cerr << "binary: " << interpreter.first << std::endl;
-        // std::cerr << "executable: " << interpreter.second << std::endl;
-        // std::cerr << "script: " << script << std::endl;
-        if (hasInterpreter)
-        {
-            std::cerr << "has interpreter" << std::endl;
-            char* argv[3] = {const_cast<char*>(interpreter.second.c_str()), const_cast<char*>(script.c_str()), NULL};
-            ::execve(interpreter.first.c_str(), argv, &envp[0]);
-        }
-        else
-        {
-            char* argv[2] = {const_cast<char*>(resourcePath.c_str()), NULL};
-            ::execve(resourcePath.c_str(), argv, &envp[0]);
-        }
-        std::cerr << "execve() failed in child" << std::endl;
-        ::exit(1);
-    }
+        childRoutine(resourcePath, bodyPath, pipe_fds, envp);
 
     ::close(pipe_fds[1]);
 

@@ -22,7 +22,7 @@ namespace webserv {
         {
         }
 
-        StreamHandler::~StreamHandler() {}
+        StreamHandler::~StreamHandler() { ::close(m_stream_info.fd); }
 
         int StreamHandler::getFd() const { return m_stream_info.fd; }
 
@@ -30,7 +30,7 @@ namespace webserv {
 
         void StreamHandler::onReadable(reactor::Reactor& reactor)
         {
-            DEBUG("readable cgi | on pipe donc");
+            std::cout << "readable cgi | on pipe so\n";
             m_last_activity = ft::now();
 
             appProtocol::IProtocol::StreamStatus::Type push_status = appProtocol::IProtocol::StreamStatus::NORMAL;
@@ -56,19 +56,26 @@ namespace webserv {
             if (bytes_read == 0)
                 push_status = appProtocol::IProtocol::StreamStatus::END_OF_STREAM;
 
-            DEBUG("read " << bytes_read << " bytes");
+            std::cout << "read " << bytes_read << " bytes\n";
 
+            std::cout << "read buf cgi : " << m_read_buf << std::endl;
             const appProtocol::IProtocol::PushStatus::Type push_state =
                 m_app_protocol->pushStream(m_read_buf, bytes_read, push_status);
 
+            std::cout << "push_state " << push_state << "\n";
+
             if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
             {
+                std::cout << "push complete cgi now remove pipe and send to client\n";
                 kill(m_stream_info.pid, SIGKILL);
                 waitpid(m_stream_info.pid, NULL, WNOHANG);
                 reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
                 reactor.removeEventHandler(m_stream_info.fd);
                 ::close(m_stream_info.fd);
             }
+            else
+                std::cout << "push cgi need more data\n";
+
             // TODO if error...
         }
 
@@ -84,7 +91,7 @@ namespace webserv {
             m_app_protocol->pushStream(NULL, 0, appProtocol::IProtocol::StreamStatus::TIMEOUT);
 
             kill(m_stream_info.pid, SIGKILL);
-            waitpid(m_stream_info.pid, NULL, WNOHANG);
+            waitpid(m_stream_info.pid, NULL, 0);
             reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
             reactor.removeEventHandler(m_stream_info.fd);
             ::close(m_stream_info.fd);

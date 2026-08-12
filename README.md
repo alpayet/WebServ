@@ -95,5 +95,10 @@ Epoll/Kqueue : man pages
 Sockets/bind()/listen()/accept()... : https://beej.us/guide/bgnet/pdf/bgnet_usl_c_1.pdf
 
 Connections timeout handling:
+
 https://stackoverflow.com/questions/10772208/epoll-and-timeouts
 https://groups.google.com/g/comp.unix.programmer/c/WqLDeCvBQEo?pli=1
+
+CGI handling:
+
+https://en.wikipedia.org/wiki/Common_Gateway_Interface #Section deployment
