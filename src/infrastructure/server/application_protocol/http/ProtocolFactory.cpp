@@ -3,8 +3,7 @@
 #include "infrastructure/server/application_protocol/http/Session.hpp"
 #include "infrastructure/server/utils/Logger.hpp"
 
-namespace http
-{
+namespace http {
 
     ProtocolFactory::ProtocolFactory(ServerConfig const& config) :
         _storage(), _directory_explorer(), _cgi(), _serveStaticResourceUseCase(config, _storage, _directory_explorer),

@@ -11,109 +11,111 @@
 #include <sys/types.h>
 
 namespace webserv {
-namespace handler {
+    namespace handler {
 
-ConnectionHandler::ConnectionHandler(transport::ITransport *connection,
-                                     appProtocol::IProtocol *appProtocol)
-    : m_transport(connection), m_app_protocol(appProtocol), m_write_buf(),
-      m_write_pos(0), m_last_activity(ft::now()) {}
+        ConnectionHandler::ConnectionHandler(transport::ITransport* connection, appProtocol::IProtocol* appProtocol) :
+            m_transport(connection), m_app_protocol(appProtocol), m_write_buf(), m_write_pos(0),
+            m_last_activity(ft::now())
+        {}
 
-ConnectionHandler::~ConnectionHandler() {
-  delete m_transport;
-  delete m_app_protocol;
-}
+        ConnectionHandler::~ConnectionHandler()
+        {
+            delete m_transport;
+            delete m_app_protocol;
+        }
 
-int ConnectionHandler::getFd() const { return m_transport->getFd(); }
+        int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
-void ConnectionHandler::onReadable(reactor::Reactor &reactor) {
-  m_last_activity = ft::now();
+        std::time_t ConnectionHandler::getLastActivity() const { return m_last_activity; }
 
-  const ssize_t bytes_read = m_transport->read(m_read_buf, RECV_CHUNK);
+        void ConnectionHandler::onReadable(reactor::Reactor& reactor)
+        {
+            DEBUG("New request");
+            m_last_activity = ft::now();
 
-  if (bytes_read <= 0) {
-    reactor.removeEventHandler(m_transport->getFd());
-    return;
-  }
+            const ssize_t bytes_read = m_transport->read(m_read_buf, RECV_CHUNK);
 
-  const appProtocol::IProtocol::PushStatus::Type push_state =
-      m_app_protocol->pushRequest(
-          m_read_buf, bytes_read,
-          appProtocol::IProtocol::RequestStatus::NORMAL);
+            if (bytes_read <= 0)
+            {
+                reactor.removeEventHandler(m_transport->getFd());
+                return;
+            }
 
-  if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE) {
-    m_write_pos = 0;
-    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
-  } else if (push_state ==
-             appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE) {
-    std::cout << "new cgi!" << std::endl;
-    try {
-      IEventHandler *event =
-          new StreamHandler(m_app_protocol->getStreamResources(),
-                            m_transport->getFd(), m_app_protocol);
-      if (!reactor.addEventHandler(event, reactor::EVENT_READ))
-        throw std::runtime_error("can't add cgi event handler");
+            const appProtocol::IProtocol::PushStatus::Type push_state =
+                m_app_protocol->pushRequest(m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
 
-      reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_NONE);
+            if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
+            {
+                m_write_pos = 0;
+                reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
+            }
+            else if (push_state == appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE)
+            {
+                try
+                {
+                    IEventHandler* event =
+                        new StreamHandler(m_app_protocol->getStreamResources(), m_transport->getFd(), m_app_protocol);
+                    if (!reactor.addEventHandler(event, reactor::EVENT_READ))
+                        throw std::runtime_error("can't add cgi event handler");
 
-    } catch (...) {
-      DEBUG("throw on new Cgi");
-      reactor.removeEventHandler(m_transport->getFd());
-    }
-  }
+                    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_NONE);
+                }
+                catch (...)
+                {
+                    DEBUG("throw on new Cgi");
+                    reactor.removeEventHandler(m_transport->getFd());
+                }
+            }
+        }
 
-  // TODO a voir cela avec Luca
-  //  else if (push_state == protocol::IProtocol::CLOSE_CONNECTION)
-  //  {
-  //  	reactor.removeEventHandler(m_transport->getFd());
-  //  }
-}
+        void ConnectionHandler::onWritable(reactor::Reactor& reactor)
+        {
+            m_last_activity = ft::now();
 
-void ConnectionHandler::onWritable(reactor::Reactor &reactor) {
-  m_last_activity = ft::now();
+            if (m_write_pos < m_write_buf.size())
+            {
+                const ssize_t bytes_send =
+                    m_transport->write(&m_write_buf[m_write_pos], m_write_buf.size() - m_write_pos);
+                if (bytes_send < 0)
+                {
+                    reactor.removeEventHandler(m_transport->getFd());
+                    return;
+                }
+                m_write_pos += static_cast<std::size_t>(bytes_send);
+            }
 
-  if (m_write_pos < m_write_buf.size()) {
-    const ssize_t bytes_send = m_transport->write(
-        &m_write_buf[m_write_pos], m_write_buf.size() - m_write_pos);
-    if (bytes_send < 0) {
-      reactor.removeEventHandler(m_transport->getFd());
-      return;
-    }
-    m_write_pos += static_cast<std::size_t>(bytes_send);
-  }
+            if (m_write_pos < m_write_buf.size())
+                return;
 
-  if (m_write_pos < m_write_buf.size())
-    return;
+            m_write_buf.clear();
+            m_write_pos = 0;
 
-  m_write_buf.clear();
-  m_write_pos = 0;
+            const appProtocol::IProtocol::PullStatus::Type pull_state = m_app_protocol->pullResponse(m_write_buf);
 
-  const appProtocol::IProtocol::PullStatus::Type pull_state =
-      m_app_protocol->pullResponse(m_write_buf);
 
-  if (!m_write_buf.empty())
-    return;
-  if (pull_state == appProtocol::IProtocol::PullStatus::HAS_MORE)
-    return;
+            if (!m_write_buf.empty())
+                return;
+            if (pull_state == appProtocol::IProtocol::PullStatus::HAS_MORE)
+                return;
 
-  if (m_app_protocol->shouldKeepAlive()) {
-    m_app_protocol->reset();
-    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
-  } else
-    reactor.removeEventHandler(m_transport->getFd());
-}
+            // ask alpayetos if il met should keep alive a false sur une erreur chez lui si oui check du state inutile
+            if (m_app_protocol->shouldKeepAlive() && pull_state != appProtocol::IProtocol::PullStatus::ERROR)
+            {
+                m_app_protocol->reset();
+                reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
+            }
+            else
+                reactor.removeEventHandler(m_transport->getFd());
+        }
 
-void ConnectionHandler::onTimeout(reactor::Reactor &reactor) {
-  m_last_activity = ft::now();
+        void ConnectionHandler::onTimeout(reactor::Reactor& reactor)
+        {
+            m_last_activity = ft::now();
 
-  m_app_protocol->pushRequest(NULL, 0,
-                              appProtocol::IProtocol::RequestStatus::TIMEOUT);
+            m_app_protocol->pushRequest(NULL, 0, appProtocol::IProtocol::RequestStatus::TIMEOUT);
 
-  reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
-}
+            reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
+        }
 
-std::time_t ConnectionHandler::getLastActivity() const {
-  return m_last_activity;
-}
-
-} // namespace handler
+    } // namespace handler
 } // namespace webserv
