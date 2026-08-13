@@ -85,11 +85,7 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 		throw ParserFormatException(os.str());
 	}
 	expect(';');
-<<<<<<< HEAD
-	while (m_it->type == char_end && m_it != m_ite)
-=======
 	while (m_it != m_ite && m_it->type == char_end)
->>>>>>> origin/feat/config-fixml
 		++m_it;
 	t.directives.push_back(direc);
 	return direc;
