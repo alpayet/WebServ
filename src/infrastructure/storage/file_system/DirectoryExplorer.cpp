@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:10:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 22:24:19 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 					pos = tmpPath.find_last_of('/');
 				}
 				tmpPath.erase(pos);
+			}
+			else
+			{
+				dir = readdir(dir_ptr);
+				continue ;
 			}
 		}
 		else
