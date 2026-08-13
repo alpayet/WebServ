@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <iostream>
 namespace fileSystem {
 std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
@@ -65,6 +66,11 @@ std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 					pos = tmpPath.find_last_of('/');
 				}
 				tmpPath.erase(pos);
+			}
+			else
+			{
+				dir = readdir(dir_ptr);
+				continue ;
 			}
 		}
 		else
