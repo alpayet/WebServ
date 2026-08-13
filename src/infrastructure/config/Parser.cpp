@@ -85,7 +85,7 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 		throw ParserFormatException(os.str());
 	}
 	expect(';');
-	while (m_it->type == char_end)
+	while (m_it != m_ite && m_it->type == char_end)
 		++m_it;
 	t.directives.push_back(direc);
 	return direc;
