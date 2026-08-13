@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 20:01:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 03:11:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,12 @@ Parser::Parser(
 	parse::IValidationPolicy const &validationPolicy,
 	IHttpVersionProvider const	   &httpVersionProvider
 )
-	: _validationPolicy(validationPolicy), _httpVersionProvider(httpVersionProvider)
-{
-	_maxRequestLineSize =
-		std::min(_validationPolicy.getMaxRequestLineSize(), parse::DEFAULT_MAX_REQUEST_LINE_SIZE);
-
-	_maxHeaderLineSize =
-		std::min(_validationPolicy.getMaxHeaderLineSize(), parse::DEFAULT_MAX_HEADER_LINE_SIZE);
-
-	_maxHeaderCount =
-		std::min(_validationPolicy.getMaxHeaderCount(), parse::DEFAULT_MAX_HEADER_COUNT);
-
-	_maxBodySize = std::min(_validationPolicy.getMaxBodySize(), parse::DEFAULT_MAX_BODY_SIZE);
-}
+	: _maxRequestLineSize(validationPolicy.getMaxRequestLineSize()),
+	  _maxHeaderLineSize(validationPolicy.getMaxHeaderLineSize()),
+	  _maxHeaderCount(validationPolicy.getMaxHeaderCount()),
+	  _maxBodySize(validationPolicy.getMaxBodySize()),
+	  _httpVersionProvider(httpVersionProvider)
+{}
 
 Parser::Step Parser::parse(std::vector<char> &inputBuf, State &state)
 {
