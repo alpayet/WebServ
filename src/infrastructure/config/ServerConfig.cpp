@@ -36,7 +36,7 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	
+
 	Location loc;
 	loc.index = m_index;
 	loc.root = m_root;
