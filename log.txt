@@ -1,0 +1,5 @@
+[2026/08/13 01:32:35.131] listening on: tcp:ipv6/localhost:3030
+[2026/08/13 01:32:35.132] listening on 1 endpoint
+[2026/08/13 01:32:35.132] reactor loop starting...
+[webserv] signal 2 received
+[2026/08/13 01:32:36.187] reactor run loop stopped

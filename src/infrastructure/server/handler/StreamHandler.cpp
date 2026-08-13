@@ -6,8 +6,8 @@
 #include "infrastructure/server/utils/Logger.hpp"
 #include "infrastructure/server/utils/utils.hpp"
 
+#include <csignal>
 #include <iostream>
-#include <signal.h>
 #include <string>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -21,7 +21,22 @@ namespace webserv {
             m_last_activity(ft::now())
         {}
 
-        StreamHandler::~StreamHandler() { ::close(m_stream_info.fd); }
+        StreamHandler::~StreamHandler() { releaseStreamResources(); }
+
+        void StreamHandler::releaseStreamResources()
+        {
+            if (m_stream_info.pid != -1)
+            {
+                ::kill(m_stream_info.pid, SIGKILL);
+                ::waitpid(m_stream_info.pid, NULL, 0);
+                m_stream_info.pid = -1;
+            }
+            if (m_stream_info.fd != -1)
+            {
+                ::close(m_stream_info.fd);
+                m_stream_info.fd = -1;
+            }
+        }
 
         int StreamHandler::getFd() const { return m_stream_info.fd; }
 
@@ -38,13 +53,10 @@ namespace webserv {
             if (bytes_read < 0)
             {
                 m_app_protocol->pushStream(m_read_buf, bytes_read, appProtocol::IProtocol::StreamStatus::ERROR);
-
-                ::kill(m_stream_info.pid, SIGKILL);
-                ::waitpid(m_stream_info.pid, NULL, 0);
-
-                reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
+                reactor.backToDemux(m_client_fd, reactor::EVENT_WRITE);
                 reactor.removeEventHandler(m_stream_info.fd);
-                ::close(m_stream_info.fd);
+
+                releaseStreamResources();
                 return;
             }
 
@@ -62,11 +74,10 @@ namespace webserv {
             if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
             {
                 std::cout << "push complete cgi now remove pipe and send to client\n";
-                ::kill(m_stream_info.pid, SIGKILL);
-                ::waitpid(m_stream_info.pid, NULL, 0);
-                reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
+                reactor.backToDemux(m_client_fd, reactor::EVENT_WRITE);
                 reactor.removeEventHandler(m_stream_info.fd);
-                ::close(m_stream_info.fd);
+
+                releaseStreamResources();
             }
             else
                 std::cout << "push cgi need more data\n";
@@ -79,12 +90,10 @@ namespace webserv {
             m_last_activity = ft::now();
 
             m_app_protocol->pushStream(NULL, 0, appProtocol::IProtocol::StreamStatus::TIMEOUT);
-
-            ::kill(m_stream_info.pid, SIGKILL);
-            ::waitpid(m_stream_info.pid, NULL, 0);
-            reactor.modifyEventFlag(m_client_fd, reactor::EVENT_WRITE);
+            reactor.backToDemux(m_client_fd, reactor::EVENT_WRITE);
             reactor.removeEventHandler(m_stream_info.fd);
-            ::close(m_stream_info.fd);
+
+            releaseStreamResources();
         }
 
     } // namespace handler
