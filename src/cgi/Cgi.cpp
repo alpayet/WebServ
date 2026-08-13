@@ -1,10 +1,12 @@
 #include "cgi/Cgi.hpp"
 
+#include <csignal>
 #include <cstdlib>
 #include <fcntl.h>
 #include <iostream>
 #include <map>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
 #include "cgi/Exception.hpp"
@@ -54,7 +56,8 @@ void createEnv(std::map<std::string, std::string> const& meta_variables, std::ve
     }
 }
 
-void childRoutine(const std::string& rootPath, const std::string& uri, const std::string& body_path, int pipe_fds[2], const std::vector<char*>& envp)
+void childRoutine(const std::string& rootPath, const std::string& uri, const std::string& body_path, int pipe_fds[2],
+                  const std::vector<char*>& envp)
 {
     std::pair<std::string, std::string> interpreter;
     const bool hasInterpreter = getInterpreter(uri, interpreter);
@@ -121,6 +124,8 @@ app::StreamInfo Cgi::execute(const std::string& rootPath, const std::string& res
     if (::fcntl(pipe_fds[0], F_SETFL, O_NONBLOCK) == -1)
     {
         ::close(pipe_fds[0]);
+        ::kill(infos.pid, SIGKILL);
+        ::waitpid(infos.pid, NULL, 0);
         throw cgi::Exception(cgi::Exception::SET_NON_BLOCK_FAILED);
     }
 

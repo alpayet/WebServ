@@ -98,6 +98,10 @@ namespace webserv {
             }
         }
 
+        void Reactor::releaseFromDemux(int const fd) { m_demux.remove(fd); }
+
+        void Reactor::backToDemux(int const fd, int const flag) { m_demux.add(fd, flag); }
+
         int Reactor::computePollTimeout() const
         {
             const std::time_t now = ft::now();

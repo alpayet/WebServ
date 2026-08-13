@@ -15,7 +15,7 @@ namespace webserv {
 
         ConnectionHandler::ConnectionHandler(transport::ITransport* connection, appProtocol::IProtocol* appProtocol) :
             m_transport(connection), m_app_protocol(appProtocol), m_read_buf(), m_write_buf(), m_write_pos(0),
-            m_last_activity(ft::now())
+            m_streaming(false), m_last_activity(ft::now())
         {}
 
         ConnectionHandler::~ConnectionHandler()
@@ -26,20 +26,32 @@ namespace webserv {
 
         int ConnectionHandler::getFd() const { return m_transport->getFd(); }
 
-        std::time_t ConnectionHandler::getLastActivity() const { return m_last_activity; }
+        std::time_t ConnectionHandler::getLastActivity() const
+        {
+            if (m_streaming)
+                return -1;
+            return m_last_activity;
+        }
 
         void ConnectionHandler::onReadable(reactor::Reactor& reactor)
         {
             DEBUG("New request");
-            m_last_activity = ft::now();
 
             const ssize_t bytes_read = m_transport->read(m_read_buf, RECV_CHUNK);
+
+            m_last_activity = ft::now();
 
             if (bytes_read <= 0)
             {
                 reactor.removeEventHandler(m_transport->getFd());
                 return;
             }
+
+            if (bytes_read < 1500)
+                DEBUG("read request on fd: " << m_transport->getFd()
+                                             << ", buffer : " << std::string(m_read_buf, bytes_read));
+            else
+                DEBUG("read request, buffer too long must be img ");
 
             const appProtocol::IProtocol::PushStatus::Type push_state =
                 m_app_protocol->pushRequest(m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
@@ -58,7 +70,8 @@ namespace webserv {
                     if (!reactor.addEventHandler(event, reactor::EVENT_READ))
                         throw std::runtime_error("can't add cgi event handler");
 
-                    reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_NONE);
+                    m_streaming = true;
+                    reactor.releaseFromDemux(m_transport->getFd());
                 }
                 catch (...)
                 {
@@ -70,6 +83,10 @@ namespace webserv {
 
         void ConnectionHandler::onWritable(reactor::Reactor& reactor)
         {
+            // DEBUG("send response, " << m_transport->getFd()
+            //                         << ", buffer : " << std::string(m_write_buf.begin(), m_write_buf.end()));
+
+            m_streaming = false;
             m_last_activity = ft::now();
 
             if (m_write_pos < m_write_buf.size())
@@ -100,6 +117,7 @@ namespace webserv {
 
             if (m_app_protocol->shouldKeepAlive())
             {
+                m_streaming = false;
                 m_app_protocol->reset();
                 reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
             }
