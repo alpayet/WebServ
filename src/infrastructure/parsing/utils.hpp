@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 03:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:27:28 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 04:39:37 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ bool is_valid_uri_syntax(InputIterator it_start, InputIterator it_end)
 
 bool is_not_white_spaces(char c);
 char to_lower_safe(unsigned char c);
+void uri_decode(std::string &str);
 void trim(std::string &str, char const *to_trim);
 } // namespace parse
 

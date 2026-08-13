@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/12 19:27:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 03:18:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 #include "infrastructure/server/application_protocol/http/router/IRouteRegistry.hpp"
 #include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
-#include <iostream>
 
 namespace http
 {
@@ -47,10 +46,7 @@ namespace http
             throw Exception(Exception::METHOD_NOT_ALLOWED);
 
         if (route_policy.isCgi)
-        {
-            std::cout << "TESSSSSSSSSSSSSSSSSSSSSST" << std::endl;
             _executeDynamicResource(context, route_policy);
-        }
         else if (method == GET)
             _serveStaticResource(context, route_policy);
         else if (method == DELETE)

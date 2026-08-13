@@ -207,17 +207,17 @@ std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.1"); }
 
 std::size_t ServerConfig::getMaxRequestLineSize(void) const
 {
-	return std::numeric_limits<std::size_t>::max();
+	return 8192;
 }
 
 std::size_t ServerConfig::getMaxHeaderLineSize(void) const
 {
-	return std::numeric_limits<std::size_t>::max();
+	return 8192;
 }
 
 std::size_t ServerConfig::getMaxHeaderCount(void) const
 {
-	return std::numeric_limits<std::size_t>::max();
+	return 100;
 }
 
 std::size_t ServerConfig::getMaxBodySize(void) const { return (m_max_body); }

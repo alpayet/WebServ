@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/12 20:49:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 03:14:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,11 @@ void Parser::State::reset(void)
 }
 
 Parser::Parser(parse::IValidationPolicy const &validationPolicy)
-	: _validationPolicy(validationPolicy)
-{
-	_maxRequestLineSize =
-		std::min(_validationPolicy.getMaxRequestLineSize(), parse::DEFAULT_MAX_REQUEST_LINE_SIZE);
-
-	_maxHeaderLineSize =
-		std::min(_validationPolicy.getMaxHeaderLineSize(), parse::DEFAULT_MAX_HEADER_LINE_SIZE);
-
-	_maxHeaderCount =
-		std::min(_validationPolicy.getMaxHeaderCount(), parse::DEFAULT_MAX_HEADER_COUNT);
-
-	_maxBodySize = std::min(_validationPolicy.getMaxBodySize(), parse::DEFAULT_MAX_BODY_SIZE);
-}
+	: _maxRequestLineSize(validationPolicy.getMaxRequestLineSize()),
+	  _maxHeaderLineSize(validationPolicy.getMaxHeaderLineSize()),
+	  _maxHeaderCount(validationPolicy.getMaxHeaderCount()),
+	  _maxBodySize(validationPolicy.getMaxBodySize())
+{}
 
 Parser::Step Parser::parse(std::vector<char> &inputBuf, bool isCgiEof, Parser::State &state)
 {

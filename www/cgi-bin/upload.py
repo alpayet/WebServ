@@ -3,9 +3,9 @@ import os
 import sys
 import email
 from email.policy import default
+from urllib.parse import quote
 
 # 1. Résolution absolue du dossier d'upload (relatif à ce script)
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIR = "../uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -34,6 +34,8 @@ if "multipart/form-data" in content_type and content_length > 0:
 
             # Récupération des données brutes
             payload = part.get_payload(decode=True)
+            if payload is None:
+                payload = part.as_bytes()
 
             with open(save_path, "wb") as f:
                 f.write(payload)
@@ -41,11 +43,15 @@ if "multipart/form-data" in content_type and content_length > 0:
             mime_type = part.get_content_type()
             sys.stdout.write(f"<h2>File '{clean_filename}' received successfully!</h2>")
 
+            encoded_filename = quote(clean_filename).replace("'", "%27")
+
             if mime_type.startswith("image/"):
-                sys.stdout.write(f"<img src='/uploads/{clean_filename}' style='max-width: 600px; border: 2px solid black;' />")
+                sys.stdout.write(
+                    f'<img src="/uploads/{encoded_filename}" style="max-width: 600px;'
+                    ' border: 2px solid black;" />')
             else:
                 sys.stdout.write(f"<p>File type: {mime_type}</p>")
-                sys.stdout.write(f"<a href='/uploads/{clean_filename}'>Download / View static file</a>")
+                sys.stdout.write(f'<a href="/uploads/{encoded_filename}">Download / View static file</a>')
 
             uploaded = True
             break
