@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 04:30:13 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:15:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
 
 namespace parse {
 char const COLON = ':';

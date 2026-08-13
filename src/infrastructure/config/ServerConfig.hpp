@@ -2,7 +2,7 @@
 #define SERVERCONFIG_HPP
 
 #include "application/ports/IResourceLocator.hpp"
-#include "infrastructure/parsing/IValidationPolicy.hpp"
+#include "infrastructure/server/application_protocol/parsing/IValidationPolicy.hpp"
 #include "infrastructure/server/application_protocol/http/IHttpVersionProvider.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ILimitsProvider.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/IErrorPagesProvider.hpp"
@@ -77,6 +77,7 @@ class ServerConfig : public app::IResourceLocator,
 	std::string				 resolvePhysicalPath(std::string const &uri) const;
 	Location				 findLocationFromUri(std::string const &uri) const;
 	virtual std::string		 getHttpVersion(void) const;
+	virtual bool 			 isSupportedHttpVersion(std::string const &version) const;
 	virtual std::size_t		 getMaxRequestLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderLineSize(void) const;
 	virtual std::size_t		 getMaxHeaderCount(void) const;

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 00:02:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/core/Protocol.hpp"
 #include "application/Exception.hpp"
-#include "cgi/Exception.hpp"
-#include "cgi/Parser.hpp"
+#include "infrastructure/server/application_protocol/cgi/Exception.hpp"
+#include "infrastructure/server/application_protocol/cgi/Parser.hpp"
 #include "domain/Exception.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/IErrorPagesProvider.hpp"

@@ -6,16 +6,16 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 04:50:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 18:43:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/request/Parser.hpp"
-#include "infrastructure/parsing/IValidationPolicy.hpp"
-#include "infrastructure/parsing/constants.hpp"
-#include "infrastructure/parsing/header_parser.hpp"
-#include "infrastructure/parsing/line_reader.hpp"
-#include "infrastructure/parsing/utils.hpp"
+#include "infrastructure/server/application_protocol/parsing/IValidationPolicy.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/header_parser.hpp"
+#include "infrastructure/server/application_protocol/parsing/line_reader.hpp"
+#include "infrastructure/server/application_protocol/parsing/utils.hpp"
 #include "infrastructure/server/application_protocol/http/IHttpVersionProvider.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
 #include "infrastructure/server/application_protocol/http/methods.hpp"
@@ -305,7 +305,7 @@ std::string Parser::extractProtocol(
 
 	std::string protocol(it_protocol_start, it_protocol_end);
 
-	if (protocol != _httpVersionProvider.getHttpVersion())
+	if (!_httpVersionProvider.isSupportedHttpVersion(protocol))
 		throw Exception(Exception::VERSION_INVALID);
 	it = it_protocol_end;
 	return (protocol);

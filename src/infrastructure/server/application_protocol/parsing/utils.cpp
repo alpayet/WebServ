@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 04:11:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 04:48:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/parsing/utils.hpp"
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/utils.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 
 namespace

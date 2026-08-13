@@ -6,12 +6,12 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:46 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:24:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "infrastructure/parsing/line_reader.hpp"
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/line_reader.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 
 namespace parse {

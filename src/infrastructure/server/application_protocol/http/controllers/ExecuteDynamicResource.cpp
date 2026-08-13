@@ -6,13 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/12 21:43:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "application/ports/IResourceReader.hpp"
-#include "cgi/constants.hpp"
+#include "infrastructure/server/application_protocol/cgi/constants.hpp"
 #include "infrastructure/server/application_protocol/constants.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ILimitsProvider.hpp"

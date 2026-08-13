@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:18:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:32:04 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ namespace http
         _deleteStaticResource(deleteStaticResource), _executeDynamicResource(executeDynamicResource)
     {
     }
-
     void Router::route(Context& context)
     {
         Request const& request = context.input.state.request;

@@ -8,10 +8,6 @@ SRC_FILES = \
 	infrastructure/config/Semantic.cpp \
 	infrastructure/config/Config.cpp \
 	infrastructure/config/Parser.cpp \
-	infrastructure/parsing/line_reader.cpp \
-	infrastructure/parsing/constants.cpp \
-	infrastructure/parsing/utils.cpp \
-	infrastructure/parsing/header_parser.cpp \
 	infrastructure/storage/file_system/constants.cpp \
 	infrastructure/storage/file_system/Storage.cpp \
 	infrastructure/storage/file_system/fileSystem.cpp \
@@ -37,6 +33,15 @@ SRC_FILES = \
 	infrastructure/server/reactor/demultiplexer/KqueueDemultiplexer.cpp \
 	infrastructure/server/reactor/Reactor.cpp \
 	infrastructure/server/application_protocol/constants.cpp \
+	infrastructure/server/application_protocol/parsing/constants.cpp \
+	infrastructure/server/application_protocol/parsing/header_parser.cpp \
+	infrastructure/server/application_protocol/parsing/line_reader.cpp \
+	infrastructure/server/application_protocol/parsing/utils.cpp \
+	infrastructure/server/application_protocol/cgi/Cgi.cpp \
+	infrastructure/server/application_protocol/cgi/constants.cpp \
+	infrastructure/server/application_protocol/cgi/Exception.cpp \
+	infrastructure/server/application_protocol/cgi/Parser.cpp \
+	infrastructure/server/application_protocol/cgi/Response.cpp \
 	infrastructure/server/application_protocol/http/ProtocolFactory.cpp \
 	infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.cpp \
 	infrastructure/server/application_protocol/http/controllers/ServeStaticResource.cpp \
@@ -68,11 +73,6 @@ SRC_FILES = \
 	infrastructure/server/application_protocol/http/presenters/ExecuteDynamicResource.cpp \
 	infrastructure/server/application_protocol/http/methods.cpp \
 	infrastructure/server/application_protocol/TestProtocol.cpp \
-	cgi/Cgi.cpp \
-	cgi/constants.cpp \
-	cgi/Response.cpp \
-	cgi/Exception.cpp \
-	cgi/Parser.cpp \
 	application/use_cases/serve_static_resource/ServeStaticResource.cpp \
 	application/use_cases/delete_static_resource/DeleteStaticResource.cpp \
 	application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.cpp \

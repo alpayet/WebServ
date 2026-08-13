@@ -4,7 +4,7 @@
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
-#include "cgi/Cgi.hpp"
+#include "infrastructure/server/application_protocol/cgi/Cgi.hpp"
 #include "infrastructure/server/application_protocol/IProtocolFactory.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"

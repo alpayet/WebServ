@@ -205,6 +205,11 @@ app::SystemResourceInfo ServerConfig::locateErrorPage(std::string const &uri) co
 
 std::string ServerConfig::getHttpVersion(void) const { return ("HTTP/1.1"); }
 
+bool ServerConfig::isSupportedHttpVersion(std::string const &version) const
+{
+	return (version == "HTTP/1.1" || version == "HTTP/1.0");
+}
+
 std::size_t ServerConfig::getMaxRequestLineSize(void) const
 {
 	return 8192;

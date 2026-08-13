@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:52:58 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 13:58:14 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 18:23:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class Exception : public std::exception
 	};
 
   public:
-	Exception(std::string const &message, ErrorCode internalCode) throw();
+	Exception(char const *message, ErrorCode internalCode) throw();
 	Exception(ErrorCode internalCode) throw();
 	virtual ~Exception(void) throw() {}
 
@@ -56,7 +56,7 @@ class Exception : public std::exception
 	virtual char const *what(void) const throw();
 
   private:
-	std::string _message;
+	char const *_message;
 	ErrorCode	_internalCode;
 };
 } // namespace cgi

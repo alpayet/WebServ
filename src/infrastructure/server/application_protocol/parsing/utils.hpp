@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 03:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 04:39:37 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSINGUTILS_HPP
 #define PARSINGUTILS_HPP
 
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 #include <string>
 

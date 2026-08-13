@@ -1,4 +1,4 @@
-#include "cgi/Cgi.hpp"
+#include "infrastructure/server/application_protocol/cgi/Cgi.hpp"
 
 #include <csignal>
 #include <cstdlib>
@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
-#include "cgi/Exception.hpp"
+#include "infrastructure/server/application_protocol/cgi/Exception.hpp"
 #include "infrastructure/server/utils/Logger.hpp"
 
 bool getInterpreter(const std::string& uri, std::pair<std::string, std::string>& out)

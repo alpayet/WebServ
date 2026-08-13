@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define HTTPCONTEXT_HPP
 
 #include "application/ports/IDynamicResourceExecutor.hpp"
-#include "cgi/Parser.hpp"
+#include "infrastructure/server/application_protocol/cgi/Parser.hpp"
 #include "infrastructure/server/application_protocol/http/request/Parser.hpp"
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
 #include "infrastructure/server/application_protocol/http/response/Sender.hpp"

@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:28:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:14:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CGIPARSER_HPP
 #define CGIPARSER_HPP
 
-#include "cgi/Response.hpp"
+#include "infrastructure/server/application_protocol/cgi/Response.hpp"
 #include <vector>
 
 namespace parse {

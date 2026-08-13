@@ -6,14 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:28:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_LINE_READER_HPP
 #define PARSE_LINE_READER_HPP
 
-#include "infrastructure/parsing/constants.hpp"
+#include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 #include <vector>
 

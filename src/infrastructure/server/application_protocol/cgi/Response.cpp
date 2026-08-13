@@ -6,11 +6,11 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 20:53:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cgi/Response.hpp"
+#include "infrastructure/server/application_protocol/cgi/Response.hpp"
 #include "infrastructure/server/application_protocol/constants.hpp"
 
 namespace cgi {
