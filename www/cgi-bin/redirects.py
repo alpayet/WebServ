@@ -17,7 +17,7 @@ elif "type=clientdoc" in query:
 
 elif "type=client" in query:
     # Client Redirect Response
-    sys.stdout.write("Location: http://google.com\r\n\r\n")
+    sys.stdout.write("Location: http://toilettes.fr\r\n\r\n")
 
 else:
     # 4. Document Response (Default)

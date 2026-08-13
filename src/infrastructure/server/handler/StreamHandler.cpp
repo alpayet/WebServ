@@ -44,7 +44,6 @@ namespace webserv {
 
         void StreamHandler::onReadable(reactor::Reactor& reactor)
         {
-            std::cout << "readable cgi | on pipe so\n";
             m_last_activity = ft::now();
 
             appProtocol::IProtocol::StreamStatus::Type push_status = appProtocol::IProtocol::StreamStatus::NORMAL;
@@ -63,24 +62,16 @@ namespace webserv {
             if (bytes_read == 0)
                 push_status = appProtocol::IProtocol::StreamStatus::END_OF_STREAM;
 
-            std::cout << "read " << bytes_read << " bytes\n";
-            std::cout << "read buf cgi : " << m_read_buf << std::endl;
-
             const appProtocol::IProtocol::PushStatus::Type push_state =
                 m_app_protocol->pushStream(m_read_buf, bytes_read, push_status);
 
-            std::cout << "push_state " << push_state << "\n";
-
             if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
             {
-                std::cout << "push complete cgi now remove pipe and send to client\n";
                 reactor.backToDemux(m_client_fd, reactor::EVENT_WRITE);
                 reactor.removeEventHandler(m_stream_info.fd);
 
                 releaseStreamResources();
             }
-            else
-                std::cout << "push cgi need more data\n";
         }
 
         void StreamHandler::onWritable(reactor::Reactor& reactor) { (void)reactor; }
