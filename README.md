@@ -14,24 +14,25 @@ Configuration file ressemble the server block of the nginx file:
 ```
 server {
 	listen 8081;
-	hostname 10.15.2.1;
+	hostname 127.0.0.1;
 
 	root /var/www/html/
 
 	location / {
-		root /var/www/html/example;
 		index index.html index.htm;
 	}
 
-	location /banana/ {
+	location /testing/ {
 		return 404;
 	}
 
-	location /lalala/ {
+	location /uploads/ {
+		root /var/www/html/uploads/;
 		autoindex on;
 	}
 
 	location /cgi-bin/ {
+		root /var/www/cgi-bin/;
 		cgi test.py;
 	}
 
