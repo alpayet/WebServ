@@ -36,7 +36,11 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-	throw http::Exception(http::Exception::MATCH_ROUTE_FAILED);
+	
+	Location loc;
+	loc.index = m_index;
+	loc.root = m_root;
+	return (loc);
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
@@ -54,6 +58,7 @@ std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) co
 http::RoutePolicy ServerConfig::match(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
+
 
 	http::RoutePolicy route;
 
