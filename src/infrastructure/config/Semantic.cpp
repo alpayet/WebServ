@@ -1,5 +1,6 @@
 #include "infrastructure/config/Semantic.hpp"
 #include "infrastructure/config/Parser.hpp"
+#include "infrastructure/server/application_protocol/http/methods.hpp"
 #include <iterator>
 #include <sstream>
 #include <vector>
@@ -62,11 +63,11 @@ void initLocation(ServerConfig &s, p_ServerConfig ps)
 
 				for (size_t i = 0; i < it->values.size(); ++i)
 				{
-					if (it->values[i] == "GET")
+					if (it->values[i] == http::GET)
 						loc.met_get = true;
-					else if (it->values[i] == "POST")
+					else if (it->values[i] == http::POST)
 						loc.met_post = true;
-					else if (it->values[i] == "DEL")
+					else if (it->values[i] == http::DELETE)
 						loc.met_del = true;
 					else
 					{

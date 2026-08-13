@@ -43,7 +43,7 @@ if "multipart/form-data" in content_type and content_length > 0:
             mime_type = part.get_content_type()
             sys.stdout.write(f"<h2>File '{clean_filename}' received successfully!</h2>")
 
-            encoded_filename = quote(clean_filename).replace("'", "%27")
+            encoded_filename = quote(clean_filename)
 
             if mime_type.startswith("image/"):
                 sys.stdout.write(

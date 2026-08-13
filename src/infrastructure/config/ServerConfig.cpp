@@ -18,6 +18,7 @@
 #include "infrastructure/config/Semantic.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
 #include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
+#include "infrastructure/server/application_protocol/http/methods.hpp"
 #include "infrastructure/storage/file_system/fileSystem.hpp"
 
 Location ServerConfig::findLocationFromUri(std::string const &uri) const
@@ -36,29 +37,24 @@ Location ServerConfig::findLocationFromUri(std::string const &uri) const
 				return *it;
 		}
 	}
-
-	Location loc;
-	loc.index = m_index;
-	loc.root = m_root;
-	return (loc);
+	throw http::Exception(http::Exception::MATCH_ROUTE_FAILED);
 }
 
 std::vector<std::string> ServerConfig::getAllowedMethods(Location const &loc) const
 {
 	std::vector<std::string> methods;
 	if (loc.met_get)
-		methods.push_back("GET");
+		methods.push_back(http::GET);
 	if (loc.met_post)
-		methods.push_back("POST");
+		methods.push_back(http::POST);
 	if (loc.met_del)
-		methods.push_back("DELETE");
+		methods.push_back(http::DELETE);
 	return (methods);
 }
 
 http::RoutePolicy ServerConfig::match(std::string const &uri) const
 {
 	Location loc = findLocationFromUri(uri);
-
 
 	http::RoutePolicy route;
 

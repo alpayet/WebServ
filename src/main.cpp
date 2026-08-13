@@ -13,7 +13,7 @@
 sig_atomic_t volatile g_running = 1;
 
 static void sigHandler(int const signum) {
-  LOG("signal " << signum << " received");
+  (void)signum;
   g_running = 0;
 }
 

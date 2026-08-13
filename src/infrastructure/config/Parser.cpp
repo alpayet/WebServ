@@ -85,7 +85,7 @@ template <typename T> p_Directive Parser::parseDirective(T &t, e_block comp)
 		throw ParserFormatException(os.str());
 	}
 	expect(';');
-	while (m_it->type == char_end)
+	while (m_it->type == char_end && m_it != m_ite)
 		++m_it;
 	t.directives.push_back(direc);
 	return direc;
@@ -114,7 +114,8 @@ p_Location Parser::parseLocation(p_ServerConfig &serv)
 		parseDirective(loc, inserv);
 	}
 	expect('}');
-	++m_it;
+	if (m_it != m_ite)
+		++m_it;
 	serv.locations.push_back(loc);
 	return loc;
 }
@@ -143,7 +144,8 @@ p_ServerConfig Parser::parseServerConfig()
 		}
 	}
 	expect('}');
-	++m_it;
+	if (m_it != m_ite)
+		++m_it;
 	m_config.servers.push_back(serv);
 	return serv;
 }
