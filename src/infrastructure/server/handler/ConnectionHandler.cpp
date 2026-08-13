@@ -8,6 +8,7 @@
 #include "infrastructure/server/utils/Logger.hpp"
 #include "infrastructure/server/utils/utils.hpp"
 
+#include <sys/socket.h>
 #include <sys/types.h>
 
 namespace webserv {
@@ -47,11 +48,11 @@ namespace webserv {
                 return;
             }
 
-            if (bytes_read < 1500)
-                DEBUG("read request on fd: " << m_transport->getFd()
-                                             << ", buffer : " << std::string(m_read_buf, bytes_read));
-            else
-                DEBUG("read request, buffer too long must be img ");
+            // if (bytes_read < 1500)
+            //     DEBUG("read request on fd: " << m_transport->getFd()
+            //                                  << ", buffer : " << std::string(m_read_buf, bytes_read));
+            // else
+            //     DEBUG("read request, buffer too long must be img ");
 
             const appProtocol::IProtocol::PushStatus::Type push_state =
                 m_app_protocol->pushRequest(m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
@@ -122,7 +123,12 @@ namespace webserv {
                 reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
             }
             else
-                reactor.removeEventHandler(m_transport->getFd());
+            {
+                ::shutdown(m_transport->getFd(), SHUT_WR);
+
+                reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ); //[cite: 1]
+            }
+            reactor.removeEventHandler(m_transport->getFd());
         }
 
         void ConnectionHandler::onTimeout(reactor::Reactor& reactor)
