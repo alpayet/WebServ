@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 19:40:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:11:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/13 04:50:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +173,10 @@ void Parser::parseRequestLine(
 	extractTargetandQuery(it, itLineEnd, target, query);
 	protocol = extractProtocol(it, itLineEnd);
 
-	request.setStartLine(method, target, query, protocol);
-
 	if (std::find_if(it, itLineEnd, parse::is_not_white_spaces) != itLineEnd)
 		throw Exception(Exception::REQUEST_LINE_MALFORMED);
+
+	request.setStartLine(method, target, query, protocol);
 }
 
 void Parser::parseHeaderLine(
@@ -287,6 +287,7 @@ void Parser::extractTargetandQuery(
 	else
 		target = std::string(it_target_start, it_target_end);
 
+	parse::uri_decode(target);
 	it = it_target_end;
 }
 
