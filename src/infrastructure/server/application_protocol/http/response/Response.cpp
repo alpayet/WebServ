@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 01:17:08 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
 #include "application/ports/SystemResourceInfo.hpp"
+#include "infrastructure/server/application_protocol/constants.hpp"
 #include "infrastructure/server/application_protocol/http/response/get_default_body.hpp"
 #include "infrastructure/server/application_protocol/http/response/get_status_reason.hpp"
 #include <cstring>
@@ -64,6 +65,20 @@ Response Response::buildDefault(unsigned short statusCode)
 	builder.withContentLength(std::strlen(default_body));
 	builder.withBody(default_body);
 	return (builder.build());
+}
+
+void Response::setHeader(std::string const &key, std::string const &value)
+{
+	Response::Header header = {.key = key, .value = value};
+	_headers.push_back(header);
+}
+
+void Response::setHeaderConnection(bool shouldKeepAlive)
+{
+	if (shouldKeepAlive)
+		setHeader(headers::CONNECTION, "keep-alive");
+	else
+		setHeader(headers::CONNECTION, "close");
 }
 
 void Response::reset(void)

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 21:50:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 01:12:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,27 @@
 
 namespace http {
 namespace presenter {
-class ExecuteDynamicResource
-    : public app::useCase::ExecuteDynamicResource::IOutputPort {
-public:
-  struct ViewModel {
-    app::StreamInfo stream_info;
-  };
+class ExecuteDynamicResource : public app::useCase::ExecuteDynamicResource::IOutputPort
+{
+  public:
+	struct ViewModel
+	{
+		app::StreamInfo stream_info;
+	};
 
-public:
-  ExecuteDynamicResource(void) {}
-  virtual ~ExecuteDynamicResource(void) {}
+  public:
+	ExecuteDynamicResource(void) {}
+	virtual ~ExecuteDynamicResource(void) {}
 
-  ViewModel const &getViewModel(void) const;
+	ViewModel const &getViewModel(void) const;
 
-  virtual void presentStream(app::StreamInfo resources);
+	virtual void presentStream(app::StreamInfo resources);
 
-private:
-  ExecuteDynamicResource(ExecuteDynamicResource const &src);
-  ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
+  private:
+	ExecuteDynamicResource(ExecuteDynamicResource const &src);
+	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
 
-  ViewModel _viewModel;
+	ViewModel _viewModel;
 };
 } // namespace presenter
 

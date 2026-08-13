@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/08 18:34:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 01:03:52 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ class Sender
 
 	Step produce(
 		std::vector<char>	 &outputBuf,
-		Response const		 &response,
+		Response			 &response,
 		app::IResourceReader *reader,
+		bool				  shouldKeepAlive,
 		State				 &state
 	);
 

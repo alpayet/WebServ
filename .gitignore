@@ -50,5 +50,8 @@ webserv
 .idea
 .vscode
 
+#format files
+.clang-format
+
 #Files
 Dockerfile.dockerenv

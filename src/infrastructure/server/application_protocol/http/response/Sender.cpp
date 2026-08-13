@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:31:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/08 18:36:00 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 01:09:15 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ Sender::Sender(IHttpVersionProvider const &httpVersionProvider)
 
 Sender::Step Sender::produce(
 	std::vector<char>	 &outputBuf,
-	Response const		 &response,
+	Response			 &response,
 	app::IResourceReader *reader,
+	bool				  shouldKeepAlive,
 	State				 &state
 )
 {
@@ -44,9 +45,12 @@ Sender::Step Sender::produce(
 	{
 		case HEADER_BLOCK:
 			outputBuf.clear();
+
+			response.setHeaderConnection(shouldKeepAlive);
 			HeaderBlockSerializer::serialize(
 				outputBuf, response, _httpVersionProvider.getHttpVersion()
 			);
+
 			if (reader)
 				state.step = RESOURCE;
 			else if (response.hasBody())
@@ -57,11 +61,13 @@ Sender::Step Sender::produce(
 		case BODY:
 			outputBuf.clear();
 			outputBuf = response.getBody();
+
 			state.step = COMPLETE;
 			break;
 		case RESOURCE:
 		{
 			outputBuf.clear();
+
 			size_t const bytes_read =
 				reader->read(outputBuf, response.getContentLength() - state.totalBytesRead);
 

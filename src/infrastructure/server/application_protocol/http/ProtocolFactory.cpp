@@ -5,19 +5,24 @@
 
 namespace http {
 
-    ProtocolFactory::ProtocolFactory(ServerConfig const& config) :
-        _storage(), _directory_explorer(), _cgi(), _serveStaticResourceUseCase(config, _storage, _directory_explorer),
-        _deleteStaticResourceUseCase(config, _storage), _executeDynamicResourceUseCase(config, _cgi),
-        _serveStaticResourceController(_serveStaticResourceUseCase),
-        _deleteStaticResourceController(_deleteStaticResourceUseCase),
-        _executeDynamicResourceController(_executeDynamicResourceUseCase, config), _requestParser(config, config),
-        _cgiParser(config), _router(config, _serveStaticResourceController, _deleteStaticResourceController,
-                                    _executeDynamicResourceController),
-        _sender(config), _protocol(_requestParser, _cgiParser, _router, _sender, config)
-    {}
+ProtocolFactory::ProtocolFactory(ServerConfig const &config)
+	: _storage(), _directory_explorer(), _cgi(),
+	  _serveStaticResourceUseCase(config, _storage, _directory_explorer),
+	  _deleteStaticResourceUseCase(config, _storage), _executeDynamicResourceUseCase(config, _cgi),
+	  _serveStaticResourceController(_serveStaticResourceUseCase),
+	  _deleteStaticResourceController(_deleteStaticResourceUseCase),
+	  _executeDynamicResourceController(_executeDynamicResourceUseCase, config),
+	  _requestParser(config, config), _cgiParser(config), _router(
+															  config,
+															  _serveStaticResourceController,
+															  _deleteStaticResourceController,
+															  _executeDynamicResourceController
+														  ),
+	  _sender(config), _protocol(_requestParser, _cgiParser, _router, _sender, config)
+{}
 
-    ProtocolFactory::~ProtocolFactory() {}
+ProtocolFactory::~ProtocolFactory() {}
 
-    webserv::appProtocol::IProtocol* ProtocolFactory::create() { return new Session(_protocol); }
+webserv::appProtocol::IProtocol *ProtocolFactory::create() { return new Session(_protocol); }
 
 } // namespace http

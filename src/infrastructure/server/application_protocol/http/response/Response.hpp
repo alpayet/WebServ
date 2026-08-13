@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 00:56:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ class Response
 	std::size_t				   getContentLength(void) const;
 	std::vector<char> const	  &getBody(void) const;
 	bool					   hasBody(void) const;
+
+	void setHeader(std::string const &key, std::string const &value);
+	void setHeaderConnection(bool shouldKeepAlive);
 
 	void reset(void);
 

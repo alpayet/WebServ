@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/09 21:53:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/14 01:12:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 namespace http {
 namespace presenter {
 
-ExecuteDynamicResource::ViewModel const &
-ExecuteDynamicResource::getViewModel(void) const {
-  return (_viewModel);
+ExecuteDynamicResource::ViewModel const &ExecuteDynamicResource::getViewModel(void) const
+{
+	return (_viewModel);
 }
 
-void ExecuteDynamicResource::presentStream(
-    const app::StreamInfo resources) {
-  _viewModel.stream_info = resources;
+void ExecuteDynamicResource::presentStream(app::StreamInfo const resources)
+{
+	_viewModel.stream_info = resources;
 }
 } // namespace presenter
 
