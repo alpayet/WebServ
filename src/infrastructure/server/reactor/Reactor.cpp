@@ -167,7 +167,7 @@ namespace webserv {
 					dispatch(n_events);
 				expireIdleConnections();
 				const std::time_t now = ft::now();
-				if (now - last_metrics >= 3)
+				if (now - last_metrics >= 15)
 				{
 					logMetrics();
 					last_metrics = now;
@@ -214,10 +214,11 @@ namespace webserv {
 
 		void Reactor::logMetrics() const
 		{
-			const double rps = handler::ConnectionHandler::n_complete_requests / 3;
+			const double rps = static_cast<double>(handler::ConnectionHandler::n_complete_requests) / 15.0;
 
-			LOG("metrics: active=" << handler::ConnectionHandler::n_active_connections
-			                       << " req/3s=" << handler::ConnectionHandler::n_complete_requests << " rps=" << rps);
+			LOG("connection" << ((handler::ConnectionHandler::n_active_connections > 1) ? "s" : "")
+			                 << " active=" << handler::ConnectionHandler::n_active_connections
+			                 << " req/15s=" << handler::ConnectionHandler::n_complete_requests << " rps=" << rps);
 
 			handler::ConnectionHandler::n_complete_requests = 0;
 		}

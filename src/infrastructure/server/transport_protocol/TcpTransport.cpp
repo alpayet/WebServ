@@ -13,9 +13,12 @@ namespace webserv {
 
 		int TcpTransport::getFd() const { return m_fd.get(); }
 
-		ssize_t TcpTransport::read(char* buf, std::size_t len) { return socket::recv(m_fd.get(), buf, len); }
+		ssize_t TcpTransport::read(char* buf, const std::size_t len) { return socket::recv(m_fd.get(), buf, len); }
 
-		ssize_t TcpTransport::write(const char* buf, std::size_t len) { return socket::send(m_fd.get(), buf, len); }
+		ssize_t TcpTransport::write(const char* buf, const std::size_t len)
+		{
+			return socket::send(m_fd.get(), buf, len);
+		}
 
 	} // namespace transport
 } // namespace webserv

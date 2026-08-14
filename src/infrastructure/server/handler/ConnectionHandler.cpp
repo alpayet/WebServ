@@ -1,6 +1,5 @@
 #include "infrastructure/server/handler/ConnectionHandler.hpp"
 
-#include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/handler/StreamHandler.hpp"
 #include "infrastructure/server/reactor/EventType.hpp"
 #include "infrastructure/server/reactor/Reactor.hpp"
@@ -41,6 +40,34 @@ namespace webserv {
 			return m_last_activity;
 		}
 
+		void ConnectionHandler::handlePushState(reactor::Reactor& reactor,
+		                                        appProtocol::IProtocol::PushStatus::Type push_state)
+		{
+			if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
+			{
+				m_write_pos = 0;
+				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
+			}
+			else if (push_state == appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE)
+			{
+				try
+				{
+					IEventHandler* event =
+					    new StreamHandler(m_app_protocol->getStreamResources(), m_transport->getFd(), m_app_protocol);
+					if (!reactor.addEventHandler(event, reactor::EVENT_READ))
+						throw std::runtime_error("can't add cgi event handler");
+					m_streaming = true;
+					reactor.releaseFromDemux(m_transport->getFd());
+				}
+				catch (...)
+				{
+					reactor.removeEventHandler(m_transport->getFd());
+				}
+			}
+			else
+				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
+		}
+
 		void ConnectionHandler::onReadable(reactor::Reactor& reactor)
 		{
 			const ssize_t bytes_read = m_transport->read(m_read_buf, RECV_CHUNK);
@@ -59,30 +86,9 @@ namespace webserv {
 				return;
 			}
 
-			const appProtocol::IProtocol::PushStatus::Type push_state =
-			    m_app_protocol->pushRequest(m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL);
-			if (push_state == appProtocol::IProtocol::PushStatus::COMPLETE)
-			{
-				m_write_pos = 0;
-				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_WRITE);
-			}
-			else if (push_state == appProtocol::IProtocol::PushStatus::STREAM_AVAILABLE)
-			{
-				try
-				{
-					IEventHandler* event =
-					    new StreamHandler(m_app_protocol->getStreamResources(), m_transport->getFd(), m_app_protocol);
-					if (!reactor.addEventHandler(event, reactor::EVENT_READ))
-						throw std::runtime_error("can't add cgi event handler");
-
-					m_streaming = true;
-					reactor.releaseFromDemux(m_transport->getFd());
-				}
-				catch (...)
-				{
-					reactor.removeEventHandler(m_transport->getFd());
-				}
-			}
+			handlePushState(
+			    reactor,
+			    m_app_protocol->pushRequest(m_read_buf, bytes_read, appProtocol::IProtocol::RequestStatus::NORMAL));
 		}
 
 		void ConnectionHandler::onWritable(reactor::Reactor& reactor)
@@ -121,14 +127,15 @@ namespace webserv {
 			{
 				m_streaming = false;
 				m_app_protocol->reset();
-				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
+				handlePushState(reactor,
+				                m_app_protocol->pushRequest(NULL, 0, appProtocol::IProtocol::RequestStatus::NORMAL));
 			}
 			else
 			{
 				::shutdown(m_transport->getFd(), SHUT_WR);
 				m_clearing = true;
 				m_last_activity = ft::now();
-				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ); //[cite: 1]
+				reactor.modifyEventFlag(m_transport->getFd(), reactor::EVENT_READ);
 			}
 		}
 

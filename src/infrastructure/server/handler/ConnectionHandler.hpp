@@ -5,6 +5,7 @@
 #include <ctime>
 #include <vector>
 
+#include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/handler/IEventHandler.hpp"
 
 namespace webserv {
@@ -42,6 +43,8 @@ namespace webserv {
 			ConnectionHandler& operator=(const ConnectionHandler&);
 
 			static const std::size_t RECV_CHUNK = 16 * 1024;
+
+			void handlePushState(reactor::Reactor& reactor, appProtocol::IProtocol::PushStatus::Type push_state);
 
 			transport::ITransport* m_transport;
 			appProtocol::IProtocol* m_app_protocol;
