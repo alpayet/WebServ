@@ -147,8 +147,6 @@ app::StreamInfo Cgi::execute(
 
 	infos.fd = pipe_fds[0];
 
-	DEBUG("CGI fd: " << infos.fd);
-
 	return infos;
 }
 

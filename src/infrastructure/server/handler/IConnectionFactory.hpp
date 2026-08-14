@@ -2,18 +2,19 @@
 #define ICONNECTIONFACTORY_HPP
 
 namespace webserv {
-namespace handler {
+	namespace handler {
 
-class IEventHandler;
+		class IEventHandler;
 
-class IConnectionFactory {
-public:
-  virtual ~IConnectionFactory() {}
+		class IConnectionFactory
+		{
+		public:
+			virtual ~IConnectionFactory() {}
 
-  virtual IEventHandler *create(int client_fd) const = 0;
-};
+			virtual IEventHandler* create(int client_fd) const = 0;
+		};
 
-} // namespace handler
+	} // namespace handler
 } // namespace webserv
 
 #endif

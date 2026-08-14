@@ -10,77 +10,70 @@
 #include "infrastructure/server/utils/Logger.hpp"
 
 namespace webserv {
-    namespace reactor {
+	namespace reactor {
 
-        uint32_t getEpollMask(int const flag)
-        {
-            uint32_t mask = 0;
-            if (flag & EVENT_READ)
-                mask |= EPOLLIN;
-            if (flag & EVENT_WRITE)
-                mask |= EPOLLOUT;
-            return mask;
-        }
+		uint32_t getEpollMask(const int flag)
+		{
+			uint32_t mask = 0;
+			if (flag & EVENT_READ)
+				mask |= EPOLLIN;
+			if (flag & EVENT_WRITE)
+				mask |= EPOLLOUT;
+			return mask;
+		}
 
-        EpollDemultiplexer::EpollDemultiplexer() : m_epoll_fd(epoll_create(1)), m_events()
-        {
-            if (m_epoll_fd.get() == -1)
-                throw std::runtime_error("epoll_create() failed");
+		EpollDemultiplexer::EpollDemultiplexer() : m_epoll_fd(epoll_create(1)), m_events()
+		{
+			if (m_epoll_fd.get() == -1)
+				throw std::runtime_error("epoll_create() failed");
 
-            ::fcntl(m_epoll_fd.get(), F_SETFD, FD_CLOEXEC);
+			::fcntl(m_epoll_fd.get(), F_SETFD, FD_CLOEXEC);
 
-            std::memset(m_events, 0, sizeof(m_events));
+			std::memset(m_events, 0, sizeof(m_events));
+		}
 
-            DEBUG("epoll demultiplexer ready, fd: " << m_epoll_fd.get());
-        }
+		EpollDemultiplexer::~EpollDemultiplexer() {}
 
-        EpollDemultiplexer::~EpollDemultiplexer() {}
+		bool EpollDemultiplexer::add(const int fd, const int flag)
+		{
+			struct epoll_event ev;
+			std::memset(&ev, 0, sizeof(ev));
+			ev.events = getEpollMask(flag);
+			ev.data.fd = fd;
+			return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_ADD, fd, &ev) != -1;
+		}
 
-        bool EpollDemultiplexer::add(int const fd, int const flag)
-        {
-            struct epoll_event ev;
-            std::memset(&ev, 0, sizeof(ev));
-            ev.events = getEpollMask(flag);
-            ev.data.fd = fd;
-            std::string const s(flag & EVENT_WRITE ? "write" : flag & EVENT_READ ? "read" : "none");
-            DEBUG("epoll add fd: " << fd << " flag: " << s);
-            return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_ADD, fd, &ev) != -1;
-        }
+		bool EpollDemultiplexer::modify(const int fd, const int flag)
+		{
+			struct epoll_event ev;
+			std::memset(&ev, 0, sizeof(ev));
+			ev.events = getEpollMask(flag);
+			ev.data.fd = fd;
+			return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_MOD, fd, &ev) != -1;
+		}
 
-        bool EpollDemultiplexer::modify(int const fd, int const flag)
-        {
-            struct epoll_event ev;
-            std::memset(&ev, 0, sizeof(ev));
-            ev.events = getEpollMask(flag);
-            ev.data.fd = fd;
-            std::string const s(flag & EVENT_WRITE ? "write" : flag & EVENT_READ ? "read" : "none");
-            DEBUG("epoll modify fd: " << fd << " flag: " << s);
-            return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_MOD, fd, &ev) != -1;
-        }
+		bool EpollDemultiplexer::remove(const int fd)
+		{
+			return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_DEL, fd, 0) != -1;
+		}
 
-        bool EpollDemultiplexer::remove(int const fd)
-        {
-            DEBUG("epoll remove fd: " << fd);
-            return epoll_ctl(m_epoll_fd.get(), EPOLL_CTL_DEL, fd, 0) != -1;
-        }
+		int EpollDemultiplexer::wait(const int timeout_ms)
+		{
+			return epoll_wait(m_epoll_fd.get(), m_events, EPOLL_MAX_EVENTS, timeout_ms);
+		}
 
-        int EpollDemultiplexer::wait(int const timeout_ms)
-        {
-            return epoll_wait(m_epoll_fd.get(), m_events, EPOLL_MAX_EVENTS, timeout_ms);
-        }
+		int EpollDemultiplexer::getEventFd(const int index) const { return m_events[index].data.fd; }
 
-        int EpollDemultiplexer::getEventFd(int const index) const { return m_events[index].data.fd; }
+		bool EpollDemultiplexer::isReadable(const int index) const { return (m_events[index].events & EPOLLIN) != 0; }
 
-        bool EpollDemultiplexer::isReadable(int const index) const { return (m_events[index].events & EPOLLIN) != 0; }
+		bool EpollDemultiplexer::isWritable(const int index) const { return (m_events[index].events & EPOLLOUT) != 0; }
 
-        bool EpollDemultiplexer::isWritable(int const index) const { return (m_events[index].events & EPOLLOUT) != 0; }
+		bool EpollDemultiplexer::isError(const int index) const
+		{
+			return (m_events[index].events & (EPOLLERR | EPOLLHUP)) != 0;
+		}
 
-        bool EpollDemultiplexer::isError(int const index) const
-        {
-            return (m_events[index].events & (EPOLLERR | EPOLLHUP)) != 0;
-        }
-
-    } // namespace reactor
+	} // namespace reactor
 } // namespace webserv
 
 #endif

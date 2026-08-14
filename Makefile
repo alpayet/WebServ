@@ -95,7 +95,8 @@ NAME = webserv
 
 CC = c++
 #CFLAGS = -Wall -Wextra -MMD -MP -std=c++98 -g
-CFLAGS = -Wall -Wextra -MMD -MP -std=c++98 -O3
+#CFLAGS = -Wall -Wextra -MMD -MP -std=c++98 -O3
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -std=c++98 -O3
 CFLAGS += $(EXTRA_FLAGS)
 IFLAGS = -I $(SRC_DIR)
 MAKE = @make --no-print-directory -j

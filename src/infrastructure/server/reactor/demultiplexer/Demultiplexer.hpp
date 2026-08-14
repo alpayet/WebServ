@@ -10,15 +10,15 @@
 #endif
 
 namespace webserv {
-namespace reactor {
+	namespace reactor {
 
 #ifdef __linux__
-typedef EpollDemultiplexer Demultiplexer;
+		typedef EpollDemultiplexer Demultiplexer;
 #elif defined(__APPLE__)
-typedef KqueueDemultiplexer Demultiplexer;
+		typedef KqueueDemultiplexer Demultiplexer;
 #endif
 
-} // namespace reactor
+	} // namespace reactor
 } // namespace webserv
 
 #endif

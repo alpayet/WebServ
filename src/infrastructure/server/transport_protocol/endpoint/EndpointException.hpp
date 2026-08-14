@@ -4,9 +4,10 @@
 #include <stdexcept>
 #include <string>
 
-class EndpointException : public std::runtime_error {
+class EndpointException : public std::runtime_error
+{
 public:
-  explicit EndpointException(const std::string &what);
+	explicit EndpointException(const std::string& what);
 };
 
 #endif // ENDPOINTEXCEPTION_HPP

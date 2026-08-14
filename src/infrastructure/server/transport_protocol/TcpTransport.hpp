@@ -5,25 +5,26 @@
 #include "infrastructure/storage/file_system/fd/Fd.hpp"
 
 namespace webserv {
-namespace transport {
+	namespace transport {
 
-class TcpTransport : public ITransport {
-public:
-  explicit TcpTransport(int fd);
-  ~TcpTransport();
+		class TcpTransport : public ITransport
+		{
+		public:
+			explicit TcpTransport(int fd);
+			~TcpTransport();
 
-  int getFd() const;
-  ssize_t read(char *buf, std::size_t len);
-  ssize_t write(char const *buf, std::size_t len);
+			int getFd() const;
+			ssize_t read(char* buf, std::size_t len);
+			ssize_t write(const char* buf, std::size_t len);
 
-private:
-  TcpTransport(TcpTransport const &);
-  TcpTransport &operator=(TcpTransport const &);
+		private:
+			TcpTransport(const TcpTransport&);
+			TcpTransport& operator=(const TcpTransport&);
 
-  fd::Fd m_fd;
-};
+			fd::Fd m_fd;
+		};
 
-} // namespace transport
+	} // namespace transport
 } // namespace webserv
 
 #endif

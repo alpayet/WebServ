@@ -178,7 +178,6 @@ Protocol::PullStatus::Type Protocol::pullResponse(Context &context, std::vector<
 				context_output.state
 			) == response::Sender::COMPLETE)
 		{
-			// std::cout << context.output.response << std::endl;
 			return (PullStatus::COMPLETE);
 		}
 		return (PullStatus::HAS_MORE);

@@ -2,18 +2,19 @@
 #define IPROTOCOLFACTORY_HPP
 
 namespace webserv {
-namespace appProtocol {
+	namespace appProtocol {
 
-class IProtocol;
+		class IProtocol;
 
-class IProtocolFactory {
-public:
-  virtual ~IProtocolFactory() {}
+		class IProtocolFactory
+		{
+		public:
+			virtual ~IProtocolFactory() {}
 
-  virtual IProtocol *create() = 0;
-};
+			virtual IProtocol* create() = 0;
+		};
 
-} // namespace appProtocol
+	} // namespace appProtocol
 } // namespace webserv
 
 #endif

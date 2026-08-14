@@ -5,28 +5,28 @@
 
 namespace webserv {
 
-namespace appProtocol {
-class IProtocolFactory;
-}
+	namespace appProtocol {
+		class IProtocolFactory;
+	} // namespace appProtocol
 
-namespace handler {
+	namespace handler {
 
-class TcpConnectionFactory : public IConnectionFactory {
-public:
-  explicit TcpConnectionFactory(
-      appProtocol::IProtocolFactory *app_protocol_factory);
-  ~TcpConnectionFactory();
+		class TcpConnectionFactory : public IConnectionFactory
+		{
+		public:
+			explicit TcpConnectionFactory(appProtocol::IProtocolFactory* app_protocol_factory);
+			~TcpConnectionFactory();
 
-  IEventHandler *create(int client_fd) const;
+			IEventHandler* create(int client_fd) const;
 
-private:
-  TcpConnectionFactory(TcpConnectionFactory const &);
-  TcpConnectionFactory &operator=(TcpConnectionFactory const &);
+		private:
+			TcpConnectionFactory(const TcpConnectionFactory&);
+			TcpConnectionFactory& operator=(const TcpConnectionFactory&);
 
-  appProtocol::IProtocolFactory *m_app_protocol_factory;
-};
+			appProtocol::IProtocolFactory* m_app_protocol_factory;
+		};
 
-} // namespace handler
+	} // namespace handler
 } // namespace webserv
 
 #endif

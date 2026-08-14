@@ -16,63 +16,70 @@
 #include "infrastructure/server/utils/utils.hpp"
 
 namespace webserv {
-namespace transport {
+	namespace transport {
 
-// TODO jai renommer les var local protocol par AppProtocol a voir si il faut
-// mettre en camelcase les var local
+		// TODO jai renommer les var local protocol par AppProtocol a voir si il faut
+		// mettre en camelcase les var local
 
-static appProtocol::IProtocolFactory *
-buildProtocol(ServerConfig const &config) {
-  switch (config.getApplicativeProtocol()) {
-  case ServerConfig::APP_TEST:
-    return new appProtocol::TestProtocolFactory("test proto blablabla");
-  case ServerConfig::APP_HTTP:
-    return new http::ProtocolFactory(config);
-  default:
-    throw ConfigException("no applicative protocol builder for " +
-                          config.getHostname() + ":" +
-                          ft::intToString(config.getPort()));
-  }
-}
+		static appProtocol::IProtocolFactory* buildProtocol(const ServerConfig& config)
+		{
+			switch (config.getApplicativeProtocol())
+			{
+			case ServerConfig::APP_TEST:
+				return new appProtocol::TestProtocolFactory("test proto blablabla");
+			case ServerConfig::APP_HTTP:
+				return new http::ProtocolFactory(config);
+			default:
+				throw ConfigException("no applicative protocol builder for " + config.getHostname() + ":" +
+				                      ft::intToString(config.getPort()));
+			}
+		}
 
-static IEndpoint *buildTransport(ServerConfig const &config,
-                                 appProtocol::IProtocolFactory *appProtocol) {
-  switch (config.getTransportProtocol()) {
-  case ServerConfig::TRANSPORT_TCP: {
-    handler::IConnectionFactory *connection;
+		static IEndpoint* buildTransport(const ServerConfig& config, appProtocol::IProtocolFactory* appProtocol)
+		{
+			switch (config.getTransportProtocol())
+			{
+			case ServerConfig::TRANSPORT_TCP:
+				{
+					handler::IConnectionFactory* connection;
 
-    try {
-      connection = new handler::TcpConnectionFactory(appProtocol);
-    } catch (...) {
-      delete appProtocol;
-      throw;
-    }
+					try
+					{
+						connection = new handler::TcpConnectionFactory(appProtocol);
+					}
+					catch (...)
+					{
+						delete appProtocol;
+						throw;
+					}
 
-    try {
-      return new TcpEndpoint(config.getHostname(), config.getPort(),
-                             connection);
-    } catch (...) {
-      delete connection;
-      throw;
-    }
-  }
-  default:
-    delete appProtocol;
-    throw ConfigException("no transport builder for " + config.getHostname() +
-                          ":" + ft::intToString(config.getPort()));
-  }
-}
+					try
+					{
+						return new TcpEndpoint(config.getHostname(), config.getPort(), connection);
+					}
+					catch (...)
+					{
+						delete connection;
+						throw;
+					}
+				}
+			default:
+				delete appProtocol;
+				throw ConfigException("no transport builder for " + config.getHostname() + ":" +
+				                      ft::intToString(config.getPort()));
+			}
+		}
 
-void buildEndpoints(std::vector<ServerConfig> const &configs,
-                    Endpoints &endpoints) {
+		void buildEndpoints(const std::vector<ServerConfig>& configs, Endpoints& endpoints)
+		{
+			for (std::size_t i = 0; i < configs.size(); ++i)
+			{
+				const ServerConfig& config = configs[i];
 
-  for (std::size_t i = 0; i < configs.size(); ++i) {
-    ServerConfig const &config = configs[i];
+				appProtocol::IProtocolFactory* appProtocol = buildProtocol(config);
+				endpoints.add(buildTransport(config, appProtocol));
+			}
+		}
 
-    appProtocol::IProtocolFactory *appProtocol = buildProtocol(config);
-    endpoints.add(buildTransport(config, appProtocol));
-  }
-}
-
-} // namespace transport
+	} // namespace transport
 } // namespace webserv

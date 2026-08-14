@@ -2,31 +2,32 @@
 #define FD_HPP
 
 namespace webserv {
-namespace fd {
+	namespace fd {
 
-class Fd {
-public:
-  Fd();
-  explicit Fd(int fd);
-  ~Fd();
+		class Fd
+		{
+		public:
+			Fd();
+			explicit Fd(int fd);
+			~Fd();
 
-  int get() const;
-  bool valid() const;
+			int get() const;
+			bool valid() const;
 
-  int release();
+			int release();
 
-  void reset(int fd = -1);
+			void reset(int fd = -1);
 
-  bool setNonBlocking() const;
+			bool setNonBlocking() const;
 
-private:
-  Fd(const Fd &);
-  Fd &operator=(const Fd &);
+		private:
+			Fd(const Fd&);
+			Fd& operator=(const Fd&);
 
-  int m_fd;
-};
+			int m_fd;
+		};
 
-} // namespace fd
+	} // namespace fd
 } // namespace webserv
 
 #endif

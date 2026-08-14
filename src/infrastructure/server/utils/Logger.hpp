@@ -12,15 +12,16 @@
 #define DEBUG(s) ((void)0)
 #endif
 
-class Logger {
+class Logger
+{
 public:
-  Logger();
-  Logger(const std::string &s);
-  ~Logger();
+	Logger();
+	Logger(const std::string& s);
+	~Logger();
 
 private:
-  Logger(const Logger &);
-  Logger &operator=(const Logger &);
+	Logger(const Logger&);
+	Logger& operator=(const Logger&);
 };
 
 #endif

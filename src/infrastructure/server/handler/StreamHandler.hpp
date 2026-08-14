@@ -11,41 +11,41 @@
 
 namespace webserv {
 
-    namespace appProtocol {
-        class IProtocol;
-    } // namespace appProtocol
+	namespace appProtocol {
+		class IProtocol;
+	} // namespace appProtocol
 
-    namespace handler {
+	namespace handler {
 
-        class StreamHandler : public IEventHandler
-        {
-        public:
-            StreamHandler(app::StreamInfo stream_info, int client_fd, appProtocol::IProtocol* protocol);
-            ~StreamHandler();
+		class StreamHandler : public IEventHandler
+		{
+		public:
+			StreamHandler(app::StreamInfo stream_info, int client_fd, appProtocol::IProtocol* protocol);
+			~StreamHandler();
 
-            int getFd() const;
-            std::time_t getLastActivity() const;
+			int getFd() const;
+			std::time_t getLastActivity() const;
 
-            void onReadable(reactor::Reactor& reactor);
-            void onWritable(reactor::Reactor& reactor);
-            void onTimeout(reactor::Reactor& reactor);
+			void onReadable(reactor::Reactor& reactor);
+			void onWritable(reactor::Reactor& reactor);
+			void onTimeout(reactor::Reactor& reactor);
 
-        private:
-            StreamHandler(const StreamHandler&);
-            StreamHandler& operator=(const StreamHandler&);
+		private:
+			StreamHandler(const StreamHandler&);
+			StreamHandler& operator=(const StreamHandler&);
 
-            static std::size_t const RECV_CHUNK = 16 * 1024;
+			static const std::size_t RECV_CHUNK = 16 * 1024;
 
-            void releaseStreamResources();
+			void releaseStreamResources();
 
-            app::StreamInfo m_stream_info;
-            int m_client_fd;
-            appProtocol::IProtocol* m_app_protocol;
-            char m_read_buf[RECV_CHUNK];
-            std::time_t m_last_activity;
-        };
+			app::StreamInfo m_stream_info;
+			int m_client_fd;
+			appProtocol::IProtocol* m_app_protocol;
+			char m_read_buf[RECV_CHUNK];
+			std::time_t m_last_activity;
+		};
 
-    } // namespace handler
+	} // namespace handler
 } // namespace webserv
 
 #endif // CGISTREAMHANDLER_HPP

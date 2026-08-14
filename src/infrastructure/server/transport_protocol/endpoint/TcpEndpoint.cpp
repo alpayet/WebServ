@@ -14,46 +14,42 @@
 #include "infrastructure/storage/file_system/fd/Fd.hpp"
 
 namespace webserv {
-namespace transport {
+	namespace transport {
 
-TcpEndpoint::TcpEndpoint(std::string const &host, int const port,
-                         handler::IConnectionFactory *connection_factory)
-    : m_host(host), m_port(port), m_family(),
-      m_connection_factory(connection_factory) {}
+		TcpEndpoint::TcpEndpoint(const std::string& host, const int port,
+		                         handler::IConnectionFactory* connection_factory) :
+		    m_host(host), m_port(port), m_family(), m_connection_factory(connection_factory)
+		{}
 
-TcpEndpoint::~TcpEndpoint() { delete m_connection_factory; }
+		TcpEndpoint::~TcpEndpoint() { delete m_connection_factory; }
 
-std::string const &TcpEndpoint::getHost() const { return m_host; }
+		const std::string& TcpEndpoint::getHost() const { return m_host; }
 
-int TcpEndpoint::getPort() const { return m_port; }
+		int TcpEndpoint::getPort() const { return m_port; }
 
-std::string const &TcpEndpoint::getFamily() const { return m_family; }
+		const std::string& TcpEndpoint::getFamily() const { return m_family; }
 
-std::string TcpEndpoint::formatEndpoint() const {
-  return "tcp:" + m_family + "/" + m_host + ":" + ft::intToString(m_port);
-}
+		std::string TcpEndpoint::formatEndpoint() const
+		{
+			return "tcp:" + m_family + "/" + m_host + ":" + ft::intToString(m_port);
+		}
 
-void TcpEndpoint::open(reactor::Reactor &reactor) {
+		void TcpEndpoint::open(reactor::Reactor& reactor)
+		{
+			fd::Fd listener_fd(socket::createSocket(m_host, m_port, SOCK_STREAM, &m_family));
 
-  fd::Fd listener_fd(
-      socket::createSocket(m_host, m_port, SOCK_STREAM, &m_family));
+			if (!listener_fd.setNonBlocking())
+				throw EndpointException("can't set here " + formatEndpoint() + " non-blocking");
 
-  if (!listener_fd.setNonBlocking())
-    throw EndpointException("can't set here " + formatEndpoint() +
-                            " non-blocking");
+			if (listen(listener_fd.get(), SOMAXCONN) == -1)
+				throw EndpointException("listen failed for " + formatEndpoint());
 
-  if (listen(listener_fd.get(), SOMAXCONN) == -1)
-    throw EndpointException("listen failed for " + formatEndpoint());
+			if (!reactor.addEventHandler(new handler::TcpListenerHandler(listener_fd.release(), *m_connection_factory),
+			                             reactor::EVENT_READ))
+				throw EndpointException("reactor registration failed for " + formatEndpoint());
 
-  if (!reactor.addEventHandler(
-          new handler::TcpListenerHandler(listener_fd.release(),
-                                          *m_connection_factory),
-          reactor::EVENT_READ))
-    throw EndpointException("reactor registration failed for " +
-                            formatEndpoint());
+			Logger("listening on: " + formatEndpoint());
+		}
 
-  Logger("listening on: " + formatEndpoint());
-}
-
-} // namespace transport
+	} // namespace transport
 } // namespace webserv

@@ -1,0 +1,569 @@
+/* ============================================================
+   webserv — validation suite · terminal theme
+   ============================================================ */
+
+:root {
+    --bg: #0a0e14;
+    --window: #0d131c;
+    --titlebar: #0f1620;
+    --surface: #0c111a;
+    --border: #1b2634;
+    --border-2: #14202e;
+
+    --text: #cdd8e6;
+    --dim: #7688a0;
+    --faint: #4a5a70;
+
+    --green: #4ade80;
+    --cyan: #38bdf8;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --magenta: #c084fc;
+
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(900px 500px at 12% -10%, rgba(56, 189, 248, 0.08), transparent 60%),
+    radial-gradient(800px 460px at 100% 0%, rgba(74, 222, 128, 0.06), transparent 55%),
+    var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 5rem;
+}
+
+::selection {
+    background: rgba(74, 222, 128, 0.25);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ---------- Header ---------- */
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1, #22d3ee);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+    flex: none;
+}
+
+.logo svg {
+    width: 23px;
+    height: 23px;
+}
+
+.brand-name {
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.brand-name .p {
+    color: var(--faint);
+}
+
+.brand-name .p::before {
+    content: "~/";
+}
+
+.brand-name .host {
+    margin-left: 0.55rem;
+    padding: 0.08rem 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--cyan);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    vertical-align: 0.08em;
+}
+
+.brand-name .host:empty {
+    display: none;
+}
+
+.brand-sub {
+    font-size: 0.72rem;
+    color: var(--faint);
+}
+
+/* ---------- Live health antenna ---------- */
+.health {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    flex: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.antenna {
+    width: 27px;
+    height: 27px;
+    flex: none;
+    color: var(--faint);
+    transition: color 0.3s ease;
+}
+
+.antenna .wave {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform-origin: 16px 16px;
+}
+
+.antenna .emitter {
+    transition: fill 0.3s ease;
+}
+
+.health-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.health-state {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+    color: var(--dim);
+    transition: color 0.3s ease;
+}
+
+.health-meta {
+    font-size: 0.62rem;
+    color: var(--faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.health.online {
+    border-color: rgba(74, 222, 128, 0.35);
+    background: rgba(74, 222, 128, 0.05);
+}
+
+.health.online .antenna, .health.online .health-state {
+    color: var(--green);
+}
+
+.health.online .wave {
+    animation: broadcast 2.4s ease-out infinite;
+}
+
+.health.online .w2 {
+    animation-delay: 0.35s;
+}
+
+.health.online .w3 {
+    animation-delay: 0.7s;
+}
+
+.health.offline {
+    border-color: rgba(248, 113, 113, 0.35);
+    background: rgba(248, 113, 113, 0.05);
+}
+
+.health.offline .antenna, .health.offline .health-state {
+    color: var(--red);
+}
+
+.health.offline .wave {
+    opacity: 0.3;
+}
+
+.health.checking .antenna, .health.checking .health-state {
+    color: var(--amber);
+}
+
+.health.checking .wave {
+    opacity: 0.25;
+}
+
+@keyframes broadcast {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0.9;
+    }
+    60% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* ---------- Terminal window ---------- */
+.term {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--window);
+    overflow: hidden;
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+}
+
+.term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1rem;
+    background: var(--titlebar);
+    border-bottom: 1px solid var(--border-2);
+}
+
+.tl {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tl span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+}
+
+.tl .r {
+    background: #ff5f57;
+}
+
+.tl .y {
+    background: #febc2e;
+}
+
+.tl .g {
+    background: #28c840;
+}
+
+.term-title {
+    margin-left: 0.5rem;
+    color: var(--dim);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+}
+
+.term-title b {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.term-body {
+    padding: 1.4rem 1.4rem 1.7rem;
+}
+
+/* boot lines */
+.boot {
+    margin: 0 0 1.6rem;
+}
+
+.boot .line {
+    white-space: normal;
+}
+
+.prompt {
+    color: var(--green);
+}
+
+.prompt::before {
+    content: "$ ";
+}
+
+.path {
+    color: var(--cyan);
+}
+
+.arg {
+    color: var(--magenta);
+}
+
+.ok {
+    color: var(--green);
+}
+
+.muted, .comment {
+    color: var(--faint);
+}
+
+.comment::before {
+    content: "# ";
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.05em;
+    background: var(--green);
+    vertical-align: text-bottom;
+    animation: blink 1.15s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* ---------- Command blocks ---------- */
+.cmd {
+    padding: 1.2rem 0;
+    border-top: 1px solid var(--border-2);
+}
+
+.cmd:first-of-type {
+    border-top: none;
+}
+
+.cmd-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    color: var(--cyan);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.1);
+    border-radius: 5px;
+    padding: 0.1rem 0.42rem;
+}
+
+.cmd-title {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.verb {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.verb.get {
+    color: var(--green);
+}
+
+.verb.post {
+    color: var(--amber);
+}
+
+.verb.del {
+    color: var(--red);
+}
+
+.cmd-desc {
+    color: var(--dim);
+    font-size: 0.82rem;
+    margin: 0 0 0.9rem;
+}
+
+.cmd-desc code {
+    color: var(--cyan);
+}
+
+/* command run rows: $ VERB /path            [ run ] */
+.run {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.run:last-child {
+    margin-bottom: 0;
+}
+
+.run:hover {
+    border-color: var(--border);
+}
+
+.run .code {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.run .code::-webkit-scrollbar {
+    height: 0;
+}
+
+.go {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--green);
+    background: transparent;
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    border-radius: 7px;
+    padding: 0.28rem 0.7rem;
+    cursor: pointer;
+    flex: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+}
+
+.go:hover {
+    background: rgba(74, 222, 128, 0.12);
+}
+
+.go:active {
+    transform: translateY(1px);
+}
+
+.go.danger {
+    color: var(--red);
+    border-color: rgba(248, 113, 113, 0.35);
+}
+
+.go.danger:hover {
+    background: rgba(248, 113, 113, 0.12);
+}
+
+/* upload field */
+.field {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.field .code {
+    color: var(--dim);
+}
+
+input[type="file"] {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--dim);
+    flex: 1;
+    min-width: 160px;
+}
+
+input[type="file"]::file-selector-button {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--cyan);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 0.3rem 0.65rem;
+    margin-right: 0.6rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+    border-color: var(--cyan);
+}
+
+/* output line for DELETE */
+.out {
+    margin: 0.7rem 0 0;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-2);
+    background: #070b11;
+    color: var(--faint);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    min-height: 1.2em;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.out::before {
+    content: "» ";
+    color: var(--faint);
+}
+
+.out.ok {
+    color: var(--green);
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.out.err {
+    color: var(--red);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* ---------- Footer ---------- */
+footer {
+    margin-top: 1.6rem;
+    color: var(--faint);
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0 0.3rem;
+}
+
+footer .prompt::before {
+    content: "$ ";
+}
+
+@media (max-width: 560px) {
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .term-body {
+        padding: 1.1rem 1rem 1.4rem;
+    }
+}

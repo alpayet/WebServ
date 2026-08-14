@@ -3,81 +3,161 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Webserv - Functionality test</title>
-    <link rel="icon" href="/favicon.ico?v=1" sizes="any">
-    <link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
-    <style>
-        body {
-            font-family: system-ui, sans-serif;
-            max-width: 900px;
-            margin: 2rem auto;
-        }
-
-        section {
-            border: 1px solid #ccc;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        button,
-        input[type="submit"] {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>webserv — validation suite</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-    <h1>Webserv - Validation Suite</h1>
+<div class="wrap">
+    <div class="header-top">
+        <div class="brand">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="7" rx="2" fill="#fff"/>
+                    <rect x="4" y="13" width="16" height="7" rx="2" fill="#fff"/>
+                    <circle cx="7.5" cy="7.5" r="1.4" fill="#22d3ee"/>
+                    <circle cx="7.5" cy="16.5" r="1.4" fill="#6366f1"/>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-name"><span class="p"></span>webserv<span class="host" id="host"></span></div>
+                <div class="brand-sub">HTTP/1.1 · C++98 · non-blocking</div>
+            </div>
+        </div>
 
-    <section>
-        <h2>1. GET & Cookies (Session Management)</h2>
-        <p>Tests the transmission of <code>HTTP_COOKIE</code> and the reception of <code>Set-Cookie</code>.</p>
-        <a href="/cgi-bin/cookie.py">
-            <button>Open the visit counter (CGI GET)</button>
-        </a>
-    </section>
+        <!-- Live server health -->
+        <div class="health checking" id="health" title="Live server status">
+            <svg class="antenna" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path class="wave w3" d="M7 7a13 13 0 0 0 0 18" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+                <path class="wave w3" d="M25 7a13 13 0 0 1 0 18" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+                <path class="wave w2" d="M10 11a8 8 0 0 0 0 10" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+                <path class="wave w2" d="M22 11a8 8 0 0 1 0 10" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+                <path d="M16 15v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 29l4-5 4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <circle class="emitter" cx="16" cy="13" r="3" fill="currentColor"/>
+            </svg>
+            <div class="health-label">
+                <span class="health-state" id="health-text">connecting</span>
+                <span class="health-meta">live status</span>
+            </div>
+        </div>
+    </div>
 
-    <section>
-        <h2>2. POST Multipart & Upload (Image Display)</h2>
-        <p>Tests <code>CONTENT_TYPE</code>, <code>CONTENT_LENGTH</code>, and reading binary data from <i>stdin</i>.</p>
-        <form action="/cgi-bin/upload.py" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file_to_upload" required>
-            <input type="submit" value="Upload and Display">
-        </form>
-    </section>
+    <div class="term">
+        <div class="term-bar">
+            <div class="tl"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+            <div class="term-title"><b>validation.sh</b> — webserv</div>
+        </div>
 
-    <section>
-        <h2>3. DELETE (Static & CGI)</h2>
-        <p>Tests the handling of <code>REQUEST_METHOD=DELETE</code>.</p>
-        <!-- Replace 'test.txt' with a file that actually exists in your uploads folder -->
-        <button onclick="sendDelete('/uploads/test.txt')">Static DELETE (/uploads/test.txt)</button>
-        <button onclick="sendDelete('/cgi-bin/delete.sh')">DELETE via Bash CGI</button>
-        <p id="delete-result" style="color: red; font-weight: bold;"></p>
-    </section>
+        <div class="term-body">
+            <div class="boot">
+                <div class="line"><span class="prompt"></span>./webserv <span class="arg">-c</span> <span class="path">default.conf</span>
+                </div>
+                <div class="line"><span class="ok">[ ok ]</span> <span class="muted">server listening — running feature suite</span>
+                </div>
+                <div class="line"><span class="comment">click a command to fire the request<span class="cursor"></span></span>
+                </div>
+            </div>
 
-    <section>
-        <h2>4. CGI Responses (The 4 Types)</h2>
-        <p>Tests CGI response routing via <code>QUERY_STRING</code>.</p>
-        <ul>
-            <li><a href="/cgi-bin/redirects.py?type=doc">Document Response (Standard)</a></li>
-            <li><a href="/cgi-bin/redirects.py?type=local">Local Redirect (Server intercepts)</a></li>
-            <li><a href="/cgi-bin/redirects.py?type=client">Client Redirect (Browser redirects)</a></li>
-            <li><a href="/cgi-bin/redirects.py?type=clientdoc">Client Redirect with Document</a></li>
-        </ul>
-    </section>
+            <!-- 01 -->
+            <div class="cmd">
+                <div class="cmd-head">
+                    <span class="tag">01</span>
+                    <span class="cmd-title">GET &amp; cookies</span>
+                </div>
+                <p class="cmd-desc">Session management — each <code>GET</code> sends <code>HTTP_COOKIE</code>, the CGI
+                    increments the counter and replies with <code>Set-Cookie</code>.</p>
+                <div class="run">
+                    <span class="code"><span class="prompt"></span><span class="verb get">GET</span> <span class="path">/cgi-bin/cookie.py</span></span>
+                    <button class="go" onclick="visitCounter('cookie-out')">run ↵</button>
+                </div>
+                <p id="cookie-out" class="out"></p>
+            </div>
 
-    <script>
-        function sendDelete(url) {
-            fetch(url, { method: 'DELETE' })
-                .then(response => {
-                    document.getElementById('delete-result').innerText =
-                        `HTTP Status: ${response.status} ${response.statusText}`;
-                })
-                .catch(error => alert("Network error: " + error));
-        }
-    </script>
+            <!-- 02 -->
+            <div class="cmd">
+                <div class="cmd-head">
+                    <span class="tag">02</span>
+                    <span class="cmd-title">POST multipart &amp; upload</span>
+                </div>
+                <p class="cmd-desc">Tests <code>CONTENT_TYPE</code>, <code>CONTENT_LENGTH</code> and reading binary data
+                    from <em>stdin</em>.</p>
+                <form class="run field" action="/cgi-bin/upload.py" method="POST" enctype="multipart/form-data">
+                    <span class="code"><span class="prompt"></span><span class="verb post">POST</span> <span
+                            class="path">/cgi-bin/upload.py</span></span>
+                    <input type="file" name="file_to_upload" required>
+                    <button type="submit" class="go">upload ↵</button>
+                </form>
+            </div>
+
+            <!-- 03 -->
+            <div class="cmd">
+                <div class="cmd-head">
+                    <span class="tag">03</span>
+                    <span class="cmd-title">DELETE — static &amp; CGI</span>
+                </div>
+                <p class="cmd-desc">Handling of <code>REQUEST_METHOD=DELETE</code> on a static file and through a Bash
+                    CGI.</p>
+                <div class="run">
+                    <span class="code"><span class="prompt"></span><span class="verb del">DELETE</span> <span
+                            class="path">/uploads/test.txt</span></span>
+                    <button class="go danger" onclick="sendDelete('/uploads/test.txt', 'del-out')">run ↵</button>
+                </div>
+                <div class="run">
+                    <span class="code"><span class="prompt"></span><span class="verb del">DELETE</span> <span
+                            class="path">/cgi-bin/delete.sh</span></span>
+                    <button class="go danger" onclick="sendDelete('/cgi-bin/delete.sh', 'del-out')">run ↵</button>
+                </div>
+                <p id="del-out" class="out"></p>
+            </div>
+
+            <!-- 04 -->
+            <div class="cmd">
+                <div class="cmd-head">
+                    <span class="tag">04</span>
+                    <span class="cmd-title">CGI response types</span>
+                </div>
+                <p class="cmd-desc">Response routing driven by <code>QUERY_STRING</code> — the four RFC 3875 outcomes.
+                </p>
+                <a class="run" href="/cgi-bin/redirects.py?type=doc">
+                    <span class="code"><span class="prompt"></span><span class="verb get">GET</span> <span class="path">/cgi-bin/redirects.py</span><span
+                            class="arg">?type=doc</span></span>
+                    <span class="go">run ↵</span>
+                </a>
+                <a class="run" href="/cgi-bin/redirects.py?type=local">
+                    <span class="code"><span class="prompt"></span><span class="verb get">GET</span> <span class="path">/cgi-bin/redirects.py</span><span
+                            class="arg">?type=local</span></span>
+                    <span class="go">run ↵</span>
+                </a>
+                <a class="run" href="/cgi-bin/redirects.py?type=client">
+                    <span class="code"><span class="prompt"></span><span class="verb get">GET</span> <span class="path">/cgi-bin/redirects.py</span><span
+                            class="arg">?type=client</span></span>
+                    <span class="go">run ↵</span>
+                </a>
+                <a class="run" href="/cgi-bin/redirects.py?type=clientdoc">
+                    <span class="code"><span class="prompt"></span><span class="verb get">GET</span> <span class="path">/cgi-bin/redirects.py</span><span
+                            class="arg">?type=clientdoc</span></span>
+                    <span class="go">run ↵</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <span class="prompt">Made with 💙 by mlouis, alpayet and ludebion</span>
+        <span class="prompt">webserv · 42 project</span>
+    </footer>
+</div>
+
+<script src="/script.js"></script>
 </body>
 
 </html>

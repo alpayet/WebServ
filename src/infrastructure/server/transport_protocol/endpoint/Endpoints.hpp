@@ -5,28 +5,29 @@
 #include <vector>
 
 namespace webserv {
-namespace transport {
+	namespace transport {
 
-class IEndpoint;
+		class IEndpoint;
 
-class Endpoints {
-public:
-  Endpoints();
-  ~Endpoints();
+		class Endpoints
+		{
+		public:
+			Endpoints();
+			~Endpoints();
 
-  void add(IEndpoint *endpoint);
+			void add(IEndpoint* endpoint);
 
-  std::size_t size() const;
-  IEndpoint &operator[](std::size_t index) const;
+			std::size_t size() const;
+			IEndpoint& operator[](std::size_t index) const;
 
-private:
-  Endpoints(const Endpoints &);
-  Endpoints &operator=(const Endpoints &);
+		private:
+			Endpoints(const Endpoints&);
+			Endpoints& operator=(const Endpoints&);
 
-  std::vector<IEndpoint *> m_endpoints;
-};
+			std::vector<IEndpoint*> m_endpoints;
+		};
 
-} // namespace transport
+	} // namespace transport
 } // namespace webserv
 
 #endif

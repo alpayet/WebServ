@@ -8,36 +8,36 @@
 
 namespace webserv {
 
-namespace reactor {
-class Reactor;
-}
+	namespace reactor {
+		class Reactor;
+	} // namespace reactor
 
-namespace handler {
+	namespace handler {
 
-class IConnectionFactory;
+		class IConnectionFactory;
 
-class TcpListenerHandler : public IEventHandler {
-public:
-  TcpListenerHandler(int listen_fd,
-                     IConnectionFactory const &connection_factory);
-  ~TcpListenerHandler();
+		class TcpListenerHandler : public IEventHandler
+		{
+		public:
+			TcpListenerHandler(int listen_fd, const IConnectionFactory& connection_factory);
+			~TcpListenerHandler();
 
-  int getFd() const;
-  std::time_t getLastActivity() const;
+			int getFd() const;
+			std::time_t getLastActivity() const;
 
-  void onReadable(reactor::Reactor &reactor);
-  void onWritable(reactor::Reactor &reactor);
-  void onTimeout(reactor::Reactor &reactor);
+			void onReadable(reactor::Reactor& reactor);
+			void onWritable(reactor::Reactor& reactor);
+			void onTimeout(reactor::Reactor& reactor);
 
-private:
-  TcpListenerHandler(TcpListenerHandler const &);
-  TcpListenerHandler &operator=(TcpListenerHandler const &);
+		private:
+			TcpListenerHandler(const TcpListenerHandler&);
+			TcpListenerHandler& operator=(const TcpListenerHandler&);
 
-  fd::Fd m_listener_fd;
-  IConnectionFactory const &m_connection_factory;
-};
+			fd::Fd m_listener_fd;
+			const IConnectionFactory& m_connection_factory;
+		};
 
-} // namespace handler
+	} // namespace handler
 } // namespace webserv
 
 #endif

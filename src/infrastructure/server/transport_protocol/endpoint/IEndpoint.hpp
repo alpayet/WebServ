@@ -6,22 +6,23 @@
 
 namespace webserv {
 
-namespace reactor {
-class Reactor;
-}
+	namespace reactor {
+		class Reactor;
+	} // namespace reactor
 
-namespace transport {
+	namespace transport {
 
-class IEndpoint {
-public:
-  virtual ~IEndpoint() {}
+		class IEndpoint
+		{
+		public:
+			virtual ~IEndpoint() {}
 
-  virtual void open(reactor::Reactor &reactor) = 0;
+			virtual void open(reactor::Reactor& reactor) = 0;
 
-  virtual std::string formatEndpoint() const = 0;
-};
+			virtual std::string formatEndpoint() const = 0;
+		};
 
-} // namespace transport
+	} // namespace transport
 } // namespace webserv
 
 #endif

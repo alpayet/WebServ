@@ -6,11 +6,11 @@
 
 namespace ft {
 
-std::string intToString(int n);
+	std::string intToString(int n);
 
-std::time_t now();
+	std::time_t now();
 
-std::string nowFormat();
+	std::string nowFormat();
 
 } // namespace ft
 

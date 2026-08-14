@@ -6,14 +6,13 @@
 class ServerConfig;
 
 namespace webserv {
-namespace transport {
+	namespace transport {
 
-class Endpoints;
+		class Endpoints;
 
-void buildEndpoints(const std::vector<ServerConfig> &configs,
-                    Endpoints &endpoints);
+		void buildEndpoints(const std::vector<ServerConfig>& configs, Endpoints& endpoints);
 
-} // namespace transport
+	} // namespace transport
 } // namespace webserv
 
 #endif

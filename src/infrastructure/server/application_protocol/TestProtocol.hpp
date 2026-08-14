@@ -9,46 +9,46 @@
 #include "infrastructure/server/application_protocol/IProtocolFactory.hpp"
 
 namespace webserv {
-namespace appProtocol {
+	namespace appProtocol {
 
-class TestProtocol : public IProtocol {
-public:
-  explicit TestProtocol(std::string const &body);
-  ~TestProtocol();
+		class TestProtocol : public IProtocol
+		{
+		public:
+			explicit TestProtocol(const std::string& body);
+			~TestProtocol();
 
-  PushStatus::Type pushRequest(char const *inputBuf, std::size_t size,
-                               RequestStatus::Type status);
-  PushStatus::Type pushStream(const char *streamBuf, std::size_t size,
-                              StreamStatus::Type status);
+			PushStatus::Type pushRequest(const char* inputBuf, std::size_t size, RequestStatus::Type status);
+			PushStatus::Type pushStream(const char* streamBuf, std::size_t size, StreamStatus::Type status);
 
-  PullStatus::Type pullResponse(std::vector<char> &outputBuf);
+			PullStatus::Type pullResponse(std::vector<char>& outputBuf);
 
-  app::StreamInfo getStreamResources() const;
+			app::StreamInfo getStreamResources() const;
 
-  void reset();
+			void reset();
 
-  bool shouldKeepAlive() const;
+			bool shouldKeepAlive() const;
 
-private:
-  TestProtocol(TestProtocol const &);
-  TestProtocol &operator=(TestProtocol const &);
+		private:
+			TestProtocol(const TestProtocol&);
+			TestProtocol& operator=(const TestProtocol&);
 
-  std::string m_request;
-  std::vector<char> m_response;
-};
+			std::string m_request;
+			std::vector<char> m_response;
+		};
 
-class TestProtocolFactory : public IProtocolFactory {
-public:
-  explicit TestProtocolFactory(std::string const &body);
-  ~TestProtocolFactory();
+		class TestProtocolFactory : public IProtocolFactory
+		{
+		public:
+			explicit TestProtocolFactory(const std::string& body);
+			~TestProtocolFactory();
 
-  IProtocol *create();
+			IProtocol* create();
 
-private:
-  std::string m_body;
-};
+		private:
+			std::string m_body;
+		};
 
-} // namespace appProtocol
+	} // namespace appProtocol
 } // namespace webserv
 
 #endif
