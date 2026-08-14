@@ -91,7 +91,7 @@ if "multipart/form-data" in content_type and content_length > 0:
 
             emit_status(True, f"{size} bytes written to /uploads/{clean_filename}")
             sys.stdout.write(f'<div class="cmd-head"><span class="cmd-title">File received &mdash; {clean_filename}</span></div>')
-            sys.stdout.write(f'<p class="cmd-desc">type <code>{mime_type}</code> &middot; {size} bytes &middot; saved to <code>/uploads/{encoded_filename}</code></p>')
+            sys.stdout.write(f'<p class="cmd-desc">type <code>{mime_type}</code> &middot; {size} bytes &middot; saved to <code>/uploads/{clean_filename}</code></p>')
 
             if mime_type.startswith("image/"):
                 sys.stdout.write(
