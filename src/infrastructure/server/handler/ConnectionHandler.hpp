@@ -34,6 +34,9 @@ namespace webserv {
 			void onWritable(reactor::Reactor& reactor);
 			void onTimeout(reactor::Reactor& reactor);
 
+			static std::size_t n_active_connections;
+			static std::size_t n_complete_requests;
+
 		private:
 			ConnectionHandler(const ConnectionHandler&);
 			ConnectionHandler& operator=(const ConnectionHandler&);

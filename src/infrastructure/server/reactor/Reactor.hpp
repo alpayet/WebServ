@@ -35,10 +35,12 @@ namespace webserv {
 			Reactor(const Reactor&);
 			Reactor& operator=(const Reactor&);
 
+
 			handler::IEventHandler* getEventHandler(int event_fd) const;
 			void dispatch(int n_events);
 			bool hasBeenClosed(int fd) const;
 			void clearClosedEventHandlers();
+			void logMetrics() const;
 
 			static const int IDLE_CONNECTION_TIMEOUT_S = 5;
 

@@ -14,13 +14,20 @@
 namespace webserv {
 	namespace handler {
 
+		std::size_t ConnectionHandler::n_active_connections = 0;
+		std::size_t ConnectionHandler::n_complete_requests = 0;
+
 		ConnectionHandler::ConnectionHandler(transport::ITransport* connection, appProtocol::IProtocol* appProtocol) :
 		    m_transport(connection), m_app_protocol(appProtocol), m_read_buf(), m_write_buf(), m_write_pos(0),
 		    m_streaming(false), m_clearing(false), m_last_activity(ft::now())
-		{}
+		{
+			++n_active_connections;
+		}
+
 
 		ConnectionHandler::~ConnectionHandler()
 		{
+			--n_active_connections;
 			delete m_transport;
 			delete m_app_protocol;
 		}
@@ -103,11 +110,12 @@ namespace webserv {
 
 			const appProtocol::IProtocol::PullStatus::Type pull_state = m_app_protocol->pullResponse(m_write_buf);
 
-
 			if (!m_write_buf.empty())
 				return;
 			if (pull_state == appProtocol::IProtocol::PullStatus::HAS_MORE)
 				return;
+
+			++n_complete_requests;
 
 			if (m_app_protocol->shouldKeepAlive())
 			{

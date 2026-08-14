@@ -1,5 +1,7 @@
 #include "infrastructure/server/reactor/Reactor.hpp"
 
+#include "infrastructure/server/handler/ConnectionHandler.hpp"
+
 #include <csignal>
 #include <cstddef>
 #include <stdexcept>
@@ -156,12 +158,20 @@ namespace webserv {
 		{
 			Logger("reactor loop starting...");
 
+			std::time_t last_metrics = ft::now();
+
 			while (g_running)
 			{
 				const int n_events = m_demux.wait(computePollTimeout());
 				if (n_events > 0)
 					dispatch(n_events);
 				expireIdleConnections();
+				const std::time_t now = ft::now();
+				if (now - last_metrics >= 3)
+				{
+					logMetrics();
+					last_metrics = now;
+				}
 				clearClosedEventHandlers();
 			}
 			Logger("reactor run loop stopped");
@@ -200,6 +210,16 @@ namespace webserv {
 			for (std::size_t i = 0; i < m_closed.size(); ++i) delete m_closed[i];
 
 			m_closed.clear();
+		}
+
+		void Reactor::logMetrics() const
+		{
+			const double rps = handler::ConnectionHandler::n_complete_requests / 3;
+
+			LOG("metrics: active=" << handler::ConnectionHandler::n_active_connections
+			                       << " req/3s=" << handler::ConnectionHandler::n_complete_requests << " rps=" << rps);
+
+			handler::ConnectionHandler::n_complete_requests = 0;
 		}
 
 	} // namespace reactor
