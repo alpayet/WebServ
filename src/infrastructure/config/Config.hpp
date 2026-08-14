@@ -16,7 +16,7 @@ public:
 class Config
 {
 	public:
-		Config(char* filename);
+		Config(const char* filename);
 		const std::vector<ServerConfig>&	getServerConfigs() const { return m_servers; };
 	private:
 		std::vector<ServerConfig> m_servers;
