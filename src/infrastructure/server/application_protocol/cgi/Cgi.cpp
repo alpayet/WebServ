@@ -1,7 +1,5 @@
 #include "infrastructure/server/application_protocol/cgi/Cgi.hpp"
 
-#include "infrastructure/server/application_protocol/cgi/Exception.hpp"
-#include "infrastructure/server/utils/Logger.hpp"
 #include <csignal>
 #include <cstdlib>
 #include <fcntl.h>
@@ -11,8 +9,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
+#include "infrastructure/server/application_protocol/cgi/Exception.hpp"
+#include "infrastructure/server/utils/Logger.hpp"
 
-bool getInterpreter(std::string const &uri, std::pair<std::string, std::string> &out)
+bool getInterpreter(const std::string& uri, std::pair<std::string, std::string>& out)
 {
 	std::map<std::string, std::pair<std::string, std::string> > interpreters;
 
@@ -29,10 +29,9 @@ bool getInterpreter(std::string const &uri, std::pair<std::string, std::string> 
 	if (dot == std::string::npos || dot < slash)
 		return false;
 
-	std::string const ext = uri.substr(dot);
+	const std::string ext = uri.substr(dot);
 
-	std::map<std::string, std::pair<std::string, std::string> >::const_iterator it =
-		interpreters.find(ext);
+	std::map<std::string, std::pair<std::string, std::string> >::const_iterator it = interpreters.find(ext);
 	if (it == interpreters.end())
 		return false;
 
@@ -40,100 +39,77 @@ bool getInterpreter(std::string const &uri, std::pair<std::string, std::string> 
 	return true;
 }
 
-void createEnv(
-	std::map<std::string, std::string> const &meta_variables,
-	std::vector<std::string>				 &tmp_env,
-	std::vector<char *>						 &envp
-)
+void createEnv(const std::map<std::string, std::string>& meta_variables, std::vector<std::string>& tmp_env,
+               std::vector<char*>& envp)
 {
 	{
-		std::map<std::string, std::string>::const_iterator const ite = meta_variables.end();
-		std::map<std::string, std::string>::const_iterator		 it = meta_variables.begin();
-		for (; it != ite; ++it)
-			tmp_env.push_back(it->first + "=" + it->second);
+		const std::map<std::string, std::string>::const_iterator ite = meta_variables.end();
+		std::map<std::string, std::string>::const_iterator it = meta_variables.begin();
+		for (; it != ite; ++it) tmp_env.push_back(it->first + "=" + it->second);
 	}
 	{
-		std::vector<std::string>::const_iterator const ite = tmp_env.end();
-		std::vector<std::string>::const_iterator	   it = tmp_env.begin();
-		for (; it != ite; ++it)
-			envp.push_back(const_cast<char *>(it->c_str()));
+		const std::vector<std::string>::const_iterator ite = tmp_env.end();
+		std::vector<std::string>::const_iterator it = tmp_env.begin();
+		for (; it != ite; ++it) envp.push_back(const_cast<char*>(it->c_str()));
 
 		envp.push_back(NULL);
 	}
 }
 
-void childRoutine(
-	std::string const		  &rootPath,
-	std::string const		  &uri,
-	std::string const		  &body_path,
-	int						   pipe_fds[2],
-	std::vector<char *> const &envp
-)
+void childRoutine(const std::string& root_path, const std::string& body_path, int pipe_fds[2], const char* exec_path,
+                  char* const* argv, char* const* envp)
 {
-	std::pair<std::string, std::string> interpreter;
-	bool const							hasInterpreter = getInterpreter(uri, interpreter);
-
-	std::size_t		  slash = uri.find_last_of('/');
-	std::string const script = uri.substr(slash + 1);
-
-	char const *in = body_path.empty() ? "/dev/null" : body_path.c_str();
-	int			in_fd = ::open(in, O_RDONLY);
+	const char* in = body_path.empty() ? "/dev/null" : body_path.c_str();
+	int in_fd = ::open(in, O_RDONLY);
 	if (in_fd < 0 || ::dup2(pipe_fds[1], STDOUT_FILENO) < 0 || ::dup2(in_fd, STDIN_FILENO) < 0 ||
-		::chdir(rootPath.c_str()) < 0)
-		::_exit(1);
+	    ::chdir(root_path.c_str()) < 0)
+		::_exit(EXIT_FAILURE);
 
-	// close read buf not using and close write buf now dup in new_write_buf
 	::close(in_fd);
 	::close(pipe_fds[0]);
 	::close(pipe_fds[1]);
 
-	if (hasInterpreter)
-	{
-		char *argv[3] = {
-			const_cast<char *>(interpreter.second.c_str()), const_cast<char *>(script.c_str()), NULL
-		};
-		::execve(interpreter.first.c_str(), argv, &envp[0]);
-	}
-	else
-	{
-		std::cerr << "does not has interpreter" << std::endl;
+	::execve(exec_path, argv, envp);
 
-		std::string exec_path = "./" + script;
-		char	   *argv[2] = {const_cast<char *>(uri.c_str()), NULL};
-		::execve(exec_path.c_str(), argv, &envp[0]);
-	}
-	std::cerr << "execve() failed in child" << std::endl;
-	::_exit(1);
+	::_exit(EXIT_FAILURE);
 }
 
-app::StreamInfo Cgi::execute(
-	std::string const						 &rootPath,
-	std::string const						 &resourcePath,
-	std::string const						 &bodyPath,
-	std::map<std::string, std::string> const &meta_variables
-)
+app::StreamInfo Cgi::execute(const std::string& root_path, const std::string& resource_path,
+                             const std::string& body_path, const std::map<std::string, std::string>& meta_variables)
 {
-	app::StreamInfo			 infos = {-1, -1};
-	std::vector<std::string> tmp_env;
-	std::vector<char *>		 envp;
-	int						 pipe_fds[2];
+	app::StreamInfo infos = {-1, -1};
+	std::pair<std::string, std::string> interpreter;
+	const bool hasInterpreter = getInterpreter(resource_path, interpreter);
+	const std::size_t slash = resource_path.find_last_of('/');
+	const std::string script = resource_path.substr(slash + 1);
+	const std::string exec_path = hasInterpreter ? interpreter.first : ("./" + script);
+	std::vector<char*> argv;
+	if (hasInterpreter)
+	{
+		argv.push_back(const_cast<char*>(interpreter.second.c_str()));
+		argv.push_back(const_cast<char*>(script.c_str()));
+	}
+	else
+		argv.push_back(const_cast<char*>(resource_path.c_str()));
+	argv.push_back(NULL);
 
+	std::vector<std::string> tmp_env;
+	std::vector<char*> envp;
 	createEnv(meta_variables, tmp_env, envp);
 
+	int pipe_fds[2];
 	if (::pipe(pipe_fds) < 0)
 		throw cgi::Exception(cgi::Exception::PIPE_FAILED);
 
 	infos.pid = ::fork();
-
 	if (infos.pid == -1)
 	{
 		::close(pipe_fds[0]);
 		::close(pipe_fds[1]);
 		throw cgi::Exception(cgi::Exception::FORK_FAILED);
 	}
-
 	if (infos.pid == 0)
-		childRoutine(rootPath, resourcePath, bodyPath, pipe_fds, envp);
+		childRoutine(root_path, body_path, pipe_fds, exec_path.c_str(), &argv[0], &envp[0]);
 
 	::close(pipe_fds[1]);
 
@@ -149,11 +125,3 @@ app::StreamInfo Cgi::execute(
 
 	return infos;
 }
-
-// // TODO::? dto will have
-// /**
-//  * request_method
-//  * query_string
-//  * content_type
-//  * content_length
-//  */
