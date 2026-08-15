@@ -41,15 +41,15 @@ int main(int const argc, char **argv)
 	{
     if (argc > 2)
       throw webserv::ConfigException("Too many arguments passed.");
-    
+
     initSignals();
-		
+
     std::string filepath;
     if (argc == 2)
       filepath = argv[1];
     else
-      filepath = "conf/testludebion.conf";
-    
+      filepath = "conf/default.conf";
+
     fileCheck(filepath.c_str());
 		webserv::Config const					  conf(filepath.c_str());
 		std::vector<webserv::ServerConfig> const &configs = conf.getServerConfigs();
