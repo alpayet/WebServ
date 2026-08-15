@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DirectoryExplorer.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:23:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 17:16:32 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 		if (S_ISDIR(st.st_mode))
 		{
 			file.size = "-";
-			file.id += "/";
+			if (file.id.size() > 1)
+				file.id += "/";
 		}
 		else
 		{
