@@ -3,7 +3,8 @@
 #include <iostream>
 #include <sstream>
 
-Parser::Parser(const std::vector<Token> &tokens) : m_tokens(tokens)
+namespace webserv {
+Parser::Parser(std::vector<Token> const &tokens) : m_tokens(tokens)
 {
 	m_it = m_tokens.begin();
 	m_ite = m_tokens.end();
@@ -173,10 +174,11 @@ void Parser::parse(p_Config &config)
 	config = m_config;
 }
 
-std::ostream &operator<<(std::ostream &os, const p_Config &c)
+std::ostream &operator<<(std::ostream &os, p_Config const &c)
 {
 	std::vector<p_ServerConfig>::const_iterator s_ite = c.servers.end();
-	for (std::vector<p_ServerConfig>::const_iterator s_it = c.servers.begin(); s_it != s_ite; ++s_it)
+	for (std::vector<p_ServerConfig>::const_iterator s_it = c.servers.begin(); s_it != s_ite;
+		 ++s_it)
 	{
 		os << "***SERVER***" << std::endl;
 		std::vector<p_Location>::const_iterator l_ite = s_it->locations.end();
@@ -216,3 +218,4 @@ std::ostream &operator<<(std::ostream &os, const p_Config &c)
 	}
 	return os;
 }
+} // namespace webserv

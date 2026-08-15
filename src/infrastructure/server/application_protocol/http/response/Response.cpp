@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 06:01:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:17:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:18:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <cstring>
 #include <sstream>
 
+namespace webserv {
 namespace http {
 
 unsigned short const Response::StatusLine::DEFAULT_STATUS_CODE = 200;
@@ -108,3 +109,4 @@ std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
 	return (lhs);
 }
 } // namespace http
+}

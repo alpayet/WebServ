@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ILimitsProvider.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 03:13:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/15 17:22:32 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/08/15 13:09:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 
+namespace webserv {
 namespace http {
 class ILimitsProvider
 {
@@ -24,5 +25,6 @@ class ILimitsProvider
 	virtual std::size_t getMaxBodySize(std::string const &uri) const = 0;
 };
 } // namespace http
+} // namespace webserv
 
 #endif // ILIMITSPROVIDER_HPP

@@ -1,19 +1,20 @@
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include "infrastructure/config/Config.hpp"
-#include "infrastructure/config/Tokenizer.hpp"
 #include "infrastructure/config/Parser.hpp"
 #include "infrastructure/config/Semantic.hpp"
-#include <vector>
+#include "infrastructure/config/Tokenizer.hpp"
+#include <fstream>
+#include <iostream>
 #include <iterator>
+#include <sstream>
+#include <vector>
 
-Config::Config(const char* filename)
+namespace webserv {
+Config::Config(char const *filename)
 {
-	std::ifstream	file(filename);
+	std::ifstream file(filename);
 	if (file.fail())
 	{
-		throw ConfigException ("File couldn't be openned.");
+		throw ConfigException("File couldn't be openned.");
 	}
 
 	std::ostringstream buf;
@@ -21,7 +22,7 @@ Config::Config(const char* filename)
 	std::string tmp_file_str = buf.str();
 
 	std::string file_str;
-	for (std::size_t i = 0; i < tmp_file_str.size(); )
+	for (std::size_t i = 0; i < tmp_file_str.size();)
 	{
 		if (tmp_file_str[i] == '#')
 		{
@@ -36,26 +37,26 @@ Config::Config(const char* filename)
 	tok.tokenize(file_str);
 	if (tok.getTokens().empty())
 	{
-		throw ConfigException ("File is empty.");
+		throw ConfigException("File is empty.");
 	}
 
-	Parser prs(tok.getTokens());
+	Parser	 prs(tok.getTokens());
 	p_Config conf;
 	prs.parse(conf);
 
 	checkDupHostname(conf);
-	for (size_t i = 0 ; i < conf.servers.size() ; ++i)
+	for (size_t i = 0; i < conf.servers.size(); ++i)
 	{
 		checkDupLoc(conf.servers[i]);
 	}
 
 	std::vector<p_ServerConfig>::const_iterator ite = conf.servers.end();
-	for (std::vector<p_ServerConfig>::const_iterator it = conf.servers.begin() ; it != ite ; ++it)
+	for (std::vector<p_ServerConfig>::const_iterator it = conf.servers.begin(); it != ite; ++it)
 	{
 		ServerConfig serv;
 		initServerConfig(serv, *it);
 		initLocation(serv, *it);
 		this->m_servers.push_back(serv);
 	}
-
 }
+} // namespace webserv

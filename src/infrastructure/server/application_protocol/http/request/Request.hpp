@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:49:02 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 15:32:38 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:17:17 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <ostream>
 #include <string>
 
+namespace webserv {
 namespace http {
 
 class Request
@@ -86,5 +87,6 @@ class Request
 std::ostream &operator<<(std::ostream &lhs, Request const &rhs);
 
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPREQUEST_HPP

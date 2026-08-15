@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 19:54:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 18:42:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:20:03 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 // TODO: faire herité la config de cette interface
 
+namespace webserv {
 namespace http {
 class IHttpVersionProvider
 {
@@ -27,5 +28,6 @@ class IHttpVersionProvider
 	virtual bool 		isSupportedHttpVersion(std::string const &version) const = 0;
 };
 } // namespace http
+}
 
 #endif // IHTTPVERSIONPROVIDER_HPP

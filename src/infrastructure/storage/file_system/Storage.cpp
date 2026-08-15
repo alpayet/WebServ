@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:41:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:16:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:24:48 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/storage/file_system/Reader.hpp"
 #include <cerrno>
 
+namespace webserv {
 namespace fileSystem {
 
 void Storage::remove(std::string const &resourcePath)
@@ -41,3 +42,4 @@ app::IResourceReader *Storage::createReader(std::string const &resourcePath)
 	return (new Reader(resourcePath));
 }
 } // namespace fileSystem
+} // namespace webserv

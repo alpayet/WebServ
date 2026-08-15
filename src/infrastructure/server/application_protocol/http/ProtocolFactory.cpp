@@ -3,6 +3,7 @@
 #include "infrastructure/server/application_protocol/http/Session.hpp"
 #include "infrastructure/server/utils/Logger.hpp"
 
+namespace webserv {
 namespace http {
 
 ProtocolFactory::ProtocolFactory(ServerConfig const &config)
@@ -23,6 +24,7 @@ ProtocolFactory::ProtocolFactory(ServerConfig const &config)
 
 ProtocolFactory::~ProtocolFactory() {}
 
-webserv::appProtocol::IProtocol *ProtocolFactory::create() { return new Session(_protocol); }
+appProtocol::IProtocol *ProtocolFactory::create() { return new Session(_protocol); }
 
 } // namespace http
+} // namespace webserv

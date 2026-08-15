@@ -4,10 +4,11 @@
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/application_protocol/http/core/Context.hpp"
 
+namespace webserv {
 namespace http {
 class Protocol;
 
-class Session : public webserv::appProtocol::IProtocol
+class Session : public appProtocol::IProtocol
 {
   public:
 	Session(Protocol &handler);
@@ -35,5 +36,6 @@ class Session : public webserv::appProtocol::IProtocol
 };
 
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPSESSION_HPP

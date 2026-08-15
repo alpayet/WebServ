@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:07 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:33:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:25:29 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iostream>
 #include <unistd.h>
 
+namespace webserv {
 namespace fileSystem {
 char const TempWriter::TMP_DIRECTORY[] = "/tmp/";
 
@@ -90,3 +91,4 @@ void TempWriter::reset(void)
 	}
 }
 } // namespace fileSystem
+} // namespace webserv

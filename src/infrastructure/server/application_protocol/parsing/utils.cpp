@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 04:11:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:22:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 #include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 
-namespace
+namespace {
+int hex_to_dec(char c)
 {
-	int hex_to_dec(char c)
-	{
-		if (c >= '0' && c <= '9')
-			return (c - '0');
-		if (c >= 'a' && c <= 'f')
-			return (c - 'a' + 10);
-		if (c >= 'A' && c <= 'F')
-			return (c - 'A' + 10);
-		return (-1);
-	}
+	if (c >= '0' && c <= '9')
+		return (c - '0');
+	if (c >= 'a' && c <= 'f')
+		return (c - 'a' + 10);
+	if (c >= 'A' && c <= 'F')
+		return (c - 'A' + 10);
+	return (-1);
+}
 } // namespace
 
+namespace webserv {
 namespace parse {
 
 bool is_not_white_spaces(char c) { return (c != SP && c != HT); }
@@ -80,3 +80,4 @@ void trim(std::string &str, char const *to_trim)
 		str.erase(0, start);
 }
 } // namespace parse
+} // namespace webserv

@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 16:38:25 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:22:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:35:13 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESOURCEPERMISSIONS_HPP
 #define RESOURCEPERMISSIONS_HPP
 
+namespace webserv {
 namespace domain {
 enum ResourcePermissions
 {
@@ -22,5 +23,6 @@ enum ResourcePermissions
 	EXECUTABLE = 1 << 2
 };
 } // namespace domain
+}
 
 #endif // RESOURCEPERMISSIONS_HPP

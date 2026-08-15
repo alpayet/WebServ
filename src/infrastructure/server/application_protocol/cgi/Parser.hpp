@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:28:27 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:27:35 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "infrastructure/server/application_protocol/cgi/Response.hpp"
 #include <vector>
 
+namespace webserv {
 namespace parse {
 class IValidationPolicy;
 } // namespace parse
@@ -81,5 +82,6 @@ class Parser
 	void validateBodySize(std::size_t size);
 };
 } // namespace cgi
+} // namespace webserv
 
 #endif // CGIPARSER_HPP

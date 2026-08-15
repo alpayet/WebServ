@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 18:29:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:30:10 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:37 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "domain/enums/ResourceType.hpp"
 #include <string>
 
+namespace webserv {
 namespace app {
 struct SystemResourceInfo
 {
@@ -30,5 +31,6 @@ struct SystemResourceInfo
 	SystemResourceInfo() : resourceSize(0), canBeDeleted(false), exists(false) {};
 };
 } // namespace app
+} // namespace webserv
 
 #endif // SYSTEMRESOURCEINFO_HPP

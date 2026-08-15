@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 00:15:30 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:36:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <vector>
 
+namespace webserv {
 namespace app {
 class IResourceReader
 {
@@ -25,5 +26,6 @@ class IResourceReader
 	virtual std::size_t readChunk(std::vector<char> &buf) = 0;
 };
 } // namespace app
+}
 
 #endif // IRESOURCEREADER_HPP

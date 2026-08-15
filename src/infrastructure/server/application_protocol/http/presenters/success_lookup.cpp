@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/29 20:37:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 03:37:50 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:15:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
 #include <cstdlib>
 
+namespace webserv {
 namespace http {
 unsigned short to_status_code(app::ResourceStatus status)
 {
@@ -28,3 +29,4 @@ unsigned short to_status_code(app::ResourceStatus status)
 	}
 }
 } // namespace http
+} // namespace webserv

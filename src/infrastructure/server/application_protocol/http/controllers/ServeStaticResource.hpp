@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:10:33 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:09:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVESTATICRESOURCECONTROLLER_HPP
 #define SERVESTATICRESOURCECONTROLLER_HPP
 
+namespace webserv {
 namespace app {
 namespace useCase {
 class ServeStaticResource;
@@ -38,7 +39,7 @@ class ServeStaticResource
 	app::useCase::ServeStaticResource &_useCase;
 };
 } // namespace controller
-
 } // namespace http
+} // namespace webserv
 
 #endif // SERVESTATICRESOURCECONTROLLER_HPP

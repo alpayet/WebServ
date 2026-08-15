@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:47:49 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 00:56:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:18:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace app {
 struct SystemResourceInfo;
 } // namespace app
@@ -103,5 +104,6 @@ class Response::Builder
 std::ostream &operator<<(std::ostream &lhs, Response const &rhs);
 
 } // namespace http
+}
 
 #endif // HTTPRESPONSE_HPP

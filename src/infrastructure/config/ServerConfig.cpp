@@ -17,10 +17,11 @@
 #include "application/Exception.hpp"
 #include "infrastructure/config/Semantic.hpp"
 #include "infrastructure/server/application_protocol/http/exceptions/Exception.hpp"
-#include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
 #include "infrastructure/server/application_protocol/http/methods.hpp"
+#include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
 #include "infrastructure/storage/file_system/fileSystem.hpp"
 
+namespace webserv {
 Location ServerConfig::findLocationFromUri(std::string const &uri) const
 {
 	std::size_t pos = 0;
@@ -211,20 +212,11 @@ bool ServerConfig::isSupportedHttpVersion(std::string const &version) const
 	return (version == "HTTP/1.1" || version == "HTTP/1.0");
 }
 
-std::size_t ServerConfig::getMaxRequestLineSize(void) const
-{
-	return 8192;
-}
+std::size_t ServerConfig::getMaxRequestLineSize(void) const { return 8192; }
 
-std::size_t ServerConfig::getMaxHeaderLineSize(void) const
-{
-	return 8192;
-}
+std::size_t ServerConfig::getMaxHeaderLineSize(void) const { return 8192; }
 
-std::size_t ServerConfig::getMaxHeaderCount(void) const
-{
-	return 100;
-}
+std::size_t ServerConfig::getMaxHeaderCount(void) const { return 100; }
 
 std::size_t ServerConfig::getMaxBodySize(void) const { return (m_max_body); }
 
@@ -305,3 +297,4 @@ std::ostream &operator<<(std::ostream &os, ServerConfig const &s)
 
 	return os;
 }
+} // namespace webserv

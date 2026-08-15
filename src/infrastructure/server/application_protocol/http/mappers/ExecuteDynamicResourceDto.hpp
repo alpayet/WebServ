@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:06:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:23:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:13:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 
+namespace webserv {
 namespace http {
 class Request;
 struct RoutePolicy;
@@ -34,7 +35,7 @@ class ExecuteDynamicResourceDto
 	ExecuteDynamicResourceDto(void);
 };
 } // namespace mapper
-
 } // namespace http
+} // namespace webserv
 
 #endif // EXECUTEDYNAMICRESOURCEDTOMAPPER_HPP

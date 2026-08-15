@@ -1,40 +1,42 @@
 #include "infrastructure/config/Tokenizer.hpp"
+#include <algorithm>
 #include <iostream>
 #include <iterator>
-#include <algorithm>
 
-Tokenizer::Tokenizer()
-{
+namespace webserv {
+Tokenizer::Tokenizer() {}
 
-}
+Tokenizer::~Tokenizer() {}
 
-Tokenizer::~Tokenizer()
-{
-
-}
-
-const std::string	etokenToStr(e_token t)
+std::string const etokenToStr(e_token t)
 {
 	switch (t)
 	{
-		case char_lbracket : return "char_lbracket";
-		case char_rbracket : return "char_rbracket";
-		case char_end : return "char_end";
-		case res_word : return "res_word";
-		case str_type : return "str_type";
-		case int_type : return "int_type";
-		default: return "NOTOKEN";
+		case char_lbracket:
+			return "char_lbracket";
+		case char_rbracket:
+			return "char_rbracket";
+		case char_end:
+			return "char_end";
+		case res_word:
+			return "res_word";
+		case str_type:
+			return "str_type";
+		case int_type:
+			return "int_type";
+		default:
+			return "NOTOKEN";
 	}
 }
 
-Token	Tokenizer::tokenize(const std::string& str)
+Token Tokenizer::tokenize(std::string const &str)
 {
 	Token t;
-	
-	for (size_t i = 0 ; i < str.size() ; )
+
+	for (size_t i = 0; i < str.size();)
 	{
 		size_t j = str.find_first_of(" \t\n\v\f\r;{}", i);
-		
+
 		if (j != std::string::npos && i == j)
 		{
 			if (str[j] == ';')
@@ -44,19 +46,19 @@ Token	Tokenizer::tokenize(const std::string& str)
 			else if (str[j] == '}')
 				tokenizeChar(t, "}");
 			++i;
-			continue ;
+			continue;
 		}
 		std::string sub;
 		if (j == std::string::npos)
 		{
 			sub = str.substr(i);
 			tokenizeChar(t, sub);
-			break ;
+			break;
 		}
 		sub = str.substr(i, j - i);
 		tokenizeChar(t, sub);
 		if (str[j] == ';')
-				tokenizeChar(t, ";");
+			tokenizeChar(t, ";");
 		else if (str[j] == '{')
 			tokenizeChar(t, "{");
 		else if (str[j] == '}')
@@ -66,18 +68,15 @@ Token	Tokenizer::tokenize(const std::string& str)
 	return t;
 }
 
-void	Tokenizer::addToken(Token token)
-{
-	m_tokens.push_back(token);
-}
+void Tokenizer::addToken(Token token) { m_tokens.push_back(token); }
 
-void	Tokenizer::tokenizeChar(Token& t, const std::string& str)
+void Tokenizer::tokenizeChar(Token &t, std::string const &str)
 {
 	if (str.size() > 1)
 	{
 		tokenizeStr(t, str);
 		addToken(t);
-		return ;
+		return;
 	}
 
 	switch (str[0])
@@ -85,33 +84,33 @@ void	Tokenizer::tokenizeChar(Token& t, const std::string& str)
 		case '{':
 			t.type = char_lbracket;
 			t.data = str;
-			break ;
+			break;
 		case '}':
 			t.type = char_rbracket;
 			t.data = str;
-			break ;
+			break;
 		case ';':
 			t.type = char_end;
 			t.data = str;
-			break ;
+			break;
 		default:
 			tokenizeStr(t, str);
 	}
 	addToken(t);
 }
 
-void	Tokenizer::tokenizeStr(Token& t, const std::string& str)
+void Tokenizer::tokenizeStr(Token &t, std::string const &str)
 {
 	char *ptr;
 
-	size_t	kw_size = sizeof(keywords) / sizeof(keywords[0]);
-	bool	isRes = false;
-	for (size_t i = 0 ; i < kw_size ; ++i)
+	size_t kw_size = sizeof(keywords) / sizeof(keywords[0]);
+	bool   isRes = false;
+	for (size_t i = 0; i < kw_size; ++i)
 	{
 		if (keywords[i].name == str)
 		{
 			isRes = true;
-			break ;
+			break;
 		}
 	}
 	if (isRes)
@@ -132,20 +131,21 @@ void	Tokenizer::tokenizeStr(Token& t, const std::string& str)
 }
 
 /** GETTERS & SETTERS*/
-std::string 		Tokenizer::getFile() const { return m_file; };
+std::string Tokenizer::getFile() const { return m_file; };
 
-std::vector<Token>	Tokenizer::getTokens() const { return m_tokens; };
+std::vector<Token> Tokenizer::getTokens() const { return m_tokens; };
 
-std::ostream& operator<<(std::ostream& os, const Tokenizer& t)
+std::ostream &operator<<(std::ostream &os, Tokenizer const &t)
 {
 	std::vector<Token> tokens;
-	
+
 	tokens = t.getTokens();
 	std::vector<Token>::iterator ite = tokens.end();
-	for (std::vector<Token>::iterator it = tokens.begin() ; it != ite ; *it++)
+	for (std::vector<Token>::iterator it = tokens.begin(); it != ite; *it++)
 	{
 		os << "Type: " << etokenToStr(it->type);
 		os << "\nData: '" << it->data << "'" << std::endl;
 	}
 	return os;
 }
+} // namespace webserv

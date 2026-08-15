@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:49:57 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/12 20:17:20 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <sys/types.h>
 
+namespace webserv {
 namespace app {
 class IResourceReader;
 
@@ -34,5 +35,6 @@ public:
           std::map<std::string, std::string> const &metaVariables) = 0;
 };
 } // namespace app
+}
 
 #endif // IDYNAMICRESOURCEEXECUTOR_HPP

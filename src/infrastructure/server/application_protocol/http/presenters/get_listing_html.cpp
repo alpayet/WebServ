@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:22:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:14:19 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/presenters/get_listing_html.hpp"
 
+namespace webserv {
 namespace http {
 std::string get_listing_html(std::string const &uri, std::vector<app::CollectionEntry> const &files)
 {
@@ -54,3 +55,4 @@ std::string get_listing_html(std::string const &uri, std::vector<app::Collection
 	return listing;
 }
 } // namespace http
+}

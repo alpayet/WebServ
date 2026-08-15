@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:37:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:31:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:21:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace parse {
 struct ParseHeaderLine
 {
@@ -79,5 +80,6 @@ bool is_valid_value_syntax(InputIterator it_start, InputIterator it_end)
 }
 
 } // namespace parse
+} // namespace webserv
 
 #endif // PARSE_HEADER_PARSER_HPP

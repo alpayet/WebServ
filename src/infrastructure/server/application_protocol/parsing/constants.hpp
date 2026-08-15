@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 04:29:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:15:29 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:21:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <cstdlib>
 
+namespace webserv {
 namespace parse {
 extern char const COLON;
 extern char const SP;
@@ -26,5 +27,6 @@ extern char const CRLF[3];
 extern char const QUERY_DELIMITER;
 
 } // namespace parse
+}
 
 #endif // PARSINGCONSTANTS_HPP

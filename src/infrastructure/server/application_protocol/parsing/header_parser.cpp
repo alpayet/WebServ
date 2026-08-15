@@ -6,17 +6,18 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:31:25 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:21:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/parsing/header_parser.hpp"
+#include "infrastructure/server/application_protocol/constants.hpp"
 #include "infrastructure/server/application_protocol/parsing/line_reader.hpp"
 #include "infrastructure/server/application_protocol/parsing/utils.hpp"
-#include "infrastructure/server/application_protocol/constants.hpp"
 #include <algorithm>
 #include <cerrno>
 
+namespace webserv {
 namespace parse {
 ParseHeaderLine::Result parse_header_line(
 	std::vector<char>::const_iterator it_start,
@@ -85,3 +86,4 @@ bool is_invalid_key_char(unsigned char c)
 bool is_invalid_value_char(unsigned char c) { return ((c < 32 && c != HT) || c == 127); }
 
 } // namespace parse
+} // namespace webserv

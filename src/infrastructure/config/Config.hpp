@@ -1,25 +1,29 @@
 #ifndef CONFIG_HPP
-# define CONFIG_HPP
+#define CONFIG_HPP
 
-# include <vector>
-# include <string>
-# include <stdexcept>
-# include "infrastructure/config/ServerConfig.hpp"
+#include "infrastructure/config/ServerConfig.hpp"
+#include <stdexcept>
+#include <string>
+#include <vector>
 
-//TODO: to see
-class ConfigException : public std::runtime_error {
-public:
-	explicit ConfigException(const std::string &what)
-		: std::runtime_error("Config error: " + what) {}
+// TODO: to see
+namespace webserv {
+class ConfigException : public std::runtime_error
+{
+  public:
+	explicit ConfigException(std::string const &what) : std::runtime_error("Config error: " + what)
+	{}
 };
 
 class Config
 {
-	public:
-		Config(const char* filename);
-		const std::vector<ServerConfig>&	getServerConfigs() const { return m_servers; };
-	private:
-		std::vector<ServerConfig> m_servers;
+  public:
+	Config(char const *filename);
+	std::vector<ServerConfig> const &getServerConfigs() const { return m_servers; };
+
+  private:
+	std::vector<ServerConfig> m_servers;
 };
+} // namespace webserv
 
 #endif

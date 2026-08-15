@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <vector>
 
+namespace webserv {
 bool getInterpreter(std::string const &uri, std::pair<std::string, std::string> &out)
 {
 	std::map<std::string, std::pair<std::string, std::string> > interpreters;
@@ -102,6 +103,8 @@ void childRoutine(
 		char	   *argv[2] = {const_cast<char *>(uri.c_str()), NULL};
 		::execve(exec_path.c_str(), argv, &envp[0]);
 	}
+	// TODO: leak si execve echoue, _exit ne fait pas appel aux destructeur, il faut throw a voir
+	// avec luca
 	std::cerr << "execve() failed in child" << std::endl;
 	::_exit(1);
 }
@@ -149,6 +152,8 @@ app::StreamInfo Cgi::execute(
 
 	return infos;
 }
+
+} // namespace webserv
 
 // // TODO::? dto will have
 // /**

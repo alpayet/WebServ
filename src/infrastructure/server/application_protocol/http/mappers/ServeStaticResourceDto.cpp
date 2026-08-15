@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 21:09:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:22:40 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:13:32 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 #include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
 
+namespace webserv {
 namespace http {
 namespace mapper {
 app::useCase::ServeStaticResource::Input
@@ -26,5 +27,5 @@ ServeStaticResourceDto::toDto(Request const &request, RoutePolicy const &routePo
 	));
 }
 } // namespace mapper
-
 } // namespace http
+} // namespace webserv

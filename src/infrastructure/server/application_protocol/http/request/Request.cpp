@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/27 05:26:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 20:53:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:16:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 #include "infrastructure/server/application_protocol/constants.hpp"
 
+namespace webserv {
 namespace http {
 char const Request::BODY_NAME_TEMPLATE[] = "http_request_body";
 
@@ -154,3 +155,4 @@ std::ostream &operator<<(std::ostream &lhs, Request const &rhs)
 }
 
 } // namespace http
+} // namespace webserv

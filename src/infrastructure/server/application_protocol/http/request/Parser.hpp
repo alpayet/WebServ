@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:35:40 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 03:12:12 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:16:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace parse {
 class IValidationPolicy;
 } // namespace parse
@@ -108,7 +109,7 @@ class Parser
 	void validateBodySize(std::size_t size);
 };
 } // namespace request
-
+}
 } // namespace http
 
 #endif // HTTPREQUESTPARSER_HPP

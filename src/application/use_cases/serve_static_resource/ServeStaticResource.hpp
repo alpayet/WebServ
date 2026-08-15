@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 21:27:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:38:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace domain {
 class ResourceMetaData;
 } // namespace domain
@@ -71,7 +72,7 @@ class ServeStaticResource
 
   public:
 	ServeStaticResource(
-		const IResourceLocator	   &resourceLocator,
+		IResourceLocator const &resourceLocator,
 		IStaticResourceStorage &staticResourceStorage,
 		ICollectionExplorer	   &collectionExplorer
 	);
@@ -89,11 +90,12 @@ class ServeStaticResource
 		Input const &dtoInput, IOutputPort &outputPort, domain::ResourceMetaData const &metaData
 	);
 
-	const IResourceLocator	   &_resourceLocator;
+	IResourceLocator const &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
 	ICollectionExplorer	   &_collectionExplorer;
 };
 } // namespace useCase
 } // namespace app
+} // namespace webserv
 
 #endif // SERVESTATICRESOURCEUSECASE_HPP

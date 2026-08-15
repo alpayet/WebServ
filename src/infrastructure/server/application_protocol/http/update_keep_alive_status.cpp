@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 15:19:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 02:03:17 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:21:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/update_keep_alive_status.hpp"
 
+namespace webserv {
 namespace http {
 void update_keep_alive_status(Context &context)
 {
@@ -23,3 +24,4 @@ void update_keep_alive_status(Context &context)
 		context.shouldKeepAlive = true;
 }
 } // namespace http
+}

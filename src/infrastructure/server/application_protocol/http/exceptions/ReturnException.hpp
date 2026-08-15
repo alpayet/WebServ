@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 02:03:39 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:32:55 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:12:03 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <exception>
 #include <string>
 
+namespace webserv {
 namespace http {
 class ReturnException : public std::exception
 {
@@ -34,5 +35,6 @@ class ReturnException : public std::exception
 	unsigned short _statusCode;
 };
 } // namespace http
+} // namespace webserv
 
 #endif // RETURNEXCEPTION_HPP

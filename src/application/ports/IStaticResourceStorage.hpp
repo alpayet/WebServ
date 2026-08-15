@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:10:04 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 04:14:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 
+namespace webserv {
 namespace app {
 class IResourceReader;
 
@@ -27,5 +28,6 @@ class IStaticResourceStorage
 	virtual void			 remove(std::string const &resourcePath) = 0;
 };
 } // namespace app
+} // namespace webserv
 
 #endif // ISTATICRESOURCESTORAGE_HPP

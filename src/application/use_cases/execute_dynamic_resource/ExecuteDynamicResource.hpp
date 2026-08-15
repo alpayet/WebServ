@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/11 14:12:13 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:38:12 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,49 +17,60 @@
 #include <map>
 #include <string>
 
+namespace webserv {
 namespace app {
 class IResourceLocator;
 class IDynamicResourceExecutor;
 struct StreamInfo;
 
 namespace useCase {
-class ExecuteDynamicResource {
-public:
-  struct Input {
-    Input(std::string const &id, std::string const &matchedRoute,
-          std::string const &rootPath, std::string const &bodyPath,
-          std::map<std::string, std::string> const &metaVariables)
-        : id(id), matchedRoute(matchedRoute), rootPath(rootPath),
-          bodyPath(bodyPath), metaVariables(metaVariables) {}
-
-    std::string id;
-    std::string matchedRoute;
-    std::string rootPath;
-    std::string bodyPath;
-    std::map<std::string, std::string> metaVariables;
-  };
-
-  class IOutputPort {
+class ExecuteDynamicResource
+{
   public:
-    virtual ~IOutputPort() {}
+	struct Input
+	{
+		Input(
+			std::string const						 &id,
+			std::string const						 &matchedRoute,
+			std::string const						 &rootPath,
+			std::string const						 &bodyPath,
+			std::map<std::string, std::string> const &metaVariables
+		)
+			: id(id), matchedRoute(matchedRoute), rootPath(rootPath), bodyPath(bodyPath),
+			  metaVariables(metaVariables)
+		{}
 
-    virtual void presentStream(StreamInfo stream_info) = 0;
-  };
+		std::string						   id;
+		std::string						   matchedRoute;
+		std::string						   rootPath;
+		std::string						   bodyPath;
+		std::map<std::string, std::string> metaVariables;
+	};
 
-public:
-  ExecuteDynamicResource(IResourceLocator const &resourceLocator,
-                         IDynamicResourceExecutor &dynamicResourceExecutor);
+	class IOutputPort
+	{
+	  public:
+		virtual ~IOutputPort() {}
 
-  void execute(Input const &dtoInput, IOutputPort &outputPort);
+		virtual void presentStream(StreamInfo stream_info) = 0;
+	};
 
-private:
-  ExecuteDynamicResource(ExecuteDynamicResource const &src);
-  ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
+  public:
+	ExecuteDynamicResource(
+		IResourceLocator const &resourceLocator, IDynamicResourceExecutor &dynamicResourceExecutor
+	);
 
-  IResourceLocator const &_resourceLocator;
-  IDynamicResourceExecutor &_dynamicResourceExecutor;
+	void execute(Input const &dtoInput, IOutputPort &outputPort);
+
+  private:
+	ExecuteDynamicResource(ExecuteDynamicResource const &src);
+	ExecuteDynamicResource &operator=(ExecuteDynamicResource const &rhs);
+
+	IResourceLocator const	 &_resourceLocator;
+	IDynamicResourceExecutor &_dynamicResourceExecutor;
 };
 } // namespace useCase
 } // namespace app
+} // namespace webserv
 
 #endif // EXECUTEDYNAMICRESOURCEUSECASE_HPP

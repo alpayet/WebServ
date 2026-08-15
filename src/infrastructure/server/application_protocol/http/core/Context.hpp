@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 18:36:43 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:10:46 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:09:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "infrastructure/server/application_protocol/http/response/Sender.hpp"
 #include <vector>
 
+namespace webserv {
 namespace http {
 struct Context
 {
@@ -87,5 +88,6 @@ struct Context
 	Context &operator=(Context const &rhs);
 };
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPCONTEXT_HPP

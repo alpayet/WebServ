@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 04:29:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/05 03:21:31 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:25:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "application/ports/IStaticResourceStorage.hpp"
 #include <string>
 
+namespace webserv {
 namespace fileSystem {
 class Storage : public app::IStaticResourceStorage
 {
@@ -31,5 +32,6 @@ class Storage : public app::IStaticResourceStorage
 	Storage &operator=(Storage const &rhs);
 };
 } // namespace fileSystem
+} // namespace webserv
 
 #endif // FILESYSTEMSTORAGE_HPP

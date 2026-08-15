@@ -6,20 +6,21 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:29:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:27:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/cgi/Parser.hpp"
 #include "infrastructure/server/application_protocol/cgi/Exception.hpp"
+#include "infrastructure/server/application_protocol/constants.hpp"
 #include "infrastructure/server/application_protocol/parsing/IValidationPolicy.hpp"
 #include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include "infrastructure/server/application_protocol/parsing/header_parser.hpp"
 #include "infrastructure/server/application_protocol/parsing/line_reader.hpp"
 #include "infrastructure/server/application_protocol/parsing/utils.hpp"
-#include "infrastructure/server/application_protocol/constants.hpp"
 #include <algorithm>
 
+namespace webserv {
 namespace cgi {
 Parser::State::State(void)
 	: step(HEADER), response(), currenLineSize(0), currentHeaderCount(0), bodyBytesRead(0)
@@ -284,3 +285,4 @@ void Parser::validateBodySize(std::size_t size)
 		throw Exception(Exception::BODY_TOO_LARGE);
 }
 } // namespace cgi
+} // namespace webserv

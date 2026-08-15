@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 03:17:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:03:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:19:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <vector>
 
+namespace webserv {
 namespace app {
 class IResourceReader;
 } // namespace app
@@ -70,5 +71,6 @@ class Sender
 };
 } // namespace response
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPRESPONSESENDER_HPP
