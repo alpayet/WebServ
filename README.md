@@ -2,7 +2,22 @@
 
 # Description
 
-The goal is to make an HTTP server.
+This project is a custom HTTP web server built from scratch. Its primary goal is to provide a robust, non-blocking HTTP/1.1 server capable of handling concurrent connections efficiently while adhering strictly to industry standards. By avoiding monolithic designs, this server is built with a forward-looking mindset, ensuring that future protocol upgrades, scaling, or feature integrations can be implemented seamlessly without rewriting the core logic.
+
+## Core Architecture
+**Clean Architecture:** The codebase strictly follows Clean Architecture principles. Layers are clearly separated, ensuring that the business logic and use cases remain completely independent of the infrastructure and network delivery mechanisms.
+
+## HTTP: Protocol Implementation
+**RFC Compliance:** The HTTP protocol logic is built with rigorous adherence to the official RFCs, prioritizing true standard compliance over makeshift solutions.
+
+**Decoupled HTTP Module:** The HTTP processing engine is heavily decoupled from the core server and socket management, allowing for highly modular testing and isolated maintenance.
+
+**Supported Methods:** Fully handles GET, POST, and DELETE requests with robust error management.
+
+**Session Management:** Features built-in support for Cookie parsing and state management between the client and the server.
+
+## CGI (Common Gateway Interface)
+**Advanced Response Parsing:** The CGI module goes beyond basic script execution. It accurately parses and routes the four official standard types of CGI responses: document-response, local-redir-response, client-redir-response, and client-redirdoc-response.
 
 # Instructions
 
