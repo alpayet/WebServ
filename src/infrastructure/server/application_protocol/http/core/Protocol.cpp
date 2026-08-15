@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Protocol.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:10:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 15:40:53 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ Protocol::PushStatus::Type Protocol::pushStream(
 	Context &context, char const *streamBuf, std::size_t size, StreamStatus::Type status
 )
 {
-	// TODO: voir avec luca si il faut keep alive le client si le cgi associé
-	// timeout ou si il eof trop tot
 	try
 	{
 

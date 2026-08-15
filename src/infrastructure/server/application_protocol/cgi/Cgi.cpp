@@ -83,7 +83,8 @@ namespace webserv {
 		const std::size_t slash = resource_path.find_last_of('/');
 		const std::string script = resource_path.substr(slash + 1);
 		const std::string exec_path = hasInterpreter ? interpreter.first : ("./" + script);
-		std::vector<char*> argv;
+		std::vector<char*> argv; 
+		argv.reserve(3);
 		if (hasInterpreter)
 		{
 			argv.push_back(const_cast<char*>(interpreter.second.c_str()));
