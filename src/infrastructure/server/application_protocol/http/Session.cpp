@@ -1,6 +1,5 @@
 #include "infrastructure/server/application_protocol/http/Session.hpp"
 #include "infrastructure/server/application_protocol/http/core/Protocol.hpp"
-#include "infrastructure/server/utils/Logger.hpp"
 
 namespace webserv {
 namespace http {

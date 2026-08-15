@@ -3,7 +3,6 @@
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/reactor/EventType.hpp"
 #include "infrastructure/server/reactor/Reactor.hpp"
-#include "infrastructure/server/utils/Logger.hpp"
 #include "infrastructure/server/utils/utils.hpp"
 
 #include <csignal>

@@ -112,7 +112,7 @@ namespace webserv {
 
 			for (std::size_t i = 0; i < m_event_handlers.size(); ++i)
 			{
-				const handler::IEventHandler* handler = getEventHandler(i);
+				const handler::IEventHandler* handler = getEventHandler(static_cast<int>(i));
 				if (!handler)
 					continue;
 
@@ -132,7 +132,7 @@ namespace webserv {
 				return -1;
 			if (next_timeout < 0)
 				return 0;
-			return next_timeout * 1000;
+			return static_cast<int>(next_timeout * 1000);
 		}
 
 		void Reactor::expireIdleConnections()
