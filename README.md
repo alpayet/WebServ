@@ -19,6 +19,59 @@ This project is a custom HTTP web server built from scratch. Its primary goal is
 ## CGI (Common Gateway Interface)
 **Advanced Response Parsing:** The CGI module goes beyond basic script execution. It accurately parses and routes the four official standard types of CGI responses: document-response, local-redir-response, client-redir-response, and client-redirdoc-response.
 
+## Server part (reactor / networking layer)
+
+This part of the project (`src/infrastructure/server/`) implements the core network of the server: a
+single-threaded event loop based on the "**Reactor pattern**", which multiplexes all connections
+(listening sockets, client connections, CGI pipes) on a single thread, without threads or sockets
+blocking.
+
+**Reactor** (`reactor/Reactor.cpp`) controls the main loop: at each iteration it queries
+the event demultiplexer to know which descriptors are ready, calculates a timeout
+dynamic (`computePollTimeout`) based on the next idle connection to expire, dispatch them
+ready events to the correct handler, then cleans up closed connections and expires connections
+inactive (`expiresIdleConnections`). Each registered descriptor is associated with a
+`IEventHandler` (`onReadable`, `onWritable`, `onTimeout`) — `TcpListenerHandler` for sockets
+listener (accepts new connections) and `ConnectionHandler` for client connections
+(reads/writes via `ITransport`, advances the application protocol `IProtocol`). The Reactor does not
+only knows the `IEventHandler` interface: it is completely protocol agnostic (HTTP, CGI,
+etc.) which rotates above.
+
+**Demultiplexer chosen according to the platform.** The Reactor never speaks directly to
+`epoll`/`kqueue`: it depends on the `IEventDemultiplexer` interface (`add`/`modify`/`remove`/`wait`
+
++ reading returned events). The concrete implementation is chosen **at compile time**
+  via `reactor/demultiplexer/Demultiplexer.hpp`:
+
+```cpp
+#ifdef __linux__
+typedef EpollDemultiplexer Demultiplexer;
+#elif defined(__APPLE__)
+typedef KqueueDemultiplexer Demultiplexer;
+#endif
+```
+
+- **Linux** → `EpollDemultiplexer`, based on `epoll_wait`/`epoll_ctl` (event-driven,
+  level-triggered).
+- **macOS / BSD** → `KqueueDemultiplexer`, based on `kqueue`/`kevent`.
+
+Both implementations respect the same contract (`IEventDemultiplexer`), which allows the
+Reactor and everything else on the server to remain completely independent of the mechanism
+of operating system inputs/outputs — only the typedef `Demultiplexer` changes depending on
+of the platform, all the rest of the code is identical on Linux and macOS.
+
+Other key points of this layer:
+
+- All sockets are **non-blocking**, I/O is done in small blocks (`RECV_CHUNK` =
+  16 KB), with an accumulated write buffer (`m_write_buf`) to handle partial writes.
+- File descriptors are managed in RAII (`fd::Fd`), guaranteeing their closure even when
+  exceptional cases.
+- Inactive connections are expired after a configurable timeout
+  (`IDLE_CONNECTION_TIMEOUT_S`), calculated without active polling thanks to the dynamic timeout of the
+  `wait()`.
+- The code respects the constraints of subject 42 (no thread, a single call of
+  poll/epoll/kqueue by loop, `select`/`poll`/`epoll`/`kqueue` only via this module).
+
 # Instructions
 
 To launch the program, use the command line
