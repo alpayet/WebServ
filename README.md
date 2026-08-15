@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis*
+_This project has been created as part of the 42 curriculum by alpayet, ludebion and mlouis_
 
 # Description
 
@@ -25,7 +25,7 @@ etc.) which rotates above.
 **Demultiplexer chosen according to the platform.** The Reactor never speaks directly to
 `epoll`/`kqueue`: it depends on the `IEventDemultiplexer` interface (`add`/`modify`/`remove`/`wait`
 
-+ reading returned events). The concrete implementation is chosen **at compile time**
+- reading returned events). The concrete implementation is chosen **at compile time**
   via `reactor/demultiplexer/Demultiplexer.hpp`:
 
 ```cpp
@@ -58,9 +58,11 @@ Other key points of this layer:
   poll/epoll/kqueue by loop, `select`/`poll`/`epoll`/`kqueue` only via this module).
 
 ## Core Architecture
+
 **Clean Architecture:** The codebase strictly follows Clean Architecture principles. Layers are clearly separated, ensuring that the business logic and use cases remain completely independent of the infrastructure and network delivery mechanisms.
 
 ## HTTP: Protocol Implementation
+
 **RFC Compliance:** The HTTP protocol logic is built with rigorous adherence to the official RFCs, prioritizing true standard compliance over makeshift solutions.
 
 **Decoupled HTTP Module:** The HTTP processing engine is heavily decoupled from the core server and socket management, allowing for highly modular testing and isolated maintenance.
@@ -70,7 +72,11 @@ Other key points of this layer:
 **Session Management:** Features built-in support for Cookie parsing and state management between the client and the server.
 
 ## CGI (Common Gateway Interface)
+
 **Advanced Response Parsing:** The CGI module goes beyond basic script execution. It accurately parses and routes the four official standard types of CGI responses: document-response, local-redir-response, client-redir-response, and client-redirdoc-response.
+
+Max metrics:
+50,000 RPS say less, who can top that?
 
 # Instructions
 
