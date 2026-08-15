@@ -6,8 +6,10 @@
 #include "infrastructure/server/transport_protocol/ITransport.hpp"
 #include "infrastructure/server/utils/utils.hpp"
 
-#include <sys/socket.h>
+
 #include <sys/types.h>
+#include <sys/socket.h>
+#include <stdexcept>
 
 namespace webserv {
 	namespace handler {
