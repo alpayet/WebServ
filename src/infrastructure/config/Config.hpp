@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-// TODO: to see
 namespace webserv {
 class ConfigException : public std::runtime_error
 {

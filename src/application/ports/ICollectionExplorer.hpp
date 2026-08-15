@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ICollectionExplorer.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 22:47:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:37:06 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 15:43:51 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <string>
 #include <vector>
 
-// TODO: faire implemeter
 namespace webserv {
 namespace app {
 

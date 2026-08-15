@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IHttpVersionProvider.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 19:54:48 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:20:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 15:40:47 by mlouis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #define IHTTPVERSIONPROVIDER_HPP
 
 #include <string>
-
-// TODO: faire herité la config de cette interface
 
 namespace webserv {
 namespace http {

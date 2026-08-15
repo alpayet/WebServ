@@ -17,10 +17,6 @@
 
 namespace webserv {
 	namespace transport {
-
-		// TODO jai renommer les var local protocol par AppProtocol a voir si il faut
-		// mettre en camelcase les var local
-
 		static appProtocol::IProtocolFactory* buildProtocol(const ServerConfig& config)
 		{
 			switch (config.getApplicativeProtocol())
