@@ -24,11 +24,8 @@ static void initSignals()
 	std::signal(SIGPIPE, SIG_IGN);
 }
 
-void fileCheck(int const argc, char const *argv)
+void fileCheck(char const *argv)
 {
-	if (argc != 2)
-		throw webserv::ConfigException("No configuration file passed.");
-
 	std::string const filename = argv;
 	if (filename.substr(filename.find_last_of('.') + 1) != "conf")
 		throw webserv::ConfigException("Configuration file must have a `.conf` extension.");
@@ -42,9 +39,19 @@ int main(int const argc, char **argv)
 {
 	try
 	{
-		fileCheck(argc, argv[1]);
-		initSignals();
-		webserv::Config const					  conf(argv[1]);
+    if (argc > 2)
+      throw webserv::ConfigException("Too many arguments passed.");
+    
+    initSignals();
+		
+    std::string filepath;
+    if (argc == 2)
+      filepath = argv[1];
+    else
+      filepath = "conf/testludebion.conf";
+    
+    fileCheck(filepath.c_str());
+		webserv::Config const					  conf(filepath.c_str());
 		std::vector<webserv::ServerConfig> const &configs = conf.getServerConfigs();
 
 		webserv::Server server(configs);
