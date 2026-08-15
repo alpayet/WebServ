@@ -91,6 +91,8 @@ end up internally where defined by the root directive)
 
 ### Server resources
 
+Linux posix manual : https://pubs.opengroup.org/onlinepubs/9699919799/functions/contents.html
+
 Epoll/Kqueue : man pages
 
 Sockets/bind()/listen()/accept()... : https://beej.us/guide/bgnet/pdf/bgnet_usl_c_1.pdf

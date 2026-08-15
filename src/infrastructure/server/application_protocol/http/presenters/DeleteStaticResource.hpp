@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:12 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:03:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:13:51 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace http {
 namespace presenter {
 class DeleteStaticResource : public app::useCase::DeleteStaticResource::IOutputPort
@@ -44,7 +45,7 @@ class DeleteStaticResource : public app::useCase::DeleteStaticResource::IOutputP
 	ViewModel _viewModel;
 };
 } // namespace presenter
-
+}
 } // namespace http
 
 #endif // DELETESTATICRESOURCEPRESENTER_HPP

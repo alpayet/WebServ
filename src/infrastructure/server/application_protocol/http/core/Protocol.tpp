@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/05 00:58:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:11:03 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:10:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "infrastructure/server/application_protocol/http/exceptions/error_lookup.hpp"
 
+namespace webserv {
 namespace http {
 template <class ExceptionType>
 Protocol::PushStatus::Type Protocol::handleError(Context &context, ExceptionType const &e)
@@ -27,7 +28,7 @@ Protocol::PushStatus::Type Protocol::handleError(Context &context, ExceptionType
 
 	return (PushStatus::COMPLETE);
 }
-
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPHANDLER_TPP

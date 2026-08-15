@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 19:24:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:55:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 14:14:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/methods.hpp"
 #include <set>
 
+namespace webserv {
 namespace http {
 
 char const GET[] = "GET";
@@ -50,3 +51,4 @@ bool expects_body(std::string const &method)
 	return (expects_body.find(method) != expects_body.end());
 }
 } // namespace http
+}

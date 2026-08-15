@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:38:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:26:49 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:25:39 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace fileSystem {
 class TempWriter
 {
@@ -48,5 +49,6 @@ class TempWriter
 	void generateUniqueTempFile(void);
 };
 } // namespace fileSystem
+} // namespace webserv
 
 #endif // TEMPFILESYSTEMWRITER_HPP

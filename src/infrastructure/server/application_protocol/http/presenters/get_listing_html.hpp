@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:23:50 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:12:23 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:14:28 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace http {
 std::string
 get_listing_html(std::string const &uri, std::vector<app::CollectionEntry> const &files);
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPLISTINGHTML_HPP

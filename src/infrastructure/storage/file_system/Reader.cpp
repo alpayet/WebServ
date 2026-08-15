@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:36:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:33:16 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:24:31 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iostream>
 #include <unistd.h>
 
+namespace webserv {
 namespace fileSystem {
 Reader::Reader(std::string const &path) : _fd(-1), _path(path), _shouldClose(true) {}
 
@@ -76,3 +77,4 @@ int Reader::openFile(std::string const &path)
 	return (fd);
 }
 } // namespace fileSystem
+}

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 21:10:16 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/05 20:53:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:18:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <cstring>
 #include <sstream>
 
+namespace webserv {
 namespace http {
 
 Response::Builder &Response::Builder::withStatusCode(unsigned short statusCode)
@@ -93,3 +94,4 @@ Response::Builder &Response::Builder::withBody(char const *body)
 Response &Response::Builder::build(void) { return (_response); }
 
 } // namespace http
+} // namespace webserv

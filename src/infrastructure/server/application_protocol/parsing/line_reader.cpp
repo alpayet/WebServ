@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 03:41:46 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:22:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "infrastructure/server/application_protocol/parsing/constants.hpp"
 #include <algorithm>
 
+namespace webserv {
 namespace parse {
 std::vector<char>::const_iterator find_line_end(std::vector<char> &buf)
 {
@@ -35,3 +36,4 @@ void consume_line(std::vector<char> &buf)
 	buf.erase(buf.begin(), it + 1);
 }
 } // namespace parse
+} // namespace webserv

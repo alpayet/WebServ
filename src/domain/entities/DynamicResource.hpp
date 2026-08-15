@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 00:14:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/01 04:13:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:34:54 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "domain/value_objects/ResourceMetaData.hpp"
 #include <string>
 
+namespace webserv {
 namespace domain {
 class DynamicResource
 {
@@ -35,5 +36,6 @@ class DynamicResource
 	ResourceMetaData _metaData;
 };
 } // namespace domain
+} // namespace webserv
 
 #endif // DYNAMICRESOURCE_HPP

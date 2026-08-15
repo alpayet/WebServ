@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:24:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:08:34 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "infrastructure/server/application_protocol/http/presenters/DeleteStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 
+namespace webserv {
 namespace http {
 namespace controller {
 
@@ -37,5 +38,5 @@ void DeleteStaticResource::operator()(Context &context, RoutePolicy const &route
 	context.output.response = viewModel.response;
 }
 } // namespace controller
-
 } // namespace http
+} // namespace webserv

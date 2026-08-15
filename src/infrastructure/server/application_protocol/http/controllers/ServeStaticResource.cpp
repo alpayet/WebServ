@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:30:26 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:25:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:09:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "infrastructure/server/application_protocol/http/presenters/ServeStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/request/Request.hpp"
 
+namespace webserv {
 namespace http {
 namespace controller {
 ServeStaticResource::ServeStaticResource(app::useCase::ServeStaticResource &useCase)
@@ -39,5 +40,5 @@ void ServeStaticResource::operator()(Context &context, RoutePolicy const &routeP
 	context.output.reader = viewModel.reader;
 }
 } // namespace controller
-
 } // namespace http
+} // namespace webserv

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 21:45:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:40:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:35:01 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "domain/Exception.hpp"
 #include "domain/value_objects/ResourceMetaData.hpp"
 
+namespace webserv {
 namespace domain {
 StaticResource::StaticResource(std::string const &id, ResourceMetaData const &metaData)
 	: _id(id), _metaData(metaData)
@@ -40,3 +41,4 @@ bool StaticResource::canBeDeleted(void) const
 	return (_metaData.canBeDeleted() && !_metaData.isCollection());
 }
 } // namespace domain
+}

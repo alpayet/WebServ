@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:32:01 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:40:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:35:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "domain/value_objects/ResourceMetaData.hpp"
 #include <string>
 
+namespace webserv {
 namespace domain {
 class StaticResource
 {
@@ -39,5 +40,6 @@ class StaticResource
 	ResourceMetaData _metaData;
 };
 } // namespace domain
+} // namespace webserv
 
 #endif // STATICRESOURCE_HPP

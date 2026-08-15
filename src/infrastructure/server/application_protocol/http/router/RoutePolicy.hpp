@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:05:20 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 18:07:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:19:33 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <string>
 #include <vector>
+
+namespace webserv {
 namespace http {
 struct RoutePolicy
 {
@@ -28,5 +30,6 @@ struct RoutePolicy
 	bool					 isCgi;
 };
 } // namespace http
+} // namespace webserv
 
 #endif // ROUTEPOLICY_HPP

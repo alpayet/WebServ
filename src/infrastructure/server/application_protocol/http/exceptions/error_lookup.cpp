@@ -6,12 +6,13 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:11:15 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:11:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/http/exceptions/error_lookup.hpp"
 
+namespace webserv {
 namespace http {
 unsigned short to_status_code(Exception::ErrorCode error_code)
 {
@@ -121,3 +122,4 @@ unsigned short to_status_code(domain::Exception::ErrorCode error_code)
 }
 
 } // namespace http
+} // namespace webserv

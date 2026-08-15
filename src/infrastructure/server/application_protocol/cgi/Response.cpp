@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 03:38:36 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:36:36 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:27:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "infrastructure/server/application_protocol/cgi/Response.hpp"
 #include "infrastructure/server/application_protocol/constants.hpp"
 
+namespace webserv {
 namespace cgi {
 unsigned short const Response::Status::DEFAULT_STATUS_CODE = 200;
 char const			 Response::Status::DEFAULT_REASON[] = "OK";
@@ -186,3 +187,4 @@ std::ostream &operator<<(std::ostream &lhs, Response const &rhs)
 	return (lhs);
 }
 } // namespace cgi
+}

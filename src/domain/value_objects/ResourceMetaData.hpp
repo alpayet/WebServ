@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:42:18 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/04 22:34:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:39:22 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "domain/enums/ResourceType.hpp"
 #include <string>
 
+namespace webserv {
 namespace domain {
 class ResourceMetaData
 {
@@ -46,5 +47,6 @@ class ResourceMetaData
 	bool				_canBeDeleted;
 };
 } // namespace domain
+} // namespace webserv
 
 #endif // RESOURCEMETADATA_HPP

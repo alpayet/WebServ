@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 18:24:08 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:11:44 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <exception>
 #include <string>
 
+namespace webserv {
 namespace http {
 class Exception : public std::exception
 {
@@ -57,5 +58,6 @@ class Exception : public std::exception
 	ErrorCode	_internalCode;
 };
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPEXCEPTION_HPP

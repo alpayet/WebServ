@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 03:33:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 17:34:27 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:22:36 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <string>
 
+namespace webserv {
 namespace parse {
 template <typename InputIterator>
 InputIterator find_white_spaces(InputIterator it_start, InputIterator it_end)
@@ -43,5 +44,6 @@ char to_lower_safe(unsigned char c);
 void uri_decode(std::string &str);
 void trim(std::string &str, char const *to_trim);
 } // namespace parse
+} // namespace webserv
 
 #endif // PARSINGUTILS_HPP

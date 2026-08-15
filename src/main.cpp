@@ -9,9 +9,9 @@
 #include "infrastructure/config/ServerConfig.hpp"
 #include "infrastructure/server/Server.hpp"
 
-volatile sig_atomic_t g_running = 1;
+sig_atomic_t volatile g_running = 1;
 
-static void sigHandler(const int signum)
+static void sigHandler(int const signum)
 {
 	(void)signum;
 	g_running = 0;
@@ -24,33 +24,33 @@ static void initSignals()
 	std::signal(SIGPIPE, SIG_IGN);
 }
 
-void fileCheck(const int argc, const char* argv)
+void fileCheck(int const argc, char const *argv)
 {
 	if (argc != 2)
-		throw ConfigException("No configuration file passed.");
+		throw webserv::ConfigException("No configuration file passed.");
 
-	const std::string filename = argv;
+	std::string const filename = argv;
 	if (filename.substr(filename.find_last_of('.') + 1) != "conf")
-		throw ConfigException("Configuration file must have a `.conf` extension.");
+		throw webserv::ConfigException("Configuration file must have a `.conf` extension.");
 
-	const std::ifstream file(argv);
+	std::ifstream const file(argv);
 	if (file.fail())
-		throw ConfigException("File could not be opened.");
+		throw webserv::ConfigException("File could not be opened.");
 }
 
-int main(const int argc, char** argv)
+int main(int const argc, char **argv)
 {
 	try
 	{
 		fileCheck(argc, argv[1]);
 		initSignals();
-		const Config conf(argv[1]);
-		const std::vector<ServerConfig>& configs = conf.getServerConfigs();
+		webserv::Config const					  conf(argv[1]);
+		std::vector<webserv::ServerConfig> const &configs = conf.getServerConfigs();
 
 		webserv::Server server(configs);
 		server.run();
 	}
-	catch (const std::exception& e)
+	catch (std::exception const &e)
 	{
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:28:15 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 22:24:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:23:38 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+namespace webserv {
 namespace fileSystem {
 std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 	std::string const &resPath, std::string const &matchedRoute, std::string const &rootPath
@@ -69,7 +70,7 @@ std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 			else
 			{
 				dir = readdir(dir_ptr);
-				continue ;
+				continue;
 			}
 		}
 		else
@@ -118,3 +119,4 @@ std::vector<app::CollectionEntry> DirectoryExplorer::listCollection(
 	return files;
 }
 } // namespace fileSystem
+} // namespace webserv

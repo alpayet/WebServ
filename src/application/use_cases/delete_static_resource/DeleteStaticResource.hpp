@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:47:47 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 21:26:52 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:56 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "application/ResourceStatus.hpp"
 #include <string>
 
+namespace webserv {
 namespace app {
 class IResourceLocator;
 class IStaticResourceStorage;
@@ -45,7 +46,7 @@ class DeleteStaticResource
 
   public:
 	DeleteStaticResource(
-		const IResourceLocator &resourceLocator, IStaticResourceStorage &staticResourceStorage
+		IResourceLocator const &resourceLocator, IStaticResourceStorage &staticResourceStorage
 	);
 
 	void execute(Input const &dtoInput, IOutputPort &outputPort);
@@ -54,10 +55,11 @@ class DeleteStaticResource
 	DeleteStaticResource(DeleteStaticResource const &src);
 	DeleteStaticResource &operator=(DeleteStaticResource const &rhs);
 
-	const IResourceLocator	   &_resourceLocator;
+	IResourceLocator const &_resourceLocator;
 	IStaticResourceStorage &_staticResourceStorage;
 };
 } // namespace useCase
 } // namespace app
+} // namespace webserv
 
 #endif // DELETESTATICRESOURCEUSECASE_HPP

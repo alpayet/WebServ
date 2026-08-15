@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:12:58 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:19:41 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "infrastructure/server/application_protocol/http/router/RoutePolicy.hpp"
 #include <algorithm>
 
+namespace webserv {
 namespace http {
 Router::Router(
 	IRouteRegistry const			   &routeRegistry,
@@ -54,3 +55,4 @@ void Router::route(Context &context)
 		_deleteStaticResource(context, route_policy);
 }
 } // namespace http
+} // namespace webserv

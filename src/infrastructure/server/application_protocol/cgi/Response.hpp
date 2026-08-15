@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 02:33:42 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:21:51 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:28:23 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace cgi {
 class Response
 {
@@ -127,5 +128,6 @@ class Response
 std::ostream &operator<<(std::ostream &lhs, Response const &rhs);
 
 } // namespace cgi
+} // namespace webserv
 
 #endif // CGIRESPONSE_HPP

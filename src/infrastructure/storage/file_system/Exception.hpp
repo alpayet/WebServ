@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 03:42:35 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 18:24:24 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:23:59 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <exception>
 #include <string>
 
+namespace webserv {
 namespace fileSystem {
 class Exception : public std::exception
 {
@@ -44,5 +45,6 @@ class Exception : public std::exception
 };
 
 } // namespace fileSystem
+} // namespace webserv
 
 #endif // FILESYSTEMEXCEPTION_HPP

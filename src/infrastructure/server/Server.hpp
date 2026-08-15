@@ -6,25 +6,24 @@
 #include "infrastructure/server/reactor/Reactor.hpp"
 #include "infrastructure/server/transport_protocol/endpoint/Endpoints.hpp"
 
+namespace webserv {
 class ServerConfig;
 
-namespace webserv {
+class Server
+{
+  public:
+	explicit Server(std::vector<ServerConfig> const &configs);
+	~Server();
 
-	class Server
-	{
-	public:
-		explicit Server(const std::vector<ServerConfig>& configs);
-		~Server();
+	void run();
 
-		void run();
+  private:
+	Server(Server const &);
+	Server &operator=(Server const &);
 
-	private:
-		Server(const Server&);
-		Server& operator=(const Server&);
-
-		transport::Endpoints m_endpoints;
-		reactor::Reactor m_reactor;
-	};
+	transport::Endpoints m_endpoints;
+	reactor::Reactor	 m_reactor;
+};
 
 } // namespace webserv
 

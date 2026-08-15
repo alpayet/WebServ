@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 
+namespace webserv {
 void initLocation(ServerConfig &s, p_ServerConfig ps)
 {
 	if (ps.locations.empty())
@@ -252,4 +253,5 @@ void checkDupHostname(p_Config c)
 			}
 		}
 	}
+}
 }

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 23:46:32 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:00:19 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:09:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 
+namespace webserv {
 namespace app {
 namespace useCase {
 class ExecuteDynamicResource;
@@ -48,7 +49,7 @@ class ExecuteDynamicResource
 	static std::map<std::string, std::string> createMetaVariables(Request const &request);
 };
 } // namespace controller
-
 } // namespace http
+} // namespace webserv
 
 #endif // EXECUTEDYNAMICRESOURCECONTROLLER_HPP

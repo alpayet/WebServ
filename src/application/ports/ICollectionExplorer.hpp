@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 22:47:28 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:06:01 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:06 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <vector>
 
 // TODO: faire implemeter
+namespace webserv {
 namespace app {
 
 class ICollectionExplorer
@@ -32,5 +33,6 @@ class ICollectionExplorer
 	) = 0;
 };
 } // namespace app
+} // namespace webserv
 
 #endif // ICOLLECTIONEXPLORER_HPP

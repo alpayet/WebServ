@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:27:44 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:16:30 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:38:21 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "application/ports/IStaticResourceStorage.hpp"
 #include "domain/entities/StaticResource.hpp"
 
+namespace webserv {
 namespace app {
 namespace useCase {
 ServeStaticResource::ServeStaticResource(
@@ -100,3 +101,4 @@ void ServeStaticResource::generateListing(
 }
 } // namespace useCase
 } // namespace app
+} // namespace webserv

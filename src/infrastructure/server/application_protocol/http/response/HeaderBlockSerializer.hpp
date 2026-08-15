@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/18 22:13:21 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/27 05:59:54 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:18:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace http {
 
 class Response;
@@ -34,5 +35,6 @@ class HeaderBlockSerializer
 };
 } // namespace response
 } // namespace http
+} // namespace webserv
 
 #endif // HEADERBLOCKSERIALIZER_HPP

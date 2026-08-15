@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 01:29:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 19:08:48 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:23:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "application/ports/ICollectionExplorer.hpp"
 
+namespace webserv {
 namespace fileSystem {
 
 class DirectoryExplorer : public app::ICollectionExplorer
@@ -29,5 +30,6 @@ class DirectoryExplorer : public app::ICollectionExplorer
 	);
 };
 } // namespace fileSystem
+}
 
 #endif // FILEINFOS_HPP

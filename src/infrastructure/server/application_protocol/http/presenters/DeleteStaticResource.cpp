@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:57:56 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:09:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:13:45 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
 #include <sstream>
 
+namespace webserv {
 namespace http {
 namespace presenter {
 
@@ -32,5 +33,5 @@ void DeleteStaticResource::presentDeletedResource(app::ResourceStatus status)
 	_viewModel.response = response_builder.build();
 }
 } // namespace presenter
-
+}
 } // namespace http

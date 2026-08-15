@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 02:31:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 03:12:34 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:24:40 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace fileSystem {
 class Reader : public app::IResourceReader
 {
@@ -42,5 +43,6 @@ class Reader : public app::IResourceReader
 	std::size_t readSize(std::vector<char> &buf, std::size_t size);
 };
 } // namespace fileSystem
+} // namespace webserv
 
 #endif // FILESYSTEMREADER_HPP

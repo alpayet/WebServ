@@ -4,8 +4,8 @@
 #include "application/use_cases/delete_static_resource/DeleteStaticResource.hpp"
 #include "application/use_cases/execute_dynamic_resource/ExecuteDynamicResource.hpp"
 #include "application/use_cases/serve_static_resource/ServeStaticResource.hpp"
-#include "infrastructure/server/application_protocol/cgi/Cgi.hpp"
 #include "infrastructure/server/application_protocol/IProtocolFactory.hpp"
+#include "infrastructure/server/application_protocol/cgi/Cgi.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/DeleteStaticResource.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ExecuteDynamicResource.hpp"
 #include "infrastructure/server/application_protocol/http/controllers/ServeStaticResource.hpp"
@@ -15,22 +15,22 @@
 #include "infrastructure/storage/file_system/Storage.hpp"
 
 namespace webserv {
+
 namespace appProtocol {
 class IProtocol;
 } // namespace appProtocol
-} // namespace webserv
 
 class ServerConfig;
 
 namespace http {
 
-class ProtocolFactory : public webserv::appProtocol::IProtocolFactory
+class ProtocolFactory : public appProtocol::IProtocolFactory
 {
   public:
 	ProtocolFactory(ServerConfig const &config);
 	~ProtocolFactory(void);
 
-	webserv::appProtocol::IProtocol *create();
+	appProtocol::IProtocol *create();
 
   private:
 	ProtocolFactory(ProtocolFactory const &);
@@ -44,9 +44,9 @@ class ProtocolFactory : public webserv::appProtocol::IProtocolFactory
 	app::useCase::DeleteStaticResource	 _deleteStaticResourceUseCase;
 	app::useCase::ExecuteDynamicResource _executeDynamicResourceUseCase;
 
-	controller::ServeStaticResource			   _serveStaticResourceController;
-	controller::DeleteStaticResource 		   _deleteStaticResourceController;
-	controller::ExecuteDynamicResource		   _executeDynamicResourceController;
+	controller::ServeStaticResource	   _serveStaticResourceController;
+	controller::DeleteStaticResource   _deleteStaticResourceController;
+	controller::ExecuteDynamicResource _executeDynamicResourceController;
 
 	request::Parser	 _requestParser;
 	cgi::Parser		 _cgiParser;
@@ -56,5 +56,6 @@ class ProtocolFactory : public webserv::appProtocol::IProtocolFactory
 };
 
 } // namespace http
+} // namespace webserv
 
 #endif // HTTPPROTOCOLFACTORY_HPP

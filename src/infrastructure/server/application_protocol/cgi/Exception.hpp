@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/06 01:52:58 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/13 18:23:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:27:11 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <exception>
 #include <string>
 
+namespace webserv {
 namespace cgi {
 class Exception : public std::exception
 {
@@ -60,5 +61,6 @@ class Exception : public std::exception
 	ErrorCode	_internalCode;
 };
 } // namespace cgi
+} // namespace webserv
 
 #endif // CGIEXCEPTION_HPP

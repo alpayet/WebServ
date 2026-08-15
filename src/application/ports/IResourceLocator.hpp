@@ -6,19 +6,20 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:48:05 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/30 18:30:39 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:37:20 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRESOURCELOCATOR_HPP
 #define IRESOURCELOCATOR_HPP
 
-#include "domain/enums/ResourcePermissions.hpp"
 #include "application/ports/SystemResourceInfo.hpp"
+#include "domain/enums/ResourcePermissions.hpp"
 #include "domain/enums/ResourceType.hpp"
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace app {
 class IResourceLocator
 {
@@ -34,5 +35,6 @@ class IResourceLocator
 	) const = 0;
 };
 } // namespace app
+} // namespace webserv
 
 #endif // IRESOURCELOCATOR_HPP

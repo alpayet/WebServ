@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:12:06 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:06:57 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:10:16 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include "infrastructure/storage/file_system/Exception.hpp"
 #include "infrastructure/storage/file_system/Reader.hpp"
 
+namespace webserv {
 namespace http {
 
 Protocol::Protocol(
@@ -261,5 +262,5 @@ Protocol::PushStatus::Type Protocol::handleError(Context &context, cgi::Exceptio
 
 	return (PushStatus::COMPLETE);
 }
-
 } // namespace http
+} // namespace webserv

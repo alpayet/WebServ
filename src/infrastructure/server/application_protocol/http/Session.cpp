@@ -2,6 +2,7 @@
 #include "infrastructure/server/application_protocol/http/core/Protocol.hpp"
 #include "infrastructure/server/utils/Logger.hpp"
 
+namespace webserv {
 namespace http {
 
 Session::Session(Protocol &handler) : _context(), _protocol(handler) {}
@@ -36,3 +37,4 @@ void Session::reset(void) { _context.reset(); }
 
 bool Session::shouldKeepAlive(void) const { return (_context.shouldKeepAlive); }
 } // namespace http
+}

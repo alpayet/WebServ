@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:58:22 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:08:42 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:14:57 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "infrastructure/server/application_protocol/http/presenters/success_lookup.hpp"
 #include "infrastructure/server/application_protocol/http/response/Response.hpp"
 
+namespace webserv {
 namespace http {
 namespace presenter {
 
@@ -54,5 +55,5 @@ void ServeStaticResource::presentListing(
 	_viewModel.reader = NULL;
 }
 } // namespace presenter
-
 } // namespace http
+} // namespace webserv

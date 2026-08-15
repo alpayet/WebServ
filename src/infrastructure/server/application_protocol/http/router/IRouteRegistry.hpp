@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRouteRegistry.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlouis <mlouis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/11 10:04:24 by alpayet           #+#    #+#             */
-/*   Updated: 2026/06/17 09:56:08 by mlouis           ###   ########.fr       */
+/*   Updated: 2026/08/15 13:19:24 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 
+namespace webserv {
 namespace http {
 struct RoutePolicy;
 
@@ -25,5 +26,6 @@ class IRouteRegistry
 	virtual RoutePolicy match(std::string const &uri) const = 0;
 };
 } // namespace http
+} // namespace webserv
 
 #endif // IROUTEREGISTRY_HPP

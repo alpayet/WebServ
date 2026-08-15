@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/16 21:45:29 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/09 22:04:35 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:15:26 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+namespace webserv {
 namespace http {
 namespace presenter {
 class ServeStaticResource : public app::useCase::ServeStaticResource::IOutputPort
@@ -54,7 +55,7 @@ class ServeStaticResource : public app::useCase::ServeStaticResource::IOutputPor
 	ViewModel _viewModel;
 };
 } // namespace presenter
-
 } // namespace http
+} // namespace webserv
 
 #endif // SERVESTATICRESOURCEPRESENTER_HPP

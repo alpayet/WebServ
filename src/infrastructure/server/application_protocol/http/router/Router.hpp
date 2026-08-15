@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:38:03 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:13:05 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:19:53 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPROUTER_HPP
 #define HTTPROUTER_HPP
 
+namespace webserv {
 namespace http {
 class IRouteRegistry;
 struct Context;
@@ -46,5 +47,6 @@ class Router
 	controller::ExecuteDynamicResource &_executeDynamicResource;
 };
 } // namespace http
+}
 
 #endif // HTTPROUTER_HPP

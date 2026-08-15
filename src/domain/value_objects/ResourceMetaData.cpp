@@ -6,13 +6,14 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 23:55:19 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/04 19:23:18 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:39:14 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "domain/value_objects/ResourceMetaData.hpp"
 #include "domain/Exception.hpp"
 
+namespace webserv {
 namespace domain {
 ResourceMetaData::ResourceMetaData(
 	std::string const  &resourcePath,
@@ -44,3 +45,4 @@ bool ResourceMetaData::isCollection(void) const { return (_type == COLLECTION); 
 bool ResourceMetaData::canBeDeleted() const { return (_canBeDeleted); }
 
 } // namespace domain
+} // namespace webserv

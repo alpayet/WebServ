@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/05 03:22:10 by alpayet           #+#    #+#             */
-/*   Updated: 2026/07/09 00:11:53 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:24:07 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+namespace webserv {
 namespace fileSystem {
 bool exists(std::string const &path) { return access(path.c_str(), F_OK) == 0; }
 
@@ -65,3 +66,4 @@ int close(int &fd)
 }
 
 } // namespace fileSytem
+}

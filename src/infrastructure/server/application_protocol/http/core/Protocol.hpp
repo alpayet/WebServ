@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/22 22:54:52 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/14 01:10:56 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/15 13:32:05 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "infrastructure/server/application_protocol/IProtocol.hpp"
 #include "infrastructure/server/application_protocol/http/core/Context.hpp"
 
+namespace webserv {
 namespace cgi {
 class Exception;
 } // namespace cgi
@@ -30,11 +31,11 @@ struct Context;
 class Protocol
 {
   public:
-	typedef webserv::appProtocol::IProtocol IProtocol;
-	typedef IProtocol::PushStatus			PushStatus;
-	typedef IProtocol::PullStatus			PullStatus;
-	typedef IProtocol::RequestStatus		RequestStatus;
-	typedef IProtocol::StreamStatus			StreamStatus;
+	typedef appProtocol::IProtocol	 IProtocol;
+	typedef IProtocol::PushStatus	 PushStatus;
+	typedef IProtocol::PullStatus	 PullStatus;
+	typedef IProtocol::RequestStatus RequestStatus;
+	typedef IProtocol::StreamStatus	 StreamStatus;
 
 	Protocol(
 		request::Parser			  &requestParser,
@@ -75,6 +76,7 @@ class Protocol
 	PushStatus::Type handleError(Context &context, cgi::Exception const &e);
 };
 } // namespace http
+} // namespace webserv
 
 #include "Protocol.tpp"
 
