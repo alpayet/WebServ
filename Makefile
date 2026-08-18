@@ -93,7 +93,7 @@ DEP = $(addprefix $(OBJ_DIR), $(SRC_FILES:.cpp=.d))
 
 NAME = webserv
 
-CC = c++
+CXX = c++
 CFLAGS = -Wall -Wextra -Werror -MMD -MP -std=c++98 -O3
 CFLAGS += $(EXTRA_FLAGS)
 IFLAGS = -I $(SRC_DIR)
@@ -104,11 +104,11 @@ DEBUG_VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --child-silent
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $@
+	$(CXX) $(OBJ) -o $@
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.cpp Makefile
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	$(CXX) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 -include $(DEP)
 

@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/01 04:00:23 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:11:11 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/18 18:41:27 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ unsigned short to_status_code(Exception::ErrorCode error_code)
 			return (431);
 		case Exception::MAX_LOCAL_REDIR_DEPTH_EXCEEDED:
 			return (500);
+		case Exception::METHOD_UNSUPPORTED:
+			return (501);
 		case Exception::VERSION_INVALID:
 			return (505);
 		default:

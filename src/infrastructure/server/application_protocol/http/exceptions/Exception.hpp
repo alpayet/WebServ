@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 22:11:34 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:11:44 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/18 18:40:30 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class Exception : public std::exception
 		HEADER_LINE_MALFORMED,
 		METHOD_INVALID,
 		METHOD_NOT_ALLOWED,
+		METHOD_UNSUPPORTED,
 		TARGET_INVALID,
 		VERSION_INVALID,
 		HEADER_KEY_INVALID,

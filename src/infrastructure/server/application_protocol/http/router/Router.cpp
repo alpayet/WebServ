@@ -6,7 +6,7 @@
 /*   By: alpayet <alpayet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 01:50:14 by alpayet           #+#    #+#             */
-/*   Updated: 2026/08/15 13:19:41 by alpayet          ###   ########.fr       */
+/*   Updated: 2026/08/18 18:40:50 by alpayet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void Router::route(Context &context)
 		_serveStaticResource(context, route_policy);
 	else if (method == DELETE)
 		_deleteStaticResource(context, route_policy);
+	else
+		throw Exception(Exception::METHOD_UNSUPPORTED);
 }
 } // namespace http
 } // namespace webserv
